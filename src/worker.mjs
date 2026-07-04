@@ -1376,6 +1376,7 @@ async function sources(request, env) {
   const channels = await getChannels(env);
   const vodItems = await getVodItems(env);
   return json({
+    ok: true,
     version: VERSION,
     policy: '\u5f71\u89c6\u70b9\u64ad\u4f7f\u7528\u591a CMS \u76f4\u8fde\u805a\u5408\uff1b\u4fdd\u7559\u6210\u4eba\u5185\u5bb9\u4e0e\u89e3\u8bf4\u3001\u6f14\u5531\u4f1a\u3001\u516c\u5f00\u8bfe\u3001\u6559\u7a0b\u3001\u79d1\u666e\u7b49\u6709\u6548\u5185\u5bb9\uff1b\u8fc7\u6ee4\u5e7f\u544a\u3001\u89e3\u6790\u9875\u3001iframe \u548c\u65e0\u6548\u64ad\u653e\u5730\u5740\uff1b\u7535\u89c6\u7aef\u53ea\u663e\u793a\u4e00\u4e2a\u70b9\u64ad\u5165\u53e3\u3002',
     live: { total: channels.length, counts: countBy(channels.map((c) => ({ ...c, group: c.group === ('\u5907' + '\u7528' + '\u9891\u9053') ? '\u5176\u4ed6\u9891\u9053' : c.group })), 'group'), groups: LIVE_GROUP_ORDER, channels: channels.map((c) => ({ group: c.group === ('\u5907' + '\u7528' + '\u9891\u9053') ? '\u5176\u4ed6\u9891\u9053' : c.group, name: c.name })) },
