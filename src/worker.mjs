@@ -1138,10 +1138,10 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
 }
 function v73Mirrors(origin) {
   return [
-    { name: '???', url: V73_PRIMARY_ORIGIN + '/config.json', host: V73_PRIMARY_HOST, role: 'primary' },
-    { name: '????', url: V73_SECONDARY_ORIGIN + '/config.json', host: V73_SECONDARY_HOST, role: 'secondary' },
-    { name: '????', url: origin + '/config.json', host: new URL(origin).host, role: 'current' },
-    { name: 'Worker ??', url: 'https://tvbox-source-hub.feng-yang.workers.dev/config.json', host: 'tvbox-source-hub.feng-yang.workers.dev', role: 'rollback' },
+    { name: '主入口', url: V73_PRIMARY_ORIGIN + '/config.json', host: V73_PRIMARY_HOST, role: 'primary' },
+    { name: '同构入口', url: V73_SECONDARY_ORIGIN + '/config.json', host: V73_SECONDARY_HOST, role: 'secondary' },
+    { name: '当前入口', url: origin + '/config.json', host: new URL(origin).host, role: 'current' },
+    { name: '回滚入口', url: 'https://tvbox-source-hub.feng-yang.workers.dev/config.json', host: 'tvbox-source-hub.feng-yang.workers.dev', role: 'rollback' },
   ];
 }
 async function statusV73(request, env) {
@@ -1158,7 +1158,7 @@ async function statusV73(request, env) {
     secondary: V73_SECONDARY_ORIGIN + '/config.json',
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
     fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
-    compatibility: ['TVBox', 'FongMi', '???'],
+    compatibility: ['TVBox', 'FongMi', '影视仓'],
   }, 60);
 }
 async function mirrorsV73(request, env) {
