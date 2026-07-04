@@ -880,6 +880,10 @@ function normalizeVodTitle(value) {
     .trim()
     .toLowerCase();
 }
+const NAME_COLLATOR = new Intl.Collator('zh-Hans-CN', { numeric: true, sensitivity: 'base' });
+function compareDisplayName(a, b) {
+  return NAME_COLLATOR.compare(String(a || ''), String(b || ''));
+}
 function aggYearMatches(item, wanted) {
   const v = filterValue(wanted);
   if (!v) return true;
@@ -1001,9 +1005,9 @@ function sortAggMerged(rows, filters) {
   const sort = filterValue(filters.sort || 'latest');
   const out = [...rows];
   if (sort === 'quality') return out.sort((a, b) => aggQualityRank(b.best) - aggQualityRank(a.best) || b.candidates.length - a.candidates.length);
-  if (sort === 'name') return out.sort((a, b) => String(a.best.vod_name || '').localeCompare(String(b.best.vod_name || '')));
+  if (sort === 'name') return out.sort((a, b) => compareDisplayName(a.best.vod_name, b.best.vod_name));
   if (sort === 'lines') return out.sort((a, b) => b.candidates.length - a.candidates.length || aggQualityRank(b.best) - aggQualityRank(a.best));
-  return out.sort((a, b) => Number(extractYearFromVod(b.best) || 0) - Number(extractYearFromVod(a.best) || 0) || aggQualityRank(b.best) - aggQualityRank(a.best) || (SOURCE_RANK[b.best._sourceSlug] || 0) - (SOURCE_RANK[a.best._sourceSlug] || 0));
+  return out.sort((a, b) => Number(extractYearFromVod(b.best) || 0) - Number(extractYearFromVod(a.best) || 0) || aggQualityRank(b.best) - aggQualityRank(a.best) || (SOURCE_RANK[b.best._sourceSlug] || 0) - (SOURCE_RANK[a.best._sourceSlug] || 0) || compareDisplayName(a.best.vod_name, b.best.vod_name));
 }
 function searchTermsForCategory(categoryKey, filters) {
   const cls = filterValue(filters.class || filters.topic);
@@ -1163,17 +1167,38 @@ function snapshotListItemMatches(item, key, value) {
   if (key === 'quality') return aggFilterOptionMatches(item, '', 'quality', value);
   return true;
 }
+function snapshotDedupKey(item) {
+  const title = normalizeVodTitle(item?.vod_name) || String(item?.vod_name || '').trim().toLowerCase() || String(item?.vod_id || '');
+  return [title, extractYearFromVod(item), item?.type_name || ''].join('|');
+}
+function betterSnapshotItem(a, b) {
+  const qa = aggQualityRank(a), qb = aggQualityRank(b);
+  if (qa !== qb) return qa > qb ? a : b;
+  const al = Number(String(a?.vod_remarks || '').match(/(\d+)\s*\u7ebf/)?.[1] || 0);
+  const bl = Number(String(b?.vod_remarks || '').match(/(\d+)\s*\u7ebf/)?.[1] || 0);
+  if (al !== bl) return al > bl ? a : b;
+  return String(a?.vod_name || '').length <= String(b?.vod_name || '').length ? a : b;
+}
+function dedupeSnapshotList(list) {
+  const map = new Map();
+  for (const item of Array.isArray(list) ? list : []) {
+    const key = snapshotDedupKey(item);
+    const old = map.get(key);
+    map.set(key, old ? betterSnapshotItem(old, item) : item);
+  }
+  return [...map.values()];
+}
 function sortSnapshotList(list, filters) {
   const sort = filterValue(filters && filters.sort || 'latest');
-  const out = [...(list || [])];
+  const out = dedupeSnapshotList(list);
   if (sort === 'quality') return out.sort((a, b) => aggQualityRank(b) - aggQualityRank(a));
-  if (sort === 'name') return out.sort((a, b) => String(a.vod_name || '').localeCompare(String(b.vod_name || '')));
+  if (sort === 'name') return out.sort((a, b) => compareDisplayName(a.vod_name, b.vod_name));
   if (sort === 'lines') return out.sort((a, b) => {
     const al = Number(String(a.vod_remarks || '').match(/(\d+)\s*\u7ebf/)?.[1] || 0);
     const bl = Number(String(b.vod_remarks || '').match(/(\d+)\s*\u7ebf/)?.[1] || 0);
-    return bl - al || aggQualityRank(b) - aggQualityRank(a);
+    return bl - al || aggQualityRank(b) - aggQualityRank(a) || compareDisplayName(a.vod_name, b.vod_name);
   });
-  return out.sort((a, b) => Number(extractYearFromVod(b) || 0) - Number(extractYearFromVod(a) || 0) || aggQualityRank(b) - aggQualityRank(a));
+  return out.sort((a, b) => Number(extractYearFromVod(b) || 0) - Number(extractYearFromVod(a) || 0) || aggQualityRank(b) - aggQualityRank(a) || compareDisplayName(a.vod_name, b.vod_name));
 }
 function hasExplicitSnapshotSort(filters) {
   const sort = filterValue(filters && filters.sort);

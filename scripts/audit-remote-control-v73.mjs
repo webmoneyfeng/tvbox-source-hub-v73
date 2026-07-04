@@ -21,6 +21,7 @@ const ROOT_CAUSE = {
   PLAYBACK_FAIL: 'PLAYBACK_FAIL',
   OK: 'OK',
 };
+const NAME_COLLATOR = new Intl.Collator('zh-Hans-CN', { numeric: true, sensitivity: 'base' });
 
 function fullUrl(pathname) {
   return BASE + pathname;
@@ -57,6 +58,9 @@ function normalizeTitle(value) {
     .replace(/[\s·.。,，:：;；!！?？_\-—|]+/g, '')
     .trim()
     .toLowerCase();
+}
+function compareDisplayName(a, b) {
+  return NAME_COLLATOR.compare(String(a || ''), String(b || ''));
 }
 function extractYear(item) {
   const m = textOf(item).match(/(?:19|20)\d{2}/);
@@ -170,7 +174,7 @@ function sortScore(key, value, list) {
   if (key !== 'sort' || list.length < 2) return { semanticHitRate: 1, unknownRate: 0, examples: [] };
   let ordered = 0;
   for (let i = 1; i < list.length; i++) {
-    if (v === 'name') ordered += String(list[i - 1].vod_name || '').localeCompare(String(list[i].vod_name || '')) <= 0 ? 1 : 0;
+    if (v === 'name') ordered += compareDisplayName(list[i - 1].vod_name, list[i].vod_name) <= 0 ? 1 : 0;
     else if (v === 'quality') ordered += qualityRank(list[i - 1]) >= qualityRank(list[i]) ? 1 : 0;
     else if (v === 'lines') ordered += lineCount(list[i - 1]) >= lineCount(list[i]) ? 1 : 0;
     else ordered += Number(extractYear(list[i - 1]) || 0) >= Number(extractYear(list[i]) || 0) ? 1 : 0;
