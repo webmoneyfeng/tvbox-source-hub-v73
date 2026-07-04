@@ -18,7 +18,8 @@ const DEFAULT_SNAPSHOT_BASES = [
   'https://tv.webclound.eu.org/static/snapshot/latest',
 ];
 const SNAPSHOT_CACHE_TTL_MS = 5 * 60 * 1000;
-const SNAPSHOT_FETCH_TIMEOUT_MS = 2500;
+const SNAPSHOT_FETCH_TIMEOUT_MS = 6000;
+const SNAPSHOT_PACK_LIMIT = 24;
 const snapshotMemoryCache = new Map();
 const LIMIT_DEFAULT = 24;
 const LIMIT_MAX = 48;
@@ -595,7 +596,7 @@ function cleanAggName(value, max = 80) {
   return cleanCmsText(value, max).replace(/^(\u66f4\u65b0\u81f3|\u66f4\u65b0|\u9ad8\u6e05|\u6b63\u7247|\u5b8c\u7ed3)\s*/g, '').trim() || cleanCmsText(value, max);
 }
 function aggText(item, className = '') {
-  return [className, item?.type_name, item?.vod_name, item?.vod_sub, item?.vod_remarks, item?.vod_area, item?.vod_lang, item?.vod_content, item?.vod_play_from].join(' ');
+  return [className, item?.type_name, item?.vod_name, item?.vod_sub, item?.vod_remarks, item?.vod_area, item?.vod_lang, item?.vod_content, item?.vod_play_from, item?.semantic_tags].join(' ');
 }
 function macroForTypeName(value) {
   const n = String(value || '').replace(/\s+/g, '');
@@ -864,9 +865,9 @@ function qualityRankText(text) {
   const t = String(text || '').toUpperCase();
   if (/4K|2160/.test(t)) return 70;
   if (/1080|\u84dd\u5149|BD|B1080/.test(t)) return 60;
+  if (/TC|TS|\u62a2\u5148|\u67aa\u7248/.test(t)) return 15;
   if (/HD|\u9ad8\u6e05|\u6b63\u7247|\u5b8c\u7ed3/.test(t)) return 50;
   if (/\u66f4\u65b0/.test(t)) return 40;
-  if (/TC|TS|\u62a2\u5148|\u67aa\u7248/.test(t)) return 15;
   return 30;
 }
 function aggQualityRank(item) { return qualityRankText([item.vod_remarks, item.vod_name, item.vod_play_from].join(' ')); }
@@ -1090,14 +1091,93 @@ function snapshotBases(env) {
 function isSnapshotBypass(params) {
   return /^(1|true|yes|dynamic)$/i.test(String(params.get('force') || params.get('dynamic') || ''));
 }
-function hasNonSnapshotFilter(params) {
-  const allowed = new Set(['ac', 't', 'tid', 'type', 'type_id', 'cid', 'category', 'pg', 'page', 'limit']);
-  for (const key of params.keys()) if (!allowed.has(key)) return true;
-  return false;
+function snapshotFilterToken(value) {
+  return b64urlEncode(String(value || ''));
 }
-function snapshotPathForAgg(category, page, limit, wd, params) {
-  if (wd || hasNonSnapshotFilter(params)) return '';
-  return 'catalog-packs/t' + category.id + '-p' + page + '-limit' + limit + '.json';
+function snapshotBasePath(category, packPage = 1) {
+  return 'catalog-packs/t' + category.id + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
+}
+function snapshotFilterPath(category, key, value, packPage = 1) {
+  return 'filter-packs/t' + category.id + '/' + key + '-' + snapshotFilterToken(value) + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
+}
+function snapshotFilterEntries(filters) {
+  const keys = ['year', 'area', 'class', 'form', 'quality', 'state', 'episodes', 'duration', 'topic'];
+  const out = [];
+  for (const key of keys) {
+    const value = filterValue(filters && filters[key]);
+    if (value) out.push([key, value]);
+  }
+  return out;
+}
+function snapshotPackPagesForRequest(page, limit) {
+  const safePage = Math.max(1, Number(page) || 1);
+  const safeLimit = Math.max(1, Math.min(LIMIT_MAX, Number(limit) || LIMIT_DEFAULT));
+  const start = (safePage - 1) * safeLimit;
+  const end = start + safeLimit - 1;
+  const first = Math.floor(start / SNAPSHOT_PACK_LIMIT) + 1;
+  const last = Math.floor(end / SNAPSHOT_PACK_LIMIT) + 1;
+  const pages = [];
+  for (let p = first; p <= last; p++) pages.push(p);
+  return { pages, start, safePage, safeLimit, relativeStart: start - (first - 1) * SNAPSHOT_PACK_LIMIT };
+}
+function snapshotApplyPaging(firstPack, packs, page, limit, mode, extra = {}) {
+  const meta = snapshotPackPagesForRequest(page, limit);
+  const combined = packs.flatMap((p) => Array.isArray(p?.list) ? p.list : []);
+  const list = combined.slice(meta.relativeStart, meta.relativeStart + meta.safeLimit);
+  const total = Number(firstPack?.total || combined.length || list.length || 0);
+  return {
+    ...firstPack,
+    ...extra,
+    page: meta.safePage,
+    pagecount: Math.max(1, Math.ceil(total / meta.safeLimit)),
+    limit: meta.safeLimit,
+    total,
+    list,
+    snapshot_mode: mode,
+  };
+}
+function snapshotApplyListPaging(firstPack, listAll, page, limit, mode, extra = {}) {
+  const meta = snapshotPackPagesForRequest(page, limit);
+  const all = Array.isArray(listAll) ? listAll : [];
+  const total = all.length;
+  return {
+    ...firstPack,
+    ...extra,
+    page: meta.safePage,
+    pagecount: Math.max(1, Math.ceil(total / meta.safeLimit)),
+    limit: meta.safeLimit,
+    total,
+    list: all.slice(meta.start, meta.start + meta.safeLimit),
+    snapshot_mode: mode,
+  };
+}
+function snapshotListItemMatches(item, key, value) {
+  if (!filterValue(value)) return true;
+  if (key === 'year') return aggYearMatches(item, value);
+  if (key === 'area') return areaMatches(item, value);
+  if (key === 'class' || key === 'topic') return classGroupMatchesText(value, aggText(item, item?._className));
+  if (key === 'form') return formMatches(item, value);
+  if (key === 'state') return stateMatches(item, value);
+  if (key === 'episodes') return episodeMatches(item, value);
+  if (key === 'duration') return durationMatches(item, value);
+  if (key === 'quality') return aggFilterOptionMatches(item, '', 'quality', value);
+  return true;
+}
+function sortSnapshotList(list, filters) {
+  const sort = filterValue(filters && filters.sort || 'latest');
+  const out = [...(list || [])];
+  if (sort === 'quality') return out.sort((a, b) => aggQualityRank(b) - aggQualityRank(a));
+  if (sort === 'name') return out.sort((a, b) => String(a.vod_name || '').localeCompare(String(b.vod_name || '')));
+  if (sort === 'lines') return out.sort((a, b) => {
+    const al = Number(String(a.vod_remarks || '').match(/(\d+)\s*\u7ebf/)?.[1] || 0);
+    const bl = Number(String(b.vod_remarks || '').match(/(\d+)\s*\u7ebf/)?.[1] || 0);
+    return bl - al || aggQualityRank(b) - aggQualityRank(a);
+  });
+  return out.sort((a, b) => Number(extractYearFromVod(b) || 0) - Number(extractYearFromVod(a) || 0) || aggQualityRank(b) - aggQualityRank(a));
+}
+function hasExplicitSnapshotSort(filters) {
+  const sort = filterValue(filters && filters.sort);
+  return Boolean(sort && sort !== 'latest');
 }
 async function fetchJsonWithTimeout(url, timeoutMs) {
   const controller = new AbortController();
@@ -1129,12 +1209,63 @@ async function fetchSnapshotJson(env, relPath) {
   }
   return null;
 }
-async function snapshotAggResponse(request, env, category, page, limit, wd, params) {
+async function fetchSnapshotPacks(env, pathForPage, page, limit) {
+  const meta = snapshotPackPagesForRequest(page, limit);
+  const packs = [];
+  for (const packPage of meta.pages) {
+    const got = await fetchSnapshotJson(env, pathForPage(packPage));
+    if (!got || !Array.isArray(got.list)) return null;
+    packs.push(got);
+  }
+  return packs;
+}
+async function snapshotAggResponse(request, env, category, page, limit, wd, params, filters) {
   if (isSnapshotBypass(params)) return null;
-  const rel = snapshotPathForAgg(category, page, limit, wd, params);
-  const got = await fetchSnapshotJson(env, rel);
-  if (!got || !Array.isArray(got.list) || got.list.length === 0) return null;
-  return got;
+  if (wd) return null;
+
+  const entries = snapshotFilterEntries(filters);
+  if (entries.length === 1) {
+    const [key, value] = entries[0];
+    const packs = await fetchSnapshotPacks(env, (packPage) => snapshotFilterPath(category, key, value, packPage), page, limit);
+    if (packs && packs[0]?.list?.length) {
+      if (hasExplicitSnapshotSort(filters)) {
+        const sorted = sortSnapshotList(packs.flatMap((p) => Array.isArray(p.list) ? p.list : []), filters);
+        return snapshotApplyListPaging(packs[0], sorted, page, limit, 'filter-pack-sort', { snapshot_filter: { key, value } });
+      }
+      return snapshotApplyPaging(packs[0], packs, page, limit, 'filter-pack', { snapshot_filter: { key, value } });
+    }
+  }
+
+  const basePacks = await fetchSnapshotPacks(env, (packPage) => snapshotBasePath(category, packPage), page, limit);
+  if (!basePacks || !basePacks[0]?.list?.length) return null;
+
+  if (!entries.length) {
+    if (hasExplicitSnapshotSort(filters)) {
+      const sortPacks = [];
+      for (const packPage of [1, 2]) {
+        const got = await fetchSnapshotJson(env, snapshotBasePath(category, packPage));
+        if (got && Array.isArray(got.list)) sortPacks.push(got);
+      }
+      if (sortPacks.length) {
+        const sorted = sortSnapshotList(sortPacks.flatMap((p) => p.list), filters);
+        return snapshotApplyListPaging(sortPacks[0], sorted, page, limit, 'catalog-local-sort');
+      }
+    }
+    return snapshotApplyPaging(basePacks[0], basePacks, page, limit, 'catalog-pack');
+  }
+
+  const localFilterPacks = [];
+  for (const packPage of [1, 2]) {
+    const got = await fetchSnapshotJson(env, snapshotBasePath(category, packPage));
+    if (got && Array.isArray(got.list)) localFilterPacks.push(got);
+  }
+  if (!localFilterPacks.length) return null;
+  let filtered = localFilterPacks.flatMap((p) => Array.isArray(p.list) ? p.list : []);
+  for (const [key, value] of entries) filtered = filtered.filter((item) => snapshotListItemMatches(item, key, value));
+  filtered = sortSnapshotList(filtered, filters);
+  if (!filtered.length) return null;
+  const first = { ...basePacks[0], total: filtered.length, list: filtered };
+  return snapshotApplyListPaging(first, filtered, page, limit, 'catalog-local-filter', { snapshot_filter: Object.fromEntries(entries), root_cause: 'SNAPSHOT_MISS' });
 }
 function v73Mirrors(origin) {
   return [
@@ -1227,7 +1358,7 @@ async function agg(request, env) {
   const page = parseInt(params.get('pg') || params.get('page') || '1', 10) || 1;
   const limit = Math.min(LIMIT_MAX, parseInt(params.get('limit') || String(LIMIT_DEFAULT), 10) || LIMIT_DEFAULT);
   const wd = (params.get('wd') || params.get('search') || params.get('q') || '').trim();
-  const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params);
+  const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params, filters);
   if (snapshotHit) return json(snapshotHit, 120);
   const sources = selectedSources(filters);
   const pagesToPull = [Math.max(1, page)];
