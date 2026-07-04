@@ -596,7 +596,7 @@ function cleanAggName(value, max = 80) {
   return cleanCmsText(value, max).replace(/^(\u66f4\u65b0\u81f3|\u66f4\u65b0|\u9ad8\u6e05|\u6b63\u7247|\u5b8c\u7ed3)\s*/g, '').trim() || cleanCmsText(value, max);
 }
 function aggText(item, className = '') {
-  return [className, item?.type_name, item?.vod_name, item?.vod_sub, item?.vod_remarks, item?.vod_area, item?.vod_lang, item?.vod_content, item?.vod_play_from, item?.semantic_tags].join(' ');
+  return [className, item?.type_name, item?.vod_name, item?.vod_sub, item?.vod_remarks, item?.vod_class, item?.vod_state, item?.vod_area, item?.vod_lang, item?.vod_content, item?.vod_play_from, item?.semantic_tags, item?.snapshot_filter_evidence].join(' ');
 }
 function macroForTypeName(value) {
   const n = String(value || '').replace(/\s+/g, '');
@@ -982,8 +982,33 @@ function aggListItemFromMerged(m) {
   const cat = AGG_CATEGORIES.find((c) => c.key === best._macro) || AGG_CATEGORIES[0];
   const form = contentFormForItem(best);
   const lineText = m.candidates.length > 1 ? `${best.vod_remarks || ''} \u00b7 ${m.candidates.length}\u7ebf` : (best.vod_remarks || '');
-  return { vod_id: 'agg_' + b64urlEncode(JSON.stringify(m.candidates.slice(0, AGG_DETAIL_LIMIT).map((c) => ({ s: c._sourceSlug, id: c.vod_id })))), vod_name: best.vod_name, vod_pic: best.vod_pic || '', type_id: cat.id, type_name: cat.name, vod_year: extractYearFromVod(best), vod_remarks: cleanAggName(lineText || form || '', 80) };
+  const semanticTags = [...new Set([
+    ...(String(best.semantic_tags || '').split(/[,\s|/]+/).filter(Boolean)),
+    best._className,
+    best.vod_class,
+    best.vod_area,
+    best.vod_lang,
+    best.vod_state,
+    form,
+    cat.name,
+  ].filter(Boolean).map((x) => cleanCmsText(x, 40)).filter(Boolean))].join(' ');
+  return {
+    vod_id: 'agg_' + b64urlEncode(JSON.stringify(m.candidates.slice(0, AGG_DETAIL_LIMIT).map((c) => ({ s: c._sourceSlug, id: c.vod_id })))),
+    vod_name: best.vod_name,
+    vod_pic: best.vod_pic || '',
+    type_id: cat.id,
+    type_name: cat.name,
+    vod_year: extractYearFromVod(best),
+    vod_remarks: cleanAggName(lineText || form || '', 80),
+    vod_class: cleanCmsText(best.vod_class || best._className || '', 80),
+    vod_state: cleanCmsText(best.vod_state || '', 40),
+    vod_area: cleanCmsText(best.vod_area || '', 60),
+    vod_lang: cleanCmsText(best.vod_lang || '', 40),
+    semantic_tags: semanticTags,
+    snapshot_filter_evidence: best.snapshot_filter_evidence || '',
+  };
 }
+
 function betterAggItem(a, b) {
   const qa = aggQualityRank(a), qb = aggQualityRank(b);
   if (qa !== qb) return qa > qb ? a : b;
@@ -1126,7 +1151,7 @@ function snapshotPackPagesForRequest(page, limit) {
 }
 function snapshotApplyPaging(firstPack, packs, page, limit, mode, extra = {}) {
   const meta = snapshotPackPagesForRequest(page, limit);
-  const combined = packs.flatMap((p) => Array.isArray(p?.list) ? p.list : []);
+  const combined = dedupeSnapshotList(packs.flatMap((p) => Array.isArray(p?.list) ? p.list : []));
   const list = combined.slice(meta.relativeStart, meta.relativeStart + meta.safeLimit);
   const total = Number(firstPack?.total || combined.length || list.length || 0);
   return {

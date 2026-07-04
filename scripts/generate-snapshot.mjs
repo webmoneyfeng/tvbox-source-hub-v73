@@ -96,7 +96,7 @@ function visibleFilterOptions(data, t) {
   });
 }
 function catalogText(item) {
-  return [item?.type_name, item?.vod_name, item?.vod_sub, item?.vod_remarks, item?.vod_area, item?.vod_lang, item?.vod_year, item?.vod_content, item?.vod_play_from, item?.semantic_tags].join(' ');
+  return [item?.type_name, item?.vod_name, item?.vod_sub, item?.vod_remarks, item?.vod_class, item?.vod_state, item?.vod_area, item?.vod_lang, item?.vod_year, item?.vod_content, item?.vod_play_from, item?.semantic_tags, item?.snapshot_filter_evidence].join(' ');
 }
 function catalogYear(item) {
   const m = catalogText(item).match(/(?:19|20)\d{2}/);
@@ -195,16 +195,37 @@ function categoryCompatible(item, job) {
   if (String(job.t) === '0') return true;
   return String(item?.type_id || '') === String(job.t) || String(item?.type_name || '') === String(job.name) || catalogText(item).includes(job.name);
 }
+function catalogTitleKey(value) {
+  return String(value || '')
+    .replace(/[\[【(（].*?[\]】)）]/g, '')
+    .replace(/(?:19|20)\d{2}/g, '')
+    .replace(/[\s·.。,?:?;?!???_\-?|]+/g, '')
+    .trim()
+    .toLowerCase();
+}
+function catalogLineCount(item) {
+  return Number(String(item?.vod_remarks || '').match(/(\d+)\s*?/)?.[1] || 0);
+}
+function catalogDedupKey(item) {
+  const title = catalogTitleKey(item?.vod_name) || String(item?.vod_name || item?.vod_id || '').trim().toLowerCase();
+  return [title, catalogYear(item), item?.type_name || ''].join('|');
+}
+function betterCatalogRow(a, b) {
+  const al = catalogLineCount(a), bl = catalogLineCount(b);
+  if (al !== bl) return al > bl ? a : b;
+  const aq = catalogQualityRank(a), bq = catalogQualityRank(b);
+  if (aq !== bq) return aq > bq ? a : b;
+  return String(a?.vod_name || '').length <= String(b?.vod_name || '').length ? a : b;
+}
 function uniqueRows(rows) {
-  const seen = new Set();
-  const out = [];
+  const map = new Map();
   for (const item of rows) {
-    const key = String(item?.vod_id || '') || [item?.vod_name, item?.type_name, item?.vod_year].join('|');
-    if (!key || seen.has(key)) continue;
-    seen.add(key);
-    out.push(item);
+    const key = catalogDedupKey(item);
+    if (!key) continue;
+    const old = map.get(key);
+    map.set(key, old ? betterCatalogRow(old, item) : item);
   }
-  return out;
+  return [...map.values()];
 }
 function decorateRows(rows, job, evidence) {
   return rows.map((item) => {

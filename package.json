@@ -7,7 +7,8 @@
     "generate:snapshot": "node scripts/generate-snapshot.mjs",
     "audit:remote": "node scripts/audit-remote-control-v73.mjs",
     "validate:online": "node scripts/validate-online-v73.mjs",
-    "check": "node --check src/worker.mjs && node --check scripts/generate-snapshot.mjs && node --check scripts/validate-online-v73.mjs && node --check scripts/audit-remote-control-v73.mjs"
+    "check": "node --check src/worker.mjs && node --check scripts/generate-snapshot.mjs && node --check scripts/validate-online-v73.mjs && node --check scripts/audit-remote-control-v73.mjs && node --check scripts/audit-tv-remote-full-v73.mjs && node --test scripts/audit-tv-remote-full-v73.test.mjs",
+    "audit:remote-full": "node scripts/audit-tv-remote-full-v73.mjs"
   },
   "engines": {
     "node": ">=20"
