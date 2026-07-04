@@ -1,4 +1,4 @@
-﻿import { mkdir, writeFile, rm } from 'node:fs/promises';
+﻿import { mkdir, writeFile, rm, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,13 +20,24 @@ const CATEGORIES = [
   ['0', '\u63a8\u8350'], ['1', '\u7535\u5f71'], ['2', '\u5267\u96c6'], ['3', '\u7efc\u827a'], ['4', '\u52a8\u6f2b'],
   ['5', '\u7eaa\u5f55\u7247'], ['6', '\u77ed\u5267'], ['7', '\u89e3\u8bf4'], ['8', '\u6587\u5a31\u77e5\u8bc6'], ['9', '\u6210\u4eba\u4f26\u7406'],
 ];
-const SEARCH_TERMS = ['\u89e3\u8bf4', '\u7535\u5f71', '2026'];
+const SEARCH_TERMS = ['\u89e3\u8bf4', '\u7535\u5f71', '2026', '\u5929\u9053', '\u9065\u8fdc\u7684\u6551\u4e16\u4e3b'];
 
 async function ensureDir(p) { await mkdir(p, { recursive: true }); }
 async function writeJson(rel, data) {
   const file = path.join(DIST, rel);
   await ensureDir(path.dirname(file));
   await writeFile(file, JSON.stringify(data, null, 2), 'utf8');
+}
+async function readAuditJson(rel) {
+  try { return JSON.parse(await readFile(path.join(ROOT, rel), 'utf8')); } catch { return null; }
+}
+function formatChinaUpdateText(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (!Number.isFinite(d.getTime())) return '';
+  const parts = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(d);
+  const get = (type) => parts.find((p) => p.type === type)?.value || '';
+  return `\u6e90\u66f4\u65b0 ${get('month')}-${get('day')} ${get('hour')}:${get('minute')}`;
 }
 async function fetchJson(url, timeoutMs = 18000) {
   const c = new AbortController();
@@ -297,8 +308,9 @@ function pruneFiltersForCategory(data, t, viableOptions) {
   }
   return clone;
 }
-function configJson() {
-  return { spider: '', sites: [{ key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad', type: 1, api: PUBLIC_BASE + '/agg', searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 }], lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: PUBLIC_BASE + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' };
+function configJson(visibleUpdateText = '') {
+  const name = visibleUpdateText ? `\u5f71\u89c6\u70b9\u64ad \u00b7 ${visibleUpdateText}` : '\u5f71\u89c6\u70b9\u64ad';
+  return { spider: '', sites: [{ key: 'vod_unified', name, type: 1, api: PUBLIC_BASE + '/agg', searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 }], lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: PUBLIC_BASE + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' };
 }
 async function main() {
   if (existsSync(LATEST)) await rm(LATEST, { recursive: true, force: true });
@@ -307,6 +319,13 @@ async function main() {
   await ensureDir(path.join(LATEST, 'filter-packs'));
   await ensureDir(path.join(LATEST, 'search-packs'));
   const generatedAt = new Date().toISOString();
+  const sourceAudit = await readAuditJson('audit/source-discovery-latest.json');
+  const coverageAudit = await readAuditJson('audit/coverage-latest.json');
+  const sourceDiscoveryAt = sourceAudit?.generatedAt || '';
+  const coverageAuditAt = coverageAudit?.generatedAt || '';
+  const visibleUpdateText = formatChinaUpdateText(coverageAuditAt || sourceDiscoveryAt || generatedAt);
+  const sourceSummary = sourceAudit ? { candidateCount: sourceAudit.candidateCount, active: sourceAudit.active, watch: sourceAudit.watch, rejected: sourceAudit.rejected, blocked: sourceAudit.blocked } : null;
+  const coverageSummary = coverageAudit ? { total: coverageAudit.total, pass: coverageAudit.pass, warn: coverageAudit.warn, fail: coverageAudit.fail, byRootCause: coverageAudit.byRootCause } : null;
   const categoryRows = [];
   const filterJobs = [];
   const catalogPacksByCategory = new Map();
@@ -315,8 +334,8 @@ async function main() {
   let filterPackFileCount = 0;
   const validation = { generatedAt, sourceBase: SOURCE_BASE, publicBase: PUBLIC_BASE, staticSnapshotBases: STATIC_SNAPSHOT_BASES, categories: [], filters: [], search: [], errors: [], warnings: [] };
 
-  await writeJson('config.json', configJson());
-  await writeJson('status.json', { ok: true, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, publicBase: PUBLIC_BASE, sourceBase: SOURCE_BASE });
+  await writeJson('config.json', configJson(visibleUpdateText));
+  await writeJson('status.json', { ok: true, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceDiscoveryAt, coverageAuditAt, snapshotGeneratedAt: generatedAt, visibleUpdateText, sourceSummary, coverageSummary, publicBase: PUBLIC_BASE, sourceBase: SOURCE_BASE });
 
   for (const [t, name] of CATEGORIES) {
     for (const pg of [1, 2]) {
@@ -399,7 +418,7 @@ async function main() {
   await writeJson('snapshot/latest/detail-packs/sample.json', { generatedAt, rows: detailRows });
   validation.detailSample = detailRows;
 
-  const manifest = { ok: validation.errors.length === 0, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceBase: SOURCE_BASE, publicBase: PUBLIC_BASE, packLimit: LIMIT, clientLimits: [8, 12, 24, 48], categories: categoryRows, filterPackCount: filterPackFileCount, visibleFilterOptions: viableFilterOptions.size, files: { categories: 'categories.json', validation: 'validation.json' } };
+  const manifest = { ok: validation.errors.length === 0, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceDiscoveryAt, coverageAuditAt, snapshotGeneratedAt: generatedAt, visibleUpdateText, sourceSummary, coverageSummary, sourceBase: SOURCE_BASE, publicBase: PUBLIC_BASE, packLimit: LIMIT, clientLimits: [8, 12, 24, 48], categories: categoryRows, filterPackCount: filterPackFileCount, visibleFilterOptions: viableFilterOptions.size, files: { categories: 'categories.json', validation: 'validation.json' } };
   await writeJson('snapshot/latest/manifest.json', manifest);
   await writeJson('snapshot/latest/categories.json', { generatedAt, class: CATEGORIES.map(([type_id, type_name]) => ({ type_id, type_name })), rows: categoryRows });
   await writeJson('snapshot/latest/validation.json', validation);

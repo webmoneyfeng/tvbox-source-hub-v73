@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-07-04T17:57:10.946Z",
+  "repo": {
+    "ok": true,
+    "private": false,
+    "visibility": "public",
+    "url": "https://github.com/webmoneyfeng/tvbox-source-hub-v73"
+  },
+  "monthlyScheduledRuns": 270,
+  "distFileCount": 343,
+  "distBytes": 39821042,
+  "workflows": [
+    {
+      "file": ".github/workflows/deep-verify.yml",
+      "crons": [
+        "31 3 * * *"
+      ],
+      "monthlyRuns": 30
+    },
+    {
+      "file": ".github/workflows/full-refresh.yml",
+      "crons": [
+        "17 2 * * *"
+      ],
+      "monthlyRuns": 30
+    },
+    {
+      "file": ".github/workflows/hot-refresh.yml",
+      "crons": [
+        "7 */4 * * *"
+      ],
+      "monthlyRuns": 180
+    },
+    {
+      "file": ".github/workflows/manual-release.yml",
+      "crons": [],
+      "monthlyRuns": 0
+    },
+    {
+      "file": ".github/workflows/source-health.yml",
+      "crons": [
+        "43 4 * * *"
+      ],
+      "monthlyRuns": 30
+    }
+  ],
+  "rows": [
+    {
+      "area": "github_repo",
+      "result": "PASS",
+      "metric": "public",
+      "note": "public repo"
+    },
+    {
+      "area": "github_actions",
+      "result": "PASS",
+      "metric": "270/month",
+      "note": "调度频率按免费优先控制"
+    },
+    {
+      "area": "cloudflare_pages_files",
+      "result": "PASS",
+      "metric": "343",
+      "note": "dist 文件数量估算"
+    },
+    {
+      "area": "cloudflare_pages_size",
+      "result": "PASS",
+      "metric": "39821042 bytes",
+      "note": "dist 总大小估算"
+    },
+    {
+      "area": "cloudflare_worker_requests",
+      "result": "WARN",
+      "metric": "unknown",
+      "note": "点播不代理视频；直播 /play/ 与 /p/ 会消耗 Worker 请求，本轮只审计不改现状"
+    },
+    {
+      "area": "cloudflare_kv",
+      "result": "PASS",
+      "metric": "low",
+      "note": "当前主要读 channels/vod_catalog，未发现高频写入"
+    }
+  ],
+  "pass": 5,
+  "warn": 1,
+  "fail": 0
+}

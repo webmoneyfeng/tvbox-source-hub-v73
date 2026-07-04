@@ -35,6 +35,11 @@ const CMS_SOURCES = [
   { slug: "hhzy", key: "cms_hhzy", short: "\u706b\u72d0", name: "\u706b\u72d0\u8d44\u6e90", api: "https://hhzyapi.com/api.php/provide/vod/", tier: "aux" },
   { slug: "hongniu", key: "cms_hongniu", short: "\u7ea2\u725b", name: "\u7ea2\u725b\u8d44\u6e90", api: "https://www.hongniuzy2.com/api.php/provide/vod/", tier: "aux" },
   { slug: "guangsu", key: "cms_guangsu", short: "\u5149\u901f", name: "\u5149\u901f\u8d44\u6e90", api: "https://api.guangsuapi.com/api.php/provide/vod/", tier: "aux" },
+  { slug: "ffzy", key: "cms_ffzy", short: "\u975e\u51e1", name: "\u975e\u51e1\u8d44\u6e90", api: "https://api.ffzyapi.com/api.php/provide/vod/", tier: "main" },
+  { slug: "wujin", key: "cms_wujin", short: "\u65e0\u5c3d", name: "\u65e0\u5c3d\u8d44\u6e90", api: "https://api.wujinapi.me/api.php/provide/vod/", tier: "main" },
+  { slug: "modu", key: "cms_modu", short: "\u9b54\u90fd", name: "\u9b54\u90fd\u8d44\u6e90", api: "https://caiji.moduapi.cc/api.php/provide/vod/", tier: "aux" },
+  { slug: "yhzy", key: "cms_yhzy", short: "\u6a31\u82b1", name: "\u6a31\u82b1\u8d44\u6e90", api: "https://m3u8.apiyhzy.com/api.php/provide/vod/", tier: "aux" },
+  { slug: "xinlang", key: "cms_xinlang", short: "\u65b0\u6d6a", name: "\u65b0\u6d6a\u8d44\u6e90", api: "https://api.xinlangapi.com/xinlangapi.php/provide/vod/", tier: "aux" },
 ];
 
 const TAG_RULES = [
@@ -596,7 +601,7 @@ function cleanAggName(value, max = 80) {
   return cleanCmsText(value, max).replace(/^(\u66f4\u65b0\u81f3|\u66f4\u65b0|\u9ad8\u6e05|\u6b63\u7247|\u5b8c\u7ed3)\s*/g, '').trim() || cleanCmsText(value, max);
 }
 function aggText(item, className = '') {
-  return [className, item?.type_name, item?.vod_name, item?.vod_sub, item?.vod_remarks, item?.vod_class, item?.vod_state, item?.vod_area, item?.vod_lang, item?.vod_content, item?.vod_play_from, item?.semantic_tags, item?.snapshot_filter_evidence].join(' ');
+  return [className, item?.type_name, item?.vod_name, item?.vod_sub, item?.vod_remarks, item?.vod_class, item?.vod_state, item?.vod_area, item?.vod_lang, item?.vod_actor, item?.vod_director, item?.vod_content, item?.vod_play_from, item?.semantic_tags, item?.snapshot_filter_evidence].join(' ');
 }
 function macroForTypeName(value) {
   const n = String(value || '').replace(/\s+/g, '');
@@ -988,6 +993,8 @@ function aggListItemFromMerged(m) {
     best.vod_class,
     best.vod_area,
     best.vod_lang,
+    best.vod_actor,
+    best.vod_director,
     best.vod_state,
     form,
     cat.name,
@@ -1004,6 +1011,8 @@ function aggListItemFromMerged(m) {
     vod_state: cleanCmsText(best.vod_state || '', 40),
     vod_area: cleanCmsText(best.vod_area || '', 60),
     vod_lang: cleanCmsText(best.vod_lang || '', 40),
+    vod_actor: cleanCmsText(best.vod_actor || '', 120),
+    vod_director: cleanCmsText(best.vod_director || '', 80),
     semantic_tags: semanticTags,
     snapshot_filter_evidence: best.snapshot_filter_evidence || '',
   };
@@ -1026,13 +1035,69 @@ function mergeAggItems(items) {
   }
   return [...map.values()];
 }
-function sortAggMerged(rows, filters) {
+const SEARCH_KNOWLEDGE = [
+  { title: '\u5929\u9053', aliases: ['\u9065\u8fdc\u7684\u6551\u4e16\u4e3b'], actors: ['\u738b\u5fd7\u6587', '\u5de6\u5c0f\u9752'], year: '2008', category: 'tv' },
+  { title: '\u4eae\u5251', aliases: [], actors: ['\u674e\u5e7c\u658c'], year: '2005', category: 'tv' },
+  { title: '\u6f5c\u4f0f', aliases: [], actors: ['\u5b59\u7ea2\u96f7', '\u59da\u6668'], year: '2009', category: 'tv' },
+];
+function searchNormalize(value) { return normalizeVodTitle(value); }
+function searchKnowledgeFor(query) {
+  const q = searchNormalize(query);
+  if (!q) return [];
+  return SEARCH_KNOWLEDGE.filter((entry) => [entry.title, ...(entry.aliases || []), ...(entry.actors || [])].some((x) => {
+    const n = searchNormalize(x);
+    return n && (n === q || n.includes(q) || q.includes(n));
+  }));
+}
+function searchVariantsFor(query) {
+  const out = [];
+  const add = (x) => { const v = filterValue(x); if (v && !out.includes(v)) out.push(v); };
+  add(query);
+  for (const entry of searchKnowledgeFor(query)) {
+    add(entry.title);
+    for (const a of entry.aliases || []) add(a);
+    if (entry.year) add(`${entry.title} ${entry.year}`);
+  }
+  return out.slice(0, 3);
+}
+function buildSearchContext(query) {
+  const entries = searchKnowledgeFor(query);
+  const exactTitles = new Set();
+  const actors = new Set();
+  for (const entry of entries) {
+    exactTitles.add(searchNormalize(entry.title));
+    for (const a of entry.aliases || []) exactTitles.add(searchNormalize(a));
+    for (const a of entry.actors || []) actors.add(searchNormalize(a));
+  }
+  exactTitles.add(searchNormalize(query));
+  return { query, queryNorm: searchNormalize(query), exactTitles, actors };
+}
+function searchScoreItem(item, context) {
+  if (!context || !context.queryNorm) return 0;
+  const title = searchNormalize(item?.vod_name);
+  const textNorm = searchNormalize(aggText(item, item?._className));
+  let score = 0;
+  if (context.exactTitles.has(title)) score += 2000;
+  else if ([...context.exactTitles].some((x) => x && (title.includes(x) || x.includes(title)))) score += 1200;
+  if (title === context.queryNorm) score += 1000;
+  else if (title.includes(context.queryNorm)) score += 300;
+  if ([...context.actors].some((a) => a && textNorm.includes(a))) score += 800;
+  if (textNorm.includes(context.queryNorm)) score += 120;
+  const form = contentFormForItem(item);
+  if (form === '\u6b63\u7247') score += 160;
+  if (/\u77ed\u5267|\u52a8\u6001\u6f2b\u753b|\u89e3\u8bf4|\u7247\u6bb5/.test(aggText(item, item?._className)) && !context.exactTitles.has(title)) score -= 260;
+  return score;
+}
+function searchScoreMerged(row, context) { return Math.max(searchScoreItem(row.best, context), ...row.candidates.map((x) => searchScoreItem(x, context))); }
+function defaultAggCompare(a, b) { return Number(extractYearFromVod(b.best) || 0) - Number(extractYearFromVod(a.best) || 0) || aggQualityRank(b.best) - aggQualityRank(a.best) || (SOURCE_RANK[b.best._sourceSlug] || 0) - (SOURCE_RANK[a.best._sourceSlug] || 0) || compareDisplayName(a.best.vod_name, b.best.vod_name); }
+function sortAggMerged(rows, filters, searchContext = null) {
   const sort = filterValue(filters.sort || 'latest');
   const out = [...rows];
+  if (searchContext && searchContext.queryNorm) return out.sort((a, b) => searchScoreMerged(b, searchContext) - searchScoreMerged(a, searchContext) || b.candidates.length - a.candidates.length || defaultAggCompare(a, b));
   if (sort === 'quality') return out.sort((a, b) => aggQualityRank(b.best) - aggQualityRank(a.best) || b.candidates.length - a.candidates.length);
   if (sort === 'name') return out.sort((a, b) => compareDisplayName(a.best.vod_name, b.best.vod_name));
   if (sort === 'lines') return out.sort((a, b) => b.candidates.length - a.candidates.length || aggQualityRank(b.best) - aggQualityRank(a.best));
-  return out.sort((a, b) => Number(extractYearFromVod(b.best) || 0) - Number(extractYearFromVod(a.best) || 0) || aggQualityRank(b.best) - aggQualityRank(a.best) || (SOURCE_RANK[b.best._sourceSlug] || 0) - (SOURCE_RANK[a.best._sourceSlug] || 0) || compareDisplayName(a.best.vod_name, b.best.vod_name));
+  return out.sort(defaultAggCompare);
 }
 function searchTermsForCategory(categoryKey, filters) {
   const cls = filterValue(filters.class || filters.topic);
@@ -1337,6 +1402,12 @@ async function statusV73(request, env) {
     entry: origin + '/config.json',
     primary: V73_PRIMARY_ORIGIN + '/config.json',
     secondary: V73_SECONDARY_ORIGIN + '/config.json',
+    sourceDiscoveryAt: manifest?.sourceDiscoveryAt || '',
+    coverageAuditAt: manifest?.coverageAuditAt || '',
+    snapshotGeneratedAt: manifest?.generatedAt || '',
+    visibleUpdateText: visibleUpdateTextFromManifest(manifest),
+    coverageSummary: manifest?.coverageSummary || null,
+    sourceSummary: manifest?.sourceSummary || null,
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
     fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
     compatibility: ['TVBox', 'FongMi', '影视仓'],
@@ -1413,21 +1484,36 @@ async function agg(request, env) {
   const sources = selectedSources(filters);
   const pagesToPull = [Math.max(1, page)];
   if (page === 1 && !wd) pagesToPull.push(2);
+  const searchTerms = wd ? searchVariantsFor(wd) : [''];
   const tasks = [];
-  for (const source of sources) for (const pg of pagesToPull) tasks.push(collectAggListFromSource(source, category.key, filters, pg, wd));
+  for (const source of sources) for (const pg of pagesToPull) for (const term of searchTerms) tasks.push(collectAggListFromSource(source, category.key, filters, pg, term));
   const settled = await Promise.allSettled(tasks);
   const rawItems = [];
   for (const r of settled) if (r.status === 'fulfilled') rawItems.push(...r.value);
-  const merged = sortAggMerged(mergeAggItems(rawItems), filters);
-  const p = pageList(merged.map(aggListItemFromMerged), 1, limit);
+  const merged = sortAggMerged(mergeAggItems(rawItems), filters, wd ? buildSearchContext(wd) : null);
+  const p = pageList(merged.map(aggListItemFromMerged), page, limit);
   const responseFilters = aggFiltersForResponse(category.key, merged);
   return json({ code: 1, msg: 'ok', class: aggClasses(category.key, merged), filters: responseFilters, page, pagecount: Math.max(page + (p.list.length >= limit ? 1 : 0), 1), limit, total: merged.length, list: p.list }, 120);
 }
 
+function formatChinaUpdateText(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (!Number.isFinite(d.getTime())) return '';
+  const parts = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(d);
+  const get = (type) => parts.find((p) => p.type === type)?.value || '';
+  return `\u6e90\u66f4\u65b0 ${get('month')}-${get('day')} ${get('hour')}:${get('minute')}`;
+}
+function visibleUpdateTextFromManifest(manifest) {
+  return manifest?.visibleUpdateText || formatChinaUpdateText(manifest?.coverageAuditAt || manifest?.sourceDiscoveryAt || manifest?.generatedAt);
+}
 async function config(request, env) {
   const origin = new URL(request.url).origin;
+  const manifest = await fetchSnapshotJson(env, 'manifest.json');
+  const updateText = visibleUpdateTextFromManifest(manifest);
+  const siteName = updateText ? `\u5f71\u89c6\u70b9\u64ad \u00b7 ${updateText}` : '\u5f71\u89c6\u70b9\u64ad';
   const sites = [
-    { key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad', type: 1, api: origin + '/agg', searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 },
+    { key: 'vod_unified', name: siteName, type: 1, api: origin + '/agg', searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 },
   ];
   return json({ spider: '', sites, lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: origin + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' }, 300);
 }
