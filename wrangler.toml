@@ -1,0 +1,16 @@
+name = "tvbox-source-hub-v73"
+main = "src/worker.mjs"
+compatibility_date = "2024-11-01"
+usage_model = "standard"
+
+[[kv_namespaces]]
+binding = "TVBOX_KV"
+id = "398f07fafd0b463da486b623a00b57ba"
+
+[vars]
+SNAPSHOT_BASES = "https://tvbox-source-hub-v73.pages.dev/snapshot/latest"
+
+routes = [
+  { pattern = "tv.webhome.eu.org", custom_domain = true },
+  { pattern = "tv.webclound.eu.org", custom_domain = true }
+]

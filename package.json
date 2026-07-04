@@ -1,0 +1,15 @@
+{
+  "name": "tvbox-source-hub-v73",
+  "version": "7.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate:snapshot": "node scripts/generate-snapshot.mjs",
+    "validate:online": "node scripts/validate-online-v73.mjs",
+    "check": "node --check src/worker.mjs && node --check scripts/generate-snapshot.mjs && node --check scripts/validate-online-v73.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {}
+}
