@@ -20,7 +20,30 @@ const CATEGORIES = [
   ['0', '\u63a8\u8350'], ['1', '\u7535\u5f71'], ['2', '\u5267\u96c6'], ['3', '\u7efc\u827a'], ['4', '\u52a8\u6f2b'],
   ['5', '\u7eaa\u5f55\u7247'], ['6', '\u77ed\u5267'], ['7', '\u89e3\u8bf4'], ['8', '\u6587\u5a31\u77e5\u8bc6'], ['9', '\u6210\u4eba\u4f26\u7406'],
 ];
-const SEARCH_TERMS = ['\u89e3\u8bf4', '\u7535\u5f71', '2026', '\u5929\u9053', '\u9065\u8fdc\u7684\u6551\u4e16\u4e3b'];
+const SEARCH_TERMS = ['\u89e3\u8bf4', '\u7535\u5f71', '2026', '\u5929\u9053', '\u9065\u8fdc\u7684\u6551\u4e16\u4e3b', '\u738b\u5fd7\u6587'];
+const CRITICAL_SEARCH_TERMS = new Set(['\u5929\u9053', '\u9065\u8fdc\u7684\u6551\u4e16\u4e3b', '\u738b\u5fd7\u6587']);
+const SNAPSHOT_SEARCH_KNOWLEDGE = [
+  { title: '\u5929\u9053', aliases: ['\u9065\u8fdc\u7684\u6551\u4e16\u4e3b'], actors: ['\u738b\u5fd7\u6587', '\u5de6\u5c0f\u9752'], year: '2008' },
+  { title: '\u4eae\u5251', aliases: [], actors: ['\u674e\u5e7c\u658c'], year: '2005' },
+  { title: '\u6f5c\u4f0f', aliases: [], actors: ['\u5b59\u7ea2\u96f7', '\u59da\u6668'], year: '2009' },
+];
+function normalizeSnapshotSearch(value) {
+  return String(value || '').replace(/[\s\u00b7.,:;!?\-_/\\|\u3002\uff0c\uff1a\uff1b\uff01\uff1f\u2014]+/g, '').trim().toLowerCase();
+}
+function snapshotSearchVariants(wd) {
+  const out = [];
+  const add = (x) => { const v = String(x || '').trim(); if (v && !out.includes(v)) out.push(v); };
+  const q = normalizeSnapshotSearch(wd);
+  add(wd);
+  for (const entry of SNAPSHOT_SEARCH_KNOWLEDGE) {
+    const values = [entry.title, ...(entry.aliases || []), ...(entry.actors || [])];
+    if (!values.some((x) => { const n = normalizeSnapshotSearch(x); return n && (n === q || n.includes(q) || q.includes(n)); })) continue;
+    add(entry.title);
+    for (const a of entry.aliases || []) add(a);
+    if (entry.year) add(`${entry.title} ${entry.year}`);
+  }
+  return out.slice(0, 4);
+}
 
 async function ensureDir(p) { await mkdir(p, { recursive: true }); }
 async function writeJson(rel, data) {
@@ -71,11 +94,20 @@ async function fetchCatalogPack(t, pg) {
 }
 async function fetchSearchPack(wd) {
   let dynamic = null;
-  try { dynamic = await fetchJson(endpoint(`/agg?wd=${encodeURIComponent(wd)}&pg=1&limit=${LIMIT}`)); } catch (err) { dynamic = { code: 1, msg: 'dynamic fetch failed', list: [], error: err.message }; }
-  if (hasList(dynamic)) return { data: dynamic, source: 'dynamic' };
-  const fallback = await fetchStaticSnapshot(`search-packs/${encodeURIComponent(wd)}-p1-limit${LIMIT}.json`);
-  if (hasList(fallback)) return { data: fallback, source: 'static-snapshot' };
-  return { data: dynamic, source: 'dynamic-empty' };
+  const variants = snapshotSearchVariants(wd);
+  for (const term of variants) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        dynamic = await fetchJson(endpoint(`/agg?wd=${encodeURIComponent(term)}&pg=1&limit=${LIMIT}&snapshot_probe=${Date.now()}_${attempt}`));
+        if (hasList(dynamic)) return { data: dynamic, source: term === wd ? 'dynamic' : `dynamic-variant:${term}` };
+      } catch (err) { dynamic = { code: 1, msg: 'dynamic fetch failed', list: [], error: err.message }; }
+    }
+  }
+  for (const term of variants) {
+    const fallback = await fetchStaticSnapshot(`search-packs/${encodeURIComponent(term)}-p1-limit${LIMIT}.json`);
+    if (hasList(fallback)) return { data: fallback, source: term === wd ? 'static-snapshot' : `static-variant:${term}` };
+  }
+  return { data: dynamic || { code: 1, msg: 'dynamic empty', list: [] }, source: 'dynamic-empty' };
 }
 function endpoint(pathname) {
   const join = pathname.includes('?') ? '&' : '?';
@@ -401,8 +433,10 @@ async function main() {
       const fetched = await fetchSearchPack(wd);
       const data = fetched.data;
       await writeJson(`snapshot/latest/search-packs/${encodeURIComponent(wd)}-p1-limit${LIMIT}.json`, data);
-      validation.search.push({ wd, count: data.list?.length || 0, total: data.total || 0, ok: (data.list?.length || 0) > 0 });
+      const searchCount = data.list?.length || 0;
+      validation.search.push({ wd, count: searchCount, total: data.total || 0, ok: searchCount > 0, source: fetched.source });
       if (fetched.source !== 'dynamic') validation.warnings.push(`search ${wd} used ${fetched.source}`);
+      if (CRITICAL_SEARCH_TERMS.has(wd) && searchCount <= 0) validation.errors.push(`critical search ${wd} empty`);
     } catch (err) { validation.errors.push(`search ${wd}: ${err.message}`); }
   }
 

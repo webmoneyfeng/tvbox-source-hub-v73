@@ -1191,6 +1191,9 @@ function snapshotFilterToken(value) {
 function snapshotBasePath(category, packPage = 1) {
   return 'catalog-packs/t' + category.id + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
 }
+function snapshotSearchPath(wd, packPage = 1) {
+  return 'search-packs/' + encodeURIComponent(String(wd || '')) + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
+}
 function snapshotFilterPath(category, key, value, packPage = 1) {
   return 'filter-packs/t' + category.id + '/' + key + '-' + snapshotFilterToken(value) + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
 }
@@ -1336,7 +1339,29 @@ async function fetchSnapshotPacks(env, pathForPage, page, limit) {
 }
 async function snapshotAggResponse(request, env, category, page, limit, wd, params, filters) {
   if (isSnapshotBypass(params)) return null;
-  if (wd) return null;
+  if (wd) {
+    const variants = searchVariantsFor(wd);
+    const rows = [];
+    const seen = new Set();
+    let firstPack = null;
+    for (const term of variants) {
+      const pack = await fetchSnapshotJson(env, snapshotSearchPath(term, 1));
+      if (!pack || !Array.isArray(pack.list) || !pack.list.length) continue;
+      if (!firstPack) firstPack = pack;
+      for (const item of pack.list) {
+        const key = String(item.vod_id || item.vod_name || '').trim();
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        rows.push(item);
+      }
+    }
+    if (rows.length) {
+      const context = buildSearchContext(wd);
+      const sorted = rows.sort((a, b) => searchScoreItem(b, context) - searchScoreItem(a, context) || compareDisplayName(a.vod_name, b.vod_name));
+      return snapshotApplyListPaging(firstPack || { code: 1, msg: 'ok', page: 1, limit: SNAPSHOT_PACK_LIMIT }, sorted, page, limit, 'search-pack', { snapshot_search: { terms: variants } });
+    }
+    return null;
+  }
 
   const entries = snapshotFilterEntries(filters);
   if (entries.length === 1) {
