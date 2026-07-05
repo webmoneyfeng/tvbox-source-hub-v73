@@ -1358,7 +1358,7 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
     }
     if (rows.length) {
       const context = buildSearchContext(wd);
-      const sorted = rows.sort((a, b) => searchScoreItem(b, context) - searchScoreItem(a, context) || compareDisplayName(a.vod_name, b.vod_name));
+      const sorted = dedupeSnapshotList(rows).sort((a, b) => searchScoreItem(b, context) - searchScoreItem(a, context) || compareDisplayName(a.vod_name, b.vod_name));
       return snapshotApplyListPaging(firstPack || { code: 1, msg: 'ok', page: 1, limit: SNAPSHOT_PACK_LIMIT }, sorted, page, limit, 'search-pack', { snapshot_search: { terms: variants } });
     }
     return null;
