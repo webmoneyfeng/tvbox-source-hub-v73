@@ -1318,7 +1318,8 @@ async function fetchSnapshotJson(env, relPath) {
   const cached = snapshotMemoryCache.get(cacheKey);
   if (cached && Date.now() - cached.t < SNAPSHOT_CACHE_TTL_MS) return cached.v;
   for (const base of snapshotBases(env)) {
-    const url = base.replace(/\/+$/, '') + '/' + relPath.replace(/^\/+/, '');
+    const urlPath = relPath.replace(/^\/+/, '').replace(/%/g, '%25');
+    const url = base.replace(/\/+$/, '') + '/' + urlPath;
     const got = await fetchJsonWithTimeout(url, SNAPSHOT_FETCH_TIMEOUT_MS);
     if (got && (got.code === 1 || got.ok !== false || got.version || got.generatedAt)) {
       snapshotMemoryCache.set(cacheKey, { t: Date.now(), v: got, source: url });

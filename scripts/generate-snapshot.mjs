@@ -78,7 +78,8 @@ function hasList(data) {
 async function fetchStaticSnapshot(rel, timeoutMs = 12000) {
   for (const base of STATIC_SNAPSHOT_BASES) {
     try {
-      const data = await fetchJson(base + '/' + rel.replace(/^\/+/, ''), timeoutMs);
+      const relUrl = rel.replace(/^\/+/, '').replace(/%/g, '%25');
+      const data = await fetchJson(base + '/' + relUrl, timeoutMs);
       if (data && typeof data === 'object') return data;
     } catch {}
   }
