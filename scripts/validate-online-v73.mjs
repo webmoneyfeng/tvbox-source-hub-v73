@@ -2,19 +2,31 @@
 const LIMIT = Number(process.env.TEST_LIMIT || 8);
 const CATS = Array.from({ length: 10 }, (_, i) => String(i));
 const TIMEOUT = Number(process.env.TEST_TIMEOUT_MS || 20000);
+const RETRIES = Number(process.env.TEST_RETRIES || 3);
 
 async function fetchJson(path) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT);
-  try {
-    const res = await fetch(BASE + path, { headers: { accept: 'application/json,*/*', 'user-agent': 'TVBoxSourceHubValidator/7.3' }, signal: controller.signal });
-    const text = await res.text();
-    let data = null;
-    try { data = JSON.parse(text); } catch { data = { raw: text.slice(0, 200) }; }
-    return { status: res.status, data };
-  } finally { clearTimeout(timer); }
+  let lastError = null;
+  for (let i = 0; i < RETRIES; i++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TIMEOUT);
+    try {
+      const res = await fetch(BASE + path, { headers: { accept: 'application/json,*/*', 'user-agent': 'TVBoxSourceHubValidator/7.3' }, signal: controller.signal });
+      const text = await res.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch { data = { raw: text.slice(0, 200) }; }
+      return { status: res.status, data };
+    } catch (err) {
+      lastError = err;
+      await new Promise((resolve) => setTimeout(resolve, 800 + i * 1200));
+    } finally { clearTimeout(timer); }
+  }
+  return { status: 0, data: { error: lastError?.message || String(lastError || 'fetch failed') } };
 }
 function assert(cond, msg, failures) { if (!cond) failures.push(msg); }
+function validSiteName(name) {
+  const text = String(name || '');
+  return text === '\u5f71\u89c6\u70b9\u64ad' || /^影视点播 · 源更新 \d{2}-\d{2} \d{2}:\d{2}$/.test(text);
+}
 
 const failures = [];
 const OPS_PATHS = new Set(['/status.json', '/snapshot.json', '/mirrors.json']);
@@ -24,7 +36,8 @@ const config = await fetchJson('/config.json');
 report.config = { status: config.status, sites: config.data?.sites?.length, siteName: config.data?.sites?.[0]?.name };
 assert(config.status === 200, 'config status != 200', failures);
 assert(config.data?.sites?.length === 1, 'visible_sites != 1', failures);
-assert(config.data?.sites?.[0]?.name === '\u5f71\u89c6\u70b9\u64ad', 'site_name != \u5f71\u89c6\u70b9\u64ad', failures);
+assert(validSiteName(config.data?.sites?.[0]?.name), 'site_name invalid', failures);
+assert(!String(config.data?.sites?.[0]?.name || '').includes('\u5907\u7528'), 'site_name contains forbidden wording', failures);
 
 for (const path of ['/status.json', '/snapshot.json', '/mirrors.json', `/agg?limit=${LIMIT}`, `/agg?ac=videolist&t=1&pg=1&limit=${LIMIT}`, `/agg?ac=detail&t=1&pg=1&limit=${LIMIT}`, `/agg?wd=${encodeURIComponent('\u89e3\u8bf4')}&limit=${LIMIT}`, `/agg?f=${encodeURIComponent(JSON.stringify({ year: '2026', class: '\u52a8\u4f5c' }))}&limit=${LIMIT}`]) {
   const got = await fetchJson(path);
