@@ -1,7 +1,7 @@
 # v7.3 覆盖率与缺片根因审计
 
 - 基准入口：https://tv.webhome.eu.org
-- 生成时间：2026-07-06T06:48:07.560Z
+- 生成时间：2026-07-06T08:48:39.390Z
 - PASS/WARN/FAIL：6/4/0
 - 根因分布：SOURCE_PHYSICAL_LIMIT=1，OK=6，RANKING_SUPPRESSION=3
 
