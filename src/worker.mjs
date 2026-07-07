@@ -1522,16 +1522,18 @@ async function agg(request, env) {
   return json({ code: 1, msg: 'ok', class: aggClasses(category.key, merged), filters: responseFilters, page, pagecount: Math.max(page + (p.list.length >= limit ? 1 : 0), 1), limit, total: merged.length, list: p.list }, 120);
 }
 
-function formatChinaUpdateText(iso) {
+function formatChinaReverseUpdateCode(iso) {
   if (!iso) return '';
   const d = new Date(iso);
   if (!Number.isFinite(d.getTime())) return '';
-  const parts = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(d);
+  const parts = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(d);
   const get = (type) => parts.find((p) => p.type === type)?.value || '';
-  return `\u6e90\u66f4\u65b0 ${get('month')}-${get('day')} ${get('hour')}:${get('minute')}`;
+  return `${get('year')}${get('month')}${get('day')}${get('hour')}${get('minute')}`.split('').reverse().join('');
 }
 function visibleUpdateTextFromManifest(manifest) {
-  return manifest?.visibleUpdateText || formatChinaUpdateText(manifest?.coverageAuditAt || manifest?.sourceDiscoveryAt || manifest?.generatedAt);
+  const existing = String(manifest?.visibleUpdateText || '').trim();
+  if (/^\d{12}$/.test(existing)) return existing;
+  return formatChinaReverseUpdateCode(manifest?.snapshotGeneratedAt || manifest?.generatedAt || manifest?.coverageAuditAt || manifest?.sourceDiscoveryAt);
 }
 async function config(request, env) {
   const origin = new URL(request.url).origin;

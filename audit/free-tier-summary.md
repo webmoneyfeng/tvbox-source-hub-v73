@@ -1,19 +1,19 @@
 # v7.3 免费部署审计
 
-- 生成时间：2026-07-07T08:06:26.109Z
-- GitHub 仓库：https://github.com/webmoneyfeng/tvbox-source-hub-v73｜visibility=public｜private=false
-- 定时工作流估算：270/month
-- dist：364 files｜43212318 bytes
+- 生成时间：2026-07-07T14:19:16.244Z
+- GitHub 仓库：https://github.com/webmoneyfeng/tvbox-source-hub-v73；visibility=public；private=false
+- 定时工作流估算：330/month
+- dist：334 files；39781144 bytes
 - PASS/WARN/FAIL：5/1/0
 
 ## 分项
-- PASS｜github_repo｜public｜public repo
-- PASS｜github_actions｜270/month｜调度频率按免费优先控制
-- PASS｜cloudflare_pages_files｜364｜dist 文件数量估算
-- PASS｜cloudflare_pages_size｜43212318 bytes｜dist 总大小估算
-- WARN｜cloudflare_worker_requests｜unknown｜点播不代理视频；直播 /play/ 与 /p/ 会消耗 Worker 请求，本轮只审计不改现状
-- PASS｜cloudflare_kv｜low｜当前主要读 channels/vod_catalog，未发现高频写入
+- PASS；github_repo；public；公共仓库，GitHub Actions 标准 runner 按免费优先方案使用。
+- PASS；github_actions_schedule；330/month；定时刷新频率按免费优先控制，保留人工发布余量。
+- PASS；cloudflare_pages_files；334；dist 静态快照采用打包文件，不采用每个节目一个文件。
+- PASS；cloudflare_pages_size；39781144 bytes；dist 总体积处于轻量级静态分发范围。
+- WARN；cloudflare_worker_requests；unknown；点播不代理视频流；直播 /play/ 与 /p/ 可能消耗 Worker 请求，本轮只审计不扩大代理。
+- PASS；cloudflare_kv；low；当前主要读取 channels/vod_catalog，未发现高频写入设计。
 
 ## 结论
-- 当前方案免费优先；主要风险是 Cloudflare Pages 构建次数与直播代理请求量。
-- 本轮不改直播代理，只保留风险提示与后续降级空间。
+- 当前方案仍按完全免费优先设计：GitHub public repo + Actions 定时刷新 + Cloudflare Pages 静态快照 + Worker 轻量路由。
+- 主要风险不是点播快照，而是直播代理请求量与过高刷新频率；本轮已把热点刷新控制在约 3 小时一次，并保留降频空间。

@@ -11,20 +11,30 @@ import {
   validateConfigPayload,
 } from './audit-tv-remote-full-v73.mjs';
 
-test('config validation requires one visible 影视点播 site and rejects forbidden wording', () => {
+test('config validation accepts the visible update-code site and rejects forbidden wording', () => {
   const ok = validateConfigPayload({
-    sites: [{ key: 'vod_unified', name: '影视点播', api: 'https://tv.webhome.eu.org/agg' }],
-    lives: [{ name: '精选直播', url: 'https://tv.webhome.eu.org/live.txt' }],
+    sites: [{ key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad \u00b7 854150706202', api: 'https://tv.webhome.eu.org/agg' }],
+    lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', url: 'https://tv.webhome.eu.org/live.txt' }],
   });
   assert.equal(ok.schema_ok, true);
   assert.equal(ok.content_shape_ok, true);
 
+  const legacy = validateConfigPayload({
+    sites: [{ key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad', api: 'https://tv.webhome.eu.org/agg' }],
+  });
+  assert.equal(legacy.content_shape_ok, true);
+
+  const oldVisible = validateConfigPayload({
+    sites: [{ key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad \u00b7 \u6e90\u66f4\u65b0 07-05 01:57', api: 'https://tv.webhome.eu.org/agg' }],
+  });
+  assert.equal(oldVisible.content_shape_ok, true);
+
   const bad = validateConfigPayload({
-    sites: [{ key: 'vod_unified', name: '备用影视点播', api: 'https://tv.webhome.eu.org/agg' }],
+    sites: [{ key: 'vod_unified', name: '\u5907\u7528\u5f71\u89c6\u70b9\u64ad', api: 'https://tv.webhome.eu.org/agg' }],
   });
   assert.equal(bad.schema_ok, true);
   assert.equal(bad.content_shape_ok, false);
-  assert.match(bad.fix_suggestion, /禁止文案/);
+  assert.match(bad.fix_suggestion, /\u7981\u6b62\u6587\u6848/);
 });
 
 test('single-filter empty result is a filter logic failure, but empty combo is diagnosed as over-constrained', () => {
@@ -89,19 +99,19 @@ test('playback probes accept HTTP 206 partial content as valid media response', 
 });
 
 test('combo semantic checks can use exposed list evidence fields', () => {
-  const stats = comboSemanticStats({ year: '2026', class: '??' }, [{
-    vod_name: '??',
+  const stats = comboSemanticStats({ year: '2026', class: '\u52a8\u4f5c' }, [{
+    vod_name: '\u52a8\u4f5c\u5927\u7247',
     vod_year: '2026',
-    type_name: '??',
-    vod_class: '???',
-    semantic_tags: 'class ?? ??',
+    type_name: '\u7535\u5f71',
+    vod_class: '\u52a8\u4f5c\u7247',
+    semantic_tags: 'class \u52a8\u4f5c \u7535\u5f71',
   }]);
   assert.equal(stats.semanticHitRate, 1);
   assert.equal(stats.unknownRate, 0);
 });
 
 
-test('broad search term ?? matches normal media categories semantically', () => {
-  assert.equal(searchTermMatches({ vod_name: '????', type_name: '??', vod_remarks: '???' }, '??'), true);
-  assert.equal(searchTermMatches({ vod_name: '?????2018', type_name: '??', vod_remarks: '???' }, '??'), true);
+test('broad search term \u5f71\u89c6 matches normal media categories semantically', () => {
+  assert.equal(searchTermMatches({ vod_name: '\u7ecf\u5178\u7535\u5f71', type_name: '\u7535\u5f71', vod_remarks: '\u9ad8\u6e05\u6b63\u7247' }, '\u5f71\u89c6'), true);
+  assert.equal(searchTermMatches({ vod_name: '\u5929\u9053\u7535\u89c6\u52672018', type_name: '\u5267\u96c6', vod_remarks: '\u738b\u5fd7\u6587\u4e3b\u6f14' }, '\u5f71\u89c6'), true);
 });

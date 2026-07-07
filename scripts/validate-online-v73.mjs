@@ -25,7 +25,7 @@ async function fetchJson(path) {
 function assert(cond, msg, failures) { if (!cond) failures.push(msg); }
 function validSiteName(name) {
   const text = String(name || '');
-  return text === '\u5f71\u89c6\u70b9\u64ad' || /^影视点播 · 源更新 \d{2}-\d{2} \d{2}:\d{2}$/.test(text);
+  return text === '\u5f71\u89c6\u70b9\u64ad' || /^影视点播 · \d{12}$/.test(text) || /^影视点播 · 源更新 \d{2}-\d{2} \d{2}:\d{2}$/.test(text);
 }
 
 const failures = [];

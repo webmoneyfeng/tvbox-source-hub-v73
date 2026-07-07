@@ -314,13 +314,15 @@ export function validateConfigPayload(data) {
   const schema_ok = Boolean(data && Array.isArray(data.sites));
   const text = JSON.stringify(data || {});
   const oneSite = data?.sites?.length === 1;
-  const siteNameOk = data?.sites?.[0]?.name === '影视点播';
+  const siteName = String(data?.sites?.[0]?.name || '');
+  const baseName = '\u5f71\u89c6\u70b9\u64ad';
+  const siteNameOk = siteName === baseName || new RegExp(`^${baseName} \u00b7 \\d{12}$`).test(siteName) || new RegExp(`^${baseName} \u00b7 \u6e90\u66f4\u65b0 \\d{2}-\\d{2} \\d{2}:\\d{2}$`).test(siteName);
   const forbiddenOk = !FORBIDDEN_UI_RE.test(text);
   const content_shape_ok = Boolean(oneSite && siteNameOk && forbiddenOk);
   let fix_suggestion = '';
-  if (!oneSite) fix_suggestion = '配置入口数量不等于 1。';
-  else if (!forbiddenOk) fix_suggestion = '配置包含禁止文案。';
-  else if (!siteNameOk) fix_suggestion = '站点名不是影视点播。';
+  if (!oneSite) fix_suggestion = '\u914d\u7f6e\u5165\u53e3\u6570\u91cf\u4e0d\u7b49\u4e8e 1\u3002';
+  else if (!forbiddenOk) fix_suggestion = '\u914d\u7f6e\u5305\u542b\u7981\u6b62\u6587\u6848\u3002';
+  else if (!siteNameOk) fix_suggestion = '\u7ad9\u70b9\u540d\u4e0d\u662f\u201c\u5f71\u89c6\u70b9\u64ad\u201d\u6216\u201c\u5f71\u89c6\u70b9\u64ad \u00b7 12\u4f4d\u66f4\u65b0\u7f16\u53f7\u201d\u3002';
   return { schema_ok, content_shape_ok, fix_suggestion };
 }
 export function parseLiveText(raw) {

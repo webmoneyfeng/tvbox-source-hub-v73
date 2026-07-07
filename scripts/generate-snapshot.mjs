@@ -54,13 +54,13 @@ async function writeJson(rel, data) {
 async function readAuditJson(rel) {
   try { return JSON.parse(await readFile(path.join(ROOT, rel), 'utf8')); } catch { return null; }
 }
-function formatChinaUpdateText(iso) {
+function formatChinaReverseUpdateCode(iso) {
   if (!iso) return '';
   const d = new Date(iso);
   if (!Number.isFinite(d.getTime())) return '';
-  const parts = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(d);
+  const parts = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(d);
   const get = (type) => parts.find((p) => p.type === type)?.value || '';
-  return `\u6e90\u66f4\u65b0 ${get('month')}-${get('day')} ${get('hour')}:${get('minute')}`;
+  return `${get('year')}${get('month')}${get('day')}${get('hour')}${get('minute')}`.split('').reverse().join('');
 }
 async function fetchJson(url, timeoutMs = 18000) {
   const c = new AbortController();
@@ -243,7 +243,7 @@ function catalogTitleKey(value) {
   return String(value || '')
     .replace(/[\[【(（].*?[\]】)）]/g, '')
     .replace(/(?:19|20)\d{2}/g, '')
-    .replace(/[\s·.。,?:?;?!???_\-?|]+/g, '')
+    .replace(/[\s\u00b7.\u3002,\uff0c:\uff1a;\uff1b!\uff01?\uff1f_\-\u2014|]+/g, '')
     .trim()
     .toLowerCase();
 }
@@ -356,7 +356,7 @@ async function main() {
   const coverageAudit = await readAuditJson('audit/coverage-latest.json');
   const sourceDiscoveryAt = sourceAudit?.generatedAt || '';
   const coverageAuditAt = coverageAudit?.generatedAt || '';
-  const visibleUpdateText = formatChinaUpdateText(coverageAuditAt || sourceDiscoveryAt || generatedAt);
+  const visibleUpdateText = formatChinaReverseUpdateCode(generatedAt);
   const sourceSummary = sourceAudit ? { candidateCount: sourceAudit.candidateCount, active: sourceAudit.active, watch: sourceAudit.watch, rejected: sourceAudit.rejected, blocked: sourceAudit.blocked } : null;
   const coverageSummary = coverageAudit ? { total: coverageAudit.total, pass: coverageAudit.pass, warn: coverageAudit.warn, fail: coverageAudit.fail, byRootCause: coverageAudit.byRootCause } : null;
   const categoryRows = [];
@@ -368,7 +368,7 @@ async function main() {
   const validation = { generatedAt, sourceBase: SOURCE_BASE, publicBase: PUBLIC_BASE, staticSnapshotBases: STATIC_SNAPSHOT_BASES, categories: [], filters: [], search: [], errors: [], warnings: [] };
 
   await writeJson('config.json', configJson(visibleUpdateText));
-  await writeJson('status.json', { ok: true, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceDiscoveryAt, coverageAuditAt, snapshotGeneratedAt: generatedAt, visibleUpdateText, sourceSummary, coverageSummary, publicBase: PUBLIC_BASE, sourceBase: SOURCE_BASE });
+  await writeJson('status.json', { ok: true, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceDiscoveryAt, coverageAuditAt, snapshotGeneratedAt: generatedAt, visibleUpdateText, visibleUpdateFormat: 'reverse-yyyyMMddHHmm', sourceSummary, coverageSummary, publicBase: PUBLIC_BASE, sourceBase: SOURCE_BASE });
 
   for (const [t, name] of CATEGORIES) {
     for (const pg of [1, 2]) {
@@ -453,7 +453,7 @@ async function main() {
   await writeJson('snapshot/latest/detail-packs/sample.json', { generatedAt, rows: detailRows });
   validation.detailSample = detailRows;
 
-  const manifest = { ok: validation.errors.length === 0, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceDiscoveryAt, coverageAuditAt, snapshotGeneratedAt: generatedAt, visibleUpdateText, sourceSummary, coverageSummary, sourceBase: SOURCE_BASE, publicBase: PUBLIC_BASE, packLimit: LIMIT, clientLimits: [8, 12, 24, 48], categories: categoryRows, filterPackCount: filterPackFileCount, visibleFilterOptions: viableFilterOptions.size, files: { categories: 'categories.json', validation: 'validation.json' } };
+  const manifest = { ok: validation.errors.length === 0, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceDiscoveryAt, coverageAuditAt, snapshotGeneratedAt: generatedAt, visibleUpdateText, visibleUpdateFormat: 'reverse-yyyyMMddHHmm', sourceSummary, coverageSummary, sourceBase: SOURCE_BASE, publicBase: PUBLIC_BASE, packLimit: LIMIT, clientLimits: [8, 12, 24, 48], categories: categoryRows, filterPackCount: filterPackFileCount, visibleFilterOptions: viableFilterOptions.size, files: { categories: 'categories.json', validation: 'validation.json' } };
   await writeJson('snapshot/latest/manifest.json', manifest);
   await writeJson('snapshot/latest/categories.json', { generatedAt, class: CATEGORIES.map(([type_id, type_name]) => ({ type_id, type_name })), rows: categoryRows });
   await writeJson('snapshot/latest/validation.json', validation);

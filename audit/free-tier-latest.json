@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-07-07T08:06:26.109Z",
+  "generatedAt": "2026-07-07T14:19:16.244Z",
   "repo": {
     "ok": true,
     "private": false,
     "visibility": "public",
     "url": "https://github.com/webmoneyfeng/tvbox-source-hub-v73"
   },
-  "monthlyScheduledRuns": 270,
-  "distFileCount": 364,
-  "distBytes": 43212318,
+  "monthlyScheduledRuns": 330,
+  "distFileCount": 334,
+  "distBytes": 39781144,
   "workflows": [
     {
       "file": ".github/workflows/deep-verify.yml",
@@ -27,9 +27,9 @@
     {
       "file": ".github/workflows/hot-refresh.yml",
       "crons": [
-        "7 */4 * * *"
+        "7 */3 * * *"
       ],
-      "monthlyRuns": 180
+      "monthlyRuns": 240
     },
     {
       "file": ".github/workflows/manual-release.yml",
@@ -49,37 +49,37 @@
       "area": "github_repo",
       "result": "PASS",
       "metric": "public",
-      "note": "public repo"
+      "note": "公共仓库，GitHub Actions 标准 runner 按免费优先方案使用。"
     },
     {
-      "area": "github_actions",
+      "area": "github_actions_schedule",
       "result": "PASS",
-      "metric": "270/month",
-      "note": "调度频率按免费优先控制"
+      "metric": "330/month",
+      "note": "定时刷新频率按免费优先控制，保留人工发布余量。"
     },
     {
       "area": "cloudflare_pages_files",
       "result": "PASS",
-      "metric": "364",
-      "note": "dist 文件数量估算"
+      "metric": "334",
+      "note": "dist 静态快照采用打包文件，不采用每个节目一个文件。"
     },
     {
       "area": "cloudflare_pages_size",
       "result": "PASS",
-      "metric": "43212318 bytes",
-      "note": "dist 总大小估算"
+      "metric": "39781144 bytes",
+      "note": "dist 总体积处于轻量级静态分发范围。"
     },
     {
       "area": "cloudflare_worker_requests",
       "result": "WARN",
       "metric": "unknown",
-      "note": "点播不代理视频；直播 /play/ 与 /p/ 会消耗 Worker 请求，本轮只审计不改现状"
+      "note": "点播不代理视频流；直播 /play/ 与 /p/ 可能消耗 Worker 请求，本轮只审计不扩大代理。"
     },
     {
       "area": "cloudflare_kv",
       "result": "PASS",
       "metric": "low",
-      "note": "当前主要读 channels/vod_catalog，未发现高频写入"
+      "note": "当前主要读取 channels/vod_catalog，未发现高频写入设计。"
     }
   ],
   "pass": 5,
