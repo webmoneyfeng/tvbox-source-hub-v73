@@ -1,16 +1,14 @@
 {
-  "generatedAt": "2026-07-06T08:48:39.390Z",
+  "generatedAt": "2026-07-07T06:19:11.060Z",
   "candidateCount": 21,
-  "active": 13,
-  "watch": 5,
-  "rejected": 1,
-  "blocked": 2,
+  "active": 11,
+  "watch": 4,
+  "rejected": 2,
+  "blocked": 4,
   "activeSlugs": [
     "baidu",
     "bfzy",
-    "taopian",
     "huya",
-    "hhzy",
     "hongniu",
     "guangsu",
     "modu",
@@ -29,18 +27,18 @@
       "api": "https://suoniapi.com/api.php/provide/vod/",
       "tier": "main",
       "origin": "current",
-      "status": "WATCH",
+      "status": "BLOCKED",
       "checks": {
-        "httpStatus": 200,
-        "timeout": false,
+        "httpStatus": 0,
+        "timeout": true,
         "blocked": false,
-        "classOk": true,
+        "classOk": false,
         "searchOk": false,
         "detailOk": false,
         "playOk": false
       },
       "metrics": {
-        "classCount": 61,
+        "classCount": 0,
         "searchCount": 0,
         "sampleNames": []
       },
@@ -50,7 +48,7 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON"
+      "error": "This operation was aborted"
     },
     {
       "slug": "lzi",
@@ -124,18 +122,18 @@
       "api": "http://sdzyapi.com/api.php/provide/vod/",
       "tier": "main",
       "origin": "current",
-      "status": "WATCH",
+      "status": "BLOCKED",
       "checks": {
-        "httpStatus": 200,
-        "timeout": false,
+        "httpStatus": 0,
+        "timeout": true,
         "blocked": false,
-        "classOk": true,
+        "classOk": false,
         "searchOk": false,
         "detailOk": false,
         "playOk": false
       },
       "metrics": {
-        "classCount": 59,
+        "classCount": 0,
         "searchCount": 0,
         "sampleNames": []
       },
@@ -145,7 +143,7 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON"
+      "error": "This operation was aborted"
     },
     {
       "slug": "bfzy",
@@ -195,18 +193,18 @@
       "api": "https://taopianapi.com/cjapi/mc/vod/json.html",
       "tier": "aux",
       "origin": "current",
-      "status": "ACTIVE",
+      "status": "REJECTED",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
         "blocked": false,
-        "classOk": true,
+        "classOk": false,
         "searchOk": true,
         "detailOk": true,
         "playOk": true
       },
       "metrics": {
-        "classCount": 30,
+        "classCount": 0,
         "searchCount": 6,
         "sampleNames": [
           "天道扎堆：天降一窝主角逼疯我动态漫画",
@@ -223,7 +221,7 @@
         "detailUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?ac=videolist&ids=1537009",
         "playableUrl": "https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-01-07/30/9288b25cadc2/5473ba2f403f/playlist.m3u8"
       },
-      "error": ""
+      "error": "fetch failed"
     },
     {
       "slug": "huya",
@@ -273,35 +271,26 @@
       "api": "https://hhzyapi.com/api.php/provide/vod/",
       "tier": "aux",
       "origin": "current",
-      "status": "ACTIVE",
+      "status": "WATCH",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
         "blocked": false,
         "classOk": true,
-        "searchOk": true,
-        "detailOk": true,
-        "playOk": true
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
       },
       "metrics": {
         "classCount": 39,
-        "searchCount": 20,
-        "sampleNames": [
-          "开直播判生死，她是天道你记住",
-          "惹她干嘛！她可是天道亲闺女！",
-          "天道被退婚，我分走她一半修为",
-          "惹她干嘛，真千金有天道宠着",
-          "开局迎财神天道赐我钞能力",
-          "我当天道CEO，神仙为我996",
-          "玄幻：我以凡躯撼天道",
-          "乱马1/2：天道家混乱的圣诞节天道家"
-        ]
+        "searchCount": 0,
+        "sampleNames": []
       },
       "evidence": {
         "listUrl": "https://hhzyapi.com/api.php/provide/vod/?ac=list",
         "searchUrl": "https://hhzyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "https://hhzyapi.com/api.php/provide/vod/?ac=videolist&ids=136528",
-        "playableUrl": "https://play.hhuus.com/play/bDkq59Ka/index.m3u8"
+        "detailUrl": "",
+        "playableUrl": ""
       },
       "error": ""
     },
