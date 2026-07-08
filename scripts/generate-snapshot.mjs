@@ -89,9 +89,9 @@ async function fetchStaticSnapshot(rel, timeoutMs = 12000) {
 async function fetchCatalogPack(t, pg) {
   let dynamic = null;
   try { dynamic = await fetchJson(endpoint(`/agg?ac=videolist&t=${encodeURIComponent(t)}&pg=${pg}&limit=${LIMIT}`)); } catch (err) { dynamic = { code: 1, msg: 'dynamic fetch failed', list: [], error: err.message }; }
-  if (hasList(dynamic)) return { data: dynamic, source: 'dynamic' };
+  if (hasList(dynamic)) return { data: dedupePack(dynamic), source: 'dynamic' };
   const fallback = await fetchStaticSnapshot(`catalog-packs/t${t}-p${pg}-limit${LIMIT}.json`);
-  if (hasList(fallback)) return { data: fallback, source: 'static-snapshot' };
+  if (hasList(fallback)) return { data: dedupePack(fallback), source: 'static-snapshot' };
   return { data: dynamic, source: 'dynamic-empty' };
 }
 async function fetchSearchPack(wd) {
@@ -101,13 +101,13 @@ async function fetchSearchPack(wd) {
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
         dynamic = await fetchJson(endpoint(`/agg?wd=${encodeURIComponent(term)}&pg=1&limit=${LIMIT}&snapshot_probe=${Date.now()}_${attempt}`));
-        if (hasList(dynamic)) return { data: dynamic, source: term === wd ? 'dynamic' : `dynamic-variant:${term}` };
+        if (hasList(dynamic)) return { data: dedupePack(dynamic), source: term === wd ? 'dynamic' : `dynamic-variant:${term}` };
       } catch (err) { dynamic = { code: 1, msg: 'dynamic fetch failed', list: [], error: err.message }; }
     }
   }
   for (const term of variants) {
     const fallback = await fetchStaticSnapshot(`search-packs/${encodeURIComponent(term)}-p1-limit${LIMIT}.json`);
-    if (hasList(fallback)) return { data: fallback, source: term === wd ? 'static-snapshot' : `static-variant:${term}` };
+    if (hasList(fallback)) return { data: dedupePack(fallback), source: term === wd ? 'static-snapshot' : `static-variant:${term}` };
   }
   return { data: dynamic || { code: 1, msg: 'dynamic empty', list: [] }, source: 'dynamic-empty' };
 }
@@ -145,6 +145,10 @@ function catalogText(item) {
 }
 function catalogYear(item) {
   const m = catalogText(item).match(/(?:19|20)\d{2}/);
+  return m ? m[0] : '';
+}
+function catalogTitleYear(item) {
+  const m = String(item?.vod_name || '').match(/(?:19|20)\d{2}/);
   return m ? m[0] : '';
 }
 function catalogQualityRank(item) {
@@ -253,7 +257,7 @@ function catalogLineCount(item) {
 }
 function catalogDedupKey(item) {
   const title = catalogTitleKey(item?.vod_name) || String(item?.vod_name || item?.vod_id || '').trim().toLowerCase();
-  return [title, catalogYear(item), item?.type_name || ''].join('|');
+  return [title, catalogTitleYear(item) || catalogYear(item), item?.type_name || ''].join('|');
 }
 function betterCatalogRow(a, b) {
   const al = catalogLineCount(a), bl = catalogLineCount(b);
@@ -271,6 +275,11 @@ function uniqueRows(rows) {
     map.set(key, old ? betterCatalogRow(old, item) : item);
   }
   return [...map.values()];
+}
+function dedupePack(data) {
+  if (!data || !Array.isArray(data.list)) return data;
+  const list = uniqueRows(data.list);
+  return { ...data, list, total: Math.max(Number(data.total || 0), list.length) };
 }
 function decorateRows(rows, job, evidence) {
   return rows.map((item) => {
@@ -303,6 +312,29 @@ async function backfillRowsForJob(job, cache) {
     }
   }
   return [];
+}
+async function backfillRowsByDynamicFilter(job, cache) {
+  const cacheKey = `${job.t}\u0000${job.key}\u0000${job.value}`;
+  if (!cache.has(cacheKey)) {
+    cache.set(cacheKey, (async () => {
+      const rows = [];
+      for (let pg = 1; pg <= FILTER_PACK_PAGE_COUNT; pg++) {
+        const params = new URLSearchParams();
+        params.set('ac', 'videolist');
+        params.set('t', String(job.t));
+        params.set('pg', String(pg));
+        params.set('limit', String(LIMIT));
+        params.set('f', JSON.stringify({ [job.key]: job.value }));
+        params.set('snapshot_filter_backfill', `${Date.now()}_${pg}`);
+        try {
+          const data = await fetchJson(endpoint(`/agg?${params.toString()}`));
+          if (Array.isArray(data?.list) && data.list.length) rows.push(...data.list);
+        } catch {}
+      }
+      return decorateRows(uniqueRows(rows), job, 'dynamic-filter-backfill');
+    })());
+  }
+  return cache.get(cacheKey);
 }
 async function buildFilterRows(job, catalogRows, cache) {
   const direct = catalogRows.filter((item) => catalogFilterMatches(item, job.key, job.value));
@@ -364,6 +396,7 @@ async function main() {
   const filterJobs = [];
   const catalogPacksByCategory = new Map();
   const searchBackfillCache = new Map();
+  const dynamicFilterBackfillCache = new Map();
   const viableFilterOptions = new Set();
   let filterPackFileCount = 0;
   const validation = { generatedAt, sourceBase: SOURCE_BASE, publicBase: PUBLIC_BASE, staticSnapshotBases: STATIC_SNAPSHOT_BASES, categories: [], filters: [], search: [], errors: [], warnings: [] };
@@ -397,7 +430,8 @@ async function main() {
     const packs = (catalogPacksByCategory.get(job.t) || []).sort((a, b) => a.pg - b.pg);
     const basePack = packs[0]?.data || { code: 1, msg: 'ok', class: [], filters: {}, list: [] };
     const catalogRows = packs.flatMap((p) => Array.isArray(p.data?.list) ? p.data.list : []);
-    const filterRows = await buildFilterRows(job, catalogRows, searchBackfillCache);
+    let filterRows = await buildFilterRows(job, catalogRows, searchBackfillCache);
+    if (!filterRows.length) filterRows = await backfillRowsByDynamicFilter(job, dynamicFilterBackfillCache);
     if (!filterRows.length) {
       validation.filters.push({ t: job.t, category: job.name, key: job.key, filterName: job.filterName, optionName: job.optionName, value: job.value, page: 1, count: 0, total: 0, evidence: '', ok: false });
       validation.warnings.push(`filter ${job.t}/${job.key}/${job.value} page 1 empty`);
