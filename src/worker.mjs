@@ -13,6 +13,7 @@ const V73_PRIMARY_ORIGIN = 'https://' + V73_PRIMARY_HOST;
 const V73_SECONDARY_ORIGIN = 'https://' + V73_SECONDARY_HOST;
 const V73_PROJECT = 'tvbox-source-hub-v73';
 const DEFAULT_SNAPSHOT_BASES = [
+  'https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/main/dist/snapshot/latest',
   'https://tvbox-source-hub-v73.pages.dev/snapshot/latest',
   'https://tv.webhome.eu.org/static/snapshot/latest',
   'https://tv.webclound.eu.org/static/snapshot/latest',
@@ -1714,5 +1715,4 @@ export default {
     }
   },
 };
-
 

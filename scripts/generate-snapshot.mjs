@@ -12,6 +12,7 @@ const LIMIT = Number(process.env.SNAPSHOT_LIMIT || 24);
 const FILTER_PACK_PAGE_COUNT = Number(process.env.FILTER_PACK_PAGE_COUNT || 2);
 const FILTER_PACK_KEYS = new Set(['year', 'area', 'class', 'form', 'quality', 'state', 'episodes', 'duration', 'topic']);
 const STATIC_SNAPSHOT_BASES = (process.env.STATIC_SNAPSHOT_BASES || [
+  'https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/main/dist/snapshot/latest',
   'https://tvbox-source-hub-v73.pages.dev/snapshot/latest',
   'https://tv.webhome.eu.org/static/snapshot/latest',
   'https://tv.webclound.eu.org/static/snapshot/latest',
@@ -461,4 +462,3 @@ async function main() {
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });
-
