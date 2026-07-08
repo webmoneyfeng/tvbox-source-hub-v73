@@ -1,0 +1,298 @@
+{
+  "generatedAt": "2026-07-08T00:58:11.893Z",
+  "commercial_ready": false,
+  "zero_complaint_gate": "FAIL",
+  "user_love_score": 7,
+  "p0_count": 0,
+  "p1_count": 1,
+  "p2_count": 12,
+  "p3_count": 1,
+  "blocking_complaints": [
+    {
+      "severity": "P1",
+      "area": "coverage",
+      "title": "核心搜索不稳定：天道",
+      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=9；重复搜索结果不稳定，可能由源超时或反爬导致。",
+      "suggestion": "把该节目加入核心投诉种子，修复精确片名召回、别名/主演召回、排序压制和动态/快照一致性。",
+      "source": "audit/coverage-latest.json"
+    }
+  ],
+  "next_fix_queue": [
+    {
+      "severity": "P1",
+      "area": "coverage",
+      "title": "核心搜索不稳定：天道",
+      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=9；重复搜索结果不稳定，可能由源超时或反爬导致。",
+      "suggestion": "把该节目加入核心投诉种子，修复精确片名召回、别名/主演召回、排序压制和动态/快照一致性。",
+      "source": "audit/coverage-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "coverage",
+      "title": "覆盖审计 WARN：演唱会",
+      "evidence": "RANKING_SUPPRESSION；源命中=9；已召回但精确结果未稳定进入第一页。",
+      "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
+      "source": "audit/coverage-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "coverage",
+      "title": "覆盖审计 WARN：电影解说",
+      "evidence": "RANKING_SUPPRESSION；源命中=2；已召回但精确结果未稳定进入第一页。",
+      "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
+      "source": "audit/coverage-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "coverage",
+      "title": "覆盖审计 WARN：短剧",
+      "evidence": "RANKING_SUPPRESSION；源命中=13；已召回但精确结果未稳定进入第一页。",
+      "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
+      "source": "audit/coverage-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "dedupe",
+      "title": "重复率超过 0投诉商业门槛",
+      "evidence": "max_duplicate_rate=0.0833",
+      "suggestion": "修 canonical identity、跨源合并键、排序前去重与分类/筛选内去重。",
+      "source": "audit/tv-remote-full-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "filter_semantics",
+      "title": "单筛选按钮仍有 FAIL",
+      "evidence": "single_filter_fail=2",
+      "suggestion": "逐个修复 FAIL 路径，不能用隐藏按钮代替根因修复。",
+      "source": "audit/tv-remote-full-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "free_tier",
+      "title": "免费方案存在风险：cloudflare_worker_requests",
+      "evidence": "unknown；点播不代理视频流；直播 /play/ 与 /p/ 可能消耗 Worker 请求，本轮只审计不扩大代理。",
+      "suggestion": "形成限流、缓存、降频、直连播放和不代理视频流的运营策略。",
+      "source": "audit/free-tier-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "remote_path",
+      "title": "遥控器路径未达到预期：vod.category.8.filter.sort.quality",
+      "evidence": "SEMANTIC_MISMATCH；list=12；semantic=1；duplicate=0.0833；重复率超过 5%，需修去重键或排序前去重。",
+      "suggestion": "重复率超过 5%，需修去重键或排序前去重。",
+      "source": "audit/tv-remote-full-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "remote_path",
+      "title": "遥控器路径未达到预期：vod.category.8.filter.sort.name",
+      "evidence": "SEMANTIC_MISMATCH；list=12；semantic=1；duplicate=0.0833；重复率超过 5%，需修去重键或排序前去重。",
+      "suggestion": "重复率超过 5%，需修去重键或排序前去重。",
+      "source": "audit/tv-remote-full-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "remote_warn",
+      "title": "遥控器路径存在 WARN：vod.category.4.combo.年份+类型:2026+欧美动漫",
+      "evidence": "TAG_PARSE_GAP；部分内容语义证据不足，需补关键词或映射。",
+      "suggestion": "部分内容语义证据不足，需补关键词或映射。",
+      "source": "audit/tv-remote-full-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "remote_warn",
+      "title": "遥控器路径存在 WARN：vod.category.5.combo.年份+类型:2026+自然",
+      "evidence": "SOURCE_COVERAGE_GAP / COMBO_OVER_CONSTRAINED；当前路径允许为空，但必须保留诊断记录。",
+      "suggestion": "当前路径允许为空，但必须保留诊断记录。",
+      "source": "audit/tv-remote-full-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "remote_warn",
+      "title": "遥控器路径存在 WARN：vod.category.7.filter.sort.quality",
+      "evidence": "TAG_PARSE_GAP；部分内容语义证据不足，需补关键词或映射。",
+      "suggestion": "部分内容语义证据不足，需补关键词或映射。",
+      "source": "audit/tv-remote-full-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "semantic",
+      "title": "最低语义命中率低于商业门槛",
+      "evidence": "min_semantic_hit_rate=0.8",
+      "suggestion": "补充标签解析、标题/备注证据、内容形态映射与源标签追踪。",
+      "source": "audit/tv-remote-full-latest.json"
+    },
+    {
+      "severity": "P3",
+      "area": "snapshot",
+      "title": "快照验证仍有 WARN",
+      "evidence": "41 warnings",
+      "suggestion": "逐步把仍可见的空筛选、低证据筛选与源质量问题纳入 P2/P3 修复队列。",
+      "source": "dist/snapshot/latest/validation.json"
+    }
+  ],
+  "hard_gates": [
+    {
+      "name": "P0=0",
+      "pass": true,
+      "value": 0
+    },
+    {
+      "name": "P1=0",
+      "pass": false,
+      "value": 1
+    },
+    {
+      "name": "remote_fail=0",
+      "pass": false,
+      "value": 2
+    },
+    {
+      "name": "single_filter_fail=0",
+      "pass": false,
+      "value": 2
+    },
+    {
+      "name": "schema_regression=0",
+      "pass": true,
+      "value": 0
+    },
+    {
+      "name": "api_error=0",
+      "pass": true,
+      "value": 0
+    },
+    {
+      "name": "snapshot_miss=0",
+      "pass": true,
+      "value": 0
+    },
+    {
+      "name": "filter_logic_bug=0",
+      "pass": true,
+      "value": 0
+    },
+    {
+      "name": "duplicate_rate<=5%",
+      "pass": false,
+      "value": 0.0833
+    },
+    {
+      "name": "detail_ok_rate>=95%",
+      "pass": true,
+      "value": 1
+    },
+    {
+      "name": "playable_rate>=90%",
+      "pass": true,
+      "value": 1
+    },
+    {
+      "name": "free_tier_fail=0",
+      "pass": true,
+      "value": 0
+    },
+    {
+      "name": "snapshot_errors=0",
+      "pass": true,
+      "value": 0
+    }
+  ],
+  "inputs": {
+    "remoteAudit": "audit/tv-remote-full-latest.json",
+    "coverageAudit": "audit/coverage-latest.json",
+    "sourceAudit": "audit/source-discovery-latest.json",
+    "freeTierAudit": "audit/free-tier-latest.json",
+    "snapshotValidation": "dist/snapshot/latest/validation.json",
+    "snapshotManifest": "dist/snapshot/latest/manifest.json"
+  },
+  "online_probe": {
+    "skipped": false,
+    "rows": [
+      {
+        "base": "https://tv.webhome.eu.org",
+        "config_status": 200,
+        "status_status": 200,
+        "sites": [
+          "影视点播 · 647080706202"
+        ],
+        "status_ok": true,
+        "visibleUpdateText": "647080706202"
+      },
+      {
+        "base": "https://tv.webclound.eu.org",
+        "config_status": 200,
+        "status_status": 200,
+        "sites": [
+          "影视点播 · 647080706202"
+        ],
+        "status_ok": true,
+        "visibleUpdateText": "647080706202"
+      }
+    ],
+    "complaints": []
+  },
+  "metrics": {
+    "remote": {
+      "visible_element_count": 315,
+      "pass": 310,
+      "warn": 3,
+      "fail": 2,
+      "category_fail": 0,
+      "single_filter_fail": 2,
+      "schema_regression": 0,
+      "api_error": 0,
+      "snapshot_miss": 0,
+      "filter_logic_bug": 0,
+      "min_semantic_hit_rate": 0.8,
+      "max_duplicate_rate": 0.0833,
+      "avg_detail_ok_rate": 1,
+      "avg_playable_rate": 1,
+      "byRootCause": {
+        "OK": 310,
+        "TAG_PARSE_GAP": 2,
+        "SOURCE_COVERAGE_GAP": 1,
+        "SEMANTIC_MISMATCH": 2
+      },
+      "byPathCause": {
+        "COMBO_OVER_CONSTRAINED": 1
+      }
+    },
+    "remoteRootCauses": {
+      "OK": 310,
+      "TAG_PARSE_GAP": 2,
+      "SOURCE_COVERAGE_GAP": 1,
+      "SEMANTIC_MISMATCH": 2
+    },
+    "coverage": {
+      "pass": 6,
+      "warn": 4,
+      "fail": 0,
+      "byRootCause": {
+        "SOURCE_PHYSICAL_LIMIT": 1,
+        "OK": 6,
+        "RANKING_SUPPRESSION": 3
+      }
+    },
+    "sources": {
+      "candidateCount": 29,
+      "active": 16,
+      "watch": 9,
+      "rejected": 2,
+      "blocked": 2
+    },
+    "freeTier": {
+      "pass": 5,
+      "warn": 1,
+      "fail": 0
+    },
+    "snapshot": {
+      "errors": 0,
+      "warnings": 41,
+      "visibleUpdateText": "647080706202",
+      "snapshotGeneratedAt": "2026-07-07T23:46:05.998Z",
+      "sourceDiscoveryAt": "2026-07-07T08:01:21.595Z",
+      "coverageAuditAt": "2026-07-07T08:01:21.595Z"
+    }
+  }
+}

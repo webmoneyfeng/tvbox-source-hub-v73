@@ -1,0 +1,483 @@
+﻿import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, '..');
+const AUDIT_DIR = path.join(ROOT, 'audit');
+const DIST_SNAPSHOT_DIR = path.join(ROOT, 'dist', 'snapshot', 'latest');
+const DEFAULT_BASES = ['https://tv.webhome.eu.org', 'https://tv.webclound.eu.org'];
+const BASES = (process.env.ZERO_COMPLAINT_BASES || process.env.TVBOX_BASE || DEFAULT_BASES.join(','))
+  .split(',')
+  .map((x) => x.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+const ONLINE_TIMEOUT = Number(process.env.ZERO_COMPLAINT_TIMEOUT_MS || 15000);
+const SKIP_ONLINE = /^(1|true|yes)$/i.test(process.env.ZERO_COMPLAINT_SKIP_ONLINE || '');
+
+const INPUTS = {
+  remoteAudit: 'audit/tv-remote-full-latest.json',
+  coverageAudit: 'audit/coverage-latest.json',
+  sourceAudit: 'audit/source-discovery-latest.json',
+  freeTierAudit: 'audit/free-tier-latest.json',
+  snapshotValidation: 'dist/snapshot/latest/validation.json',
+  snapshotManifest: 'dist/snapshot/latest/manifest.json',
+};
+
+function rel(...parts) {
+  return path.join(ROOT, ...parts);
+}
+
+async function readJson(relativePath) {
+  const abs = rel(...relativePath.split('/'));
+  try {
+    const text = await fs.readFile(abs, 'utf8');
+    return { ok: true, path: relativePath, abs, data: JSON.parse(text) };
+  } catch (err) {
+    return { ok: false, path: relativePath, abs, error: String(err && err.message || err), data: null };
+  }
+}
+
+function num(value, fallback = 0) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function pct(value) {
+  return `${Math.round(num(value) * 1000) / 10}%`;
+}
+
+function asArray(value) {
+  return Array.isArray(value) ? value : [];
+}
+
+function countBy(rows, key) {
+  const out = {};
+  for (const row of rows) {
+    const value = String(row?.[key] || 'UNKNOWN');
+    out[value] = (out[value] || 0) + 1;
+  }
+  return out;
+}
+
+function makeComplaint(severity, area, title, evidence, suggestion, source = '') {
+  return { severity, area, title, evidence, suggestion, source };
+}
+
+function summarizeRemote(remote) {
+  const data = remote.data || {};
+  const summary = data.summary || {};
+  const records = asArray(data.records);
+  const failing = records.filter((r) => r.result === 'FAIL');
+  const warning = records.filter((r) => r.result === 'WARN');
+  const complaints = [];
+
+  if (!remote.ok) {
+    complaints.push(makeComplaint('P1', 'remote_audit', '遥控器全链路审计文件缺失或不可读', remote.error, '先重新运行 npm run audit:remote-full 生成可审计证据。', remote.path));
+    return { summary, records, failing, warning, complaints };
+  }
+
+  const p1Checks = [
+    ['category_fail', '可见分类存在空壳或分类请求失败'],
+    ['schema_regression', '响应格式出现字段缺失或结构回退'],
+    ['api_error', '电视端路径出现 API 错误'],
+    ['snapshot_miss', '快照命中失败导致请求绕路'],
+    ['filter_logic_bug', '筛选逻辑存在确定性缺陷'],
+  ];
+  for (const [key, label] of p1Checks) {
+    if (num(summary[key]) > 0) {
+      complaints.push(makeComplaint('P1', 'remote_audit', label, `${key}=${summary[key]}`, '修复对应接口/快照/筛选逻辑后重跑遥控器全量审计。', remote.path));
+    }
+  }
+
+  if (num(summary.avg_detail_ok_rate, 1) < 0.95) {
+    complaints.push(makeComplaint('P1', 'detail', '详情页有效率低于商业门槛', `avg_detail_ok_rate=${summary.avg_detail_ok_rate}`, '修复 ids 详情聚合、详情字段标准化与失效源过滤。', remote.path));
+  }
+  if (num(summary.avg_playable_rate, 1) < 0.9) {
+    complaints.push(makeComplaint('P1', 'playback', '播放线路有效率低于商业门槛', `avg_playable_rate=${summary.avg_playable_rate}`, '优先过滤广告/解析页/失效播放组，并提升直连线路抽样覆盖。', remote.path));
+  }
+
+  if (num(summary.single_filter_fail) > 0) {
+    complaints.push(makeComplaint('P2', 'filter_semantics', '单筛选按钮仍有 FAIL', `single_filter_fail=${summary.single_filter_fail}`, '逐个修复 FAIL 路径，不能用隐藏按钮代替根因修复。', remote.path));
+  }
+  if (num(summary.fail) > 0) {
+    for (const row of failing.slice(0, 20)) {
+      complaints.push(makeComplaint(
+        'P2',
+        'remote_path',
+        `遥控器路径未达到预期：${row.path_id}`,
+        `${row.root_cause || 'UNKNOWN'}；list=${row.list_count}；semantic=${row.semantic_hit_rate}；duplicate=${row.duplicate_rate}；${row.fix_suggestion || ''}`,
+        row.fix_suggestion || '按路径追踪请求参数、快照命中、去重、语义映射与播放抽样。',
+        remote.path,
+      ));
+    }
+  }
+  if (num(summary.max_duplicate_rate) > 0.05) {
+    complaints.push(makeComplaint('P2', 'dedupe', '重复率超过 0投诉商业门槛', `max_duplicate_rate=${summary.max_duplicate_rate}`, '修 canonical identity、跨源合并键、排序前去重与分类/筛选内去重。', remote.path));
+  }
+  if (num(summary.min_semantic_hit_rate, 1) < 0.85) {
+    complaints.push(makeComplaint('P2', 'semantic', '最低语义命中率低于商业门槛', `min_semantic_hit_rate=${summary.min_semantic_hit_rate}`, '补充标签解析、标题/备注证据、内容形态映射与源标签追踪。', remote.path));
+  }
+
+  for (const row of warning.slice(0, 20)) {
+    complaints.push(makeComplaint(
+      'P2',
+      'remote_warn',
+      `遥控器路径存在 WARN：${row.path_id}`,
+      `${row.root_cause || 'UNKNOWN'}${row.path_cause ? ` / ${row.path_cause}` : ''}；${row.fix_suggestion || ''}`,
+      row.fix_suggestion || '保留诊断记录并追踪是否属于源覆盖、标签解析或组合筛选过窄。',
+      remote.path,
+    ));
+  }
+  return { summary, records, failing, warning, complaints };
+}
+
+function exactTitleUnstable(row) {
+  const title = String(row?.title || '').trim();
+  if (!title) return false;
+  const runs = asArray(row?.aggregate_runs);
+  const exactTitleRuns = runs.filter((x) => String(x?.term || '').trim() === title);
+  if (!exactTitleRuns.length) return false;
+  return exactTitleRuns.some((x) => num(x.exactIndex, -1) < 0 && num(x.fuzzyIndex, -1) < 0);
+}
+
+function summarizeCoverage(coverage) {
+  const data = coverage.data || {};
+  const rows = asArray(data.rows);
+  const complaints = [];
+  if (!coverage.ok) {
+    complaints.push(makeComplaint('P1', 'coverage', '覆盖率审计文件缺失或不可读', coverage.error, '重新运行 npm run audit:coverage，恢复缺片根因审计。', coverage.path));
+    return { rows, complaints };
+  }
+  if (num(data.fail) > 0) {
+    for (const row of rows.filter((x) => x.result === 'FAIL').slice(0, 20)) {
+      complaints.push(makeComplaint('P1', 'coverage', `覆盖审计失败：${row.title || row.id}`, `${row.root_cause || 'UNKNOWN'}；源命中=${row.source_hit_count || 0}；${row.note || ''}`, '补源、补别名召回、修聚合搜索排序或修解析器后复测。', coverage.path));
+    }
+  }
+  for (const row of rows.filter((x) => x.result === 'WARN').slice(0, 30)) {
+    const severity = row.priority === 'critical' && exactTitleUnstable(row) ? 'P1' : 'P2';
+    const title = severity === 'P1' ? `核心搜索不稳定：${row.title || row.id}` : `覆盖审计 WARN：${row.title || row.id}`;
+    const evidence = `${row.root_cause || 'UNKNOWN'}；源命中=${row.source_hit_count || 0}；${row.note || ''}`;
+    const suggestion = severity === 'P1'
+      ? '把该节目加入核心投诉种子，修复精确片名召回、别名/主演召回、排序压制和动态/快照一致性。'
+      : '继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。';
+    complaints.push(makeComplaint(severity, 'coverage', title, evidence, suggestion, coverage.path));
+  }
+  return { rows, complaints };
+}
+
+function summarizeSources(source) {
+  const data = source.data || {};
+  const complaints = [];
+  if (!source.ok) {
+    complaints.push(makeComplaint('P2', 'source_discovery', '源宇宙发现审计文件缺失或不可读', source.error, '重新运行源发现审计，恢复 ACTIVE/WATCH/REJECTED/BLOCKED 证据。', source.path));
+    return { complaints };
+  }
+  if (num(data.active) <= 0) {
+    complaints.push(makeComplaint('P1', 'source_discovery', '没有 ACTIVE 点播源', `active=${data.active}`, '恢复候选源准入，否则无法支撑商业覆盖。', source.path));
+  }
+  if (num(data.blocked) + num(data.rejected) > num(data.active) + num(data.watch)) {
+    complaints.push(makeComplaint('P2', 'source_discovery', '不可用源占比过高', `ACTIVE/WATCH/REJECTED/BLOCKED=${data.active}/${data.watch}/${data.rejected}/${data.blocked}`, '清洗候选源、增加公开直连源发现、保留 BLOCKED 根因但不进入主链路。', source.path));
+  }
+  return { complaints };
+}
+
+function summarizeFreeTier(freeTier) {
+  const data = freeTier.data || {};
+  const rows = asArray(data.rows);
+  const complaints = [];
+  if (!freeTier.ok) {
+    complaints.push(makeComplaint('P2', 'free_tier', '免费层审计文件缺失或不可读', freeTier.error, '重新运行 npm run audit:free-tier，确认 GitHub/Cloudflare 免费边界。', freeTier.path));
+    return { rows, complaints };
+  }
+  for (const row of rows.filter((x) => x.result === 'FAIL')) {
+    complaints.push(makeComplaint('P1', 'free_tier', `免费方案硬失败：${row.area}`, `${row.metric}；${row.note || ''}`, '调整调度频率、文件规模、Worker 请求策略或仓库可见性后复测。', freeTier.path));
+  }
+  for (const row of rows.filter((x) => x.result === 'WARN')) {
+    complaints.push(makeComplaint('P2', 'free_tier', `免费方案存在风险：${row.area}`, `${row.metric}；${row.note || ''}`, '形成限流、缓存、降频、直连播放和不代理视频流的运营策略。', freeTier.path));
+  }
+  return { rows, complaints };
+}
+
+function summarizeSnapshot(validation, manifest) {
+  const complaints = [];
+  const validationData = validation.data || {};
+  const manifestData = manifest.data || {};
+  if (!validation.ok) {
+    complaints.push(makeComplaint('P1', 'snapshot', '快照验证文件缺失或不可读', validation.error, '重新生成快照并运行验证，避免电视端读取未知状态。', validation.path));
+  } else {
+    const errors = asArray(validationData.errors);
+    const warnings = asArray(validationData.warnings);
+    for (const err of errors.slice(0, 20)) {
+      complaints.push(makeComplaint('P1', 'snapshot', '快照验证存在 ERROR', String(err), '修复快照生成、分类、筛选或播放验证错误后再发布。', validation.path));
+    }
+    if (warnings.length) {
+      complaints.push(makeComplaint('P3', 'snapshot', '快照验证仍有 WARN', `${warnings.length} warnings`, '逐步把仍可见的空筛选、低证据筛选与源质量问题纳入 P2/P3 修复队列。', validation.path));
+    }
+  }
+  if (!manifest.ok) {
+    complaints.push(makeComplaint('P1', 'snapshot', '快照 manifest 缺失或不可读', manifest.error, '恢复 manifest，确保更新时间码、分类、筛选包和文件清单可追踪。', manifest.path));
+  } else if (manifestData.ok !== true) {
+    complaints.push(makeComplaint('P1', 'snapshot', '快照 manifest 未标记 ok', `ok=${manifestData.ok}`, '确认快照生成完整性和原子发布状态。', manifest.path));
+  }
+  return { complaints };
+}
+
+async function fetchWithTimeout(url) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ONLINE_TIMEOUT);
+  try {
+    const res = await fetch(url, { headers: { accept: 'application/json,*/*', 'user-agent': 'ZeroComplaintCommercialAudit/7.4', 'cache-control': 'no-cache' }, signal: controller.signal });
+    const text = await res.text();
+    let data = null;
+    try { data = JSON.parse(text); } catch { data = { raw: text.slice(0, 200) }; }
+    return { ok: res.ok, status: res.status, data };
+  } catch (err) {
+    return { ok: false, status: 0, error: String(err && err.message || err), data: null };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function probeOnline() {
+  if (SKIP_ONLINE) return { skipped: true, rows: [], complaints: [] };
+  const rows = [];
+  const complaints = [];
+  for (const base of BASES) {
+    const config = await fetchWithTimeout(`${base}/config.json`);
+    const status = await fetchWithTimeout(`${base}/status.json`);
+    const sites = asArray(config.data?.sites);
+    const siteNames = sites.map((x) => x?.name).filter(Boolean);
+    const forbiddenUi = siteNames.some((x) => /备用/.test(String(x)));
+    rows.push({ base, config_status: config.status, status_status: status.status, sites: siteNames, status_ok: status.ok, visibleUpdateText: status.data?.visibleUpdateText || config.data?.sites?.[0]?.name || '' });
+    if (!config.ok) {
+      complaints.push(makeComplaint('P0', 'online_entry', `入口不可导入：${base}/config.json`, `http_status=${config.status}; ${config.error || ''}`, '修复 Worker/Pages/域名路由；主备入口至少必须一个稳定可导入。', `${base}/config.json`));
+      continue;
+    }
+    if (sites.length !== 1) {
+      complaints.push(makeComplaint('P1', 'online_entry', `入口站点数量不符合单入口设计：${base}`, `sites.length=${sites.length}`, '恢复电视端只显示一个影视点播入口，隐藏底层源结构。', `${base}/config.json`));
+    }
+    if (!siteNames.some((x) => String(x).startsWith('影视点播'))) {
+      complaints.push(makeComplaint('P1', 'online_entry', `入口名称不符合影视点播设计：${base}`, `sites=${siteNames.join(',')}`, '恢复“影视点播 · 更新时间码”入口文案。', `${base}/config.json`));
+    }
+    if (forbiddenUi) {
+      complaints.push(makeComplaint('P3', 'online_entry', `入口文案出现禁用词：${base}`, `sites=${siteNames.join(',')}`, '清理电视端可见文案，不显示“备用”等底层结构词。', `${base}/config.json`));
+    }
+    if (!status.ok) {
+      complaints.push(makeComplaint('P2', 'online_status', `状态端点不可用：${base}/status.json`, `http_status=${status.status}; ${status.error || ''}`, '恢复状态端点，便于商业运营监控更新时间、快照与健康状态。', `${base}/status.json`));
+    }
+  }
+  const configOkCount = rows.filter((x) => x.config_status >= 200 && x.config_status < 300).length;
+  if (rows.length && configOkCount === 0) {
+    complaints.push(makeComplaint('P0', 'online_entry', '主备入口全部不可导入', `bases=${BASES.join(',')}`, '立即回滚到上一次有效 Worker/Pages 快照或切换域名。', 'online_probe'));
+  }
+  return { skipped: false, rows, complaints };
+}
+
+function buildHardGates(inputs, complaintCounts) {
+  const remoteSummary = inputs.remoteAudit.data?.summary || {};
+  const freeTier = inputs.freeTierAudit.data || {};
+  const validation = inputs.snapshotValidation.data || {};
+  const gates = [
+    { name: 'P0=0', pass: complaintCounts.P0 === 0, value: complaintCounts.P0 },
+    { name: 'P1=0', pass: complaintCounts.P1 === 0, value: complaintCounts.P1 },
+    { name: 'remote_fail=0', pass: num(remoteSummary.fail) === 0, value: num(remoteSummary.fail) },
+    { name: 'single_filter_fail=0', pass: num(remoteSummary.single_filter_fail) === 0, value: num(remoteSummary.single_filter_fail) },
+    { name: 'schema_regression=0', pass: num(remoteSummary.schema_regression) === 0, value: num(remoteSummary.schema_regression) },
+    { name: 'api_error=0', pass: num(remoteSummary.api_error) === 0, value: num(remoteSummary.api_error) },
+    { name: 'snapshot_miss=0', pass: num(remoteSummary.snapshot_miss) === 0, value: num(remoteSummary.snapshot_miss) },
+    { name: 'filter_logic_bug=0', pass: num(remoteSummary.filter_logic_bug) === 0, value: num(remoteSummary.filter_logic_bug) },
+    { name: 'duplicate_rate<=5%', pass: num(remoteSummary.max_duplicate_rate) <= 0.05, value: remoteSummary.max_duplicate_rate ?? null },
+    { name: 'detail_ok_rate>=95%', pass: num(remoteSummary.avg_detail_ok_rate, 0) >= 0.95, value: remoteSummary.avg_detail_ok_rate ?? null },
+    { name: 'playable_rate>=90%', pass: num(remoteSummary.avg_playable_rate, 0) >= 0.9, value: remoteSummary.avg_playable_rate ?? null },
+    { name: 'free_tier_fail=0', pass: num(freeTier.fail) === 0, value: num(freeTier.fail) },
+    { name: 'snapshot_errors=0', pass: asArray(validation.errors).length === 0, value: asArray(validation.errors).length },
+  ];
+  return gates;
+}
+
+function scoreFromCounts(counts, hardGates) {
+  let score = 100;
+  score -= counts.P0 * 40;
+  score -= counts.P1 * 20;
+  score -= counts.P2 * 5;
+  score -= counts.P3 * 1;
+  score -= hardGates.filter((x) => !x.pass).length * 3;
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+function renderMarkdown(result) {
+  const failedGates = result.hard_gates.filter((x) => !x.pass);
+  const topQueue = result.next_fix_queue.slice(0, 30);
+  const onlineRows = result.online_probe.rows || [];
+  const remote = result.metrics.remote || {};
+  const coverage = result.metrics.coverage || {};
+  const sources = result.metrics.sources || {};
+  const free = result.metrics.freeTier || {};
+  const snapshot = result.metrics.snapshot || {};
+  return [
+    '# v7.4 0投诉商业体验总控审计',
+    '',
+    '## 总结',
+    '',
+    `- 生成时间：${result.generatedAt}`,
+    `- commercial_ready：${result.commercial_ready}`,
+    `- zero_complaint_gate：${result.zero_complaint_gate}`,
+    `- user_love_score：${result.user_love_score}/100`,
+    `- P0/P1/P2/P3：${result.p0_count}/${result.p1_count}/${result.p2_count}/${result.p3_count}`,
+    `- 输入证据：${Object.values(result.inputs).join('；')}`,
+    '',
+    '## 终局判定',
+    '',
+    result.commercial_ready
+      ? '- 当前证据满足“用户喜欢、0投诉、可商业化收费”的上线门禁。'
+      : '- 当前证据尚未满足“用户喜欢、0投诉、可商业化收费”的上线门禁，不能把工程可用误判为商业可收费。',
+    '- 本报告只聚合现有审计与轻量入口探测，不替代遥控器实测、源覆盖深测和播放抽样。',
+    '',
+    '## 硬门槛',
+    '',
+    ...result.hard_gates.map((x) => `- ${x.pass ? 'PASS' : 'FAIL'}；${x.name}；value=${x.value}`),
+    '',
+    '## 当前核心指标',
+    '',
+    `- 遥控器路径：visible=${remote.visible_element_count ?? 'unknown'}；PASS/WARN/FAIL=${remote.pass ?? 'unknown'}/${remote.warn ?? 'unknown'}/${remote.fail ?? 'unknown'}；max_duplicate_rate=${remote.max_duplicate_rate ?? 'unknown'}；detail=${remote.avg_detail_ok_rate ?? 'unknown'}；playable=${remote.avg_playable_rate ?? 'unknown'}`,
+    `- 覆盖审计：PASS/WARN/FAIL=${coverage.pass ?? 'unknown'}/${coverage.warn ?? 'unknown'}/${coverage.fail ?? 'unknown'}`,
+    `- 源发现：candidate=${sources.candidateCount ?? 'unknown'}；ACTIVE/WATCH/REJECTED/BLOCKED=${sources.active ?? 'unknown'}/${sources.watch ?? 'unknown'}/${sources.rejected ?? 'unknown'}/${sources.blocked ?? 'unknown'}`,
+    `- 免费层：PASS/WARN/FAIL=${free.pass ?? 'unknown'}/${free.warn ?? 'unknown'}/${free.fail ?? 'unknown'}`,
+    `- 快照：errors=${snapshot.errors ?? 'unknown'}；warnings=${snapshot.warnings ?? 'unknown'}；visibleUpdateText=${snapshot.visibleUpdateText ?? 'unknown'}`,
+    '',
+    '## 在线入口轻量探测',
+    '',
+    result.online_probe.skipped
+      ? '- 已按 ZERO_COMPLAINT_SKIP_ONLINE 跳过在线探测。'
+      : onlineRows.length
+        ? onlineRows.map((x) => `- ${x.base}；config=${x.config_status}；status=${x.status_status}；sites=${asArray(x.sites).join('|') || 'none'}；visible=${x.visibleUpdateText || 'unknown'}`).join('\n')
+        : '- 无在线探测结果。',
+    '',
+    '## 阻塞投诉',
+    '',
+    result.blocking_complaints.length
+      ? result.blocking_complaints.map((x) => `- ${x.severity}；${x.area}；${x.title}；证据：${x.evidence}；建议：${x.suggestion}`).join('\n')
+      : '- 暂无 P0/P1 阻塞投诉。',
+    '',
+    '## 下一修复队列',
+    '',
+    topQueue.length
+      ? topQueue.map((x, i) => `${i + 1}. ${x.severity}；${x.area}；${x.title}；证据：${x.evidence}；建议：${x.suggestion}`).join('\n')
+      : '- 当前没有待修复队列。',
+    '',
+    '## 终局到下一阶段承接',
+    '',
+    '- 终局：用户喜欢的、0投诉的、可商业化收费的 TVBox/FongMi/影视仓 点播+直播源。',
+    '- 全局：先用总控门禁统一遥控器、覆盖、源、免费层、快照和入口状态，避免局部通过掩盖用户投诉。',
+    '- 局部：下一阶段优先修复 P1/P2：核心搜索稳定性、文娱知识重复率、排序压制、标签解析和免费层请求风险。',
+    '- 节点：每个失败 path_id、canary 条目、WARN 端点都必须有请求 URL、根因、修复建议和复测证据。',
+    '- 末梢：电视端每个按钮、搜索词、详情页、播放线路都按语义返回且不重复。',
+    '',
+    failedGates.length
+      ? `> 当前未过门槛：${failedGates.map((x) => x.name).join('，')}`
+      : '> 当前硬门槛均通过。',
+    '',
+  ].join('\n');
+}
+
+async function auditZeroComplaint() {
+  const generatedAt = new Date().toISOString();
+  const loadedEntries = await Promise.all(Object.entries(INPUTS).map(async ([key, value]) => [key, await readJson(value)]));
+  const loaded = Object.fromEntries(loadedEntries);
+
+  const remote = summarizeRemote(loaded.remoteAudit);
+  const coverage = summarizeCoverage(loaded.coverageAudit);
+  const sources = summarizeSources(loaded.sourceAudit);
+  const freeTier = summarizeFreeTier(loaded.freeTierAudit);
+  const snapshot = summarizeSnapshot(loaded.snapshotValidation, loaded.snapshotManifest);
+  const online = await probeOnline();
+
+  const allComplaints = [
+    ...remote.complaints,
+    ...coverage.complaints,
+    ...sources.complaints,
+    ...freeTier.complaints,
+    ...snapshot.complaints,
+    ...online.complaints,
+  ];
+  const complaintCounts = {
+    P0: allComplaints.filter((x) => x.severity === 'P0').length,
+    P1: allComplaints.filter((x) => x.severity === 'P1').length,
+    P2: allComplaints.filter((x) => x.severity === 'P2').length,
+    P3: allComplaints.filter((x) => x.severity === 'P3').length,
+  };
+  const hardGates = buildHardGates(loaded, complaintCounts);
+  const hardGateOk = hardGates.every((x) => x.pass);
+  const zeroComplaintGate = hardGateOk && allComplaints.length === 0 ? 'PASS' : complaintCounts.P0 || complaintCounts.P1 || !hardGateOk ? 'FAIL' : 'WARN';
+  const commercialReady = zeroComplaintGate === 'PASS';
+  const severityRank = { P0: 0, P1: 1, P2: 2, P3: 3 };
+  const nextFixQueue = [...allComplaints].sort((a, b) => (severityRank[a.severity] ?? 9) - (severityRank[b.severity] ?? 9) || String(a.area).localeCompare(String(b.area), 'zh-Hans-CN'));
+
+  const result = {
+    generatedAt,
+    commercial_ready: commercialReady,
+    zero_complaint_gate: zeroComplaintGate,
+    user_love_score: scoreFromCounts(complaintCounts, hardGates),
+    p0_count: complaintCounts.P0,
+    p1_count: complaintCounts.P1,
+    p2_count: complaintCounts.P2,
+    p3_count: complaintCounts.P3,
+    blocking_complaints: nextFixQueue.filter((x) => x.severity === 'P0' || x.severity === 'P1'),
+    next_fix_queue: nextFixQueue,
+    hard_gates: hardGates,
+    inputs: Object.fromEntries(Object.entries(INPUTS).map(([key, value]) => [key, value])),
+    online_probe: online,
+    metrics: {
+      remote: loaded.remoteAudit.data?.summary || {},
+      remoteRootCauses: loaded.remoteAudit.data?.summary?.byRootCause || countBy(remote.records, 'root_cause'),
+      coverage: {
+        pass: loaded.coverageAudit.data?.pass,
+        warn: loaded.coverageAudit.data?.warn,
+        fail: loaded.coverageAudit.data?.fail,
+        byRootCause: loaded.coverageAudit.data?.byRootCause || {},
+      },
+      sources: {
+        candidateCount: loaded.sourceAudit.data?.candidateCount,
+        active: loaded.sourceAudit.data?.active,
+        watch: loaded.sourceAudit.data?.watch,
+        rejected: loaded.sourceAudit.data?.rejected,
+        blocked: loaded.sourceAudit.data?.blocked,
+      },
+      freeTier: {
+        pass: loaded.freeTierAudit.data?.pass,
+        warn: loaded.freeTierAudit.data?.warn,
+        fail: loaded.freeTierAudit.data?.fail,
+      },
+      snapshot: {
+        errors: asArray(loaded.snapshotValidation.data?.errors).length,
+        warnings: asArray(loaded.snapshotValidation.data?.warnings).length,
+        visibleUpdateText: loaded.snapshotManifest.data?.visibleUpdateText,
+        snapshotGeneratedAt: loaded.snapshotManifest.data?.snapshotGeneratedAt,
+        sourceDiscoveryAt: loaded.snapshotManifest.data?.sourceDiscoveryAt,
+        coverageAuditAt: loaded.snapshotManifest.data?.coverageAuditAt,
+      },
+    },
+  };
+
+  await fs.mkdir(AUDIT_DIR, { recursive: true });
+  await fs.writeFile(path.join(AUDIT_DIR, 'zero-complaint-latest.json'), JSON.stringify(result, null, 2) + '\n', 'utf8');
+  await fs.writeFile(path.join(AUDIT_DIR, 'zero-complaint-summary.md'), renderMarkdown(result), 'utf8');
+  return result;
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const result = await auditZeroComplaint();
+  console.log(JSON.stringify({
+    generatedAt: result.generatedAt,
+    commercial_ready: result.commercial_ready,
+    zero_complaint_gate: result.zero_complaint_gate,
+    user_love_score: result.user_love_score,
+    p0_count: result.p0_count,
+    p1_count: result.p1_count,
+    p2_count: result.p2_count,
+    p3_count: result.p3_count,
+    failed_hard_gates: result.hard_gates.filter((x) => !x.pass).map((x) => x.name),
+  }, null, 2));
+}
+
+export { auditZeroComplaint };
