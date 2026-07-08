@@ -2,7 +2,7 @@
 
 ## 总结
 
-- 生成时间：2026-07-08T12:19:57.877Z
+- 生成时间：2026-07-08T12:37:22.017Z
 - commercial_ready：false
 - zero_complaint_gate：WARN
 - user_love_score：99/100
@@ -37,11 +37,11 @@
 - 源发现：candidate=29；ACTIVE/WATCH/REJECTED/BLOCKED=14/8/3/4
 - 免费层：PASS/WARN/FAIL=6/0/0
 - 直播承载：channels=95；proxied=0；direct=95；proxyRatio=0%
-- 快照：errors=0；warnings=20；triage=20；blocking=0；visibleUpdateText=510280706202
+- 快照：errors=0；warnings=14；triage=14；blocking=0；visibleUpdateText=920280706202
 
 ## 快照 warning 分诊
 
-- total=20；unclassified=0；user_visible=0；current_tv_blocking=0；by_type=UI_HIDE_CANDIDATE=20
+- total=14；unclassified=0；user_visible=2；current_tv_blocking=0；by_type=UI_HIDE_CANDIDATE=11；SOURCE_TAG_GAP=1；SNAPSHOT_PACK_GAP=2
 
 ## 快照包自愈审计
 
@@ -58,7 +58,7 @@
 
 ## 下一修复队列
 
-1. P3；snapshot；快照 warning 已分诊为观察项；证据：total=20；visible=0；by_type=UI_HIDE_CANDIDATE=20；建议：继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。
+1. P3；snapshot；快照 warning 已分诊为观察项；证据：total=14；visible=2；by_type=UI_HIDE_CANDIDATE=11；SOURCE_TAG_GAP=1；SNAPSHOT_PACK_GAP=2；建议：继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。
 
 ## 终局到下一阶段承接
 

@@ -2,21 +2,28 @@
 
 ## 总结
 
-- 生成时间：2026-07-08T12:19:29.400Z
+- 生成时间：2026-07-08T12:37:08.874Z
 - 输入：dist/snapshot/latest/validation.json；audit/tv-remote-full-latest.json
-- warning 总数：20
+- warning 总数：14
 - 未分类：0
-- 当前电视端可见：0
+- 当前电视端可见：2
 - 当前电视端阻塞：0
-- P级分布：P3=20
+- P级分布：P3=14
 
 ## 根因分布
 
-- UI_HIDE_CANDIDATE：20
+- UI_HIDE_CANDIDATE：11
+- SOURCE_TAG_GAP：1
+- SNAPSHOT_PACK_GAP：2
 
 ## 分类分布 Top
 
-- 无
+- 动漫：6
+- 纪录片：3
+- 综艺：2
+- 短剧：1
+- 文娱知识：1
+- 成人伦理：1
 
 ## 当前用户可感知阻塞
 
@@ -24,26 +31,20 @@
 
 ## 分诊明细
 
-1. P3；UI_HIDE_CANDIDATE；搜索/category 0 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-2. P3；UI_HIDE_CANDIDATE；搜索/category 0 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-3. P3；UI_HIDE_CANDIDATE；搜索/category 1 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-4. P3；UI_HIDE_CANDIDATE；搜索/category 1 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-5. P3；UI_HIDE_CANDIDATE；搜索/category 2 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-6. P3；UI_HIDE_CANDIDATE；搜索/category 2 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-7. P3；UI_HIDE_CANDIDATE；搜索/category 3 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-8. P3；UI_HIDE_CANDIDATE；搜索/category 3 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-9. P3；UI_HIDE_CANDIDATE；搜索/category 4 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-10. P3；UI_HIDE_CANDIDATE；搜索/category 4 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-11. P3；UI_HIDE_CANDIDATE；搜索/category 5 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-12. P3；UI_HIDE_CANDIDATE；搜索/category 5 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-13. P3；UI_HIDE_CANDIDATE；搜索/category 6 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-14. P3；UI_HIDE_CANDIDATE；搜索/category 6 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-15. P3；UI_HIDE_CANDIDATE；搜索/category 7 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-16. P3；UI_HIDE_CANDIDATE；搜索/category 7 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-17. P3；UI_HIDE_CANDIDATE；搜索/category 8 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-18. P3；UI_HIDE_CANDIDATE；搜索/category 8 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-19. P3；UI_HIDE_CANDIDATE；搜索/category 9 page 1 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
-20. P3；UI_HIDE_CANDIDATE；搜索/category 9 page 2 used static-snapshot；可见=否；阻塞=否；建议：补充分诊解析规则，并确认该 warning 是否会映射到电视端可见路径。
+1. P3；UI_HIDE_CANDIDATE；综艺/年份/更早；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+2. P3；UI_HIDE_CANDIDATE；综艺/地区/泰国；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+3. P3；UI_HIDE_CANDIDATE；动漫/年份/2010年代；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+4. P3；UI_HIDE_CANDIDATE；动漫/年份/2020-2022；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+5. P3；UI_HIDE_CANDIDATE；动漫/年份/2024；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+6. P3；UI_HIDE_CANDIDATE；动漫/地区/泰国；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+7. P3；UI_HIDE_CANDIDATE；动漫/地区/其他；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+8. P3；SOURCE_TAG_GAP；动漫/状态/合集；可见=否；阻塞=否；建议：补充标题、备注、集数、状态、清晰度等推断规则；当审计能证明非空且语义正确时自动恢复可见。
+9. P3；SNAPSHOT_PACK_GAP；纪录片/年份/2020-2022；可见=是；阻塞=否；建议：优先重跑 generate:snapshot 并确认 filter-packs 与 validation 同步；若仍复现，再检查该筛选包是否被动态兜底掩盖。
+10. P3；SNAPSHOT_PACK_GAP；纪录片/主题/历史；可见=是；阻塞=否；建议：优先重跑 generate:snapshot 并确认 filter-packs 与 validation 同步；若仍复现，再检查该筛选包是否被动态兜底掩盖。
+11. P3；UI_HIDE_CANDIDATE；纪录片/内容形态/合集；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+12. P3；UI_HIDE_CANDIDATE；短剧/年份/2010年代；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+13. P3；UI_HIDE_CANDIDATE；文娱知识/类型/少儿亲子；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
+14. P3；UI_HIDE_CANDIDATE；成人伦理/类型/剧情；可见=否；阻塞=否；建议：不要删除规则；继续扩源或补解析，等源能力满足后再让该按钮重新进入电视端。
 
 ## 终局承接
 

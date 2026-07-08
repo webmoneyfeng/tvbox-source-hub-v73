@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T12:19:57.877Z",
+  "generatedAt": "2026-07-08T12:37:22.017Z",
   "commercial_ready": false,
   "zero_complaint_gate": "WARN",
   "user_love_score": 99,
@@ -13,7 +13,7 @@
       "severity": "P3",
       "area": "snapshot",
       "title": "快照 warning 已分诊为观察项",
-      "evidence": "total=20；visible=0；by_type=UI_HIDE_CANDIDATE=20",
+      "evidence": "total=14；visible=2；by_type=UI_HIDE_CANDIDATE=11；SOURCE_TAG_GAP=1；SNAPSHOT_PACK_GAP=2",
       "suggestion": "继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。",
       "source": "audit/snapshot-warning-triage-latest.json"
     }
@@ -186,26 +186,42 @@
     },
     "snapshot": {
       "errors": 0,
-      "warnings": 20,
+      "warnings": 14,
       "triage": {
-        "total": 20,
+        "total": 14,
         "unclassified": 0,
-        "user_visible": 0,
+        "user_visible": 2,
         "current_tv_blocking": 0,
         "by_type": {
-          "UI_HIDE_CANDIDATE": 20
+          "UI_HIDE_CANDIDATE": 11,
+          "SOURCE_TAG_GAP": 1,
+          "SNAPSHOT_PACK_GAP": 2
         },
         "by_severity": {
-          "P3": 20
+          "P3": 14
         },
         "by_visibility": {
-          "hidden_or_not_exposed": 20
+          "hidden_or_not_exposed": 12,
+          "visible": 2
         },
-        "by_category": {},
-        "by_filter_key": {}
+        "by_category": {
+          "综艺": 2,
+          "动漫": 6,
+          "纪录片": 3,
+          "短剧": 1,
+          "文娱知识": 1,
+          "成人伦理": 1
+        },
+        "by_filter_key": {
+          "year": 6,
+          "area": 3,
+          "state": 1,
+          "class": 3,
+          "form": 1
+        }
       },
-      "visibleUpdateText": "510280706202",
-      "snapshotGeneratedAt": "2026-07-08T12:15:58.196Z",
+      "visibleUpdateText": "920280706202",
+      "snapshotGeneratedAt": "2026-07-08T12:29:21.601Z",
       "sourceDiscoveryAt": "2026-07-08T03:15:03.270Z",
       "coverageAuditAt": "2026-07-08T03:15:03.270Z"
     },
