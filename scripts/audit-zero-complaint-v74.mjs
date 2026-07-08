@@ -20,6 +20,8 @@ const INPUTS = {
   sourceAudit: 'audit/source-discovery-latest.json',
   freeTierAudit: 'audit/free-tier-latest.json',
   snapshotValidation: 'dist/snapshot/latest/validation.json',
+  snapshotWarningTriage: 'audit/snapshot-warning-triage-latest.json',
+  snapshotPackGapAudit: 'audit/snapshot-pack-gap-latest.json',
   snapshotManifest: 'dist/snapshot/latest/manifest.json',
 };
 
@@ -135,7 +137,7 @@ function exactTitleUnstable(row) {
   const title = String(row?.title || '').trim();
   if (!title) return false;
   const runs = asArray(row?.aggregate_runs);
-  const exactTitleRuns = runs.filter((x) => String(x?.term || '').trim() === title);
+  const exactTitleRuns = runs.filter((x) => String(x?.term || '').trim() === title && (!x?.mode || x.mode === 'user'));
   if (!exactTitleRuns.length) return false;
   return exactTitleRuns.some((x) => num(x.exactIndex, -1) < 0 && num(x.fuzzyIndex, -1) < 0);
 }
@@ -198,10 +200,59 @@ function summarizeFreeTier(freeTier) {
   return { rows, complaints };
 }
 
-function summarizeSnapshot(validation, manifest) {
+function formatCounts(obj) {
+  const entries = Object.entries(obj || {});
+  return entries.length ? entries.map(([k, v]) => `${k}=${v}`).join('；') : 'none';
+}
+
+function summarizeSnapshotTriage(triage, warningCount) {
+  const complaints = [];
+  if (warningCount <= 0) return { summary: {}, rows: [], complaints };
+  if (!triage.ok) {
+    complaints.push(makeComplaint('P3', 'snapshot', '快照 warning 尚未分诊', `${warningCount} warnings；triage_error=${triage.error || 'missing'}`, '运行 node scripts/triage-snapshot-warnings-v74.mjs，把 warning 转成根因、可见性和修复队列。', triage.path));
+    return { summary: {}, rows: [], complaints };
+  }
+  const summary = triage.data?.summary || {};
+  const rows = asArray(triage.data?.rows);
+  const total = num(summary.total, rows.length);
+  const unclassified = num(summary.unclassified);
+  const blocking = num(summary.current_tv_blocking);
+  const visible = num(summary.user_visible);
+  if (total !== warningCount) {
+    complaints.push(makeComplaint('P3', 'snapshot', '快照 warning 分诊与验证数量不一致', `validation=${warningCount}；triage=${total}`, '重新运行快照分诊，避免用旧分诊解释新快照。', triage.path));
+  }
+  if (unclassified > 0) {
+    complaints.push(makeComplaint('P2', 'snapshot', '存在未分类快照 warning', `unclassified=${unclassified}`, '补充分诊规则；未分类前不能证明该 warning 不会变成用户投诉。', triage.path));
+  }
+  if (blocking > 0) {
+    const blockingRows = rows.filter((x) => x.current_tv_blocking).slice(0, 5);
+    complaints.push(makeComplaint(
+      'P2',
+      'snapshot',
+      '快照 warning 已映射到当前电视端可见阻塞',
+      `blocking=${blocking}；examples=${blockingRows.map((x) => x.warning).join(' | ')}`,
+      '按分诊根因修复可见按钮、快照包、筛选解析或源标签，不允许用笼统 warning 掩盖空按钮。',
+      triage.path,
+    ));
+  }
+  if (total > 0 && unclassified === 0 && blocking === 0) {
+    complaints.push(makeComplaint(
+      'P3',
+      'snapshot',
+      '快照 warning 已分诊为观察项',
+      `total=${total}；visible=${visible}；by_type=${formatCounts(summary.by_type)}`,
+      '继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。',
+      triage.path,
+    ));
+  }
+  return { summary, rows, complaints };
+}
+
+function summarizeSnapshot(validation, manifest, triage) {
   const complaints = [];
   const validationData = validation.data || {};
   const manifestData = manifest.data || {};
+  let triageSummary = { summary: {}, rows: [], complaints: [] };
   if (!validation.ok) {
     complaints.push(makeComplaint('P1', 'snapshot', '快照验证文件缺失或不可读', validation.error, '重新生成快照并运行验证，避免电视端读取未知状态。', validation.path));
   } else {
@@ -210,16 +261,42 @@ function summarizeSnapshot(validation, manifest) {
     for (const err of errors.slice(0, 20)) {
       complaints.push(makeComplaint('P1', 'snapshot', '快照验证存在 ERROR', String(err), '修复快照生成、分类、筛选或播放验证错误后再发布。', validation.path));
     }
-    if (warnings.length) {
-      complaints.push(makeComplaint('P3', 'snapshot', '快照验证仍有 WARN', `${warnings.length} warnings`, '逐步把仍可见的空筛选、低证据筛选与源质量问题纳入 P2/P3 修复队列。', validation.path));
-    }
+    triageSummary = summarizeSnapshotTriage(triage, warnings.length);
+    complaints.push(...triageSummary.complaints);
   }
   if (!manifest.ok) {
     complaints.push(makeComplaint('P1', 'snapshot', '快照 manifest 缺失或不可读', manifest.error, '恢复 manifest，确保更新时间码、分类、筛选包和文件清单可追踪。', manifest.path));
   } else if (manifestData.ok !== true) {
     complaints.push(makeComplaint('P1', 'snapshot', '快照 manifest 未标记 ok', `ok=${manifestData.ok}`, '确认快照生成完整性和原子发布状态。', manifest.path));
   }
-  return { complaints };
+  return { complaints, triage: triageSummary };
+}
+
+function summarizeSnapshotPackGaps(packGap) {
+  const complaints = [];
+  const data = packGap.data || {};
+  const summary = data.summary || {};
+  if (!packGap.ok) {
+    complaints.push(makeComplaint('P3', 'snapshot_pack_gap', 'SNAPSHOT_PACK_GAP 尚未做三方复测', packGap.error || 'missing audit/snapshot-pack-gap-latest.json', '运行 npm run audit:snapshot-pack-gaps，确认本地 filter-pack、线上动态和 validation warning 的差异。', packGap.path));
+    return { summary: {}, complaints };
+  }
+  const checked = num(summary.checked);
+  const visibleP2 = num(summary.visible_p2);
+  const unknown = num(summary.unknown);
+  if (unknown > 0) {
+    complaints.push(makeComplaint('P2', 'snapshot_pack_gap', 'SNAPSHOT_PACK_GAP 存在未知复测结果', `unknown=${unknown}；checked=${checked}`, '修复远端请求或本地包解析错误后重跑，否则不能证明静态兜底安全。', packGap.path));
+  }
+  if (visibleP2 > 0) {
+    complaints.push(makeComplaint(
+      'P2',
+      'snapshot_pack_gap',
+      '可见筛选按钮依赖动态兜底，静态 filter-pack 缺失',
+      `visible_p2=${visibleP2}；by_root_cause=${formatCounts(summary.by_root_cause)}`,
+      '修复 generate-snapshot 的 filter-pack 生成/回填逻辑，把线上动态可返回的数据固化到静态快照；修复前不能宣称商业级 0 投诉。',
+      packGap.path,
+    ));
+  }
+  return { summary, complaints };
 }
 
 async function fetchWithTimeout(url) {
@@ -313,7 +390,9 @@ function renderMarkdown(result) {
   const coverage = result.metrics.coverage || {};
   const sources = result.metrics.sources || {};
   const free = result.metrics.freeTier || {};
+  const liveProxy = free.liveProxy || {};
   const snapshot = result.metrics.snapshot || {};
+  const snapshotPackGaps = result.metrics.snapshotPackGaps || {};
   return [
     '# v7.4 0投诉商业体验总控审计',
     '',
@@ -343,7 +422,20 @@ function renderMarkdown(result) {
     `- 覆盖审计：PASS/WARN/FAIL=${coverage.pass ?? 'unknown'}/${coverage.warn ?? 'unknown'}/${coverage.fail ?? 'unknown'}`,
     `- 源发现：candidate=${sources.candidateCount ?? 'unknown'}；ACTIVE/WATCH/REJECTED/BLOCKED=${sources.active ?? 'unknown'}/${sources.watch ?? 'unknown'}/${sources.rejected ?? 'unknown'}/${sources.blocked ?? 'unknown'}`,
     `- 免费层：PASS/WARN/FAIL=${free.pass ?? 'unknown'}/${free.warn ?? 'unknown'}/${free.fail ?? 'unknown'}`,
-    `- 快照：errors=${snapshot.errors ?? 'unknown'}；warnings=${snapshot.warnings ?? 'unknown'}；visibleUpdateText=${snapshot.visibleUpdateText ?? 'unknown'}`,
+    `- 直播承载：channels=${liveProxy.totalChannels ?? 'unknown'}；proxied=${liveProxy.proxiedChannels ?? 'unknown'}；direct=${liveProxy.directChannels ?? 'unknown'}；proxyRatio=${Number.isFinite(Number(liveProxy.proxyRatio)) ? Math.round(Number(liveProxy.proxyRatio) * 100) + '%' : 'unknown'}`,
+    `- 快照：errors=${snapshot.errors ?? 'unknown'}；warnings=${snapshot.warnings ?? 'unknown'}；triage=${snapshot.triage?.total ?? 'unknown'}；blocking=${snapshot.triage?.current_tv_blocking ?? 'unknown'}；visibleUpdateText=${snapshot.visibleUpdateText ?? 'unknown'}`,
+    '',
+    '## 快照 warning 分诊',
+    '',
+    snapshot.triage?.total
+      ? `- total=${snapshot.triage.total}；unclassified=${snapshot.triage.unclassified}；user_visible=${snapshot.triage.user_visible}；current_tv_blocking=${snapshot.triage.current_tv_blocking}；by_type=${formatCounts(snapshot.triage.by_type)}`
+      : '- 当前无快照 warning 分诊数据。',
+    '',
+    '## 快照包自愈审计',
+    '',
+    snapshotPackGaps.checked
+      ? `- checked=${snapshotPackGaps.checked}；visible_p2=${snapshotPackGaps.visible_p2}；unknown=${snapshotPackGaps.unknown}；by_root_cause=${formatCounts(snapshotPackGaps.by_root_cause)}`
+      : '- 当前无 SNAPSHOT_PACK_GAP 自愈审计数据。',
     '',
     '## 在线入口轻量探测',
     '',
@@ -368,10 +460,10 @@ function renderMarkdown(result) {
     '## 终局到下一阶段承接',
     '',
     '- 终局：用户喜欢的、0投诉的、可商业化收费的 TVBox/FongMi/影视仓 点播+直播源。',
-    '- 全局：先用总控门禁统一遥控器、覆盖、源、免费层、快照和入口状态，避免局部通过掩盖用户投诉。',
-    '- 局部：下一阶段优先修复 P1/P2：核心搜索稳定性、文娱知识重复率、排序压制、标签解析和免费层请求风险。',
-    '- 节点：每个失败 path_id、canary 条目、WARN 端点都必须有请求 URL、根因、修复建议和复测证据。',
-    '- 末梢：电视端每个按钮、搜索词、详情页、播放线路都按语义返回且不重复。',
+    '- 全局：P0/P1 当前清零，但 P2 已暴露静态 filter-pack 缺失风险；继续用总控门禁统一遥控器、覆盖、源、免费层、快照和入口状态，避免动态兜底掩盖用户投诉。',
+    '- 局部：下一阶段优先修复 P2 静态快照包缺口，同时继续收敛 P3 不可见按钮候选、真实投诉种子、审计性能和准实时运营闭环。',
+    '- 节点：每个 warning、path_id、canary 条目、投诉种子都必须有请求 URL、根因、修复建议和复测证据。',
+    '- 末梢：电视端每个按钮、搜索词、详情页、播放线路都按语义返回且不重复；用户反馈路径能自动进入下一轮审计。',
     '',
     failedGates.length
       ? `> 当前未过门槛：${failedGates.map((x) => x.name).join('，')}`
@@ -389,7 +481,8 @@ async function auditZeroComplaint() {
   const coverage = summarizeCoverage(loaded.coverageAudit);
   const sources = summarizeSources(loaded.sourceAudit);
   const freeTier = summarizeFreeTier(loaded.freeTierAudit);
-  const snapshot = summarizeSnapshot(loaded.snapshotValidation, loaded.snapshotManifest);
+  const snapshot = summarizeSnapshot(loaded.snapshotValidation, loaded.snapshotManifest, loaded.snapshotWarningTriage);
+  const snapshotPackGaps = summarizeSnapshotPackGaps(loaded.snapshotPackGapAudit);
   const online = await probeOnline();
 
   const allComplaints = [
@@ -398,6 +491,7 @@ async function auditZeroComplaint() {
     ...sources.complaints,
     ...freeTier.complaints,
     ...snapshot.complaints,
+    ...snapshotPackGaps.complaints,
     ...online.complaints,
   ];
   const complaintCounts = {
@@ -447,15 +541,18 @@ async function auditZeroComplaint() {
         pass: loaded.freeTierAudit.data?.pass,
         warn: loaded.freeTierAudit.data?.warn,
         fail: loaded.freeTierAudit.data?.fail,
+        liveProxy: loaded.freeTierAudit.data?.liveProxy || null,
       },
       snapshot: {
         errors: asArray(loaded.snapshotValidation.data?.errors).length,
         warnings: asArray(loaded.snapshotValidation.data?.warnings).length,
+        triage: loaded.snapshotWarningTriage.data?.summary || null,
         visibleUpdateText: loaded.snapshotManifest.data?.visibleUpdateText,
         snapshotGeneratedAt: loaded.snapshotManifest.data?.snapshotGeneratedAt,
         sourceDiscoveryAt: loaded.snapshotManifest.data?.sourceDiscoveryAt,
         coverageAuditAt: loaded.snapshotManifest.data?.coverageAuditAt,
       },
+      snapshotPackGaps: loaded.snapshotPackGapAudit.data?.summary || {},
     },
   };
 

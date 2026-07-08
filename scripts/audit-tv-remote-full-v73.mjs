@@ -10,6 +10,7 @@ const DETAIL_SAMPLE = Number(process.env.AUDIT_DETAIL_SAMPLE || 5);
 const PLAY_SAMPLE = Number(process.env.AUDIT_PLAY_SAMPLE || 2);
 const TIMEOUT = Number(process.env.AUDIT_TIMEOUT_MS || 25000);
 const PLAY_TIMEOUT = Number(process.env.AUDIT_PLAY_TIMEOUT_MS || 10000);
+const AUDIT_RUN_ID = String(process.env.AUDIT_RUN_ID || `rc-${Date.now().toString(36)}`);
 const CATEGORIES = Array.from({ length: 10 }, (_, i) => String(i));
 const SEARCH_TERMS = ['影视', '电影', '解说', '演唱会', '公开课', '2026', '动作'];
 const REQUIRED_SEARCH_TERMS = new Set(['影视', '电影', '解说', '2026', '动作']);
@@ -41,6 +42,11 @@ function round(value) {
 function fullUrl(pathname) {
   return BASE + pathname;
 }
+export function auditFetchPath(pathname) {
+  const value = String(pathname || '');
+  if (!value.startsWith('/agg') || /(?:[?&])audit_run=/.test(value)) return value;
+  return value + (value.includes('?') ? '&' : '?') + 'audit_run=' + encodeURIComponent(AUDIT_RUN_ID);
+}
 function filterValue(value) {
   return String(value || '').trim();
 }
@@ -52,8 +58,8 @@ async function fetchText(pathname, timeout = TIMEOUT) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
   try {
-    const res = await fetch(fullUrl(pathname), {
-      headers: { accept: '*/*', 'user-agent': 'TVBoxFullRemoteAudit/7.3', 'cache-control': 'no-cache' },
+    const res = await fetch(fullUrl(auditFetchPath(pathname)), {
+      headers: { accept: '*/*', 'user-agent': 'TVBoxFullRemoteAudit/7.3', 'cache-control': 'no-cache', pragma: 'no-cache' },
       signal: controller.signal,
     });
     const text = await res.text();
@@ -122,6 +128,10 @@ export function compareDisplayName(a, b) {
 function extractYear(item) {
   const m = textOf(item).match(/(?:19|20)\d{2}/);
   return m ? m[0] : '';
+}
+function sortYear(item) {
+  const fieldYear = String(item?.vod_year || item?.year || '').match(/(?:19|20)\d{2}/)?.[0] || '';
+  return fieldYear || extractYear(item);
 }
 function qualityEvidence(item) {
   const t = textOf(item).toUpperCase();
@@ -229,7 +239,7 @@ function assertItem(key, value, item) {
   }
   return { hit: t.includes(v), unknown: false };
 }
-function sortScore(key, value, list) {
+export function sortScore(key, value, list) {
   const v = filterValue(value);
   if (key !== 'sort' || list.length < 2) return { semanticHitRate: 1, unknownRate: 0 };
   let ordered = 0;
@@ -237,7 +247,7 @@ function sortScore(key, value, list) {
     if (v === 'name') ordered += compareDisplayName(list[i - 1].vod_name, list[i].vod_name) <= 0 ? 1 : 0;
     else if (v === 'quality') ordered += qualityRank(list[i - 1]) >= qualityRank(list[i]) ? 1 : 0;
     else if (v === 'lines') ordered += lineCount(list[i - 1]) >= lineCount(list[i]) ? 1 : 0;
-    else ordered += Number(extractYear(list[i - 1]) || 0) >= Number(extractYear(list[i]) || 0) ? 1 : 0;
+    else ordered += Number(sortYear(list[i - 1]) || 0) >= Number(sortYear(list[i]) || 0) ? 1 : 0;
   }
   return { semanticHitRate: ordered / (list.length - 1), unknownRate: 0 };
 }

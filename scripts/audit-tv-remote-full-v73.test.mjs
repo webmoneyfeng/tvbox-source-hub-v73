@@ -2,14 +2,17 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  auditFetchPath,
   classifyRecord,
   comboSemanticStats,
   compareDisplayName,
   duplicateRate,
+  sortScore,
   parseLiveText,
   searchTermMatches,
   validateConfigPayload,
 } from './audit-tv-remote-full-v73.mjs';
+import { normalizeVodTitle } from '../src/worker.mjs';
 
 test('config validation accepts the visible update-code site and rejects forbidden wording', () => {
   const ok = validateConfigPayload({
@@ -35,6 +38,18 @@ test('config validation accepts the visible update-code site and rejects forbidd
   assert.equal(bad.schema_ok, true);
   assert.equal(bad.content_shape_ok, false);
   assert.match(bad.fix_suggestion, /\u7981\u6b62\u6587\u6848/);
+});
+
+test('audit fetch cache-busts agg requests without changing non-agg endpoints', () => {
+  const agg = auditFetchPath('/agg?wd=%E7%94%B5%E5%BD%B1&limit=12');
+  assert.match(agg, /^\/agg\?wd=%E7%94%B5%E5%BD%B1&limit=12&audit_run=rc-/);
+  assert.equal(auditFetchPath('/config.json'), '/config.json');
+  assert.equal(auditFetchPath('/live.txt'), '/live.txt');
+  assert.equal(auditFetchPath('/agg?wd=x&audit_run=manual'), '/agg?wd=x&audit_run=manual');
+});
+
+test('worker title canonicalization removes Chinese punctuation that creates visible search duplicates', () => {
+  assert.equal(normalizeVodTitle('开拍啦，怪兽大电影'), normalizeVodTitle('开拍啦！怪兽大电影'));
 });
 
 test('single-filter empty result is a filter logic failure, but empty combo is diagnosed as over-constrained', () => {
@@ -83,6 +98,16 @@ test('name sorting and duplicate checks use the same semantic basis as Worker au
   assert.equal(dupes, 1 / 3);
 });
 
+test('duplicate checks prefer title year for cross-year concerts and gala programs', () => {
+  const dupes = duplicateRate([
+    { vod_name: '更好2025·江苏卫视跨年演唱会', vod_year: '2025', type_name: '文娱知识' },
+    { vod_name: '更好2025·江苏卫视跨年演唱会', vod_year: '2024', type_name: '文娱知识' },
+    { vod_name: '湖南卫视2022-2023年跨年演唱会', vod_year: '2022', type_name: '文娱知识' },
+    { vod_name: '湖南卫视2022-2023年跨年演唱会', vod_year: '2023', type_name: '文娱知识' },
+  ]);
+  assert.equal(dupes, 2 / 4);
+});
+
 
 test('playback probes accept HTTP 206 partial content as valid media response', () => {
   const record = classifyRecord({
@@ -114,4 +139,14 @@ test('combo semantic checks can use exposed list evidence fields', () => {
 test('broad search term \u5f71\u89c6 matches normal media categories semantically', () => {
   assert.equal(searchTermMatches({ vod_name: '\u7ecf\u5178\u7535\u5f71', type_name: '\u7535\u5f71', vod_remarks: '\u9ad8\u6e05\u6b63\u7247' }, '\u5f71\u89c6'), true);
   assert.equal(searchTermMatches({ vod_name: '\u5929\u9053\u7535\u89c6\u52672018', type_name: '\u5267\u96c6', vod_remarks: '\u738b\u5fd7\u6587\u4e3b\u6f14' }, '\u5f71\u89c6'), true);
+});
+
+
+test('sort latest semantics prefers vod_year over historical years in documentary titles', () => {
+  const rows = [
+    { vod_name: '1958\u5e74\u4e16\u754c\u676f\u5b98\u65b9\u7eaa\u5f55\u7247', vod_year: '2023' },
+    { vod_name: '2002\u5e74\u4e16\u754c\u676f\u5b98\u65b9\u7eaa\u5f55\u7247', vod_year: '2023' },
+    { vod_name: '\u718a\u732b\u8ba1\u52122\u5e55\u540e\u7eaa\u5f55', vod_year: '2026' },
+  ];
+  assert.equal(sortScore('sort', 'latest', [rows[2], rows[0], rows[1]]).semanticHitRate, 1);
 });

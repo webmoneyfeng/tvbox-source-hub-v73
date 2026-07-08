@@ -1,14 +1,15 @@
 {
-  "generatedAt": "2026-07-08T00:07:23.240Z",
+  "generatedAt": "2026-07-08T05:23:32.755Z",
   "repo": {
     "ok": true,
     "private": false,
     "visibility": "public",
     "url": "https://github.com/webmoneyfeng/tvbox-source-hub-v73"
   },
+  "publicBase": "https://tv.webhome.eu.org",
   "monthlyScheduledRuns": 330,
-  "distFileCount": 318,
-  "distBytes": 36300361,
+  "distFileCount": 300,
+  "distBytes": 34327602,
   "workflows": [
     {
       "file": ".github/workflows/deep-verify.yml",
@@ -44,6 +45,25 @@
       "monthlyRuns": 30
     }
   ],
+  "liveProxy": {
+    "ok": true,
+    "liveTxtUrl": "https://tv.webhome.eu.org/live.txt",
+    "groupCount": 9,
+    "totalChannels": 95,
+    "proxiedChannels": 0,
+    "directChannels": 95,
+    "unknownChannels": 0,
+    "proxyRatio": 0,
+    "samplePlaylist": {
+      "ok": true,
+      "channelName": "24 Hour Free Movies",
+      "url": "https://d1b5mlajbmvkjv.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b743c6411d25f62fc25/UDU-DistroTV/145.m3u8?ads.vf=7FhdsxqVxOi",
+      "mediaLines": 4,
+      "proxiedChildLines": 0,
+      "directChildLines": 4,
+      "childProxyRatio": 0
+    }
+  },
   "rows": [
     {
       "area": "github_repo",
@@ -60,20 +80,20 @@
     {
       "area": "cloudflare_pages_files",
       "result": "PASS",
-      "metric": "318",
+      "metric": "300",
       "note": "dist 静态快照采用打包文件，不采用每个节目一个文件。"
     },
     {
       "area": "cloudflare_pages_size",
       "result": "PASS",
-      "metric": "36300361 bytes",
+      "metric": "34327602 bytes",
       "note": "dist 总体积处于轻量级静态分发范围。"
     },
     {
       "area": "cloudflare_worker_requests",
-      "result": "WARN",
-      "metric": "unknown",
-      "note": "点播不代理视频流；直播 /play/ 与 /p/ 可能消耗 Worker 请求，本轮只审计不扩大代理。"
+      "result": "PASS",
+      "metric": "0/95 proxied",
+      "note": "live.txt groups=9 channels=95；直播直连=95，经 Worker 代理=0，代理占比=0%；抽样播放清单子链接 0/4 继续走 Worker"
     },
     {
       "area": "cloudflare_kv",
@@ -82,7 +102,7 @@
       "note": "当前主要读取 channels/vod_catalog，未发现高频写入设计。"
     }
   ],
-  "pass": 5,
-  "warn": 1,
+  "pass": 6,
+  "warn": 0,
   "fail": 0
 }

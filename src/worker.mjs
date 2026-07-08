@@ -867,6 +867,13 @@ function extractYearFromVod(item) {
   const m = String(text).match(/(?:19|20)\d{2}/);
   return m ? m[0] : '';
 }
+function titleDeclaredYear(value) {
+  const m = String(value || '').match(/(?:19|20)\d{2}/);
+  return m ? m[0] : '';
+}
+function dedupYearForVod(item) {
+  return titleDeclaredYear(item?.vod_name) || extractYearFromVod(item);
+}
 function qualityRankText(text) {
   const t = String(text || '').toUpperCase();
   if (/4K|2160/.test(t)) return 70;
@@ -877,12 +884,12 @@ function qualityRankText(text) {
   return 30;
 }
 function aggQualityRank(item) { return qualityRankText([item.vod_remarks, item.vod_name, item.vod_play_from].join(' ')); }
-function normalizeVodTitle(value) {
+export function normalizeVodTitle(value) {
   return String(value || '')
     .replace(/[\[\u3010(\uff08].*?[\]\u3011)\uff09]/g, '')
     .replace(/(?:\u56fd\u8bed|\u7ca4\u8bed|\u4e2d\u5b57|\u4e2d\u6587\u5b57\u5e55|\u82f1\u6587|\u82f1\u8bed|\u65e5\u8bed|\u97e9\u8bed|\u6cf0\u8bed|\u9ad8\u6e05|HD|TC|TS|\u62a2\u5148|\u6b63\u7247|\u5b8c\u7ed3|\u5168\u96c6|\u7b2c\d+\u5b63|\u7b2c\d+\u96c6|\u66f4\u65b0\u81f3.*)$/gi, '')
     .replace(/(?:19|20)\d{2}/g, '')
-    .replace(/[\s\u00b7.\u3002,:\uff1a;\uff1b!\uff01?\uff1f_\-\u2014|]+/g, '')
+    .replace(/[\s\u00b7.\u3002,\uff0c:\uff1a;\uff1b!\uff01?\uff1f_\-\u2014|]+/g, '')
     .trim()
     .toLowerCase();
 }
@@ -981,7 +988,7 @@ function aggItemMatches(item, categoryKey, filters) {
 }
 function aggDedupKey(item) {
   const title = normalizeVodTitle(item.vod_name) || String(item.vod_name || '').trim().toLowerCase() || String(item.vod_id || '');
-  return [title, extractYearFromVod(item), item._macro || ''].join('|');
+  return [title, dedupYearForVod(item), item._macro || ''].join('|');
 }
 function aggListItemFromMerged(m) {
   const best = m.best;
@@ -1167,6 +1174,44 @@ function decodeAggCandidates(id) {
   const m = raw.match(/^([a-z0-9_]+)[:|](.+)$/i);
   return m ? [{ s: m[1], id: m[2] }] : [];
 }
+const detailExpansionCache = new Map();
+const DETAIL_SOURCE_PRIORITY = {
+  baidu: 100,
+  bfzy: 95,
+  taopian: 90,
+  huya: 85,
+  hhzy: 80,
+  hongniu: 75,
+  guangsu: 70,
+  sony: 65,
+  ffzy: 60,
+  wujin: 55,
+  modu: 50,
+  yhzy: 45,
+  xinlang: 40,
+  lzi: 30,
+  sdzy: 25,
+};
+function firstPlayableUrlFromVod(vod) {
+  const urlGroups = String(vod?.vod_play_url || '').split('$$$');
+  for (const group of urlGroups) {
+    for (const ep of splitCmsEpisodes(group)) if (isPlayableCmsUrl(ep.url)) return ep.url;
+  }
+  return '';
+}
+function playUrlReliabilityScore(url) {
+  try {
+    const host = new URL(String(url || '')).hostname.toLowerCase();
+    if (/lzcdn2[0-9]\.com$/.test(host)) return -80;
+    if (/bdzybf|baofeng|taopianplay|huya|hhzy|hongniu|guangsu|ffzy|wujin|modu|apiyhzy|xinlang/i.test(host)) return 30;
+    if (/cloudfront|akamai|aliyun|byte|cdn/i.test(host)) return 10;
+    return 0;
+  } catch { return 0; }
+}
+function detailSourceScore(row) {
+  const base = DETAIL_SOURCE_PRIORITY[row?.source?.slug] ?? (SOURCE_RANK[row?.source?.slug] || 0);
+  return base + playUrlReliabilityScore(firstPlayableUrlFromVod(row?.vod));
+}
 function cleanPlayFlag(value, source) {
   const raw = cleanCmsText(value || '', 20);
   if (!raw || /(m3u8|yun|liangzi|db|sd|bfzy|sn|tp|hh|hn|gs|hy|no)/i.test(raw)) return `${source.short}\u9ad8\u6e05`.slice(0, 24);
@@ -1263,7 +1308,7 @@ function snapshotListItemMatches(item, key, value) {
 }
 function snapshotDedupKey(item) {
   const title = normalizeVodTitle(item?.vod_name) || String(item?.vod_name || '').trim().toLowerCase() || String(item?.vod_id || '');
-  return [title, extractYearFromVod(item), item?.type_name || ''].join('|');
+  return [title, dedupYearForVod(item), item?.type_name || ''].join('|');
 }
 function betterSnapshotItem(a, b) {
   const qa = aggQualityRank(a), qb = aggQualityRank(b);
@@ -1436,6 +1481,7 @@ async function statusV73(request, env) {
     coverageSummary: manifest?.coverageSummary || null,
     sourceSummary: manifest?.sourceSummary || null,
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
+    liveDelivery: liveDeliveryPolicy(origin),
     fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
     compatibility: ['TVBox', 'FongMi', '影视仓'],
   }, 60);
@@ -1450,14 +1496,8 @@ async function snapshotV73(request, env) {
   return json({ ok: Boolean(manifest), version: VERSION, manifest: manifest || null, categories: categories || null, bases: snapshotBases(env) }, manifest ? 120 : 30, 200);
 }
 
-async function aggDetail(request, env, ids) {
-  const idList = String(ids || '').split(',').map((x) => x.trim()).filter(Boolean);
-  const candidates = [];
-  for (const id of idList) candidates.push(...decodeAggCandidates(id));
-  const unique = [];
-  const seen = new Set();
-  for (const c of candidates) { const key = c.s + ':' + c.id; if (!seen.has(key)) { seen.add(key); unique.push(c); } }
-  const tasks = unique.slice(0, AGG_DETAIL_LIMIT).map(async (c) => {
+async function resolveAggDetailCandidates(candidates) {
+  const tasks = candidates.slice(0, AGG_DETAIL_LIMIT).map(async (c) => {
     const source = cmsSourceBySlug(c.s);
     if (!source) return null;
     try {
@@ -1475,7 +1515,50 @@ async function aggDetail(request, env, ids) {
       return null;
     } catch { return null; }
   });
-  const resolved = (await Promise.allSettled(tasks)).map((r) => r.status === 'fulfilled' ? r.value : null).filter(Boolean);
+  return (await Promise.allSettled(tasks))
+    .map((r) => r.status === 'fulfilled' ? r.value : null)
+    .filter(Boolean)
+    .sort((a, b) => detailSourceScore(b) - detailSourceScore(a) || (SOURCE_RANK[b.source.slug] || 0) - (SOURCE_RANK[a.source.slug] || 0));
+}
+async function expandAggDetailCandidatesByTitle(resolved, candidates) {
+  if (!resolved.length || candidates.length >= 3) return candidates;
+  const bestScore = Math.max(...resolved.map((row) => detailSourceScore(row)));
+  const firstPlayable = firstPlayableUrlFromVod(resolved[0]?.vod);
+  const shouldExpand = candidates.length < 2 && (bestScore < 50 || playUrlReliabilityScore(firstPlayable) < 0);
+  if (!shouldExpand) return candidates;
+  const firstTitle = cleanAggName(resolved[0].vod?.vod_name || '', 120);
+  const normalized = normalizeVodTitle(firstTitle);
+  if (!normalized) return candidates;
+  const cached = detailExpansionCache.get(normalized);
+  if (cached) return cached;
+  const seen = new Set(candidates.map((c) => c.s + ':' + c.id));
+  const rows = [];
+  const tasks = CMS_SOURCES.map((source) => collectAggListFromSource(source, 'recommend', {}, 1, firstTitle).catch(() => []));
+  for (const r of await Promise.allSettled(tasks)) if (r.status === 'fulfilled') rows.push(...r.value);
+  const extra = [];
+  for (const row of rows) {
+    if (normalizeVodTitle(row.vod_name) !== normalized) continue;
+    const key = row._sourceSlug + ':' + row.vod_id;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    extra.push({ s: row._sourceSlug, id: row.vod_id });
+    if (candidates.length + extra.length >= AGG_DETAIL_LIMIT) break;
+  }
+  const expanded = extra.length ? candidates.concat(extra).slice(0, AGG_DETAIL_LIMIT) : candidates;
+  if (detailExpansionCache.size > 200) detailExpansionCache.clear();
+  detailExpansionCache.set(normalized, expanded);
+  return expanded;
+}
+async function aggDetail(request, env, ids) {
+  const idList = String(ids || '').split(',').map((x) => x.trim()).filter(Boolean);
+  const candidates = [];
+  for (const id of idList) candidates.push(...decodeAggCandidates(id));
+  const unique = [];
+  const seen = new Set();
+  for (const c of candidates) { const key = c.s + ':' + c.id; if (!seen.has(key)) { seen.add(key); unique.push(c); } }
+  let resolved = await resolveAggDetailCandidates(unique);
+  const expandedUnique = await expandAggDetailCandidatesByTitle(resolved, unique);
+  if (expandedUnique.length > unique.length) resolved = await resolveAggDetailCandidates(expandedUnique);
   if (!resolved.length) return json({ code: 1, msg: 'no valid direct play url', list: [] }, 60);
   const first = resolved[0].vod;
   const playFrom = [], playUrl = [], urlSeen = new Set();
@@ -1547,8 +1630,55 @@ async function config(request, env) {
   return json({ spider: '', sites, lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: origin + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' }, 300);
 }
 
+function isHttpUrl(value) {
+  try {
+    const u = new URL(String(value || '').trim());
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch { return false; }
+}
+function normalizeLiveProxyMode(raw, fallback = 'direct') {
+  const value = String(raw || '').trim().toLowerCase();
+  if (!value) return fallback;
+  if (['0', 'false', 'no', 'off', 'direct'].includes(value)) return 'direct';
+  if (['playlist', 'playlist-only', 'playlist_only', 'playlist-proxy', 'playlist_proxy', 'playlist-proxy-only', 'playlist_proxy_only'].includes(value)) return 'playlist';
+  if (['1', 'true', 'yes', 'on', 'proxy', 'full', 'full-proxy', 'full_proxy'].includes(value)) return 'full';
+  return fallback;
+}
+function liveProxyModeFromRequest(request, env) {
+  const url = new URL(request.url);
+  return normalizeLiveProxyMode(url.searchParams.get('proxy') || url.searchParams.get('mode') || url.searchParams.get('live_proxy') || env?.LIVE_PROXY_MODE, 'direct');
+}
+function playlistProxyModeFromRequest(request) {
+  const url = new URL(request.url);
+  return normalizeLiveProxyMode(url.searchParams.get('mode') || url.searchParams.get('proxy') || url.searchParams.get('live_proxy'), 'full') === 'playlist' ? 'playlist' : 'full';
+}
+function liveFallbackSuffix(mode) {
+  if (mode === 'playlist') return '?mode=playlist';
+  if (mode === 'full') return '?mode=full';
+  return '';
+}
+function liveChannelUrl(rawUrl, origin, mode) {
+  const direct = String(rawUrl || '').trim();
+  if (!direct) return '';
+  if (mode === 'direct' && isHttpUrl(direct)) return direct;
+  const fallbackMode = mode === 'playlist' ? 'playlist' : 'full';
+  return origin + '/play/' + b64urlEncode(direct) + '.m3u8' + liveFallbackSuffix(fallbackMode);
+}
+function liveDeliveryPolicy(origin) {
+  return {
+    defaultMode: 'DIRECT',
+    defaultUrl: origin + '/live.txt',
+    playlistProxyFallback: origin + '/live.txt?proxy=playlist',
+    fullProxyFallback: origin + '/live.txt?proxy=1',
+    defaultProxiesPlaylists: false,
+    defaultProxiesMediaSegments: false,
+    reason: '\u76f4\u64ad\u9ed8\u8ba4\u76f4\u8fde\u4e0a\u6e38\u5730\u5740\uff0c\u907f\u514d\u5546\u4e1a\u5e76\u53d1\u89c2\u770b\u628a Worker \u514d\u8d39\u8bf7\u6c42\u91cf\u653e\u5927\uff1b/play \u4e0e /p \u4ec5\u4f5c\u4e3a\u663e\u5f0f\u517c\u5bb9\u515c\u5e95\u3002',
+  };
+}
+
 async function liveTxt(request, env) {
   const origin = new URL(request.url).origin;
+  const mode = liveProxyModeFromRequest(request, env);
   const channels = await getChannels(env);
   const lines = [];
   for (const group of LIVE_GROUP_ORDER) {
@@ -1556,7 +1686,10 @@ async function liveTxt(request, env) {
     const items = channels.filter((c) => (c.group === group) || (group === '\u5176\u4ed6\u9891\u9053' && c.group === legacyOtherGroup));
     if (!items.length) continue;
     lines.push(group + ',#genre#');
-    for (const c of items) lines.push(cleanLineName(c.name) + ',' + origin + '/play/' + b64urlEncode(c.url) + '.m3u8');
+    for (const c of items) {
+      const channelUrl = liveChannelUrl(c.url, origin, mode);
+      if (channelUrl) lines.push(cleanLineName(c.name) + ',' + channelUrl);
+    }
     lines.push('');
   }
   return text(lines.join('\n').trim() + '\n', 'text/plain; charset=utf-8', 300);
@@ -1564,32 +1697,37 @@ async function liveTxt(request, env) {
 function absoluteUrl(base, value) {
   try { return new URL(value, base).href; } catch { return value; }
 }
-function rewriteUriAttrs(line, base, origin) {
-  return line.replace(/URI="([^"]+)"/g, (_, uri) => 'URI="' + origin + '/p/' + b64urlEncode(absoluteUrl(base, uri)) + '"');
+function rewriteUriAttrs(line, base, origin, mode = 'full') {
+  return line.replace(/URI="([^"]+)"/g, (_, uri) => {
+    const abs = absoluteUrl(base, uri);
+    return 'URI="' + (mode === 'playlist' ? abs : origin + '/p/' + b64urlEncode(abs)) + '"';
+  });
 }
-function rewriteManifest(body, baseUrl, origin) {
+function rewriteManifest(body, baseUrl, origin, mode = 'full') {
   return body.split(/\r?\n/).map((raw) => {
     const line = raw.trim();
     if (!line) return raw;
-    if (line.startsWith('#')) return line.includes('URI="') ? rewriteUriAttrs(raw, baseUrl, origin) : raw;
+    if (line.startsWith('#')) return line.includes('URI="') ? rewriteUriAttrs(raw, baseUrl, origin, mode) : raw;
     const abs = absoluteUrl(baseUrl, line);
     let isPlaylist = false;
     try {
       const path = new URL(abs).pathname.toLowerCase();
       isPlaylist = path.endsWith('.m3u8') || path.endsWith('.m3u');
     } catch {}
-    return origin + (isPlaylist ? '/play/' : '/p/') + b64urlEncode(abs) + (isPlaylist ? '.m3u8' : '');
+    if (isPlaylist) return origin + '/play/' + b64urlEncode(abs) + '.m3u8' + liveFallbackSuffix(mode === 'playlist' ? 'playlist' : 'full');
+    return mode === 'playlist' ? abs : origin + '/p/' + b64urlEncode(abs);
   }).join('\n');
 }
 async function proxyPlaylist(request, token) {
   const target = b64urlDecode(String(token || '').replace(/\.m3u8$/i, ''));
+  const mode = playlistProxyModeFromRequest(request);
   const upstream = await fetch(target, { headers: { 'user-agent': UA, accept: '*/*' }, redirect: 'follow' });
   const body = await upstream.text();
   if (!upstream.ok || /^\s*</.test(body) || /access denied/i.test(body)) {
     return text('#EXTM3U\n# source temporarily unavailable\n', 'application/vnd.apple.mpegurl; charset=utf-8', 30, upstream.ok ? 502 : upstream.status);
   }
   const origin = new URL(request.url).origin;
-  return text(rewriteManifest(body, target, origin), 'application/vnd.apple.mpegurl; charset=utf-8', 120);
+  return text(rewriteManifest(body, target, origin, mode), 'application/vnd.apple.mpegurl; charset=utf-8', 120);
 }
 async function proxyMedia(request, token) {
   const target = b64urlDecode(token);
@@ -1653,7 +1791,7 @@ async function health(request, env) {
   return json({
     version: VERSION,
     ok: true,
-    live: { total: channels.length, counts: countBy(healthChannels, 'group'), url: origin + '/live.txt' },
+    live: { total: channels.length, counts: countBy(healthChannels, 'group'), url: origin + '/live.txt', delivery: liveDeliveryPolicy(origin) },
     vod: {
       total: vodItems.length,
       counts: countBy(vodItems, 'type_name'),
@@ -1675,7 +1813,7 @@ async function sources(request, env) {
     ok: true,
     version: VERSION,
     policy: '\u5f71\u89c6\u70b9\u64ad\u4f7f\u7528\u591a CMS \u76f4\u8fde\u805a\u5408\uff1b\u4fdd\u7559\u6210\u4eba\u5185\u5bb9\u4e0e\u89e3\u8bf4\u3001\u6f14\u5531\u4f1a\u3001\u516c\u5f00\u8bfe\u3001\u6559\u7a0b\u3001\u79d1\u666e\u7b49\u6709\u6548\u5185\u5bb9\uff1b\u8fc7\u6ee4\u5e7f\u544a\u3001\u89e3\u6790\u9875\u3001iframe \u548c\u65e0\u6548\u64ad\u653e\u5730\u5740\uff1b\u7535\u89c6\u7aef\u53ea\u663e\u793a\u4e00\u4e2a\u70b9\u64ad\u5165\u53e3\u3002',
-    live: { total: channels.length, counts: countBy(channels.map((c) => ({ ...c, group: c.group === ('\u5907' + '\u7528' + '\u9891\u9053') ? '\u5176\u4ed6\u9891\u9053' : c.group })), 'group'), groups: LIVE_GROUP_ORDER, channels: channels.map((c) => ({ group: c.group === ('\u5907' + '\u7528' + '\u9891\u9053') ? '\u5176\u4ed6\u9891\u9053' : c.group, name: c.name })) },
+    live: { total: channels.length, counts: countBy(channels.map((c) => ({ ...c, group: c.group === ('\u5907' + '\u7528' + '\u9891\u9053') ? '\u5176\u4ed6\u9891\u9053' : c.group })), 'group'), groups: LIVE_GROUP_ORDER, delivery: liveDeliveryPolicy(new URL(request.url).origin), channels: channels.map((c) => ({ group: c.group === ('\u5907' + '\u7528' + '\u9891\u9053') ? '\u5176\u4ed6\u9891\u9053' : c.group, name: c.name })) },
     vod: { total: vodItems.length, counts: countBy(vodItems, 'type_name'), categories: VOD_CATEGORIES.map((c) => ({ type_id: c.id, type_name: c.name, legacy_id: c.key })), filterKeys: ['\u5e74\u4ee3', '\u5e74\u4efd', '\u9898\u6750', '\u5927\u5c0f', '\u6392\u5e8f'], items: vodItems.map(vodListItem) },
     aggregate: { entry: '\u5f71\u89c6\u70b9\u64ad', categories: AGG_CATEGORIES.map((c) => ({ type_id: c.id, type_name: c.name, key: c.key })), internalSourceCount: CMS_SOURCES.length, filterKeys: ['\u6392\u5e8f', '\u5e74\u4efd', '\u5730\u533a', '\u7c7b\u578b', '\u5185\u5bb9\u5f62\u6001', '\u6e05\u6670\u5ea6'] },
   }, 300);
@@ -1715,4 +1853,3 @@ export default {
     }
   },
 };
-

@@ -246,23 +246,30 @@ async function searchSourceForCoverage(candidate, item) {
 async function searchAggregate(item, repeat = REPEAT_COUNT) {
   const queries = queryTermsForItem(item);
   const runs = [];
+  async function probe(term, mode, i) {
+    const force = mode === 'dynamic' ? '&force=dynamic' : '';
+    const url = `${TVBOX_BASE}/agg?wd=${encodeURIComponent(term)}&limit=24${force}&coverage_probe=${Date.now()}_${i}_${mode}`;
+    const got = await fetchJson(url, 18000);
+    const list = Array.isArray(got.data?.list) ? got.data.list : [];
+    const exactIndex = list.findIndex((x) => exactTitleMatches(item, x));
+    const fuzzyIndex = exactIndex >= 0 ? exactIndex : list.findIndex((x) => titleMatches(item, x));
+    return {
+      mode,
+      term,
+      status: got.status,
+      count: list.length,
+      total: got.data?.total || 0,
+      exactIndex,
+      fuzzyIndex,
+      names: list.slice(0, 10).map((x) => x.vod_name || x.name || ''),
+      id: fuzzyIndex >= 0 ? list[fuzzyIndex].vod_id : '',
+    };
+  }
   for (let i = 0; i < repeat; i++) {
     for (const term of queries) {
-      const url = `${TVBOX_BASE}/agg?wd=${encodeURIComponent(term)}&limit=24&force=dynamic&coverage_probe=${Date.now()}_${i}`;
-      const got = await fetchJson(url, 18000);
-      const list = Array.isArray(got.data?.list) ? got.data.list : [];
-      const exactIndex = list.findIndex((x) => exactTitleMatches(item, x));
-      const fuzzyIndex = exactIndex >= 0 ? exactIndex : list.findIndex((x) => titleMatches(item, x));
-      runs.push({
-        term,
-        status: got.status,
-        count: list.length,
-        total: got.data?.total || 0,
-        exactIndex,
-        fuzzyIndex,
-        names: list.slice(0, 10).map((x) => x.vod_name || x.name || ''),
-        id: fuzzyIndex >= 0 ? list[fuzzyIndex].vod_id : '',
-      });
+      const [user, dynamic] = await Promise.allSettled([probe(term, 'user', i), probe(term, 'dynamic', i)]);
+      if (user.status === 'fulfilled') runs.push(user.value);
+      if (dynamic.status === 'fulfilled') runs.push(dynamic.value);
     }
   }
   return runs;
@@ -270,10 +277,14 @@ async function searchAggregate(item, repeat = REPEAT_COUNT) {
 
 function classifyCoverage(item, sourceHits, aggRuns, detailOk, playOk) {
   const sourceHitCount = sourceHits.reduce((n, x) => n + x.hits.length, 0);
-  const anyAggHit = aggRuns.some((r) => r.fuzzyIndex >= 0);
-  const anyFirstPageExact = aggRuns.some((r) => r.exactIndex >= 0 && r.exactIndex < 24);
+  const userRuns = aggRuns.filter((r) => !r.mode || r.mode === 'user');
+  const visibleRuns = userRuns.length ? userRuns : aggRuns;
+  const anyAggHit = visibleRuns.some((r) => r.fuzzyIndex >= 0);
+  const anyFirstPageFuzzy = visibleRuns.some((r) => r.fuzzyIndex >= 0 && r.fuzzyIndex < 24);
+  const anyFirstPageExact = visibleRuns.some((r) => r.exactIndex >= 0 && r.exactIndex < 24);
+  const requiredTerms = new Set([item.title, ...(item.aliases || []), ...(item.actors || [])].filter(Boolean));
   const byTerm = new Map();
-  for (const run of aggRuns) {
+  for (const run of visibleRuns.filter((r) => !requiredTerms.size || requiredTerms.has(r.term))) {
     if (!byTerm.has(run.term)) byTerm.set(run.term, []);
     byTerm.get(run.term).push(run.fuzzyIndex >= 0);
   }
@@ -281,6 +292,12 @@ function classifyCoverage(item, sourceHits, aggRuns, detailOk, playOk) {
   if (!sourceHitCount) return { result: item.priority === 'critical' ? 'FAIL' : 'WARN', root_cause: 'SOURCE_UNIVERSE_GAP', note: '候选源集合未发现该节目。' };
   if (!anyAggHit) return { result: 'FAIL', root_cause: 'PARSER_GAP', note: '源侧有候选，但聚合搜索未召回。' };
   if (unstable) return { result: 'WARN', root_cause: 'SOURCE_PHYSICAL_LIMIT', note: '重复搜索结果不稳定，可能由源超时或反爬导致。' };
+  if (item.priority === 'category') {
+    if (!anyFirstPageFuzzy) return { result: 'WARN', root_cause: 'RANKING_SUPPRESSION', note: '已召回但语义相关类目结果未稳定进入第一页。' };
+    if (!detailOk) return { result: 'WARN', root_cause: 'PLAYBACK_FILTERED', note: '列表召回但详情失败。' };
+    if (!playOk) return { result: 'WARN', root_cause: 'PLAYBACK_FILTERED', note: '详情存在但播放线路无效。' };
+    return { result: 'PASS', root_cause: 'OK', note: '' };
+  }
   if (!anyFirstPageExact) return { result: 'WARN', root_cause: 'RANKING_SUPPRESSION', note: '已召回但精确结果未稳定进入第一页。' };
   if (!detailOk) return { result: 'WARN', root_cause: 'PLAYBACK_FILTERED', note: '列表召回但详情失败。' };
   if (!playOk) return { result: 'WARN', root_cause: 'PLAYBACK_FILTERED', note: '详情存在但播放线路无效。' };
@@ -312,7 +329,7 @@ async function auditSourcesAndCoverage() {
     const sourceProbeResults = await Promise.allSettled(coverageSources.map(async (source) => ({ source, hits: await searchSourceForCoverage(source, item) })));
     for (const r of sourceProbeResults) if (r.status === 'fulfilled' && r.value.hits.length) sourceHits.push({ slug: r.value.source.slug, status: r.value.source.status, hits: r.value.hits });
     const aggRuns = await searchAggregate(item);
-    const firstAggHit = aggRuns.find((r) => r.id)?.id || '';
+    const firstAggHit = (aggRuns.find((r) => (!r.mode || r.mode === 'user') && r.id) || aggRuns.find((r) => r.id))?.id || '';
     const detail = await detailForAggregate(firstAggHit);
     const classification = classifyCoverage(item, sourceHits, aggRuns, detail.detailOk, detail.playOk);
     coverageRows.push({
