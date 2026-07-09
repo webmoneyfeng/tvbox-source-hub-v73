@@ -1,6 +1,6 @@
 # v7.4 更新时间一致性 SLA 审计
 
-- 生成时间：2026-07-09T18:47:34.640Z
+- 生成时间：2026-07-09T19:35:31.953Z
 - 主入口：https://tv.webhome.eu.org
 - 同构入口：https://tv.webclound.eu.org
 - PASS/WARN/FAIL：9/0/0
@@ -8,14 +8,14 @@
 
 ## 端点抽取
 
-- PASS；primary.config；status=200；code=642001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
-- PASS；primary.config_clean；status=200；code=642001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
-- PASS；primary.agg；status=200；code=642001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
-- PASS；primary.agg_clean；status=200；code=642001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
-- PASS；primary.status；status=200；code=642001706202；source=hot-probe；cache=public, max-age=30；root=OK
-- PASS；primary.snapshot；status=200；code=530001706202；source=snapshot；cache=public, max-age=120；root=OK
-- PASS；secondary.config；status=200；code=642001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
-- PASS；secondary.config_clean；status=200；code=642001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
+- PASS；primary.config；status=200；code=433001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
+- PASS；primary.config_clean；status=200；code=433001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
+- PASS；primary.agg；status=200；code=433001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
+- PASS；primary.agg_clean；status=200；code=433001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
+- PASS；primary.status；status=200；code=433001706202；source=hot-probe；cache=public, max-age=30；root=OK
+- PASS；primary.snapshot；status=200；code=933290706202；source=snapshot；cache=public, max-age=120；root=OK
+- PASS；secondary.config；status=200；code=433001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
+- PASS；secondary.config_clean；status=200；code=433001706202；source=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK
 
 ## 关系检查
 
@@ -27,7 +27,7 @@
 - PASS；primary.status_vs_config；root=OK；drift=0.6min；age=n/a；within expected drift
 - PASS；status.visibleUpdateSource；root=OK；drift=n/a；age=n/a；accepted source
 - PASS；primary.hot_probe_freshness；root=OK；drift=n/a；age=1min；fresh
-- PASS；primary.snapshot_freshness；root=OK；drift=n/a；age=132.2min；fresh
+- PASS；primary.snapshot_freshness；root=OK；drift=n/a；age=235.7min；fresh
 
 ## 需要关注
 
