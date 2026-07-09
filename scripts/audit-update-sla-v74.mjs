@@ -13,6 +13,8 @@ const CRON_WINDOW_MS = Number(process.env.UPDATE_SLA_CRON_WINDOW_MS || 6 * 60 * 
 const AGG_DRIFT_MS = Number(process.env.UPDATE_SLA_AGG_DRIFT_MS || 2 * 60 * 1000);
 const HOT_FRESH_MS = Number(process.env.UPDATE_SLA_HOT_FRESH_MS || 6 * 60 * 1000);
 const SNAPSHOT_FRESH_MS = Number(process.env.UPDATE_SLA_SNAPSHOT_FRESH_MS || 6 * 60 * 60 * 1000);
+const HOT_WORKFLOW_TARGET_MS = Number(process.env.UPDATE_SLA_HOT_WORKFLOW_TARGET_MS || 15 * 60 * 1000);
+const HOT_WORKFLOW_PATH = path.join(ROOT, '.github', 'workflows', 'hot-refresh.yml');
 
 const ROOT_CAUSES = {
   OK: 'OK',
@@ -21,6 +23,8 @@ const ROOT_CAUSES = {
   STATUS_CACHE_STALE: 'STATUS_CACHE_STALE',
   HOT_PROBE_STALE: 'HOT_PROBE_STALE',
   SNAPSHOT_STALE: 'SNAPSHOT_STALE',
+  HOT_WORKFLOW_SCHEDULE_GAP: 'HOT_WORKFLOW_SCHEDULE_GAP',
+  HOT_WORKFLOW_MISSING: 'HOT_WORKFLOW_MISSING',
   MIRROR_DRIFT: 'MIRROR_DRIFT',
   WORKER_ISOLATE_DRIFT: 'WORKER_ISOLATE_DRIFT',
   API_ERROR: 'API_ERROR',
@@ -169,6 +173,96 @@ function minutes(ms) {
   return Math.round(ms / 6000) / 10;
 }
 
+
+function expandCronField(field, min, max) {
+  const out = new Set();
+  const raw = String(field || '').trim();
+  if (!raw) return [];
+  for (const part of raw.split(',')) {
+    const token = part.trim();
+    if (!token) continue;
+    let rangePart = token;
+    let step = 1;
+    if (token.includes('/')) {
+      const pieces = token.split('/');
+      rangePart = pieces[0] || '*';
+      step = Math.max(1, Number(pieces[1]) || 1);
+    }
+    let start = min;
+    let end = max;
+    if (rangePart !== '*') {
+      if (rangePart.includes('-')) {
+        const [a, b] = rangePart.split('-').map((x) => Number(x));
+        if (!Number.isFinite(a) || !Number.isFinite(b)) continue;
+        start = Math.max(min, a);
+        end = Math.min(max, b);
+      } else {
+        const n = Number(rangePart);
+        if (!Number.isFinite(n)) continue;
+        start = end = n;
+      }
+    }
+    for (let v = start; v <= end; v += step) {
+      if (v >= min && v <= max) out.add(v);
+    }
+  }
+  return [...out].sort((a, b) => a - b);
+}
+
+function cronMinutesOfDay(expr) {
+  const fields = String(expr || '').trim().split(/\s+/);
+  if (fields.length < 5) return [];
+  const minutesField = fields[0];
+  const hoursField = fields[1];
+  const mins = expandCronField(minutesField, 0, 59);
+  const hours = expandCronField(hoursField, 0, 23);
+  const out = [];
+  for (const h of hours) for (const m of mins) out.push(h * 60 + m);
+  return [...new Set(out)].sort((a, b) => a - b);
+}
+
+function maxCronGapMinutes(cronExprs) {
+  const times = [...new Set((cronExprs || []).flatMap((expr) => cronMinutesOfDay(expr)))].sort((a, b) => a - b);
+  if (!times.length) return null;
+  if (times.length === 1) return 24 * 60;
+  let maxGap = 0;
+  for (let i = 0; i < times.length; i++) {
+    const cur = times[i];
+    const next = i === times.length - 1 ? times[0] + 24 * 60 : times[i + 1];
+    maxGap = Math.max(maxGap, next - cur);
+  }
+  return maxGap;
+}
+
+function extractWorkflowCrons(text) {
+  const out = [];
+  const re = /cron:\s*['"]([^'"]+)['"]/g;
+  let m;
+  while ((m = re.exec(String(text || '')))) out.push(m[1]);
+  return out;
+}
+
+function workflowScheduleCheckFromCrons(crons, targetMs = HOT_WORKFLOW_TARGET_MS) {
+  const maxGap = maxCronGapMinutes(crons);
+  const targetMinutes = Math.round(targetMs / 60000);
+  if (!crons?.length || maxGap === null) {
+    return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_MISSING, cron: [], max_gap_minutes: null, target_minutes: targetMinutes, message: 'hot-refresh workflow cron missing or unparsable' };
+  }
+  if (maxGap <= targetMinutes) {
+    return { id: 'workflow.hot_refresh_schedule', result: 'PASS', root_cause: ROOT_CAUSES.OK, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: 'hot refresh workflow within target cadence' };
+  }
+  return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_SCHEDULE_GAP, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: `hot refresh workflow max gap ${maxGap}min exceeds ${targetMinutes}min target` };
+}
+
+async function hotRefreshWorkflowScheduleCheck() {
+  try {
+    const text = await fs.readFile(HOT_WORKFLOW_PATH, 'utf8');
+    return { ...workflowScheduleCheckFromCrons(extractWorkflowCrons(text), HOT_WORKFLOW_TARGET_MS), path: path.relative(ROOT, HOT_WORKFLOW_PATH) };
+  } catch (err) {
+    return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_MISSING, cron: [], max_gap_minutes: null, target_minutes: Math.round(HOT_WORKFLOW_TARGET_MS / 60000), path: path.relative(ROOT, HOT_WORKFLOW_PATH), message: String(err && err.message || err) };
+  }
+}
+
 function relation(id, left, right, maxMs, failRoot, warnRoot = ROOT_CAUSES.WORKER_ISOLATE_DRIFT, opts = {}) {
   const d = diffMs(left, right);
   const missing = !left || !right || !left.update_code || !right.update_code;
@@ -275,8 +369,9 @@ async function auditUpdateSla() {
     freshness('primary.snapshot_freshness', byId['primary.snapshot'], SNAPSHOT_FRESH_MS, ROOT_CAUSES.SNAPSHOT_STALE, { warnOnly: true, missingAsWarn: true }),
   ];
 
+  const workflowHotRefresh = await hotRefreshWorkflowScheduleCheck();
   const endpointFailures = endpoints.filter((x) => x.result === 'FAIL').map((x) => ({ id: `endpoint.${x.id}`, result: 'FAIL', root_cause: x.root_cause, message: x.error || 'endpoint failed', target: x.id }));
-  const allChecks = [...endpointFailures, ...checks];
+  const allChecks = [...endpointFailures, ...checks, workflowHotRefresh];
   const summary = {
     pass: allChecks.filter((x) => x.result === 'PASS').length,
     warn: allChecks.filter((x) => x.result === 'WARN').length,
@@ -287,7 +382,8 @@ async function auditUpdateSla() {
     generatedAt,
     primaryBase: PRIMARY_BASE,
     secondaryBase: SECONDARY_BASE,
-    thresholds: { cronTargetMs: CRON_TARGET_MS, cronWindowMs: CRON_WINDOW_MS, aggDriftMs: AGG_DRIFT_MS, hotFreshMs: HOT_FRESH_MS, snapshotFreshMs: SNAPSHOT_FRESH_MS },
+    thresholds: { cronTargetMs: CRON_TARGET_MS, cronWindowMs: CRON_WINDOW_MS, aggDriftMs: AGG_DRIFT_MS, hotFreshMs: HOT_FRESH_MS, snapshotFreshMs: SNAPSHOT_FRESH_MS, hotWorkflowTargetMs: HOT_WORKFLOW_TARGET_MS },
+    workflow: { hotRefresh: workflowHotRefresh },
     endpoints,
     checks: allChecks,
     summary,
@@ -312,4 +408,4 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (report.summary.fail > 0) process.exit(1);
 }
 
-export { auditUpdateSla, parseReverseCode };
+export { auditUpdateSla, parseReverseCode, extractWorkflowCrons, maxCronGapMinutes, workflowScheduleCheckFromCrons };

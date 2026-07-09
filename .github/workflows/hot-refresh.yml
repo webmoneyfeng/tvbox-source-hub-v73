@@ -3,7 +3,8 @@ name: hot-refresh
 on:
   workflow_dispatch:
   schedule:
-    - cron: '7 1,13 * * *'
+    # Free-first: 15-minute hot snapshot; GitHub may delay; Worker Cron keeps 2-minute visible freshness.
+    - cron: '7,22,37,52 * * * *'
 
 permissions:
   contents: write
