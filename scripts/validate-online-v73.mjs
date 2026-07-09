@@ -27,6 +27,13 @@ function validSiteName(name) {
   const text = String(name || '');
   return text === '\u5f71\u89c6\u70b9\u64ad' || /^影视点播 · \d{12}$/.test(text) || /^影视点播 · 源更新 \d{2}-\d{2} \d{2}:\d{2}$/.test(text);
 }
+
+function validAggregateApi(api, clean = false) {
+  const value = String(api || '');
+  if (clean) return /\/agg-clean(?:\/u\d{12})?$/.test(value);
+  return /\/agg(?:\/u\d{12})?$/.test(value);
+}
+
 function validCleanSiteName(name) {
   const text = String(name || '');
   return text === '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' || /^影视点播洁净 · \d{12}$/.test(text);
@@ -46,18 +53,19 @@ const OPS_PATHS = new Set(['/status.json', '/snapshot.json', '/mirrors.json']);
 const report = { base: BASE, generatedAt: new Date().toISOString(), categories: [], endpoints: [], detail: [], ops: {} };
 
 const config = await fetchJson('/config.json');
-report.config = { status: config.status, sites: config.data?.sites?.length, siteName: config.data?.sites?.[0]?.name };
+report.config = { status: config.status, sites: config.data?.sites?.length, siteName: config.data?.sites?.[0]?.name, api: config.data?.sites?.[0]?.api };
 assert(config.status === 200, 'config status != 200', failures);
 assert(config.data?.sites?.length === 1, 'visible_sites != 1', failures);
 assert(validSiteName(config.data?.sites?.[0]?.name), 'site_name invalid', failures);
 assert(!String(config.data?.sites?.[0]?.name || '').includes('\u5907\u7528'), 'site_name contains forbidden wording', failures);
+assert(validAggregateApi(config.data?.sites?.[0]?.api, false), 'api is not /agg or /agg/u{code}', failures);
 
 const cleanConfig = await fetchJson('/config-clean.json');
 report.cleanConfig = { status: cleanConfig.status, sites: cleanConfig.data?.sites?.length, siteName: cleanConfig.data?.sites?.[0]?.name, api: cleanConfig.data?.sites?.[0]?.api };
 assert(cleanConfig.status === 200, 'clean config status != 200', failures);
 assert(cleanConfig.data?.sites?.length === 1, 'clean visible_sites != 1', failures);
 assert(validCleanSiteName(cleanConfig.data?.sites?.[0]?.name), 'clean site_name invalid', failures);
-assert(String(cleanConfig.data?.sites?.[0]?.api || '').endsWith('/agg-clean'), 'clean api is not /agg-clean', failures);
+assert(validAggregateApi(cleanConfig.data?.sites?.[0]?.api, true), 'clean api is not /agg-clean or /agg-clean/u{code}', failures);
 assert(!payloadHasAdultExposure(cleanConfig.data), 'clean config exposes adult wording', failures);
 
 for (const path of ['/status.json', '/snapshot.json', '/mirrors.json', `/agg?limit=${LIMIT}`, `/agg?ac=videolist&t=1&pg=1&limit=${LIMIT}`, `/agg?ac=detail&t=1&pg=1&limit=${LIMIT}`, `/agg?wd=${encodeURIComponent('\u89e3\u8bf4')}&limit=${LIMIT}`, `/agg?f=${encodeURIComponent(JSON.stringify({ year: '2026', class: '\u52a8\u4f5c' }))}&limit=${LIMIT}`]) {
