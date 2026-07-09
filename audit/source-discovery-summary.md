@@ -1,13 +1,12 @@
 # v7.3 源宇宙发现与准入审计
 
-- 生成时间：2026-07-09T06:16:05.920Z
+- 生成时间：2026-07-09T08:04:35.984Z
 - 候选源：29
-- ACTIVE/WATCH/REJECTED/BLOCKED：13/12/2/2
+- ACTIVE/WATCH/REJECTED/BLOCKED：12/12/3/2
 
 ## ACTIVE 源
 - baidu｜百度资源｜分类 54｜搜索样本 1
 - bfzy｜暴风资源｜分类 49｜搜索样本 20
-- taopian｜淘片资源｜分类 30｜搜索样本 6
 - hongniu｜红牛资源｜分类 31｜搜索样本 20
 - modu｜魔都资源｜分类 42｜搜索样本 20
 - xinlang｜新浪资源｜分类 28｜搜索样本 20
@@ -24,6 +23,7 @@
 - BLOCKED｜lzi｜量子资源｜Unexpected token '<', "<html>
 <h"... is not valid JSON
 - WATCH｜sdzy｜闪电资源｜Unexpected token '暂', "暂不支持搜索" is not valid JSON
+- REJECTED｜taopian｜淘片资源｜fetch failed
 - WATCH｜huya｜虎牙资源｜https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?ac=list
 - WATCH｜hhzy｜火狐资源｜https://hhzyapi.com/api.php/provide/vod/?ac=list
 - WATCH｜guangsu｜光速资源｜https://api.guangsuapi.com/api.php/provide/vod/?ac=list
