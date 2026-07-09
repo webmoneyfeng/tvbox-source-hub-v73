@@ -1,27 +1,26 @@
 {
   "ok": true,
   "version": "2026-07-04-aggregate-v7.3-domestic-free",
-  "generatedAt": "2026-07-09T16:35:25.795Z",
-  "sourceDiscoveryAt": "2026-07-09T15:34:16.493Z",
-  "coverageAuditAt": "2026-07-09T15:34:16.493Z",
-  "snapshotGeneratedAt": "2026-07-09T16:35:25.795Z",
-  "visibleUpdateText": "530001706202",
+  "generatedAt": "2026-07-09T20:09:26.060Z",
+  "sourceDiscoveryAt": "2026-07-09T20:04:58.068Z",
+  "coverageAuditAt": "2026-07-09T20:04:58.068Z",
+  "snapshotGeneratedAt": "2026-07-09T20:09:26.060Z",
+  "visibleUpdateText": "904001706202",
   "visibleUpdateFormat": "reverse-yyyyMMddHHmm",
   "sourceSummary": {
     "candidateCount": 29,
-    "active": 15,
-    "watch": 10,
+    "active": 17,
+    "watch": 8,
     "rejected": 2,
     "blocked": 2
   },
   "coverageSummary": {
     "total": 10,
-    "pass": 9,
-    "warn": 1,
+    "pass": 10,
+    "warn": 0,
     "fail": 0,
     "byRootCause": {
-      "OK": 9,
-      "SOURCE_PHYSICAL_LIMIT": 1
+      "OK": 10
     }
   },
   "publicBase": "https://tv.webhome.eu.org",
@@ -31,7 +30,7 @@
     "clean": "https://tv.webhome.eu.org/config-clean.json"
   },
   "updateCadence": {
-    "target": "hot snapshot <= 30 minutes on free GitHub Actions",
-    "configCacheSeconds": 60
+    "target": "hot probe <= 15 minutes by Cloudflare Cron, full snapshot <= 2 hours by GitHub Actions",
+    "configCacheSeconds": 0
   }
 }

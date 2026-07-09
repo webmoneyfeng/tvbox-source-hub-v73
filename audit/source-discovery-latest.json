@@ -1,13 +1,14 @@
 {
-  "generatedAt": "2026-07-09T15:34:16.493Z",
+  "generatedAt": "2026-07-09T20:04:58.068Z",
   "candidateCount": 29,
-  "active": 15,
-  "watch": 10,
+  "active": 17,
+  "watch": 8,
   "rejected": 2,
   "blocked": 2,
   "activeSlugs": [
     "baidu",
     "bfzy",
+    "taopian",
     "huya",
     "hhzy",
     "hongniu",
@@ -16,6 +17,7 @@
     "xinlang",
     "seed_3",
     "seed_4",
+    "seed_6",
     "seed_9",
     "seed_12",
     "seed_16",
@@ -197,28 +199,35 @@
       "api": "https://taopianapi.com/cjapi/mc/vod/json.html",
       "tier": "aux",
       "origin": "current",
-      "status": "WATCH",
+      "status": "ACTIVE",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
         "blocked": false,
         "classOk": true,
-        "searchOk": false,
-        "detailOk": false,
-        "playOk": false
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
       },
       "metrics": {
         "classCount": 30,
-        "searchCount": 0,
-        "sampleNames": []
+        "searchCount": 6,
+        "sampleNames": [
+          "天道扎堆：天降一窝主角逼疯我动态漫画",
+          "天道 2023",
+          "天道 2017",
+          "天道酬勤",
+          "天道",
+          "天道图书馆动态漫"
+        ]
       },
       "evidence": {
         "listUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?ac=list",
         "searchUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "",
-        "playableUrl": ""
+        "detailUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?ac=videolist&ids=1537009",
+        "playableUrl": "https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-01-07/30/9288b25cadc2/5473ba2f403f/playlist.m3u8"
       },
-      "error": "fetch failed"
+      "error": ""
     },
     {
       "slug": "huya",
@@ -765,26 +774,35 @@
       "api": "https://jszyapi.com/api.php/provide/vod/",
       "tier": "watch",
       "origin": "https://szyyds.cn/tv/x.json",
-      "status": "WATCH",
+      "status": "ACTIVE",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
         "blocked": false,
         "classOk": true,
-        "searchOk": false,
-        "detailOk": false,
-        "playOk": false
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
       },
       "metrics": {
         "classCount": 39,
-        "searchCount": 0,
-        "sampleNames": []
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
       },
       "evidence": {
         "listUrl": "https://jszyapi.com/api.php/provide/vod/?ac=list",
         "searchUrl": "https://jszyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "",
-        "playableUrl": ""
+        "detailUrl": "https://jszyapi.com/api.php/provide/vod/?ac=videolist&ids=110415",
+        "playableUrl": "https://vv.jisuzyv.com/play/eERq59ga/index.m3u8"
       },
       "error": ""
     },
@@ -1048,7 +1066,7 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<html lang\"... is not valid JSON"
+      "error": "fetch failed"
     }
   ]
 }
