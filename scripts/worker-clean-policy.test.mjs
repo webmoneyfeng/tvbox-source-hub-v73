@@ -1,0 +1,65 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+
+import worker, { sanitizeAggResponseForPolicy } from '../src/worker.mjs';
+
+function noSnapshotEnv() {
+  return {
+    SNAPSHOT_BASES: 'data:',
+    TVBOX_KV: {
+      async get(key) {
+        if (key === 'channels') return '[]';
+        if (key === 'vod_catalog') return '[]';
+        return null;
+      },
+    },
+  };
+}
+
+test('clean config exposes a separate no-adult TVBox entry without changing live delivery', async () => {
+  const res = await worker.fetch(new Request('https://tv.webhome.eu.org/config-clean.json'), noSnapshotEnv());
+  assert.equal(res.status, 200);
+  const data = await res.json();
+  assert.equal(data.sites.length, 1);
+  assert.equal(data.sites[0].key, 'vod_unified_clean');
+  assert.match(data.sites[0].name, /^影视点播洁净( · \d{12})?$/);
+  assert.equal(data.sites[0].api, 'https://tv.webhome.eu.org/agg-clean');
+  assert.equal(data.lives[0].url, 'https://tv.webhome.eu.org/live.txt');
+  assert.doesNotMatch(JSON.stringify(data), /成人|伦理/);
+});
+
+test('clean aggregate policy removes adult category, filters and rows while full policy preserves them', () => {
+  const payload = {
+    code: 1,
+    msg: 'ok',
+    page: 1,
+    pagecount: 1,
+    limit: 24,
+    total: 2,
+    class: [
+      { type_id: '1', type_name: '电影', filters: [] },
+      { type_id: '9', type_name: '成人伦理', filters: [{ key: 'class', value: [{ n: '成人', v: '成人' }] }] },
+    ],
+    filters: {
+      1: [{ key: 'class', value: [{ n: '动作', v: '动作' }] }],
+      9: [{ key: 'class', value: [{ n: '成人', v: '成人' }] }],
+      adult: [{ key: 'class', value: [{ n: '伦理', v: '伦理' }] }],
+    },
+    list: [
+      { vod_id: 'movie-1', type_id: '1', type_name: '电影', vod_name: '普通电影', vod_remarks: '高清正片' },
+      { vod_id: 'adult-1', type_id: '9', type_name: '成人伦理', vod_name: '午夜成人电影', vod_remarks: '高清' },
+    ],
+  };
+
+  const clean = sanitizeAggResponseForPolicy(payload, { includeAdult: false });
+  assert.deepEqual(clean.class.map((x) => x.type_id), ['1']);
+  assert.deepEqual(Object.keys(clean.filters), ['1']);
+  assert.deepEqual(clean.list.map((x) => x.vod_id), ['movie-1']);
+  assert.equal(clean.total, 1);
+  assert.equal(clean.content_policy, 'clean-no-adult');
+
+  const full = sanitizeAggResponseForPolicy(payload, { includeAdult: true });
+  assert.equal(full.class.length, 2);
+  assert.equal(full.list.length, 2);
+  assert.equal(full.content_policy, 'full');
+});

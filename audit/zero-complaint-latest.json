@@ -1,19 +1,43 @@
 {
-  "generatedAt": "2026-07-08T12:37:22.017Z",
+  "generatedAt": "2026-07-09T10:47:39.355Z",
   "commercial_ready": false,
   "zero_complaint_gate": "WARN",
-  "user_love_score": 99,
+  "user_love_score": 84,
   "p0_count": 0,
   "p1_count": 0,
-  "p2_count": 0,
+  "p2_count": 3,
   "p3_count": 1,
   "blocking_complaints": [],
   "next_fix_queue": [
     {
+      "severity": "P2",
+      "area": "coverage",
+      "title": "覆盖审计 WARN：乘风破浪的姐姐",
+      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=10；重复搜索结果不稳定，可能由源超时或反爬导致。",
+      "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
+      "source": "audit/coverage-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "coverage",
+      "title": "覆盖审计 WARN：演唱会",
+      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=5；重复搜索结果不稳定，可能由源超时或反爬导致。",
+      "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
+      "source": "audit/coverage-latest.json"
+    },
+    {
+      "severity": "P2",
+      "area": "coverage",
+      "title": "覆盖审计 WARN：电影解说",
+      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=2；重复搜索结果不稳定，可能由源超时或反爬导致。",
+      "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
+      "source": "audit/coverage-latest.json"
+    },
+    {
       "severity": "P3",
       "area": "snapshot",
       "title": "快照 warning 已分诊为观察项",
-      "evidence": "total=14；visible=2；by_type=UI_HIDE_CANDIDATE=11；SOURCE_TAG_GAP=1；SNAPSHOT_PACK_GAP=2",
+      "evidence": "total=1；visible=0；by_type=UI_HIDE_CANDIDATE=1",
       "suggestion": "继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。",
       "source": "audit/snapshot-warning-triage-latest.json"
     }
@@ -103,20 +127,20 @@
         "config_status": 200,
         "status_status": 200,
         "sites": [
-          "影视点播 · 219180706202"
+          "影视点播 · 008190706202"
         ],
         "status_ok": true,
-        "visibleUpdateText": "219180706202"
+        "visibleUpdateText": "008190706202"
       },
       {
         "base": "https://tv.webclound.eu.org",
         "config_status": 200,
         "status_status": 200,
         "sites": [
-          "影视点播 · 219180706202"
+          "影视点播 · 008190706202"
         ],
         "status_ok": true,
-        "visibleUpdateText": "219180706202"
+        "visibleUpdateText": "008190706202"
       }
     ],
     "complaints": []
@@ -146,19 +170,20 @@
       "OK": 319
     },
     "coverage": {
-      "pass": 10,
-      "warn": 0,
+      "pass": 7,
+      "warn": 3,
       "fail": 0,
       "byRootCause": {
-        "OK": 10
+        "OK": 7,
+        "SOURCE_PHYSICAL_LIMIT": 3
       }
     },
     "sources": {
       "candidateCount": 29,
-      "active": 14,
-      "watch": 8,
+      "active": 12,
+      "watch": 12,
       "rejected": 3,
-      "blocked": 4
+      "blocked": 2
     },
     "freeTier": {
       "pass": 6,
@@ -186,44 +211,32 @@
     },
     "snapshot": {
       "errors": 0,
-      "warnings": 14,
+      "warnings": 1,
       "triage": {
-        "total": 14,
+        "total": 1,
         "unclassified": 0,
-        "user_visible": 2,
+        "user_visible": 0,
         "current_tv_blocking": 0,
         "by_type": {
-          "UI_HIDE_CANDIDATE": 11,
-          "SOURCE_TAG_GAP": 1,
-          "SNAPSHOT_PACK_GAP": 2
+          "UI_HIDE_CANDIDATE": 1
         },
         "by_severity": {
-          "P3": 14
+          "P3": 1
         },
         "by_visibility": {
-          "hidden_or_not_exposed": 12,
-          "visible": 2
+          "hidden_or_not_exposed": 1
         },
         "by_category": {
-          "综艺": 2,
-          "动漫": 6,
-          "纪录片": 3,
-          "短剧": 1,
-          "文娱知识": 1,
           "成人伦理": 1
         },
         "by_filter_key": {
-          "year": 6,
-          "area": 3,
-          "state": 1,
-          "class": 3,
-          "form": 1
+          "class": 1
         }
       },
-      "visibleUpdateText": "920280706202",
-      "snapshotGeneratedAt": "2026-07-08T12:29:21.601Z",
-      "sourceDiscoveryAt": "2026-07-08T03:15:03.270Z",
-      "coverageAuditAt": "2026-07-08T03:15:03.270Z"
+      "visibleUpdateText": "838190706202",
+      "snapshotGeneratedAt": "2026-07-09T10:38:38.353Z",
+      "sourceDiscoveryAt": "2026-07-09T08:04:35.984Z",
+      "coverageAuditAt": "2026-07-09T08:04:35.984Z"
     },
     "snapshotPackGaps": {
       "checked": 0,

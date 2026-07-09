@@ -580,6 +580,9 @@ const AGG_CATEGORIES = [
   { id: '8', key: 'knowledge', name: '\u6587\u5a31\u77e5\u8bc6' },
   { id: '9', key: 'adult', name: '\u6210\u4eba\u4f26\u7406' },
 ];
+const ADULT_CATEGORY_ID = '9';
+const ADULT_CATEGORY_KEY = 'adult';
+const ADULT_TEXT_RE = /(\u4f26\u7406|\u4f26\u7406\u7247|\u7406\u8bba|\u798f\u5229|\u6210\u4eba|\u60c5\u8272|\u5348\u591c|\u5199\u771f|\u4e09\u7ea7|\u91cc\u756a|\u756a\u53f7|AV)/i;
 const AGG_CLASS_LIMIT = 6;
 const AGG_DETAIL_LIMIT = 8;
 const CLASS_CACHE_TTL_MS = 30 * 60 * 1000;
@@ -652,6 +655,64 @@ function hasAggCategoryParam(params) {
   });
 }
 function aggCategoryByKey(key) { return AGG_CATEGORIES.find((c) => c.key === key) || AGG_CATEGORIES[0]; }
+function visibleAggCategoriesForPolicy(policy = {}) {
+  return policy.includeAdult === false ? AGG_CATEGORIES.filter((c) => c.key !== ADULT_CATEGORY_KEY) : AGG_CATEGORIES;
+}
+function isAdultClassRecord(record) {
+  const id = String(record?.type_id ?? record?.id ?? '').trim();
+  const key = String(record?.key ?? record?.category ?? '').trim().toLowerCase();
+  const name = String(record?.type_name ?? record?.name ?? '').trim();
+  return id === ADULT_CATEGORY_ID || key === ADULT_CATEGORY_KEY || ADULT_TEXT_RE.test(name);
+}
+function isAdultFilterKey(key) {
+  const raw = String(key ?? '').trim().toLowerCase();
+  return raw === ADULT_CATEGORY_ID || raw === ADULT_CATEGORY_KEY || ADULT_TEXT_RE.test(String(key ?? ''));
+}
+function isAdultFilterOption(value) {
+  return ADULT_TEXT_RE.test([value?.n, value?.v, value?.name, value?.value].join(' '));
+}
+function sanitizeFilterGroupsForPolicy(groups, policy = {}) {
+  if (policy.includeAdult !== false) return groups || [];
+  return (groups || []).map((group) => {
+    const values = (group.value || []).filter((opt) => {
+      const v = String(opt?.v ?? '').trim();
+      if (!v) return true;
+      return !isAdultFilterOption(opt);
+    });
+    return { ...group, value: values };
+  }).filter((group) => group.key === 'sort' || (group.value || []).some((opt) => String(opt?.v ?? '').trim()));
+}
+function isAdultAggRecord(item) {
+  if (!item) return false;
+  if (String(item._macro || '').toLowerCase() === ADULT_CATEGORY_KEY) return true;
+  if (String(item.category || '').toLowerCase() === ADULT_CATEGORY_KEY) return true;
+  if (String(item.type_id || '') === ADULT_CATEGORY_ID) return true;
+  return ADULT_TEXT_RE.test([item.type_name, item.vod_name, item.vod_sub, item.vod_remarks, item.vod_class, item.vod_state, item.vod_area, item.vod_lang, item.vod_actor, item.vod_director, item.vod_content, item.vod_play_from, item.semantic_tags, item.snapshot_filter_evidence].join(' '));
+}
+export function sanitizeAggResponseForPolicy(payload, policy = {}) {
+  const includeAdult = policy.includeAdult !== false;
+  if (includeAdult) return { ...payload, content_policy: 'full' };
+  const list = (Array.isArray(payload?.list) ? payload.list : []).filter((item) => !isAdultAggRecord(item));
+  const classes = (Array.isArray(payload?.class) ? payload.class : [])
+    .filter((c) => !isAdultClassRecord(c))
+    .map((c) => ({ ...c, filters: sanitizeFilterGroupsForPolicy(c.filters || [], policy) }));
+  const filters = {};
+  for (const [key, groups] of Object.entries(payload?.filters || {})) {
+    if (isAdultFilterKey(key)) continue;
+    filters[key] = sanitizeFilterGroupsForPolicy(groups, policy);
+  }
+  const limit = Number(payload?.limit || list.length || LIMIT_DEFAULT) || LIMIT_DEFAULT;
+  const total = list.length;
+  return {
+    ...payload,
+    class: classes,
+    filters,
+    list,
+    total,
+    pagecount: Math.max(1, Math.ceil(total / Math.max(1, limit))),
+    content_policy: 'clean-no-adult',
+  };
+}
 function inferAggCategoryFromFilters(filters) {
   const cls = filterValue(filters.class || filters.topic || '');
   if (!cls) return null;
@@ -784,9 +845,9 @@ function aggFiltersForResponse(activeCategoryKey = '', mergedRows = []) {
   }
   return map;
 }
-function aggClasses(activeCategoryKey = '', mergedRows = []) {
+function aggClasses(activeCategoryKey = '', mergedRows = [], policy = {}) {
   const responseFilters = aggFiltersForResponse(activeCategoryKey, mergedRows);
-  return AGG_CATEGORIES.map((c) => ({ type_id: c.id, type_name: c.name, filters: responseFilters[c.id] || [] }));
+  return visibleAggCategoriesForPolicy(policy).map((c) => ({ type_id: c.id, type_name: c.name, filters: sanitizeFilterGroupsForPolicy(responseFilters[c.id] || [], policy) }));
 }
 function fetchParamsForSource(source, params) {
   const upstream = new URL(source.api);
@@ -1456,9 +1517,12 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
 }
 function v73Mirrors(origin) {
   return [
-    { name: '主入口', url: V73_PRIMARY_ORIGIN + '/config.json', host: V73_PRIMARY_HOST, role: 'primary' },
-    { name: '同构入口', url: V73_SECONDARY_ORIGIN + '/config.json', host: V73_SECONDARY_HOST, role: 'secondary' },
-    { name: '当前入口', url: origin + '/config.json', host: new URL(origin).host, role: 'current' },
+    { name: '全量主入口', url: V73_PRIMARY_ORIGIN + '/config.json', host: V73_PRIMARY_HOST, role: 'primary', contentPolicy: 'full' },
+    { name: '全量同构入口', url: V73_SECONDARY_ORIGIN + '/config.json', host: V73_SECONDARY_HOST, role: 'secondary', contentPolicy: 'full' },
+    { name: '洁净主入口', url: V73_PRIMARY_ORIGIN + '/config-clean.json', host: V73_PRIMARY_HOST, role: 'primary-clean', contentPolicy: 'clean-no-adult' },
+    { name: '洁净同构入口', url: V73_SECONDARY_ORIGIN + '/config-clean.json', host: V73_SECONDARY_HOST, role: 'secondary-clean', contentPolicy: 'clean-no-adult' },
+    { name: '当前全量入口', url: origin + '/config.json', host: new URL(origin).host, role: 'current', contentPolicy: 'full' },
+    { name: '当前洁净入口', url: origin + '/config-clean.json', host: new URL(origin).host, role: 'current-clean', contentPolicy: 'clean-no-adult' },
     { name: '回滚入口', url: 'https://tvbox-source-hub.feng-yang.workers.dev/config.json', host: 'tvbox-source-hub.feng-yang.workers.dev', role: 'rollback' },
   ];
 }
@@ -1472,8 +1536,11 @@ async function statusV73(request, env) {
     mode: 'domestic-free-snapshot-first',
     generatedAt: new Date().toISOString(),
     entry: origin + '/config.json',
+    cleanEntry: origin + '/config-clean.json',
     primary: V73_PRIMARY_ORIGIN + '/config.json',
     secondary: V73_SECONDARY_ORIGIN + '/config.json',
+    primaryClean: V73_PRIMARY_ORIGIN + '/config-clean.json',
+    secondaryClean: V73_SECONDARY_ORIGIN + '/config-clean.json',
     sourceDiscoveryAt: manifest?.sourceDiscoveryAt || '',
     coverageAuditAt: manifest?.coverageAuditAt || '',
     snapshotGeneratedAt: manifest?.generatedAt || '',
@@ -1483,6 +1550,7 @@ async function statusV73(request, env) {
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
     liveDelivery: liveDeliveryPolicy(origin),
     fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
+    updateCadence: { target: 'hot snapshot <= 30 minutes on free GitHub Actions, config cache <= 60 seconds, worker snapshot memory cache <= 5 minutes', currentVisibleText: visibleUpdateTextFromManifest(manifest) },
     compatibility: ['TVBox', 'FongMi', '影视仓'],
   }, 60);
 }
@@ -1549,7 +1617,7 @@ async function expandAggDetailCandidatesByTitle(resolved, candidates) {
   detailExpansionCache.set(normalized, expanded);
   return expanded;
 }
-async function aggDetail(request, env, ids) {
+async function aggDetail(request, env, ids, policy = {}) {
   const idList = String(ids || '').split(',').map((x) => x.trim()).filter(Boolean);
   const candidates = [];
   for (const id of idList) candidates.push(...decodeAggCandidates(id));
@@ -1559,6 +1627,7 @@ async function aggDetail(request, env, ids) {
   let resolved = await resolveAggDetailCandidates(unique);
   const expandedUnique = await expandAggDetailCandidatesByTitle(resolved, unique);
   if (expandedUnique.length > unique.length) resolved = await resolveAggDetailCandidates(expandedUnique);
+  if (policy.includeAdult === false) resolved = resolved.filter(({ vod }) => !isAdultAggRecord({ ...vod, _macro: macroForTypeName(vod?.type_name || '') }));
   if (!resolved.length) return json({ code: 1, msg: 'no valid direct play url', list: [] }, 60);
   const first = resolved[0].vod;
   const playFrom = [], playUrl = [], urlSeen = new Set();
@@ -1575,14 +1644,15 @@ async function aggDetail(request, env, ids) {
   const typeName = cleanCmsText(first.type_name || '', 30);
   const macro = macroForTypeName(typeName);
   const cat = AGG_CATEGORIES.find((c) => c.key === macro) || AGG_CATEGORIES[0];
-  return json({ code: 1, msg: 'ok', list: [{ ...first, type_id: cat.id, type_name: cat.name, vod_name: cleanAggName(first.vod_name, 120), vod_year: first.vod_year || extractYearFromVod(first), vod_remarks: cleanAggName(first.vod_remarks || `${playFrom.length}\u7ebf`, 80), vod_content: cleanCmsText(first.vod_content || '\u5df2\u805a\u5408\u591a\u8def\u53ef\u64ad\u653e\u76f4\u8fde\uff0c\u81ea\u52a8\u8fc7\u6ee4\u5e7f\u544a\u3001\u89e3\u6790\u9875\u548c\u65e0\u6548\u64ad\u653e\u5730\u5740\u3002', 800), vod_play_from: playFrom.join('$$$'), vod_play_url: playUrl.join('$$$') }] }, 120);
+  const payload = { code: 1, msg: 'ok', list: [{ ...first, type_id: cat.id, type_name: cat.name, vod_name: cleanAggName(first.vod_name, 120), vod_year: first.vod_year || extractYearFromVod(first), vod_remarks: cleanAggName(first.vod_remarks || `${playFrom.length}\u7ebf`, 80), vod_content: cleanCmsText(first.vod_content || '\u5df2\u805a\u5408\u591a\u8def\u53ef\u64ad\u653e\u76f4\u8fde\uff0c\u81ea\u52a8\u8fc7\u6ee4\u5e7f\u544a\u3001\u89e3\u6790\u9875\u548c\u65e0\u6548\u64ad\u653e\u5730\u5740\u3002', 800), vod_play_from: playFrom.join('$$$'), vod_play_url: playUrl.join('$$$') }] };
+  return json(sanitizeAggResponseForPolicy(payload, policy), 120);
 }
-async function agg(request, env) {
+async function agg(request, env, policy = {}) {
   const url = new URL(request.url);
   const params = url.searchParams;
   const ac = (params.get('ac') || '').toLowerCase();
   const ids = (params.get('ids') || params.get('id') || '').trim();
-  if (ids) return aggDetail(request, env, ids);
+  if (ids) return aggDetail(request, env, ids, policy);
   const filters = parseAggFilters(params);
   let category = getAggCategoryParam(params);
   if (!hasAggCategoryParam(params) && category.key === 'recommend') category = inferAggCategoryFromFilters(filters) || category;
@@ -1590,7 +1660,7 @@ async function agg(request, env) {
   const limit = Math.min(LIMIT_MAX, parseInt(params.get('limit') || String(LIMIT_DEFAULT), 10) || LIMIT_DEFAULT);
   const wd = (params.get('wd') || params.get('search') || params.get('q') || '').trim();
   const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params, filters);
-  if (snapshotHit) return json(snapshotHit, 120);
+  if (snapshotHit) return json(sanitizeAggResponseForPolicy(snapshotHit, policy), 120);
   const sources = selectedSources(filters);
   const pagesToPull = [Math.max(1, page)];
   if (page === 1 && !wd) pagesToPull.push(2);
@@ -1603,7 +1673,7 @@ async function agg(request, env) {
   const merged = sortAggMerged(mergeAggItems(rawItems), filters, wd ? buildSearchContext(wd) : null);
   const p = pageList(merged.map(aggListItemFromMerged), page, limit);
   const responseFilters = aggFiltersForResponse(category.key, merged);
-  return json({ code: 1, msg: 'ok', class: aggClasses(category.key, merged), filters: responseFilters, page, pagecount: Math.max(page + (p.list.length >= limit ? 1 : 0), 1), limit, total: merged.length, list: p.list }, 120);
+  return json(sanitizeAggResponseForPolicy({ code: 1, msg: 'ok', class: aggClasses(category.key, merged, policy), filters: responseFilters, page, pagecount: Math.max(page + (p.list.length >= limit ? 1 : 0), 1), limit, total: merged.length, list: p.list }, policy), 120);
 }
 
 function formatChinaReverseUpdateCode(iso) {
@@ -1619,15 +1689,17 @@ function visibleUpdateTextFromManifest(manifest) {
   if (/^\d{12}$/.test(existing)) return existing;
   return formatChinaReverseUpdateCode(manifest?.snapshotGeneratedAt || manifest?.generatedAt || manifest?.coverageAuditAt || manifest?.sourceDiscoveryAt);
 }
-async function config(request, env) {
+async function config(request, env, policy = {}) {
   const origin = new URL(request.url).origin;
   const manifest = await fetchSnapshotJson(env, 'manifest.json');
   const updateText = visibleUpdateTextFromManifest(manifest);
-  const siteName = updateText ? `\u5f71\u89c6\u70b9\u64ad \u00b7 ${updateText}` : '\u5f71\u89c6\u70b9\u64ad';
+  const clean = policy.includeAdult === false;
+  const baseName = clean ? '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' : '\u5f71\u89c6\u70b9\u64ad';
+  const siteName = updateText ? `${baseName} \u00b7 ${updateText}` : baseName;
   const sites = [
-    { key: 'vod_unified', name: siteName, type: 1, api: origin + '/agg', searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 },
+    { key: clean ? 'vod_unified_clean' : 'vod_unified', name: siteName, type: 1, api: origin + (clean ? '/agg-clean' : '/agg'), searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 },
   ];
-  return json({ spider: '', sites, lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: origin + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' }, 300);
+  return json({ spider: '', sites, lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: origin + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' }, 60);
 }
 
 function isHttpUrl(value) {
@@ -1836,8 +1908,10 @@ export default {
       const url = new URL(request.url);
       if (request.method === 'OPTIONS') return text('', 'text/plain; charset=utf-8', 86400);
       if (url.pathname === '/config.json' || url.pathname === '/config') return config(request, env);
+      if (url.pathname === '/config-clean.json' || url.pathname === '/config-clean' || url.pathname === '/clean/config.json') return config(request, env, { includeAdult: false });
       if (url.pathname === '/live.txt' || url.pathname === '/live') return liveTxt(request, env);
       if (url.pathname === '/agg' || url.pathname === '/agg/') return agg(request, env);
+      if (url.pathname === '/agg-clean' || url.pathname === '/agg-clean/') return agg(request, env, { includeAdult: false });
       if (url.pathname === '/vod' || url.pathname === '/vod/') return vod(request, env);
       if (url.pathname.startsWith('/cms/')) return cms(request, env, decodeURIComponent(url.pathname.slice('/cms/'.length)).replace(/\/$/, ''));
       if (url.pathname === '/health') return health(request, env);
