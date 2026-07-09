@@ -1,35 +1,19 @@
 {
-  "generatedAt": "2026-07-09T11:05:31.699Z",
+  "generatedAt": "2026-07-09T19:47:28.068Z",
   "commercial_ready": false,
   "zero_complaint_gate": "WARN",
-  "user_love_score": 84,
+  "user_love_score": 94,
   "p0_count": 0,
   "p1_count": 0,
-  "p2_count": 3,
+  "p2_count": 1,
   "p3_count": 1,
   "blocking_complaints": [],
   "next_fix_queue": [
     {
       "severity": "P2",
       "area": "coverage",
-      "title": "覆盖审计 WARN：乘风破浪的姐姐",
-      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=10；重复搜索结果不稳定，可能由源超时或反爬导致。",
-      "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
-      "source": "audit/coverage-latest.json"
-    },
-    {
-      "severity": "P2",
-      "area": "coverage",
       "title": "覆盖审计 WARN：演唱会",
-      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=5；重复搜索结果不稳定，可能由源超时或反爬导致。",
-      "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
-      "source": "audit/coverage-latest.json"
-    },
-    {
-      "severity": "P2",
-      "area": "coverage",
-      "title": "覆盖审计 WARN：电影解说",
-      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=2；重复搜索结果不稳定，可能由源超时或反爬导致。",
+      "evidence": "SOURCE_PHYSICAL_LIMIT；源命中=8；重复搜索结果不稳定，可能由源超时或反爬导致。",
       "suggestion": "继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。",
       "source": "audit/coverage-latest.json"
     },
@@ -107,6 +91,11 @@
       "name": "snapshot_errors=0",
       "pass": true,
       "value": 0
+    },
+    {
+      "name": "visible_freshness_fail=0",
+      "pass": true,
+      "value": "PASS"
     }
   ],
   "inputs": {
@@ -117,7 +106,8 @@
     "snapshotValidation": "dist/snapshot/latest/validation.json",
     "snapshotWarningTriage": "audit/snapshot-warning-triage-latest.json",
     "snapshotPackGapAudit": "audit/snapshot-pack-gap-latest.json",
-    "snapshotManifest": "dist/snapshot/latest/manifest.json"
+    "snapshotManifest": "dist/snapshot/latest/manifest.json",
+    "visibleFreshnessAudit": "audit/visible-freshness-latest.json"
   },
   "online_probe": {
     "skipped": false,
@@ -127,20 +117,20 @@
         "config_status": 200,
         "status_status": 200,
         "sites": [
-          "影视点播 · 838190706202"
+          "影视点播 · 643001706202"
         ],
         "status_ok": true,
-        "visibleUpdateText": "838190706202"
+        "visibleUpdateText": "643001706202"
       },
       {
         "base": "https://tv.webclound.eu.org",
         "config_status": 200,
         "status_status": 200,
         "sites": [
-          "影视点播 · 838190706202"
+          "影视点播 · 643001706202"
         ],
         "status_ok": true,
-        "visibleUpdateText": "838190706202"
+        "visibleUpdateText": "643001706202"
       }
     ],
     "complaints": []
@@ -170,19 +160,19 @@
       "OK": 319
     },
     "coverage": {
-      "pass": 7,
-      "warn": 3,
+      "pass": 9,
+      "warn": 1,
       "fail": 0,
       "byRootCause": {
-        "OK": 7,
-        "SOURCE_PHYSICAL_LIMIT": 3
+        "OK": 9,
+        "SOURCE_PHYSICAL_LIMIT": 1
       }
     },
     "sources": {
       "candidateCount": 29,
-      "active": 12,
-      "watch": 12,
-      "rejected": 3,
+      "active": 15,
+      "watch": 10,
+      "rejected": 2,
       "blocked": 2
     },
     "freeTier": {
@@ -233,10 +223,10 @@
           "class": 1
         }
       },
-      "visibleUpdateText": "838190706202",
-      "snapshotGeneratedAt": "2026-07-09T10:38:38.353Z",
-      "sourceDiscoveryAt": "2026-07-09T08:04:35.984Z",
-      "coverageAuditAt": "2026-07-09T08:04:35.984Z"
+      "visibleUpdateText": "530001706202",
+      "snapshotGeneratedAt": "2026-07-09T16:35:25.795Z",
+      "sourceDiscoveryAt": "2026-07-09T15:34:16.493Z",
+      "coverageAuditAt": "2026-07-09T15:34:16.493Z"
     },
     "snapshotPackGaps": {
       "checked": 0,
@@ -246,6 +236,20 @@
       "by_severity": {},
       "by_category": {},
       "max_duration_ms": 0
+    },
+    "visibleFreshness": {
+      "gate": "PASS",
+      "diagnosis": "SERVICE_FRESH",
+      "current_code": "643001706202",
+      "observed_code": "",
+      "summary": {
+        "pass": 8,
+        "warn": 0,
+        "fail": 0,
+        "byRootCause": {
+          "OK": 8
+        }
+      }
     }
   }
 }

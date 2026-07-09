@@ -23,6 +23,7 @@ const INPUTS = {
   snapshotWarningTriage: 'audit/snapshot-warning-triage-latest.json',
   snapshotPackGapAudit: 'audit/snapshot-pack-gap-latest.json',
   snapshotManifest: 'dist/snapshot/latest/manifest.json',
+  visibleFreshnessAudit: 'audit/visible-freshness-latest.json',
 };
 
 function rel(...parts) {
@@ -299,6 +300,37 @@ function summarizeSnapshotPackGaps(packGap) {
   return { summary, complaints };
 }
 
+function summarizeVisibleFreshness(visibleFreshness) {
+  const complaints = [];
+  const data = visibleFreshness.data || {};
+  const diagnosis = data.diagnosis || {};
+  const gate = String(data.visible_freshness_gate || '');
+  if (!visibleFreshness.ok) {
+    complaints.push(makeComplaint('P1', 'visible_freshness', '电视端可见更新时间审计缺失或不可读', visibleFreshness.error, '运行 npm run audit:visible-freshness，确认站点名、API版本路径、分类栏、旧码路径和状态端点同码且新鲜。', visibleFreshness.path));
+    return { summary: {}, diagnosis: {}, complaints };
+  }
+  if (gate === 'FAIL') {
+    complaints.push(makeComplaint(
+      'P1',
+      'visible_freshness',
+      '电视端可见更新时间表面未通过商业守门线',
+      `gate=${gate}；diagnosis=${diagnosis.diagnosis || 'UNKNOWN'}；current=${diagnosis.current_code || 'none'}；observed=${diagnosis.observed_code || 'none'}`,
+      '不要让用户清缓存背锅；先修服务端 config、agg、旧码路径、status 的更新时间表面一致性。',
+      visibleFreshness.path,
+    ));
+  } else if (gate === 'WARN' || diagnosis.diagnosis === 'APP_LOCAL_SITE_CACHE') {
+    complaints.push(makeComplaint(
+      'P3',
+      'visible_freshness',
+      '电视端站点列表可能缓存旧更新时间',
+      `diagnosis=${diagnosis.diagnosis || gate}；current=${diagnosis.current_code || 'none'}；observed=${diagnosis.observed_code || 'none'}`,
+      '客服口径：进入影视点播后看“推荐 · 当前码”；若分类栏新而站点列表旧，优先引导刷新/重进/重新导入。',
+      visibleFreshness.path,
+    ));
+  }
+  return { summary: data.summary || {}, diagnosis, complaints };
+}
+
 async function fetchWithTimeout(url) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), ONLINE_TIMEOUT);
@@ -354,6 +386,7 @@ function buildHardGates(inputs, complaintCounts) {
   const remoteSummary = inputs.remoteAudit.data?.summary || {};
   const freeTier = inputs.freeTierAudit.data || {};
   const validation = inputs.snapshotValidation.data || {};
+  const visibleFreshness = inputs.visibleFreshnessAudit.data || {};
   const gates = [
     { name: 'P0=0', pass: complaintCounts.P0 === 0, value: complaintCounts.P0 },
     { name: 'P1=0', pass: complaintCounts.P1 === 0, value: complaintCounts.P1 },
@@ -368,6 +401,7 @@ function buildHardGates(inputs, complaintCounts) {
     { name: 'playable_rate>=90%', pass: num(remoteSummary.avg_playable_rate, 0) >= 0.9, value: remoteSummary.avg_playable_rate ?? null },
     { name: 'free_tier_fail=0', pass: num(freeTier.fail) === 0, value: num(freeTier.fail) },
     { name: 'snapshot_errors=0', pass: asArray(validation.errors).length === 0, value: asArray(validation.errors).length },
+    { name: 'visible_freshness_fail=0', pass: String(visibleFreshness.visible_freshness_gate || '') !== 'FAIL', value: visibleFreshness.visible_freshness_gate || 'missing' },
   ];
   return gates;
 }
@@ -393,6 +427,7 @@ function renderMarkdown(result) {
   const liveProxy = free.liveProxy || {};
   const snapshot = result.metrics.snapshot || {};
   const snapshotPackGaps = result.metrics.snapshotPackGaps || {};
+  const visibleFreshness = result.metrics.visibleFreshness || {};
   return [
     '# v7.4 0投诉商业体验总控审计',
     '',
@@ -424,6 +459,7 @@ function renderMarkdown(result) {
     `- 免费层：PASS/WARN/FAIL=${free.pass ?? 'unknown'}/${free.warn ?? 'unknown'}/${free.fail ?? 'unknown'}`,
     `- 直播承载：channels=${liveProxy.totalChannels ?? 'unknown'}；proxied=${liveProxy.proxiedChannels ?? 'unknown'}；direct=${liveProxy.directChannels ?? 'unknown'}；proxyRatio=${Number.isFinite(Number(liveProxy.proxyRatio)) ? Math.round(Number(liveProxy.proxyRatio) * 100) + '%' : 'unknown'}`,
     `- 快照：errors=${snapshot.errors ?? 'unknown'}；warnings=${snapshot.warnings ?? 'unknown'}；triage=${snapshot.triage?.total ?? 'unknown'}；blocking=${snapshot.triage?.current_tv_blocking ?? 'unknown'}；visibleUpdateText=${snapshot.visibleUpdateText ?? 'unknown'}`,
+    `- 可见更新时间：gate=${visibleFreshness.gate ?? 'unknown'}；diagnosis=${visibleFreshness.diagnosis ?? 'unknown'}；current=${visibleFreshness.current_code ?? 'unknown'}；observed=${visibleFreshness.observed_code ?? 'none'}`,
     '',
     '## 快照 warning 分诊',
     '',
@@ -483,6 +519,7 @@ async function auditZeroComplaint() {
   const freeTier = summarizeFreeTier(loaded.freeTierAudit);
   const snapshot = summarizeSnapshot(loaded.snapshotValidation, loaded.snapshotManifest, loaded.snapshotWarningTriage);
   const snapshotPackGaps = summarizeSnapshotPackGaps(loaded.snapshotPackGapAudit);
+  const visibleFreshness = summarizeVisibleFreshness(loaded.visibleFreshnessAudit);
   const online = await probeOnline();
 
   const allComplaints = [
@@ -492,6 +529,7 @@ async function auditZeroComplaint() {
     ...freeTier.complaints,
     ...snapshot.complaints,
     ...snapshotPackGaps.complaints,
+    ...visibleFreshness.complaints,
     ...online.complaints,
   ];
   const complaintCounts = {
@@ -553,6 +591,13 @@ async function auditZeroComplaint() {
         coverageAuditAt: loaded.snapshotManifest.data?.coverageAuditAt,
       },
       snapshotPackGaps: loaded.snapshotPackGapAudit.data?.summary || {},
+      visibleFreshness: {
+        gate: loaded.visibleFreshnessAudit.data?.visible_freshness_gate,
+        diagnosis: loaded.visibleFreshnessAudit.data?.diagnosis?.diagnosis,
+        current_code: loaded.visibleFreshnessAudit.data?.diagnosis?.current_code,
+        observed_code: loaded.visibleFreshnessAudit.data?.diagnosis?.observed_code,
+        summary: loaded.visibleFreshnessAudit.data?.summary || {},
+      },
     },
   };
 
