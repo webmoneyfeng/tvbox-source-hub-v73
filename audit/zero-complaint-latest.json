@@ -1,14 +1,30 @@
 {
-  "generatedAt": "2026-07-09T21:05:21.145Z",
+  "generatedAt": "2026-07-09T23:34:58.387Z",
   "commercial_ready": false,
   "zero_complaint_gate": "WARN",
-  "user_love_score": 99,
+  "user_love_score": 93,
   "p0_count": 0,
   "p1_count": 0,
-  "p2_count": 0,
-  "p3_count": 1,
+  "p2_count": 1,
+  "p3_count": 2,
   "blocking_complaints": [],
   "next_fix_queue": [
+    {
+      "severity": "P2",
+      "area": "free_tier",
+      "title": "免费方案存在风险：github_actions_schedule",
+      "evidence": "3300/month；定时刷新次数过高，可能触发 Pages 构建/部署频率风险，建议降频。",
+      "suggestion": "形成限流、缓存、降频、直连播放和不代理视频流的运营策略。",
+      "source": "audit/free-tier-latest.json"
+    },
+    {
+      "severity": "P3",
+      "area": "snapshot",
+      "title": "快照 warning 分诊与验证数量不一致",
+      "evidence": "validation=3；triage=1",
+      "suggestion": "重新运行快照分诊，避免用旧分诊解释新快照。",
+      "source": "audit/snapshot-warning-triage-latest.json"
+    },
     {
       "severity": "P3",
       "area": "snapshot",
@@ -109,20 +125,20 @@
         "config_status": 200,
         "status_status": 200,
         "sites": [
-          "影视点播 · 405001706202"
+          "影视点播"
         ],
         "status_ok": true,
-        "visibleUpdateText": "405001706202"
+        "visibleUpdateText": "437001706202"
       },
       {
         "base": "https://tv.webclound.eu.org",
         "config_status": 200,
         "status_status": 200,
         "sites": [
-          "影视点播 · 405001706202"
+          "影视点播"
         ],
         "status_ok": true,
-        "visibleUpdateText": "405001706202"
+        "visibleUpdateText": "437001706202"
       }
     ],
     "complaints": []
@@ -160,15 +176,15 @@
       }
     },
     "sources": {
-      "candidateCount": 29,
-      "active": 16,
-      "watch": 6,
+      "candidateCount": 19,
+      "active": 11,
+      "watch": 4,
       "rejected": 2,
-      "blocked": 5
+      "blocked": 2
     },
     "freeTier": {
-      "pass": 6,
-      "warn": 0,
+      "pass": 5,
+      "warn": 1,
       "fail": 0,
       "liveProxy": {
         "ok": true,
@@ -192,7 +208,7 @@
     },
     "snapshot": {
       "errors": 0,
-      "warnings": 1,
+      "warnings": 3,
       "triage": {
         "total": 1,
         "unclassified": 0,
@@ -214,10 +230,10 @@
           "class": 1
         }
       },
-      "visibleUpdateText": "530001706202",
-      "snapshotGeneratedAt": "2026-07-09T16:35:25.795Z",
-      "sourceDiscoveryAt": "2026-07-09T15:34:16.493Z",
-      "coverageAuditAt": "2026-07-09T15:34:16.493Z"
+      "visibleUpdateText": "055001706202",
+      "snapshotGeneratedAt": "2026-07-09T21:50:38.462Z",
+      "sourceDiscoveryAt": "2026-07-09T21:46:14.162Z",
+      "coverageAuditAt": "2026-07-09T21:46:14.162Z"
     },
     "snapshotPackGaps": {
       "checked": 0,
@@ -231,7 +247,7 @@
     "visibleFreshness": {
       "gate": "PASS",
       "diagnosis": "SERVICE_FRESH",
-      "current_code": "814001706202",
+      "current_code": "407001706202",
       "observed_code": "",
       "summary": {
         "pass": 8,

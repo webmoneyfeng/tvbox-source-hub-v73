@@ -1,26 +1,24 @@
 # v7.4 发布准备度与更新时间可见面审计
 
-- 生成时间：2026-07-09T22:08:37.954Z
+- 生成时间：2026-07-09T23:05:58.007Z
 - 主入口：https://tv.webhome.eu.org
 - Pages：https://tvbox-source-hub-v73.pages.dev
-- gate：FAIL
-- PASS/WARN/FAIL：3/3/2
-- production_deploy_required：true
+- gate：PASS
+- PASS/WARN/FAIL：8/0/0
+- production_deploy_required：false
 
 ## 根因分布
-- OK=3
-- NEEDS_WORKER_DEPLOY=2
-- NEEDS_PAGES_DEPLOY=3
+- OK=8
 
 ## 检查项
-- PASS；worker-status；OK；Worker hot update is within freshness guard；code=806001706202；age=1min
-- WARN；online-worker-full-config；NEEDS_WORKER_DEPLOY；visible update code still lives in site name, TV apps can cache it and show stale time；code=806001706202
-- WARN；online-worker-clean-config；NEEDS_WORKER_DEPLOY；visible update code still lives in site name, TV apps can cache it and show stale time；code=806001706202
+- PASS；worker-status；OK；Worker hot update is within freshness guard；code=407001706202；age=2min
+- PASS；online-worker-full-config；OK；stable site name with versioned API；code=407001706202
+- PASS；online-worker-clean-config；OK；stable site name with versioned API；code=407001706202
 - PASS；local-dist-full-config；OK；stable site name with versioned API；code=055001706202
 - PASS；local-dist-clean-config；OK；stable site name with versioned API；code=055001706202
-- FAIL；pages-full-config；NEEDS_PAGES_DEPLOY；config does not match expected TVBox entry contract
-- FAIL；pages-clean-config；NEEDS_PAGES_DEPLOY；Pages static clean entry is missing or not JSON
-- WARN；pages-manifest；NEEDS_PAGES_DEPLOY；Pages static snapshot does not match the local release artifact；code=012270706202
+- PASS；pages-full-config；OK；stable site name with versioned API；code=055001706202
+- PASS；pages-clean-config；OK；stable site name with versioned API；code=055001706202
+- PASS；pages-manifest；OK；Pages snapshot code matches the local release artifact；code=055001706202
 
 ## 发布闸门
 - 本审计不会自动部署。生产 Worker/Pages 发布仍需要用户明确批准。
