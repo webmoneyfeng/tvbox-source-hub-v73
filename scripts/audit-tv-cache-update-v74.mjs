@@ -83,9 +83,9 @@ function extractUpdate(kind, data) {
   let api_code = '';
   if (kind === 'config') {
     const site = data?.sites?.[0] || {};
-    code = extractFirstUpdateCode(site.name || '');
     api_code = extractFirstUpdateCode(site.api || '');
-    evidence = site.name || '';
+    code = api_code || extractFirstUpdateCode(site.name || '');
+    evidence = [site.name || '', site.api || ''].filter(Boolean).join(' -> ');
   } else if (kind === 'status') {
     code = extractFirstUpdateCode(data?.visibleUpdateText || '');
     source = String(data?.visibleUpdateSource || '');

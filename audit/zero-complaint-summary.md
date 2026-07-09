@@ -2,7 +2,7 @@
 
 ## 总结
 
-- 生成时间：2026-07-09T19:47:28.068Z
+- 生成时间：2026-07-09T20:20:20.994Z
 - commercial_ready：false
 - zero_complaint_gate：WARN
 - user_love_score：94/100
@@ -39,7 +39,7 @@
 - 免费层：PASS/WARN/FAIL=6/0/0
 - 直播承载：channels=95；proxied=0；direct=95；proxyRatio=0%
 - 快照：errors=0；warnings=1；triage=1；blocking=0；visibleUpdateText=530001706202
-- 可见更新时间：gate=PASS；diagnosis=SERVICE_FRESH；current=643001706202；observed=
+- 可见更新时间：gate=PASS；diagnosis=SERVICE_FRESH；current=814001706202；observed=
 
 ## 快照 warning 分诊
 
@@ -51,8 +51,8 @@
 
 ## 在线入口轻量探测
 
-- https://tv.webhome.eu.org；config=200；status=200；sites=影视点播 · 643001706202；visible=643001706202
-- https://tv.webclound.eu.org；config=200；status=200；sites=影视点播 · 643001706202；visible=643001706202
+- https://tv.webhome.eu.org；config=200；status=200；sites=影视点播 · 814001706202；visible=814001706202
+- https://tv.webclound.eu.org；config=200；status=200；sites=影视点播 · 814001706202；visible=814001706202
 
 ## 阻塞投诉
 

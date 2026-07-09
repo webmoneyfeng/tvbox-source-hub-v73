@@ -1,25 +1,25 @@
 # v7.4 电视端可见更新时间表面审计
 
-- 生成时间：2026-07-09T19:47:05.691Z
+- 生成时间：2026-07-09T20:19:43.205Z
 - 主入口：https://tv.webhome.eu.org
 - 同构入口：https://tv.webclound.eu.org
 - 商业守门线：6 分钟
 - 电视端观测码：未提供
 - visible_freshness_gate：PASS
 - 诊断：SERVICE_FRESH
-- 当前服务端码：643001706202
+- 当前服务端码：814001706202
 - 结论：服务端所有可见更新时间表面均在商业守门线内。
 
 ## 可见表面
 
-- PASS；primary.config；surface=config.site；code=643001706202；age=1.2min；list=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=影视点播 · 643001706202
-- PASS；primary.config_clean；surface=config-clean.site；code=643001706202；age=1.2min；list=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=影视点播洁净 · 643001706202
-- PASS；primary.agg_stale_path；surface=agg.class；code=643001706202；age=1.2min；list=8；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=643001706202
-- PASS；primary.agg_clean_stale_path；surface=agg-clean.class；code=643001706202；age=1.2min；list=8；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=643001706202
-- PASS；primary.status；surface=status.visibleUpdateText；code=643001706202；age=0.6min；list=n/a；cache=public, max-age=30；root=OK；evidence=643001706202
-- PASS；secondary.config；surface=config.site；code=643001706202；age=1.2min；list=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=影视点播 · 643001706202
-- PASS；secondary.agg_stale_path；surface=agg.class；code=643001706202；age=1.2min；list=8；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=643001706202
-- PASS；secondary.status；surface=status.visibleUpdateText；code=643001706202；age=0.6min；list=n/a；cache=public, max-age=30；root=OK；evidence=643001706202
+- PASS；primary.config；surface=config.api；code=814001706202；age=1.8min；list=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=影视点播 · 814001706202 -> https://tv.webhome.eu.org/agg/u814001706202
+- PASS；primary.config_clean；surface=config-clean.api；code=814001706202；age=1.8min；list=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=影视点播洁净 · 814001706202 -> https://tv.webhome.eu.org/agg-clean/u814001706202
+- PASS；primary.agg_stale_path；surface=agg.class；code=814001706202；age=1.8min；list=8；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=814001706202
+- PASS；primary.agg_clean_stale_path；surface=agg-clean.class；code=814001706202；age=1.8min；list=8；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=814001706202
+- PASS；primary.status；surface=status.visibleUpdateText；code=814001706202；age=1.2min；list=n/a；cache=public, max-age=30；root=OK；evidence=814001706202
+- PASS；secondary.config；surface=config.api；code=814001706202；age=1.8min；list=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=影视点播 · 814001706202 -> https://tv.webclound.eu.org/agg/u814001706202
+- PASS；secondary.agg_stale_path；surface=agg.class；code=814001706202；age=1.8min；list=8；cache=no-store, no-cache, must-revalidate, max-age=0；root=OK；evidence=814001706202
+- PASS；secondary.status；surface=status.visibleUpdateText；code=814001706202；age=1.2min；list=n/a；cache=public, max-age=30；root=OK；evidence=814001706202
 
 ## 需关注项
 

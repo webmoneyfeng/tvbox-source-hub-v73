@@ -381,8 +381,9 @@ function pruneFiltersForCategory(data, t, viableOptions) {
 function configJson(visibleUpdateText = '', policy = {}) {
   const clean = policy.includeAdult === false;
   const baseName = clean ? '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' : '\u5f71\u89c6\u70b9\u64ad';
-  const name = visibleUpdateText ? `${baseName} \u00b7 ${visibleUpdateText}` : baseName;
-  return { spider: '', sites: [{ key: clean ? 'vod_unified_clean' : 'vod_unified', name, type: 1, api: PUBLIC_BASE + (clean ? '/agg-clean' : '/agg'), searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 }], lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: PUBLIC_BASE + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' };
+  const name = baseName;
+  const api = PUBLIC_BASE + (clean ? '/agg-clean' : '/agg') + (visibleUpdateText ? `/u${visibleUpdateText}` : '');
+  return { spider: '', sites: [{ key: clean ? 'vod_unified_clean' : 'vod_unified', name, type: 1, api, searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 }], lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: PUBLIC_BASE + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' };
 }
 async function main() {
   const building = path.join(DIST, 'snapshot', `.building-${Date.now()}-${process.pid}`);

@@ -1,6 +1,6 @@
 # v7.4 电视端缓存更新时间审计
 
-- 生成时间：2026-07-09T19:19:49.051Z
+- 生成时间：2026-07-09T20:19:56.237Z
 - 主入口：https://tv.webhome.eu.org
 - 同构入口：https://tv.webclound.eu.org
 - 模拟旧码：111111111111
@@ -9,16 +9,16 @@
 
 ## 端点证据
 
-- PASS；primary.config；status=200；code=813001706202；apiCode=813001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；primary.config_clean；status=200；code=813001706202；apiCode=813001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；primary.status；status=200；code=813001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；primary.cached_full_agg；status=200；code=813001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 813001706202；list=8
-- PASS；primary.cached_clean_agg；status=200；code=813001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 813001706202；list=7
-- PASS；secondary.config；status=200；code=813001706202；apiCode=813001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；secondary.config_clean；status=200；code=813001706202；apiCode=813001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；secondary.status；status=200；code=813001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；secondary.cached_full_agg；status=200；code=813001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 813001706202；list=8
-- PASS；secondary.cached_clean_agg；status=200；code=813001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 813001706202；list=7
+- PASS；primary.config；status=200；code=814001706202；apiCode=814001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；primary.config_clean；status=200；code=814001706202；apiCode=814001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；primary.status；status=200；code=814001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；primary.cached_full_agg；status=200；code=814001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 814001706202；list=8
+- PASS；primary.cached_clean_agg；status=200；code=814001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 814001706202；list=8
+- PASS；secondary.config；status=200；code=814001706202；apiCode=814001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；secondary.config_clean；status=200；code=814001706202；apiCode=814001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；secondary.status；status=200；code=814001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；secondary.cached_full_agg；status=200；code=814001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 814001706202；list=8
+- PASS；secondary.cached_clean_agg；status=200；code=814001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 814001706202；list=8
 
 ## 缓存路径关系检查
 
@@ -39,7 +39,7 @@
 - PASS；secondary.cached_full_vs_config；root=OK；drift=0min；age=n/a；within expected drift
 - PASS；secondary.cached_clean_vs_clean_config；root=OK；drift=0min；age=n/a；within expected drift
 - PASS；primary_vs_secondary.config；root=OK；drift=0min；age=n/a；within expected drift
-- PASS；status.hot_freshness；root=OK；drift=n/a；age=1.3min；hot probe fresh
+- PASS；status.hot_freshness；root=OK；drift=n/a；age=1.4min；hot probe fresh
 
 ## 需要关注
 

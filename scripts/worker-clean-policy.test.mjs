@@ -23,13 +23,13 @@ test('clean config exposes a separate no-adult TVBox entry without changing live
   const data = await res.json();
   assert.equal(data.sites.length, 1);
   assert.equal(data.sites[0].key, 'vod_unified_clean');
-  assert.match(data.sites[0].name, /^影视点播洁净( · \d{12})?$/);
+  assert.equal(data.sites[0].name, '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0');
   assert.match(data.sites[0].api, /^https:\/\/tv\.webhome\.eu\.org\/agg-clean(?:\/u\d{12})?$/);
   assert.equal(data.lives[0].url, 'https://tv.webhome.eu.org/live.txt');
   assert.doesNotMatch(JSON.stringify(data), /成人|伦理/);
 });
 
-test('config can show fresh Cloudflare Cron hot-probe update code without exposing adult content in clean entry', async () => {
+test('config keeps stable clean site name while versioned api carries hot-probe update code', async () => {
   const env = noSnapshotEnv();
   const generatedAt = new Date().toISOString();
   env.TVBOX_KV.get = async (key) => {
@@ -43,7 +43,8 @@ test('config can show fresh Cloudflare Cron hot-probe update code without exposi
   assert.match(res.headers.get('cache-control') || '', /no-store/);
   const data = await res.json();
   assert.equal(data.sites[0].key, 'vod_unified_clean');
-  assert.match(data.sites[0].name, /^影视点播洁净 · \d{12}$/);
+  assert.equal(data.sites[0].name, '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0');
+  assert.match(data.sites[0].api, /^https:\/\/tv\.webhome\.eu\.org\/agg-clean\/u\d{12}$/);
   assert.doesNotMatch(JSON.stringify(data), /成人|伦理/);
 });
 
@@ -61,6 +62,7 @@ test('versioned aggregate path from config remains routable and no-store for fre
   assert.equal(configRes.status, 200);
   assert.match(configRes.headers.get('cache-control') || '', /no-store/);
   const config = await configRes.json();
+  assert.equal(config.sites[0].name, '\u5f71\u89c6\u70b9\u64ad');
   assert.match(config.sites[0].api, /^https:\/\/tv\.webhome\.eu\.org\/agg\/u\d{12}$/);
   const aggRes = await worker.fetch(new Request(config.sites[0].api + '?fresh=1'), env);
   assert.equal(aggRes.status, 200);

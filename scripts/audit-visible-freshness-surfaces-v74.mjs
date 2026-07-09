@@ -177,22 +177,22 @@ function updateFieldsFromCode(code, explicitIso = '') {
 
 function configSurface(id, base, payload, clean = false) {
   const site = payload?.data?.sites?.[0] || {};
-  const code = extractUpdateCode(site.name || site.api || '');
   const apiCode = extractUpdateCode(site.api || '');
+  const code = apiCode || extractUpdateCode(site.name || '');
   return surfaceFreshnessCheck({
     id,
     base,
-    surface: clean ? 'config-clean.site' : 'config.site',
-    user_visible: true,
+    surface: clean ? 'config-clean.api' : 'config.api',
+    user_visible: false,
     http_status: payload.http_status,
     schema_ok: Array.isArray(payload?.data?.sites) && payload.data.sites.length === 1 && Boolean(site.name),
     cache_control: payload.cache_control,
     request_url: payload.request_url,
-    evidence: site.name || '',
+    evidence: [site.name || '', site.api || ''].filter(Boolean).join(' -> '),
     api: site.api || '',
     api_code: apiCode,
     ...updateFieldsFromCode(code),
-    note: apiCode && code && apiCode !== code ? 'api path code differs from site name code' : '',
+    note: apiCode ? 'site name is intentionally stable; update code lives in api path and agg class' : '',
   });
 }
 

@@ -1989,7 +1989,7 @@ async function config(request, env, policy = {}) {
   const updateText = updateInfo.visibleUpdateText;
   const clean = policy.includeAdult === false;
   const baseName = clean ? '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' : '\u5f71\u89c6\u70b9\u64ad';
-  const siteName = updateText ? `${baseName} \u00b7 ${updateText}` : baseName;
+  const siteName = baseName;
   const apiBasePath = clean ? '/agg-clean' : '/agg';
   const apiPath = updateText ? `${apiBasePath}/u${updateText}` : apiBasePath;
   const sites = [

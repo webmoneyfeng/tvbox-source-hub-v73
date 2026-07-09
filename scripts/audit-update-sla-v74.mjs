@@ -131,9 +131,11 @@ function extractUpdate(id, kind, data) {
   let explicitAt = '';
   let evidence = '';
   if (kind === 'config') {
-    const name = data?.sites?.[0]?.name || '';
-    code = extractFirstCode(name);
-    evidence = name;
+    const site = data?.sites?.[0] || {};
+    const name = site.name || '';
+    const api = site.api || '';
+    code = extractFirstCode(api) || extractFirstCode(name);
+    evidence = [name, api].filter(Boolean).join(' -> ');
   } else if (kind === 'agg') {
     const klass = (data?.class || []).find((x) => String(x?.type_id) === '0' || /^推荐/.test(String(x?.type_name || '')));
     code = extractFirstCode(klass?.type_name || '');
