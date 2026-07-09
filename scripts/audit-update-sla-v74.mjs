@@ -8,9 +8,10 @@ const AUDIT_DIR = path.join(ROOT, 'audit');
 const PRIMARY_BASE = (process.env.TVBOX_BASE || process.env.PUBLIC_BASE || 'https://tv.webhome.eu.org').replace(/\/+$/, '');
 const SECONDARY_BASE = (process.env.TVBOX_SECONDARY_BASE || 'https://tv.webclound.eu.org').replace(/\/+$/, '');
 const TIMEOUT_MS = Number(process.env.UPDATE_SLA_TIMEOUT_MS || 20000);
-const CRON_WINDOW_MS = Number(process.env.UPDATE_SLA_CRON_WINDOW_MS || 15 * 60 * 1000);
+const CRON_TARGET_MS = Number(process.env.UPDATE_SLA_CRON_TARGET_MS || 2 * 60 * 1000);
+const CRON_WINDOW_MS = Number(process.env.UPDATE_SLA_CRON_WINDOW_MS || 6 * 60 * 1000);
 const AGG_DRIFT_MS = Number(process.env.UPDATE_SLA_AGG_DRIFT_MS || 2 * 60 * 1000);
-const HOT_FRESH_MS = Number(process.env.UPDATE_SLA_HOT_FRESH_MS || 45 * 60 * 1000);
+const HOT_FRESH_MS = Number(process.env.UPDATE_SLA_HOT_FRESH_MS || 6 * 60 * 1000);
 const SNAPSHOT_FRESH_MS = Number(process.env.UPDATE_SLA_SNAPSHOT_FRESH_MS || 6 * 60 * 60 * 1000);
 
 const ROOT_CAUSES = {
@@ -238,10 +239,10 @@ function renderMarkdown(report) {
     '## 判定口径',
     '',
     '- config 与 config-clean 必须同码。',
-    '- 主域名与同构域名 config 必须同码，或差异不超过 1 个 Cron 周期时标记 WARN。',
+    '- 主域名与同构域名 config 必须同码，或差异不超过 6 分钟热更新守护线时标记 WARN。',
     '- agg 推荐分类与 config 允许 2 分钟以内差异；超过 2 分钟但不超过 1 个 Cron 周期记为 Worker isolate/cache WARN。',
     '- status.visibleUpdateSource 必须是 hot-probe 或 snapshot。',
-    '- hot-probe 必须 45 分钟内新鲜；snapshot 超过 6 小时只 WARN，不阻断 hot-probe。',
+    '- hot-probe 商业目标为 2 分钟内刷新；超过 6 分钟守护线即判定 FAIL；snapshot 超过 6 小时只 WARN，不阻断 hot-probe。',
     '',
   ].join('\n');
 }
@@ -284,7 +285,7 @@ async function auditUpdateSla() {
     generatedAt,
     primaryBase: PRIMARY_BASE,
     secondaryBase: SECONDARY_BASE,
-    thresholds: { cronWindowMs: CRON_WINDOW_MS, aggDriftMs: AGG_DRIFT_MS, hotFreshMs: HOT_FRESH_MS, snapshotFreshMs: SNAPSHOT_FRESH_MS },
+    thresholds: { cronTargetMs: CRON_TARGET_MS, cronWindowMs: CRON_WINDOW_MS, aggDriftMs: AGG_DRIFT_MS, hotFreshMs: HOT_FRESH_MS, snapshotFreshMs: SNAPSHOT_FRESH_MS },
     endpoints,
     checks: allChecks,
     summary,

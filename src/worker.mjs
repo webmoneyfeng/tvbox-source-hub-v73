@@ -23,7 +23,9 @@ const SNAPSHOT_FETCH_TIMEOUT_MS = 6000;
 const SNAPSHOT_VISIBLE_FRESH_MS = 6 * 60 * 60 * 1000;
 const SNAPSHOT_LAST_GOOD_KV_KEY = 'snapshot:last-good-manifest';
 const HOT_UPDATE_KV_KEY = 'hot:last-success';
-const HOT_UPDATE_FRESH_MS = 45 * 60 * 1000;
+const HOT_UPDATE_TARGET_MINUTES = 2;
+const HOT_UPDATE_FRESH_GUARD_MINUTES = 6;
+const HOT_UPDATE_FRESH_MS = HOT_UPDATE_FRESH_GUARD_MINUTES * 60 * 1000;
 const HOT_UPDATE_MEMORY_TTL_MS = 15 * 1000;
 const SNAPSHOT_PACK_LIMIT = 24;
 const snapshotMemoryCache = new Map();
@@ -1668,7 +1670,13 @@ async function statusV73(request, env) {
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
     liveDelivery: liveDeliveryPolicy(origin),
     fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
-    updateCadence: { target: 'hot probe <= 15 minutes by Cloudflare Cron, visible label memory <= 15 seconds, full snapshot <= 2 hours by GitHub Actions, config/agg entry no-store, worker snapshot memory cache <= 5 minutes', currentVisibleText: updateInfo.visibleUpdateText, freshDiagnostic: origin + '/status.json?fresh=1' },
+    updateCadence: {
+      target: 'hot probe <= 2 minutes by Cloudflare Cron, hot visible guard <= 6 minutes, visible label memory <= 15 seconds, full snapshot <= 2 hours by GitHub Actions, config/agg entry no-store, worker snapshot memory cache <= 5 minutes',
+      hotProbeTargetMinutes: HOT_UPDATE_TARGET_MINUTES,
+      hotProbeFreshGuardMinutes: HOT_UPDATE_FRESH_GUARD_MINUTES,
+      currentVisibleText: updateInfo.visibleUpdateText,
+      freshDiagnostic: origin + '/status.json?fresh=1',
+    },
     compatibility: ['TVBox', 'FongMi', '影视仓'],
   }, forceFresh ? 0 : 30);
 }

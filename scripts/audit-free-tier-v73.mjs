@@ -7,6 +7,8 @@ const ROOT = path.resolve(__dirname, '..');
 const PAGES_DEPLOY_MONTHLY_WARN_LIMIT = 500;
 const PAGES_FILE_WARN_LIMIT = 20000;
 const PAGES_SIZE_WARN_LIMIT_BYTES = 500 * 1024 * 1024;
+const KV_WRITE_FREE_DAILY_LIMIT = 1000;
+const KV_WRITE_DAILY_WARN_RATIO = 0.9;
 const PUBLIC_BASE = (process.env.PUBLIC_BASE || 'https://tv.webhome.eu.org').replace(/\/+$/, '');
 
 async function walk(dir) {
@@ -30,6 +32,10 @@ function monthlyCronRuns(expr) {
   return minuteCount * hourCount * 30;
 }
 
+function dailyCronRuns(expr) {
+  return monthlyCronRuns(expr) / 30;
+}
+
 async function workflowCronSummary() {
   const dir = path.join(ROOT, '.github', 'workflows');
   const files = (await walk(dir)).filter((x) => /\.ya?ml$/i.test(x));
@@ -40,6 +46,27 @@ async function workflowCronSummary() {
     rows.push({ file: path.relative(ROOT, file).replace(/\\/g, '/'), crons, monthlyRuns: crons.reduce((n, c) => n + monthlyCronRuns(c), 0) });
   }
   return rows;
+}
+
+async function workerCronSummary() {
+  const candidates = ['wrangler.toml', 'wrangler.jsonc', 'wrangler.json'];
+  for (const file of candidates) {
+    const full = path.join(ROOT, file);
+    let text = '';
+    try { text = await fs.readFile(full, 'utf8'); } catch { continue; }
+    const crons = file.endsWith('.toml')
+      ? [...text.matchAll(/crons\s*=\s*\[([^\]]*)\]/g)].flatMap((m) => [...m[1].matchAll(/['"]([^'"]+)['"]/g)].map((x) => x[1]))
+      : (() => { try { return JSON.parse(text.replace(/\/\/.*$/gm, '')).triggers?.crons || []; } catch { return []; } })();
+    if (crons.length) {
+      return {
+        file,
+        crons,
+        dailyRuns: crons.reduce((n, c) => n + dailyCronRuns(c), 0),
+        monthlyRuns: crons.reduce((n, c) => n + monthlyCronRuns(c), 0),
+      };
+    }
+  }
+  return { file: '', crons: [], dailyRuns: 0, monthlyRuns: 0 };
 }
 
 async function githubRepoVisibility() {
@@ -174,9 +201,11 @@ async function auditFreeTier() {
   const distStats = await Promise.all(distFiles.map(async (f) => ({ f, size: (await fs.stat(f)).size })));
   const distBytes = distStats.reduce((n, x) => n + x.size, 0);
   const workflows = await workflowCronSummary();
+  const workerCrons = await workerCronSummary();
   const repo = await githubRepoVisibility();
   const liveProxy = await analyzeLiveProxy(PUBLIC_BASE);
   const monthlyRuns = workflows.reduce((n, x) => n + x.monthlyRuns, 0);
+  const estimatedDailyKvWrites = workerCrons.dailyRuns;
   const workerRequestMetric = liveProxy.ok
     ? `${liveProxy.proxiedChannels}/${liveProxy.totalChannels} proxied`
     : 'live-audit-unavailable';
@@ -195,9 +224,16 @@ async function auditFreeTier() {
     { area: 'cloudflare_pages_files', result: distFiles.length < PAGES_FILE_WARN_LIMIT ? 'PASS' : 'WARN', metric: String(distFiles.length), note: 'dist \u9759\u6001\u5feb\u7167\u91c7\u7528\u6253\u5305\u6587\u4ef6\uff0c\u4e0d\u91c7\u7528\u6bcf\u4e2a\u8282\u76ee\u4e00\u4e2a\u6587\u4ef6\u3002' },
     { area: 'cloudflare_pages_size', result: distBytes < PAGES_SIZE_WARN_LIMIT_BYTES ? 'PASS' : 'WARN', metric: `${distBytes} bytes`, note: 'dist \u603b\u4f53\u79ef\u5904\u4e8e\u8f7b\u91cf\u7ea7\u9759\u6001\u5206\u53d1\u8303\u56f4\u3002' },
     { area: 'cloudflare_worker_requests', result: liveProxy.ok && liveProxy.proxiedChannels === 0 ? 'PASS' : 'WARN', metric: workerRequestMetric, note: workerRequestNote },
-    { area: 'cloudflare_kv', result: 'PASS', metric: 'low', note: '\u5f53\u524d\u4e3b\u8981\u8bfb\u53d6 channels/vod_catalog\uff0c\u672a\u53d1\u73b0\u9ad8\u9891\u5199\u5165\u8bbe\u8ba1\u3002' },
+    {
+      area: 'cloudflare_kv_hot_probe_writes',
+      result: estimatedDailyKvWrites <= KV_WRITE_FREE_DAILY_LIMIT * KV_WRITE_DAILY_WARN_RATIO ? 'PASS' : 'WARN',
+      metric: `${Math.round(estimatedDailyKvWrites)}/${KV_WRITE_FREE_DAILY_LIMIT} writes/day`,
+      note: estimatedDailyKvWrites <= KV_WRITE_FREE_DAILY_LIMIT * KV_WRITE_DAILY_WARN_RATIO
+        ? '\u70ed\u63a2\u9488\u4ec5\u5199\u5165\u5355\u4e2a hot:last-success KV key\uff0c2 \u5206\u949f\u4e00\u6b21\u7ea6 720 writes/day\uff0c\u4f4e\u4e8e Workers KV \u514d\u8d39\u5c42 1000 writes/day\u3002'
+        : '\u70ed\u63a2\u9488\u5199\u5165\u9891\u7387\u63a5\u8fd1\u6216\u8d85\u8fc7 Workers KV \u514d\u8d39\u5c42 1000 writes/day\uff0c\u9700\u8981\u964d\u9891\u6216\u6539\u4e3a\u65e0\u5199\u5165\u63a2\u9488\u3002',
+    },
   ];
-  const summary = { generatedAt, repo, publicBase: PUBLIC_BASE, monthlyScheduledRuns: monthlyRuns, distFileCount: distFiles.length, distBytes, workflows, liveProxy, rows, pass: rows.filter((x) => x.result === 'PASS').length, warn: rows.filter((x) => x.result === 'WARN').length, fail: rows.filter((x) => x.result === 'FAIL').length };
+  const summary = { generatedAt, repo, publicBase: PUBLIC_BASE, monthlyScheduledRuns: monthlyRuns, workerCrons, estimatedDailyKvWrites, distFileCount: distFiles.length, distBytes, workflows, liveProxy, rows, pass: rows.filter((x) => x.result === 'PASS').length, warn: rows.filter((x) => x.result === 'WARN').length, fail: rows.filter((x) => x.result === 'FAIL').length };
   await fs.mkdir(path.join(ROOT, 'audit'), { recursive: true });
   await fs.writeFile(path.join(ROOT, 'audit', 'free-tier-latest.json'), JSON.stringify(summary, null, 2) + '\n', 'utf8');
   await fs.writeFile(path.join(ROOT, 'audit', 'free-tier-summary.md'), renderSummary(summary), 'utf8');
@@ -212,6 +248,7 @@ function renderSummary(summary) {
     `- GitHub \u4ed3\u5e93\uff1a${summary.repo.url || 'unknown'}\uff1bvisibility=${summary.repo.visibility || 'unknown'}\uff1bprivate=${summary.repo.private}`,
     `- \u5ba1\u8ba1\u5165\u53e3\uff1a${summary.publicBase}`,
     `- \u5b9a\u65f6\u5de5\u4f5c\u6d41\u4f30\u7b97\uff1a${summary.monthlyScheduledRuns}/month`,
+    `- Worker Cron\uff1a${summary.workerCrons.crons.join(', ') || 'none'}\uff1b\u4f30\u7b97 KV writes=${Math.round(summary.estimatedDailyKvWrites)}/day`,
     `- dist\uff1a${summary.distFileCount} files\uff1b${summary.distBytes} bytes`,
     `- PASS/WARN/FAIL\uff1a${summary.pass}/${summary.warn}/${summary.fail}`,
     '',

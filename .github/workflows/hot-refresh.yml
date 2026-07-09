@@ -3,7 +3,7 @@ name: hot-refresh
 on:
   workflow_dispatch:
   schedule:
-    - cron: '7,37 * * * *'
+    - cron: '7 1,13 * * *'
 
 permissions:
   contents: write
@@ -17,14 +17,15 @@ jobs:
         with:
           node-version: '20'
       - run: npm run check
-      - run: npm run generate:snapshot
+      - run: npm run generate:hot-snapshot
         env:
-          SNAPSHOT_SOURCE_BASE: https://tv.webhome.eu.org
+          HOT_SOURCE_BASE: https://tv.webhome.eu.org
           PUBLIC_BASE: https://tv.webhome.eu.org
+      - run: npm run audit:update-sla
       - name: Commit snapshot
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dist
+          git add dist audit
           git diff --cached --quiet && echo "No snapshot changes" || git commit -m "chore(snapshot): refresh v7.3 snapshot"
           git push

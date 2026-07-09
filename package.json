@@ -7,7 +7,7 @@
     "generate:snapshot": "node scripts/generate-snapshot.mjs",
     "audit:remote": "node scripts/audit-remote-control-v73.mjs",
     "validate:online": "node scripts/validate-online-v73.mjs",
-    "check": "node --check src/worker.mjs && node --check scripts/generate-snapshot.mjs && node --check scripts/validate-online-v73.mjs && node --check scripts/audit-remote-control-v73.mjs && node --check scripts/audit-tv-remote-full-v73.mjs && node --check scripts/audit-source-coverage-v73.mjs && node --check scripts/audit-free-tier-v73.mjs && node --check scripts/audit-zero-complaint-v74.mjs && node --check scripts/audit-update-sla-v74.mjs && node --check scripts/triage-snapshot-warnings-v74.mjs && node --check scripts/audit-snapshot-pack-gaps-v74.mjs && node --test scripts/audit-tv-remote-full-v73.test.mjs scripts/audit-source-coverage-v73.test.mjs scripts/worker-live-policy.test.mjs scripts/worker-clean-policy.test.mjs",
+    "check": "node --check src/worker.mjs && node --check scripts/generate-snapshot.mjs && node --check scripts/generate-hot-snapshot-v74.mjs && node --check scripts/validate-online-v73.mjs && node --check scripts/audit-remote-control-v73.mjs && node --check scripts/audit-tv-remote-full-v73.mjs && node --check scripts/audit-source-coverage-v73.mjs && node --check scripts/audit-free-tier-v73.mjs && node --check scripts/audit-zero-complaint-v74.mjs && node --check scripts/audit-update-sla-v74.mjs && node --check scripts/triage-snapshot-warnings-v74.mjs && node --check scripts/audit-snapshot-pack-gaps-v74.mjs && node --check scripts/worker-update-sla.test.mjs && node --test scripts/audit-tv-remote-full-v73.test.mjs scripts/audit-source-coverage-v73.test.mjs scripts/worker-live-policy.test.mjs scripts/worker-clean-policy.test.mjs scripts/worker-update-sla.test.mjs",
     "audit:remote-full": "node scripts/audit-tv-remote-full-v73.mjs",
     "audit:sources": "node scripts/audit-source-coverage-v73.mjs",
     "audit:coverage": "node scripts/audit-source-coverage-v73.mjs",
@@ -15,7 +15,8 @@
     "audit:zero-complaint": "node scripts/audit-zero-complaint-v74.mjs",
     "triage:snapshot-warnings": "node scripts/triage-snapshot-warnings-v74.mjs",
     "audit:snapshot-pack-gaps": "node scripts/audit-snapshot-pack-gaps-v74.mjs",
-    "audit:update-sla": "node scripts/audit-update-sla-v74.mjs"
+    "audit:update-sla": "node scripts/audit-update-sla-v74.mjs",
+    "generate:hot-snapshot": "node scripts/generate-hot-snapshot-v74.mjs"
   },
   "engines": {
     "node": ">=20"

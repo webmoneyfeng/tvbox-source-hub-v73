@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T08:09:01.599Z",
+  "generatedAt": "2026-07-09T18:01:49.508Z",
   "repo": {
     "ok": true,
     "private": false,
@@ -7,9 +7,18 @@
     "url": "https://github.com/webmoneyfeng/tvbox-source-hub-v73"
   },
   "publicBase": "https://tv.webhome.eu.org",
-  "monthlyScheduledRuns": 330,
-  "distFileCount": 404,
-  "distBytes": 48303026,
+  "monthlyScheduledRuns": 480,
+  "workerCrons": {
+    "file": "wrangler.toml",
+    "crons": [
+      "*/2 * * * *"
+    ],
+    "dailyRuns": 720,
+    "monthlyRuns": 21600
+  },
+  "estimatedDailyKvWrites": 720,
+  "distFileCount": 418,
+  "distBytes": 49658015,
   "workflows": [
     {
       "file": ".github/workflows/deep-verify.yml",
@@ -21,16 +30,16 @@
     {
       "file": ".github/workflows/full-refresh.yml",
       "crons": [
-        "17 2 * * *"
+        "17 */2 * * *"
       ],
-      "monthlyRuns": 30
+      "monthlyRuns": 360
     },
     {
       "file": ".github/workflows/hot-refresh.yml",
       "crons": [
-        "7 */3 * * *"
+        "7 1,13 * * *"
       ],
-      "monthlyRuns": 240
+      "monthlyRuns": 60
     },
     {
       "file": ".github/workflows/manual-release.yml",
@@ -74,19 +83,19 @@
     {
       "area": "github_actions_schedule",
       "result": "PASS",
-      "metric": "330/month",
+      "metric": "480/month",
       "note": "定时刷新频率按免费优先控制，保留人工发布余量。"
     },
     {
       "area": "cloudflare_pages_files",
       "result": "PASS",
-      "metric": "404",
+      "metric": "418",
       "note": "dist 静态快照采用打包文件，不采用每个节目一个文件。"
     },
     {
       "area": "cloudflare_pages_size",
       "result": "PASS",
-      "metric": "48303026 bytes",
+      "metric": "49658015 bytes",
       "note": "dist 总体积处于轻量级静态分发范围。"
     },
     {
@@ -96,10 +105,10 @@
       "note": "live.txt groups=9 channels=95；直播直连=95，经 Worker 代理=0，代理占比=0%；抽样播放清单子链接 0/4 继续走 Worker"
     },
     {
-      "area": "cloudflare_kv",
+      "area": "cloudflare_kv_hot_probe_writes",
       "result": "PASS",
-      "metric": "low",
-      "note": "当前主要读取 channels/vod_catalog，未发现高频写入设计。"
+      "metric": "720/1000 writes/day",
+      "note": "热探针仅写入单个 hot:last-success KV key，2 分钟一次约 720 writes/day，低于 Workers KV 免费层 1000 writes/day。"
     }
   ],
   "pass": 6,
