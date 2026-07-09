@@ -2,11 +2,11 @@
 
 ## 总结
 
-- 生成时间：2026-07-09T20:20:20.994Z
+- 生成时间：2026-07-09T21:05:21.145Z
 - commercial_ready：false
 - zero_complaint_gate：WARN
-- user_love_score：94/100
-- P0/P1/P2/P3：0/0/1/1
+- user_love_score：99/100
+- P0/P1/P2/P3：0/0/0/1
 - 输入证据：audit/tv-remote-full-latest.json；audit/coverage-latest.json；audit/source-discovery-latest.json；audit/free-tier-latest.json；dist/snapshot/latest/validation.json；audit/snapshot-warning-triage-latest.json；audit/snapshot-pack-gap-latest.json；dist/snapshot/latest/manifest.json；audit/visible-freshness-latest.json
 
 ## 终局判定
@@ -34,8 +34,8 @@
 ## 当前核心指标
 
 - 遥控器路径：visible=319；PASS/WARN/FAIL=319/0/0；max_duplicate_rate=0；detail=1；playable=1
-- 覆盖审计：PASS/WARN/FAIL=9/1/0
-- 源发现：candidate=29；ACTIVE/WATCH/REJECTED/BLOCKED=15/10/2/2
+- 覆盖审计：PASS/WARN/FAIL=10/0/0
+- 源发现：candidate=29；ACTIVE/WATCH/REJECTED/BLOCKED=16/6/2/5
 - 免费层：PASS/WARN/FAIL=6/0/0
 - 直播承载：channels=95；proxied=0；direct=95；proxyRatio=0%
 - 快照：errors=0；warnings=1；triage=1；blocking=0；visibleUpdateText=530001706202
@@ -51,8 +51,8 @@
 
 ## 在线入口轻量探测
 
-- https://tv.webhome.eu.org；config=200；status=200；sites=影视点播 · 814001706202；visible=814001706202
-- https://tv.webclound.eu.org；config=200；status=200；sites=影视点播 · 814001706202；visible=814001706202
+- https://tv.webhome.eu.org；config=200；status=200；sites=影视点播 · 405001706202；visible=405001706202
+- https://tv.webclound.eu.org；config=200；status=200；sites=影视点播 · 405001706202；visible=405001706202
 
 ## 阻塞投诉
 
@@ -60,8 +60,7 @@
 
 ## 下一修复队列
 
-1. P2；coverage；覆盖审计 WARN：演唱会；证据：SOURCE_PHYSICAL_LIMIT；源命中=8；重复搜索结果不稳定，可能由源超时或反爬导致。；建议：继续扩源、增强排序与标签召回，确保能稳定进入搜索第一页。
-2. P3；snapshot；快照 warning 已分诊为观察项；证据：total=1；visible=0；by_type=UI_HIDE_CANDIDATE=1；建议：继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。
+1. P3；snapshot；快照 warning 已分诊为观察项；证据：total=1；visible=0；by_type=UI_HIDE_CANDIDATE=1；建议：继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。
 
 ## 终局到下一阶段承接
 

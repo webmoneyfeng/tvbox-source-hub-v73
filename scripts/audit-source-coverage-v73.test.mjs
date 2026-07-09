@@ -1,8 +1,26 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { classifyCoverage, isPlayableUrl, normalizeTitle, queryTermsForItem, titleMatches } from './audit-source-coverage-v73.mjs';
+import { classifyCoverage, isPlayableUrl, mapLimit, normalizeTitle, queryTermsForItem, titleMatches } from './audit-source-coverage-v73.mjs';
 import { countProxyPlaylistChildren, monthlyCronRuns, parseLiveText, summarizeLiveProxyFromChannels } from './audit-free-tier-v73.mjs';
+
+
+test('mapLimit preserves input order while bounding concurrent source audits', async () => {
+  let active = 0;
+  let maxActive = 0;
+  const seen = [];
+  const rows = await mapLimit([1, 2, 3, 4, 5], 2, async (value) => {
+    active += 1;
+    maxActive = Math.max(maxActive, active);
+    seen.push(value);
+    await new Promise((resolve) => setTimeout(resolve, value === 1 ? 30 : 5));
+    active -= 1;
+    return value * 10;
+  });
+  assert.deepEqual(rows, [10, 20, 30, 40, 50]);
+  assert.equal(maxActive, 2);
+  assert.deepEqual(seen.slice(0, 2).sort(), [1, 2]);
+});
 
 test('normalizes classic titles and aliases for coverage checks', () => {
   assert.equal(normalizeTitle('天道 (2008)'), '天道');
@@ -21,6 +39,21 @@ test('coverage root cause distinguishes universe gaps and ranking suppression', 
   const sourceHits = [{ slug: 'x', hits: [{ vod_name: '天道' }] }];
   const aggRuns = [{ fuzzyIndex: 30, exactIndex: 30 }];
   assert.equal(classifyCoverage(item, sourceHits, aggRuns, true, true).root_cause, 'RANKING_SUPPRESSION');
+});
+
+
+test('coverage classification ignores minority transient 503 when user-visible exact search is repeatedly proven', () => {
+  const item = { title: '\u6d41\u6d6a\u5730\u7403', actors: ['\u5434\u4eac'], year: '2019', priority: 'classic' };
+  const sourceHits = [{ slug: 'x', hits: [{ vod_name: '\u6d41\u6d6a\u5730\u7403' }] }];
+  const aggRuns = [
+    { mode: 'user', term: '\u6d41\u6d6a\u5730\u7403', status: 200, fuzzyIndex: 0, exactIndex: 0 },
+    { mode: 'user', term: '\u6d41\u6d6a\u5730\u7403', status: 200, fuzzyIndex: 0, exactIndex: 0 },
+    { mode: 'user', term: '\u6d41\u6d6a\u5730\u7403', status: 503, fuzzyIndex: -1, exactIndex: -1 },
+    { mode: 'user', term: '\u5434\u4eac', status: 200, fuzzyIndex: 0, exactIndex: -1 },
+    { mode: 'user', term: '\u5434\u4eac', status: 503, fuzzyIndex: -1, exactIndex: -1 },
+    { mode: 'dynamic', term: '\u6d41\u6d6a\u5730\u7403', status: 200, fuzzyIndex: 0, exactIndex: 0 },
+  ];
+  assert.deepEqual(classifyCoverage(item, sourceHits, aggRuns, true, true), { result: 'PASS', root_cause: 'OK', note: '' });
 });
 
 test('coverage classification trusts stable user-visible search over dynamic diagnostic jitter', () => {

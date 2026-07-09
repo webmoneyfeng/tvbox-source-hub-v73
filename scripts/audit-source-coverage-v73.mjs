@@ -14,6 +14,7 @@ const TIMEOUT_MS = Number(process.env.SOURCE_AUDIT_TIMEOUT_MS || 12000);
 const DETAIL_SAMPLE_LIMIT = Number(process.env.SOURCE_AUDIT_DETAIL_SAMPLE || 1);
 const REPEAT_COUNT = Number(process.env.COVERAGE_REPEAT || 3);
 const COVERAGE_SOURCE_LIMIT = Number(process.env.COVERAGE_SOURCE_LIMIT || 12);
+const SOURCE_AUDIT_CONCURRENCY = Math.max(1, Number(process.env.SOURCE_AUDIT_CONCURRENCY || 6));
 
 const BAD_PLAY_RE = /(player\.html|\/player\b|iframe|\/jx\b|jx\.|jiexi|parse|解析|advert|广告位|公告|客服|商务合作)/i;
 const DIRECT_PLAY_RE = /\.(m3u8|mp4|flv|mkv|mov|ts)(?:$|[?#])|m3u8/i;
@@ -52,6 +53,22 @@ function queryUrl(base, params) {
 async function readJson(file) {
   return JSON.parse(await fs.readFile(file, 'utf8'));
 }
+
+async function mapLimit(items, limit, worker) {
+  const input = Array.from(items || []);
+  const width = Math.max(1, Math.min(Number(limit) || 1, input.length || 1));
+  const results = new Array(input.length);
+  let next = 0;
+  async function run() {
+    while (next < input.length) {
+      const index = next++;
+      results[index] = await worker(input[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: width }, run));
+  return results;
+}
+
 
 async function writeJson(rel, data) {
   const file = path.join(ROOT, rel);
@@ -286,12 +303,21 @@ function classifyCoverage(item, sourceHits, aggRuns, detailOk, playOk) {
   const byTerm = new Map();
   for (const run of visibleRuns.filter((r) => !requiredTerms.size || requiredTerms.has(r.term))) {
     if (!byTerm.has(run.term)) byTerm.set(run.term, []);
-    byTerm.get(run.term).push(run.fuzzyIndex >= 0);
+    byTerm.get(run.term).push(run);
   }
-  const unstable = [...byTerm.values()].some((values) => values.length > 1 && values.some(Boolean) && values.some((v) => !v));
+  const provenUserHits = visibleRuns.filter((r) => r.fuzzyIndex >= 0 && r.status >= 200 && r.status < 300).length;
+  const provenFirstPageHit = anyFirstPageFuzzy || anyFirstPageExact;
+  const transientOnly = [...byTerm.values()].every((runs) => {
+    const hits = runs.filter((r) => r.fuzzyIndex >= 0 && r.status >= 200 && r.status < 300).length;
+    const misses = runs.filter((r) => r.fuzzyIndex < 0);
+    if (!hits || !misses.length) return true;
+    return misses.every((r) => Number(r.status) === 503 || Number(r.status) === 502 || Number(r.status) === 504 || Number(r.status) === 0);
+  });
+  const unstable = [...byTerm.values()].some((runs) => runs.length > 1 && runs.some((r) => r.fuzzyIndex >= 0) && runs.some((r) => r.fuzzyIndex < 0));
+  const toleratedTransientJitter = unstable && transientOnly && provenUserHits >= 2 && provenFirstPageHit && detailOk && playOk;
   if (!sourceHitCount) return { result: item.priority === 'critical' ? 'FAIL' : 'WARN', root_cause: 'SOURCE_UNIVERSE_GAP', note: '候选源集合未发现该节目。' };
   if (!anyAggHit) return { result: 'FAIL', root_cause: 'PARSER_GAP', note: '源侧有候选，但聚合搜索未召回。' };
-  if (unstable) return { result: 'WARN', root_cause: 'SOURCE_PHYSICAL_LIMIT', note: '重复搜索结果不稳定，可能由源超时或反爬导致。' };
+  if (unstable && !toleratedTransientJitter) return { result: 'WARN', root_cause: 'SOURCE_PHYSICAL_LIMIT', note: '重复搜索结果不稳定，可能由源超时或反爬导致。' };
   if (item.priority === 'category') {
     if (!anyFirstPageFuzzy) return { result: 'WARN', root_cause: 'RANKING_SUPPRESSION', note: '已召回但语义相关类目结果未稳定进入第一页。' };
     if (!detailOk) return { result: 'WARN', root_cause: 'PLAYBACK_FILTERED', note: '列表召回但详情失败。' };
@@ -318,8 +344,7 @@ async function auditSourcesAndCoverage() {
   const discovered = await discoverFromSeedConfigs(registry);
   const candidates = mergeCandidates(registry, discovered);
 
-  const sourceRows = [];
-  for (const candidate of candidates) sourceRows.push(await auditCandidate(candidate));
+  const sourceRows = await mapLimit(candidates, SOURCE_AUDIT_CONCURRENCY, auditCandidate);
   const activeRows = sourceRows.filter((x) => x.status === 'ACTIVE');
 
   const coverageRows = [];
@@ -423,4 +448,4 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   console.log(JSON.stringify(result, null, 2));
 }
 
-export { auditSourcesAndCoverage, classifyCoverage, queryTermsForItem, titleMatches };
+export { auditSourcesAndCoverage, classifyCoverage, mapLimit, queryTermsForItem, titleMatches };

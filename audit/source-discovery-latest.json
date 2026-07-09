@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-09T20:04:58.068Z",
+  "generatedAt": "2026-07-09T20:58:13.341Z",
   "candidateCount": 29,
-  "active": 17,
-  "watch": 8,
+  "active": 16,
+  "watch": 6,
   "rejected": 2,
-  "blocked": 2,
+  "blocked": 5,
   "activeSlugs": [
     "baidu",
     "bfzy",
@@ -21,8 +21,7 @@
     "seed_9",
     "seed_12",
     "seed_16",
-    "seed_17",
-    "ik"
+    "seed_17"
   ],
   "rows": [
     {
@@ -33,11 +32,11 @@
       "api": "https://suoniapi.com/api.php/provide/vod/",
       "tier": "main",
       "origin": "current",
-      "status": "WATCH",
+      "status": "BLOCKED",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
-        "blocked": false,
+        "blocked": true,
         "classOk": true,
         "searchOk": false,
         "detailOk": false,
@@ -54,7 +53,7 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON"
+      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
     },
     {
       "slug": "lzi",
@@ -397,18 +396,18 @@
       "api": "https://api.ffzyapi.com/api.php/provide/vod/",
       "tier": "main",
       "origin": "discovered",
-      "status": "WATCH",
+      "status": "BLOCKED",
       "checks": {
         "httpStatus": 200,
-        "timeout": false,
+        "timeout": true,
         "blocked": false,
-        "classOk": true,
+        "classOk": false,
         "searchOk": false,
         "detailOk": false,
         "playOk": false
       },
       "metrics": {
-        "classCount": 31,
+        "classCount": 0,
         "searchCount": 0,
         "sampleNames": []
       },
@@ -418,7 +417,7 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+      "error": "This operation was aborted"
     },
     {
       "slug": "wujin",
@@ -431,7 +430,7 @@
       "status": "WATCH",
       "checks": {
         "httpStatus": 200,
-        "timeout": false,
+        "timeout": true,
         "blocked": false,
         "classOk": true,
         "searchOk": false,
@@ -449,7 +448,7 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": ""
+      "error": "This operation was aborted"
     },
     {
       "slug": "modu",
@@ -743,11 +742,11 @@
       "api": "https://suoniapi.com/api.php/provide/vod/at/xml/",
       "tier": "watch",
       "origin": "https://szyyds.cn/tv/x.json",
-      "status": "REJECTED",
+      "status": "BLOCKED",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
-        "blocked": false,
+        "blocked": true,
         "classOk": false,
         "searchOk": false,
         "detailOk": false,
@@ -1007,35 +1006,28 @@
       "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
       "tier": "watch",
       "origin": "https://dxawi.github.io/0/0.json",
-      "status": "ACTIVE",
+      "status": "REJECTED",
       "checks": {
-        "httpStatus": 200,
+        "httpStatus": 0,
         "timeout": false,
         "blocked": false,
-        "classOk": true,
-        "searchOk": true,
-        "detailOk": true,
-        "playOk": true
+        "classOk": false,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
       },
       "metrics": {
-        "classCount": 53,
-        "searchCount": 6,
-        "sampleNames": [
-          "天道扎堆：天降一窝主角逼疯我",
-          "天道2023",
-          "天道赊命人",
-          "天道",
-          "天道图书馆第一季",
-          "天道"
-        ]
+        "classCount": 0,
+        "searchCount": 0,
+        "sampleNames": []
       },
       "evidence": {
         "listUrl": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/?ac=list",
         "searchUrl": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/?ac=videolist&ids=66849",
-        "playableUrl": "https://bfikuncdn.com/20260104/TVqlcUZb/index.m3u8"
+        "detailUrl": "",
+        "playableUrl": ""
       },
-      "error": ""
+      "error": "fetch failed"
     },
     {
       "slug": "haiwaikan",
@@ -1047,7 +1039,7 @@
       "origin": "https://dxawi.github.io/0/0.json",
       "status": "REJECTED",
       "checks": {
-        "httpStatus": 200,
+        "httpStatus": 0,
         "timeout": false,
         "blocked": false,
         "classOk": false,
