@@ -1,4 +1,4 @@
-﻿import { mkdir, writeFile, rm, readFile } from 'node:fs/promises';
+﻿import { mkdir, writeFile, rm, readFile, rename } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
 const LATEST = path.join(DIST, 'snapshot', 'latest');
+let SNAPSHOT_WRITE_ROOT = LATEST;
 const SOURCE_BASE = (process.env.SNAPSHOT_SOURCE_BASE || process.env.TVBOX_SOURCE_BASE || 'https://tvbox-source-hub.feng-yang.workers.dev').replace(/\/+$/, '');
 const PUBLIC_BASE = (process.env.PUBLIC_BASE || 'https://tv.webhome.eu.org').replace(/\/+$/, '');
 const LIMIT = Number(process.env.SNAPSHOT_LIMIT || 24);
@@ -48,7 +49,10 @@ function snapshotSearchVariants(wd) {
 
 async function ensureDir(p) { await mkdir(p, { recursive: true }); }
 async function writeJson(rel, data) {
-  const file = path.join(DIST, rel);
+  const snapshotPrefix = 'snapshot/latest/';
+  const file = rel.startsWith(snapshotPrefix)
+    ? path.join(SNAPSHOT_WRITE_ROOT, rel.slice(snapshotPrefix.length))
+    : path.join(DIST, rel);
   await ensureDir(path.dirname(file));
   await writeFile(file, JSON.stringify(data, null, 2), 'utf8');
 }
@@ -381,11 +385,13 @@ function configJson(visibleUpdateText = '', policy = {}) {
   return { spider: '', sites: [{ key: clean ? 'vod_unified_clean' : 'vod_unified', name, type: 1, api: PUBLIC_BASE + (clean ? '/agg-clean' : '/agg'), searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 }], lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: PUBLIC_BASE + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' };
 }
 async function main() {
-  if (existsSync(LATEST)) await rm(LATEST, { recursive: true, force: true });
-  await ensureDir(path.join(LATEST, 'catalog-packs'));
-  await ensureDir(path.join(LATEST, 'detail-packs'));
-  await ensureDir(path.join(LATEST, 'filter-packs'));
-  await ensureDir(path.join(LATEST, 'search-packs'));
+  const building = path.join(DIST, 'snapshot', `.building-${Date.now()}-${process.pid}`);
+  SNAPSHOT_WRITE_ROOT = building;
+  if (existsSync(building)) await rm(building, { recursive: true, force: true });
+  await ensureDir(path.join(building, 'catalog-packs'));
+  await ensureDir(path.join(building, 'detail-packs'));
+  await ensureDir(path.join(building, 'filter-packs'));
+  await ensureDir(path.join(building, 'search-packs'));
   const generatedAt = new Date().toISOString();
   const sourceAudit = await readAuditJson('audit/source-discovery-latest.json');
   const coverageAudit = await readAuditJson('audit/coverage-latest.json');
@@ -402,10 +408,6 @@ async function main() {
   const viableFilterOptions = new Set();
   let filterPackFileCount = 0;
   const validation = { generatedAt, sourceBase: SOURCE_BASE, publicBase: PUBLIC_BASE, staticSnapshotBases: STATIC_SNAPSHOT_BASES, categories: [], filters: [], search: [], errors: [], warnings: [] };
-
-  await writeJson('config.json', configJson(visibleUpdateText));
-  await writeJson('config-clean.json', configJson(visibleUpdateText, { includeAdult: false }));
-  await writeJson('status.json', { ok: true, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceDiscoveryAt, coverageAuditAt, snapshotGeneratedAt: generatedAt, visibleUpdateText, visibleUpdateFormat: 'reverse-yyyyMMddHHmm', sourceSummary, coverageSummary, publicBase: PUBLIC_BASE, sourceBase: SOURCE_BASE, entries: { full: PUBLIC_BASE + '/config.json', clean: PUBLIC_BASE + '/config-clean.json' }, updateCadence: { target: 'hot snapshot <= 30 minutes on free GitHub Actions', configCacheSeconds: 60 } });
 
   for (const [t, name] of CATEGORIES) {
     for (const pg of [1, 2]) {
@@ -495,6 +497,18 @@ async function main() {
   await writeJson('snapshot/latest/manifest.json', manifest);
   await writeJson('snapshot/latest/categories.json', { generatedAt, class: CATEGORIES.map(([type_id, type_name]) => ({ type_id, type_name })), rows: categoryRows });
   await writeJson('snapshot/latest/validation.json', validation);
+  if (validation.errors.length) {
+    await rm(building, { recursive: true, force: true });
+    console.log(JSON.stringify({ ok: false, generatedAt, errors: validation.errors, categories: validation.categories }, null, 2));
+    process.exitCode = 1;
+    return;
+  }
+  if (existsSync(LATEST)) await rm(LATEST, { recursive: true, force: true });
+  await rename(building, LATEST);
+  SNAPSHOT_WRITE_ROOT = LATEST;
+  await writeJson('config.json', configJson(visibleUpdateText));
+  await writeJson('config-clean.json', configJson(visibleUpdateText, { includeAdult: false }));
+  await writeJson('status.json', { ok: true, version: '2026-07-04-aggregate-v7.3-domestic-free', generatedAt, sourceDiscoveryAt, coverageAuditAt, snapshotGeneratedAt: generatedAt, visibleUpdateText, visibleUpdateFormat: 'reverse-yyyyMMddHHmm', sourceSummary, coverageSummary, publicBase: PUBLIC_BASE, sourceBase: SOURCE_BASE, entries: { full: PUBLIC_BASE + '/config.json', clean: PUBLIC_BASE + '/config-clean.json' }, updateCadence: { target: 'hot probe <= 15 minutes by Cloudflare Cron, full snapshot <= 2 hours by GitHub Actions', configCacheSeconds: 0 } });
   console.log(JSON.stringify({ ok: validation.errors.length === 0, generatedAt, errors: validation.errors, categories: validation.categories }, null, 2));
 }
 

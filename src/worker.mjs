@@ -20,8 +20,14 @@ const DEFAULT_SNAPSHOT_BASES = [
 ];
 const SNAPSHOT_CACHE_TTL_MS = 5 * 60 * 1000;
 const SNAPSHOT_FETCH_TIMEOUT_MS = 6000;
+const SNAPSHOT_VISIBLE_FRESH_MS = 6 * 60 * 60 * 1000;
+const SNAPSHOT_LAST_GOOD_KV_KEY = 'snapshot:last-good-manifest';
+const HOT_UPDATE_KV_KEY = 'hot:last-success';
+const HOT_UPDATE_FRESH_MS = 45 * 60 * 1000;
+const HOT_UPDATE_MEMORY_TTL_MS = 60 * 1000;
 const SNAPSHOT_PACK_LIMIT = 24;
 const snapshotMemoryCache = new Map();
+const hotUpdateMemoryCache = { t: 0, v: null };
 const LIMIT_DEFAULT = 24;
 const LIMIT_MAX = 48;
 const CMS_TIMEOUT_MS = 9000;
@@ -69,15 +75,21 @@ const TAG_RULES = [
 const TAG_ORDER = TAG_RULES.map(([tag]) => tag);
 
 function text(data, type = 'text/plain; charset=utf-8', maxAge = 300, status = 200) {
+  const noStore = Number(maxAge) <= 0;
+  const headers = {
+    'content-type': type,
+    'access-control-allow-origin': '*',
+    'access-control-allow-methods': 'GET,HEAD,OPTIONS',
+    'access-control-allow-headers': 'range,content-type,user-agent,accept',
+    'cache-control': noStore ? 'no-store, no-cache, must-revalidate, max-age=0' : 'public, max-age=' + maxAge,
+  };
+  if (noStore) {
+    headers.pragma = 'no-cache';
+    headers.expires = '0';
+  }
   return new Response(data, {
     status,
-    headers: {
-      'content-type': type,
-      'access-control-allow-origin': '*',
-      'access-control-allow-methods': 'GET,HEAD,OPTIONS',
-      'access-control-allow-headers': 'range,content-type,user-agent,accept',
-      'cache-control': 'public, max-age=' + maxAge,
-    },
+    headers,
   });
 }
 function json(data, maxAge = 300, status = 200) {
@@ -596,7 +608,7 @@ const LIVE_FORM_RE = /(\u6f14\u5531\u4f1a|\u97f3\u4e50\u4f1a|\u5de1\u6f14|\bLIVE
 const COLLECTION_RE = /(\u5408\u96c6|\u5927\u5168|\u5168\u96c6|\u7cfb\u5217|\u4e13\u9898|\u76d8\u70b9|\u96c6\u9526)/;
 
 function aggCategoryByAny(value) {
-  const raw = normalizeText(value);
+  const raw = normalizeText(value).replace(/\s*[·・]\s*\d{12}\s*$/, '');
   if (!raw) return AGG_CATEGORIES[0];
   const lower = raw.toLowerCase();
   return AGG_CATEGORIES.find((c) => c.id === raw || c.key === lower || c.name === raw) || AGG_CATEGORIES[0];
@@ -1419,16 +1431,116 @@ async function fetchJsonWithTimeout(url, timeoutMs) {
     clearTimeout(timer);
   }
 }
+function snapshotUrl(base, relPath) {
+  const urlPath = String(relPath || '').replace(/^\/+/, '').replace(/%/g, '%25');
+  return String(base || '').replace(/\/+$/, '') + '/' + urlPath;
+}
+function snapshotGeneratedTime(manifest) {
+  const candidates = [manifest?.snapshotGeneratedAt, manifest?.generatedAt, manifest?.coverageAuditAt, manifest?.sourceDiscoveryAt];
+  for (const value of candidates) {
+    const t = Date.parse(value || '');
+    if (Number.isFinite(t)) return t;
+  }
+  return 0;
+}
+function isValidSnapshotPayload(value) {
+  return Boolean(value && (value.code === 1 || value.ok !== false || value.version || value.generatedAt));
+}
+function isFreshSnapshotManifest(manifest, now = Date.now()) {
+  const t = snapshotGeneratedTime(manifest);
+  return Boolean(t && now - t <= SNAPSHOT_VISIBLE_FRESH_MS);
+}
+async function fetchSnapshotCandidate(base, relPath) {
+  const url = snapshotUrl(base, relPath);
+  const got = await fetchJsonWithTimeout(url, SNAPSHOT_FETCH_TIMEOUT_MS);
+  return isValidSnapshotPayload(got) ? { data: got, base, url } : null;
+}
+function kvBinding(env) {
+  return env?.TVBOX_KV || env?.KV || null;
+}
+async function readJsonKv(env, key) {
+  const kv = kvBinding(env);
+  if (!kv || typeof kv.get !== 'function') return null;
+  try {
+    const raw = await kv.get(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+async function writeJsonKv(env, key, value, ttlSeconds = 604800) {
+  const kv = kvBinding(env);
+  if (!kv || typeof kv.put !== 'function') return false;
+  try {
+    await kv.put(key, JSON.stringify(value), { expirationTtl: ttlSeconds });
+    return true;
+  } catch {
+    return false;
+  }
+}
+async function readLastGoodSnapshotManifest(env) {
+  const saved = await readJsonKv(env, SNAPSHOT_LAST_GOOD_KV_KEY);
+  if (!saved) return null;
+  const manifest = saved.manifest || saved;
+  return isValidSnapshotPayload(manifest) ? { data: manifest, base: saved.base || manifest.__snapshotBase || '', url: saved.url || '' } : null;
+}
+async function writeLastGoodSnapshotManifest(env, candidate) {
+  if (!candidate?.data) return false;
+  const stored = { manifest: candidate.data, base: candidate.base || candidate.data.__snapshotBase || '', url: candidate.url || '', storedAt: new Date().toISOString() };
+  return writeJsonKv(env, SNAPSHOT_LAST_GOOD_KV_KEY, stored, 7 * 24 * 60 * 60);
+}
+async function fetchLatestSnapshotManifest(env) {
+  const cacheKey = 'manifest.json';
+  const cached = snapshotMemoryCache.get(cacheKey);
+  if (cached && Date.now() - cached.t < SNAPSHOT_CACHE_TTL_MS) return cached.v;
+
+  const now = Date.now();
+  const candidates = [];
+  for (const base of snapshotBases(env)) {
+    const candidate = await fetchSnapshotCandidate(base, 'manifest.json');
+    if (candidate?.data) candidates.push(candidate);
+  }
+  candidates.sort((a, b) => snapshotGeneratedTime(b.data) - snapshotGeneratedTime(a.data));
+  const fresh = candidates.find((c) => isFreshSnapshotManifest(c.data, now));
+  if (fresh) {
+    const value = { ...fresh.data, __snapshotBase: fresh.base, __snapshotUrl: fresh.url, __snapshotFresh: true };
+    snapshotMemoryCache.set(cacheKey, { t: now, v: value, source: fresh.url });
+    if (String(env?.WRITE_SNAPSHOT_LAST_GOOD || '') === '1') await writeLastGoodSnapshotManifest(env, { ...fresh, data: value });
+    return value;
+  }
+
+  const lastGood = await readLastGoodSnapshotManifest(env);
+  if (lastGood?.data) {
+    const value = { ...lastGood.data, __snapshotBase: lastGood.base || lastGood.data.__snapshotBase || '', __snapshotUrl: lastGood.url || lastGood.data.__snapshotUrl || '', __snapshotFresh: isFreshSnapshotManifest(lastGood.data, now), __snapshotFromLastGood: true };
+    snapshotMemoryCache.set(cacheKey, { t: now, v: value, source: value.__snapshotUrl || 'kv:last-good' });
+    return value;
+  }
+
+  const newest = candidates[0];
+  if (newest?.data) {
+    const value = { ...newest.data, __snapshotBase: newest.base, __snapshotUrl: newest.url, __snapshotFresh: false, __snapshotStaleRejected: true };
+    snapshotMemoryCache.set(cacheKey, { t: now, v: null, source: newest.url });
+    return null;
+  }
+  snapshotMemoryCache.set(cacheKey, { t: now, v: null, source: '' });
+  return null;
+}
+async function selectedSnapshotBase(env) {
+  const manifest = await fetchLatestSnapshotManifest(env);
+  return manifest?.__snapshotBase || '';
+}
 async function fetchSnapshotJson(env, relPath) {
   if (!relPath) return null;
   const cacheKey = relPath;
   const cached = snapshotMemoryCache.get(cacheKey);
   if (cached && Date.now() - cached.t < SNAPSHOT_CACHE_TTL_MS) return cached.v;
-  for (const base of snapshotBases(env)) {
-    const urlPath = relPath.replace(/^\/+/, '').replace(/%/g, '%25');
-    const url = base.replace(/\/+$/, '') + '/' + urlPath;
+  if (relPath === 'manifest.json') return fetchLatestSnapshotManifest(env);
+  const preferred = await selectedSnapshotBase(env);
+  const bases = preferred ? [preferred, ...snapshotBases(env).filter((b) => b !== preferred)] : snapshotBases(env);
+  for (const base of bases) {
+    const url = snapshotUrl(base, relPath);
     const got = await fetchJsonWithTimeout(url, SNAPSHOT_FETCH_TIMEOUT_MS);
-    if (got && (got.code === 1 || got.ok !== false || got.version || got.generatedAt)) {
+    if (isValidSnapshotPayload(got)) {
       snapshotMemoryCache.set(cacheKey, { t: Date.now(), v: got, source: url });
       return got;
     }
@@ -1529,6 +1641,8 @@ function v73Mirrors(origin) {
 async function statusV73(request, env) {
   const origin = new URL(request.url).origin;
   const manifest = await fetchSnapshotJson(env, 'manifest.json');
+  const updateInfo = await visibleUpdateInfo(env, manifest);
+  const hotUpdate = await readHotUpdateInfo(env);
   return json({
     ok: true,
     version: VERSION,
@@ -1544,13 +1658,16 @@ async function statusV73(request, env) {
     sourceDiscoveryAt: manifest?.sourceDiscoveryAt || '',
     coverageAuditAt: manifest?.coverageAuditAt || '',
     snapshotGeneratedAt: manifest?.generatedAt || '',
-    visibleUpdateText: visibleUpdateTextFromManifest(manifest),
+    visibleUpdateText: updateInfo.visibleUpdateText,
+    visibleUpdateSource: updateInfo.source,
+    visibleUpdateAt: updateInfo.at,
+    hotUpdate: hotUpdate ? { ok: true, generatedAt: hotUpdate.at, visibleUpdateText: hotUpdate.visibleUpdateText, source: hotUpdate.source, probe: hotUpdate.probe } : { ok: false },
     coverageSummary: manifest?.coverageSummary || null,
     sourceSummary: manifest?.sourceSummary || null,
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
     liveDelivery: liveDeliveryPolicy(origin),
     fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
-    updateCadence: { target: 'hot snapshot <= 30 minutes on free GitHub Actions, config cache <= 60 seconds, worker snapshot memory cache <= 5 minutes', currentVisibleText: visibleUpdateTextFromManifest(manifest) },
+    updateCadence: { target: 'hot probe <= 15 minutes by Cloudflare Cron, full snapshot <= 2 hours by GitHub Actions, config no-store, worker snapshot memory cache <= 5 minutes', currentVisibleText: updateInfo.visibleUpdateText },
     compatibility: ['TVBox', 'FongMi', '影视仓'],
   }, 60);
 }
@@ -1650,6 +1767,8 @@ async function aggDetail(request, env, ids, policy = {}) {
 async function agg(request, env, policy = {}) {
   const url = new URL(request.url);
   const params = url.searchParams;
+  const manifest = await fetchSnapshotJson(env, 'manifest.json');
+  const updateInfo = await visibleUpdateInfo(env, manifest);
   const ac = (params.get('ac') || '').toLowerCase();
   const ids = (params.get('ids') || params.get('id') || '').trim();
   if (ids) return aggDetail(request, env, ids, policy);
@@ -1660,7 +1779,7 @@ async function agg(request, env, policy = {}) {
   const limit = Math.min(LIMIT_MAX, parseInt(params.get('limit') || String(LIMIT_DEFAULT), 10) || LIMIT_DEFAULT);
   const wd = (params.get('wd') || params.get('search') || params.get('q') || '').trim();
   const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params, filters);
-  if (snapshotHit) return json(sanitizeAggResponseForPolicy(snapshotHit, policy), 120);
+  if (snapshotHit) return json(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy(snapshotHit, policy), updateInfo), 120);
   const sources = selectedSources(filters);
   const pagesToPull = [Math.max(1, page)];
   if (page === 1 && !wd) pagesToPull.push(2);
@@ -1673,7 +1792,7 @@ async function agg(request, env, policy = {}) {
   const merged = sortAggMerged(mergeAggItems(rawItems), filters, wd ? buildSearchContext(wd) : null);
   const p = pageList(merged.map(aggListItemFromMerged), page, limit);
   const responseFilters = aggFiltersForResponse(category.key, merged);
-  return json(sanitizeAggResponseForPolicy({ code: 1, msg: 'ok', class: aggClasses(category.key, merged, policy), filters: responseFilters, page, pagecount: Math.max(page + (p.list.length >= limit ? 1 : 0), 1), limit, total: merged.length, list: p.list }, policy), 120);
+  return json(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy({ code: 1, msg: 'ok', class: aggClasses(category.key, merged, policy), filters: responseFilters, page, pagecount: Math.max(page + (p.list.length >= limit ? 1 : 0), 1), limit, total: merged.length, list: p.list }, policy), updateInfo), 120);
 }
 
 function formatChinaReverseUpdateCode(iso) {
@@ -1684,22 +1803,69 @@ function formatChinaReverseUpdateCode(iso) {
   const get = (type) => parts.find((p) => p.type === type)?.value || '';
   return `${get('year')}${get('month')}${get('day')}${get('hour')}${get('minute')}`.split('').reverse().join('');
 }
+function updateInfoFromIso(iso, source = 'snapshot') {
+  const t = Date.parse(iso || '');
+  if (!Number.isFinite(t)) return null;
+  return { at: new Date(t).toISOString(), time: t, visibleUpdateText: formatChinaReverseUpdateCode(new Date(t).toISOString()), source };
+}
 function visibleUpdateTextFromManifest(manifest) {
   const existing = String(manifest?.visibleUpdateText || '').trim();
   if (/^\d{12}$/.test(existing)) return existing;
   return formatChinaReverseUpdateCode(manifest?.snapshotGeneratedAt || manifest?.generatedAt || manifest?.coverageAuditAt || manifest?.sourceDiscoveryAt);
 }
+function manifestUpdateInfo(manifest) {
+  const t = snapshotGeneratedTime(manifest);
+  if (!t) return null;
+  const info = updateInfoFromIso(new Date(t).toISOString(), 'snapshot');
+  if (info && /^\d{12}$/.test(String(manifest?.visibleUpdateText || ''))) info.visibleUpdateText = String(manifest.visibleUpdateText).trim();
+  return info;
+}
+async function readHotUpdateInfo(env) {
+  const now = Date.now();
+  if (hotUpdateMemoryCache.v && now - hotUpdateMemoryCache.t < HOT_UPDATE_MEMORY_TTL_MS) return hotUpdateMemoryCache.v;
+  const raw = await readJsonKv(env, HOT_UPDATE_KV_KEY);
+  let value = null;
+  if (raw?.ok && raw.generatedAt) {
+    const info = updateInfoFromIso(raw.generatedAt, 'hot-probe');
+    if (info && now - info.time <= HOT_UPDATE_FRESH_MS) value = { ...info, probe: raw };
+  }
+  hotUpdateMemoryCache.t = now;
+  hotUpdateMemoryCache.v = value;
+  return value;
+}
+async function visibleUpdateInfo(env, manifest) {
+  const candidates = [manifestUpdateInfo(manifest), await readHotUpdateInfo(env)].filter(Boolean);
+  if (!candidates.length) return { visibleUpdateText: '', source: 'none', at: '', time: 0 };
+  candidates.sort((a, b) => b.time - a.time);
+  return candidates[0];
+}
+function stampAggResponseWithUpdate(payload, info) {
+  if (!payload || !info?.visibleUpdateText) return payload;
+  const suffix = ` · ${info.visibleUpdateText}`;
+  const out = { ...payload, visible_update_text: info.visibleUpdateText, update_label_strategy: info.source };
+  if (Array.isArray(out.class)) {
+    out.class = out.class.map((c) => {
+      if (String(c?.type_id) === '0' || c?.type_name === '推荐') {
+        const baseName = String(c.type_name || '推荐').replace(/\s*[·・]\s*\d{12}\s*$/, '') || '推荐';
+        return { ...c, type_name: baseName + suffix };
+      }
+      return c;
+    });
+  }
+  return out;
+}
 async function config(request, env, policy = {}) {
   const origin = new URL(request.url).origin;
   const manifest = await fetchSnapshotJson(env, 'manifest.json');
-  const updateText = visibleUpdateTextFromManifest(manifest);
+  const updateInfo = await visibleUpdateInfo(env, manifest);
+  const updateText = updateInfo.visibleUpdateText;
   const clean = policy.includeAdult === false;
   const baseName = clean ? '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' : '\u5f71\u89c6\u70b9\u64ad';
   const siteName = updateText ? `${baseName} \u00b7 ${updateText}` : baseName;
   const sites = [
     { key: clean ? 'vod_unified_clean' : 'vod_unified', name: siteName, type: 1, api: origin + (clean ? '/agg-clean' : '/agg'), searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 },
   ];
-  return json({ spider: '', sites, lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: origin + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' }, 60);
+  return json({ spider: '', sites, lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: origin + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' }, 0);
 }
 
 function isHttpUrl(value) {
@@ -1902,7 +2068,34 @@ function home(request) {
   ].join('\n') + '\n', 'text/plain; charset=utf-8', 300);
 }
 
+async function runHotSourceProbe(env, reason = 'cron') {
+  const generatedAt = new Date().toISOString();
+  const probeSources = CMS_SOURCES.filter((s) => s.tier === 'main').slice(0, 6);
+  const jobs = probeSources.map(async (source) => {
+    const got = await fetchCmsJsonByParams(source, { ac: 'videolist', pg: 1 }, 6000);
+    if (!got.ok) return { slug: source.slug, ok: false, count: 0 };
+    const cleaned = cleanCmsResult(got.data, false);
+    const rows = Array.isArray(cleaned.list) ? cleaned.list.filter((item) => item?.vod_id || item?.vod_name) : [];
+    return { slug: source.slug, ok: rows.length > 0, count: rows.length, sample: rows.slice(0, 3).map((item) => cleanAggName(item.vod_name || '', 80)).filter(Boolean) };
+  });
+  const settled = await Promise.allSettled(jobs);
+  const sources = settled.map((r, i) => r.status === 'fulfilled' ? r.value : { slug: probeSources[i]?.slug || '', ok: false, count: 0, error: String(r.reason?.message || r.reason || '') });
+  const okSources = sources.filter((s) => s.ok).length;
+  const totalItems = sources.reduce((sum, s) => sum + (Number(s.count) || 0), 0);
+  const ok = okSources >= 2 && totalItems > 0;
+  const payload = { ok, reason, generatedAt, visibleUpdateText: formatChinaReverseUpdateCode(generatedAt), okSources, checkedSources: sources.length, totalItems, sources };
+  if (ok) {
+    await writeJsonKv(env, HOT_UPDATE_KV_KEY, payload, 2 * 60 * 60);
+    hotUpdateMemoryCache.t = Date.now();
+    hotUpdateMemoryCache.v = { at: generatedAt, time: Date.parse(generatedAt), visibleUpdateText: payload.visibleUpdateText, source: 'hot-probe', probe: payload };
+  }
+  return payload;
+}
+
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(runHotSourceProbe(env, event?.cron || 'scheduled'));
+  },
   async fetch(request, env) {
     try {
       const url = new URL(request.url);

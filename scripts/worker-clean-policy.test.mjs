@@ -19,12 +19,31 @@ function noSnapshotEnv() {
 test('clean config exposes a separate no-adult TVBox entry without changing live delivery', async () => {
   const res = await worker.fetch(new Request('https://tv.webhome.eu.org/config-clean.json'), noSnapshotEnv());
   assert.equal(res.status, 200);
+  assert.match(res.headers.get('cache-control') || '', /no-store/);
   const data = await res.json();
   assert.equal(data.sites.length, 1);
   assert.equal(data.sites[0].key, 'vod_unified_clean');
   assert.match(data.sites[0].name, /^影视点播洁净( · \d{12})?$/);
   assert.equal(data.sites[0].api, 'https://tv.webhome.eu.org/agg-clean');
   assert.equal(data.lives[0].url, 'https://tv.webhome.eu.org/live.txt');
+  assert.doesNotMatch(JSON.stringify(data), /成人|伦理/);
+});
+
+test('config can show fresh Cloudflare Cron hot-probe update code without exposing adult content in clean entry', async () => {
+  const env = noSnapshotEnv();
+  const generatedAt = new Date().toISOString();
+  env.TVBOX_KV.get = async (key) => {
+    if (key === 'hot:last-success') return JSON.stringify({ ok: true, generatedAt, visibleUpdateText: '000000000000', okSources: 2, checkedSources: 6, totalItems: 48 });
+    if (key === 'channels') return '[]';
+    if (key === 'vod_catalog') return '[]';
+    return null;
+  };
+  const res = await worker.fetch(new Request('https://tv.webhome.eu.org/config-clean.json'), env);
+  assert.equal(res.status, 200);
+  assert.match(res.headers.get('cache-control') || '', /no-store/);
+  const data = await res.json();
+  assert.equal(data.sites[0].key, 'vod_unified_clean');
+  assert.match(data.sites[0].name, /^影视点播洁净 · \d{12}$/);
   assert.doesNotMatch(JSON.stringify(data), /成人|伦理/);
 });
 
