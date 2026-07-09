@@ -27,6 +27,8 @@ const HOT_UPDATE_TARGET_MINUTES = 2;
 const HOT_UPDATE_FRESH_GUARD_MINUTES = 6;
 const HOT_UPDATE_FRESH_MS = HOT_UPDATE_FRESH_GUARD_MINUTES * 60 * 1000;
 const HOT_UPDATE_MEMORY_TTL_MS = 15 * 1000;
+const HOT_SNAPSHOT_FRESH_MS = 18 * 60 * 60 * 1000;
+const HOT_OVERLAY_CATEGORY_KEYS = new Set(['recommend', 'movie', 'tv', 'short', 'explainer', 'knowledge']);
 const SNAPSHOT_PACK_LIMIT = 24;
 const snapshotMemoryCache = new Map();
 const hotUpdateMemoryCache = { t: 0, v: null };
@@ -1527,6 +1529,110 @@ async function fetchLatestSnapshotManifest(env) {
   snapshotMemoryCache.set(cacheKey, { t: now, v: null, source: '' });
   return null;
 }
+
+function hotBaseFromSnapshotBase(base) {
+  const value = String(base || '').replace(/\/+$/, '');
+  if (!value) return '';
+  return value
+    .replace(/\/static\/snapshot\/latest$/i, '/static/hot/latest')
+    .replace(/\/dist\/snapshot\/latest$/i, '/dist/hot/latest')
+    .replace(/\/snapshot\/latest$/i, '/hot/latest');
+}
+function hotBases(env) {
+  const explicit = splitEnvList(env && env.HOT_BASES, []);
+  const derived = snapshotBases(env).map(hotBaseFromSnapshotBase).filter(Boolean);
+  return [...new Set([...explicit, ...derived])];
+}
+function isFreshHotManifest(manifest, now = Date.now()) {
+  if (!manifest || manifest.ok === false) return false;
+  if (Array.isArray(manifest.errors) && manifest.errors.length) return false;
+  const t = Date.parse(manifest.finishedAt || manifest.generatedAt || '');
+  return Number.isFinite(t) && now - t <= HOT_SNAPSHOT_FRESH_MS;
+}
+async function fetchHotJson(env, relPath) {
+  if (!relPath) return null;
+  const cacheKey = 'hot/' + relPath;
+  const cached = snapshotMemoryCache.get(cacheKey);
+  if (cached && Date.now() - cached.t < SNAPSHOT_CACHE_TTL_MS) return cached.v;
+  if (relPath !== 'manifest.json') {
+    const manifest = await fetchHotJson(env, 'manifest.json');
+    if (!manifest?.__hotBase) return null;
+    const got = await fetchJsonWithTimeout(snapshotUrl(manifest.__hotBase, relPath), SNAPSHOT_FETCH_TIMEOUT_MS);
+    const value = isValidSnapshotPayload(got) ? got : null;
+    snapshotMemoryCache.set(cacheKey, { t: Date.now(), v: value, source: manifest.__hotBase });
+    return value;
+  }
+  for (const base of hotBases(env)) {
+    const got = await fetchJsonWithTimeout(snapshotUrl(base, 'manifest.json'), SNAPSHOT_FETCH_TIMEOUT_MS);
+    if (isFreshHotManifest(got)) {
+      const value = { ...got, __hotBase: base, __hotFresh: true };
+      snapshotMemoryCache.set(cacheKey, { t: Date.now(), v: value, source: base });
+      return value;
+    }
+  }
+  snapshotMemoryCache.set(cacheKey, { t: Date.now(), v: null, source: '' });
+  return null;
+}
+function hotCatalogPath(category) {
+  return 'catalog/' + category.id + '.json';
+}
+function hotSearchPath(term) {
+  return 'search/' + encodeURIComponent(String(term || '')) + '.json';
+}
+function mergeHotAndSnapshotLists(hotList, snapshotList, filters, searchContext = null) {
+  const hot = Array.isArray(hotList) ? hotList : [];
+  const snapshot = Array.isArray(snapshotList) ? snapshotList : [];
+  const combined = [...hot, ...snapshot];
+  const map = new Map();
+  for (const item of combined) {
+    const key = snapshotDedupKey(item);
+    if (!map.has(key)) map.set(key, item);
+  }
+  const list = [...map.values()];
+  if (searchContext) list.sort((a, b) => searchScoreItem(b, searchContext) - searchScoreItem(a, searchContext) || Number(hot.includes(b)) - Number(hot.includes(a)) || compareDisplayName(a.vod_name, b.vod_name));
+  return { list, duplicateRemoved: combined.length - list.length, hotRowsUsed: hot.length };
+}
+async function hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload) {
+  const manifest = await fetchHotJson(env, 'manifest.json');
+  if (!manifest?.__hotFresh) return snapshotPayload;
+  let hotPayload = null;
+  let termsHit = [];
+  if (wd) {
+    const rows = [];
+    const seen = new Set();
+    for (const term of searchVariantsFor(wd)) {
+      const pack = await fetchHotJson(env, hotSearchPath(term));
+      if (!pack || !Array.isArray(pack.list) || !pack.list.length) continue;
+      termsHit.push(term);
+      for (const item of pack.list) {
+        const key = String(item.vod_id || item.vod_name || '').trim();
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        rows.push(item);
+      }
+      if (rows.length >= SNAPSHOT_PACK_LIMIT) break;
+    }
+    if (rows.length) hotPayload = { ...(snapshotPayload || {}), list: rows, total: rows.length };
+  } else if (HOT_OVERLAY_CATEGORY_KEYS.has(category.key) && !snapshotFilterEntries(filters).length && !hasExplicitSnapshotSort(filters)) {
+    const pack = await fetchHotJson(env, hotCatalogPath(category));
+    if (pack && Array.isArray(pack.list) && pack.list.length) hotPayload = pack;
+  }
+  if (!hotPayload?.list?.length) return snapshotPayload;
+  const baseList = Array.isArray(snapshotPayload?.list) ? snapshotPayload.list : [];
+  const context = wd ? buildSearchContext(wd) : null;
+  const merged = mergeHotAndSnapshotLists(hotPayload.list, baseList, filters, context);
+  const extra = {
+    hot_manifest_available: true,
+    hot_manifest_fresh: true,
+    hot_overlay_applied: merged.hotRowsUsed > 0,
+    hot_rows_used: merged.hotRowsUsed,
+    hot_duplicate_removed: merged.duplicateRemoved,
+    hot_search_terms_hit: termsHit,
+    hot_overlay_generated_at: manifest.generatedAt || manifest.finishedAt || '',
+  };
+  const first = snapshotPayload || hotPayload || { code: 1, msg: 'ok', page: 1, limit: SNAPSHOT_PACK_LIMIT, class: aggClasses(category.key, [], {}) };
+  return snapshotApplyListPaging(first, merged.list, page, limit, wd ? 'hot-search-overlay' : 'hot-catalog-overlay', extra);
+}
 async function selectedSnapshotBase(env) {
   const manifest = await fetchLatestSnapshotManifest(env);
   return manifest?.__snapshotBase || '';
@@ -1580,7 +1686,8 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
     if (rows.length) {
       const context = buildSearchContext(wd);
       const sorted = dedupeSnapshotList(rows).sort((a, b) => searchScoreItem(b, context) - searchScoreItem(a, context) || compareDisplayName(a.vod_name, b.vod_name));
-      return snapshotApplyListPaging(firstPack || { code: 1, msg: 'ok', page: 1, limit: SNAPSHOT_PACK_LIMIT }, sorted, page, limit, 'search-pack', { snapshot_search: { terms: variants } });
+      const snapshotPayload = snapshotApplyListPaging(firstPack || { code: 1, msg: 'ok', page: 1, limit: SNAPSHOT_PACK_LIMIT }, sorted, page, limit, 'search-pack', { snapshot_search: { terms: variants } });
+      return hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload);
     }
     return null;
   }
@@ -1613,7 +1720,8 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
         return snapshotApplyListPaging(sortPacks[0], sorted, page, limit, 'catalog-local-sort');
       }
     }
-    return snapshotApplyPaging(basePacks[0], basePacks, page, limit, 'catalog-pack');
+    const snapshotPayload = snapshotApplyPaging(basePacks[0], basePacks, page, limit, 'catalog-pack');
+    return hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload);
   }
 
   const localFilterPacks = [];
@@ -1668,6 +1776,7 @@ async function statusV73(request, env) {
     coverageSummary: manifest?.coverageSummary || null,
     sourceSummary: manifest?.sourceSummary || null,
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
+    hotOverlay: { available: Boolean(await fetchHotJson(env, 'manifest.json')), bases: hotBases(env), freshnessMs: HOT_SNAPSHOT_FRESH_MS },
     liveDelivery: liveDeliveryPolicy(origin),
     fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
     updateCadence: {

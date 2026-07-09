@@ -69,6 +69,33 @@ test('versioned aggregate path from config remains routable and no-store for fre
   assert.match(agg.class?.[0]?.type_name || '', /\d{12}/);
 });
 
+
+test('cached old aggregate path still stamps the latest hot-probe code in category response', async () => {
+  const env = noSnapshotEnv();
+  const generatedAt = '2026-07-10T02:46:00.000Z';
+  const expectedCode = '640101706202';
+  env.TVBOX_KV.get = async (key) => {
+    if (key === 'hot:last-success') return JSON.stringify({ ok: true, generatedAt, okSources: 2, checkedSources: 6, totalItems: 48 });
+    if (key === 'channels') return '[]';
+    if (key === 'vod_catalog') return '[]';
+    return null;
+  };
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response('{}', { status: 404, headers: { 'content-type': 'application/json' } });
+  try {
+    const res = await worker.fetch(new Request('https://tv.webhome.eu.org/agg/u111111111111?ac=videolist&t=0&pg=1&limit=8&fresh=1'), env);
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get('cache-control') || '', /no-store/);
+    const data = await res.json();
+    assert.equal(data.visible_update_text, expectedCode);
+    assert.equal(data.update_label_strategy, 'hot-probe');
+    assert.match(data.class?.[0]?.type_name || '', new RegExp(expectedCode));
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+
 test('clean aggregate policy removes adult category, filters and rows while full policy preserves them', () => {
   const payload = {
     code: 1,

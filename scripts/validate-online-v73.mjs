@@ -70,14 +70,14 @@ assert(!payloadHasAdultExposure(cleanConfig.data), 'clean config exposes adult w
 
 for (const path of ['/status.json', '/snapshot.json', '/mirrors.json', `/agg?limit=${LIMIT}`, `/agg?ac=videolist&t=1&pg=1&limit=${LIMIT}`, `/agg?ac=detail&t=1&pg=1&limit=${LIMIT}`, `/agg?wd=${encodeURIComponent('\u89e3\u8bf4')}&limit=${LIMIT}`, `/agg?f=${encodeURIComponent(JSON.stringify({ year: '2026', class: '\u52a8\u4f5c' }))}&limit=${LIMIT}`]) {
   const got = await fetchJson(path);
-  report.endpoints.push({ path, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, ok: got.status === 200 });
+  report.endpoints.push({ path, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, ok: got.status === 200, hot_overlay_applied: got.data?.hot_overlay_applied || false, hot_rows_used: got.data?.hot_rows_used || 0, hot_duplicate_removed: got.data?.hot_duplicate_removed || 0, hot_search_terms_hit: got.data?.hot_search_terms_hit || [] });
   assert(got.status === 200, `${path} status ${got.status}`, failures);
   if (path.startsWith('/agg')) assert((got.data?.list?.length || 0) > 0, `${path} empty list`, failures);
 }
 
 for (const path of [`/agg-clean?limit=${LIMIT}`, `/agg-clean?ac=videolist&t=1&pg=1&limit=${LIMIT}`, `/agg-clean?wd=${encodeURIComponent('\u7535\u5f71')}&limit=${LIMIT}`, `/agg-clean?f=${encodeURIComponent(JSON.stringify({ year: '2026', class: '\u52a8\u4f5c' }))}&limit=${LIMIT}`]) {
   const got = await fetchJson(path);
-  report.endpoints.push({ path, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, ok: got.status === 200, content_policy: got.data?.content_policy });
+  report.endpoints.push({ path, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, ok: got.status === 200, content_policy: got.data?.content_policy, hot_overlay_applied: got.data?.hot_overlay_applied || false, hot_rows_used: got.data?.hot_rows_used || 0, hot_duplicate_removed: got.data?.hot_duplicate_removed || 0, hot_search_terms_hit: got.data?.hot_search_terms_hit || [] });
   assert(got.status === 200, `${path} status ${got.status}`, failures);
   assert((got.data?.list?.length || 0) > 0, `${path} empty list`, failures);
   assert(got.data?.content_policy === 'clean-no-adult', `${path} content_policy invalid`, failures);
@@ -87,7 +87,7 @@ for (const path of [`/agg-clean?limit=${LIMIT}`, `/agg-clean?ac=videolist&t=1&pg
 for (const t of CATS) {
   const got = await fetchJson(`/agg?ac=videolist&t=${t}&pg=1&limit=${LIMIT}`);
   const filters = got.data?.filters?.[t] || got.data?.filters?.[String(t)] || [];
-  report.categories.push({ t, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, filterGroups: filters.length });
+  report.categories.push({ t, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, filterGroups: filters.length, hot_overlay_applied: got.data?.hot_overlay_applied || false, hot_rows_used: got.data?.hot_rows_used || 0, hot_duplicate_removed: got.data?.hot_duplicate_removed || 0 });
   assert(got.status === 200, `category ${t} status ${got.status}`, failures);
   assert((got.data?.list?.length || 0) > 0, `category ${t} empty`, failures);
   assert(filters.length >= 2, `category ${t} filters < 2`, failures);
@@ -96,7 +96,7 @@ for (const t of CATS) {
 for (const t of CATS.filter((x) => x !== '9')) {
   const got = await fetchJson(`/agg-clean?ac=videolist&t=${t}&pg=1&limit=${LIMIT}`);
   const filters = got.data?.filters?.[t] || got.data?.filters?.[String(t)] || [];
-  report.categories.push({ t: `clean-${t}`, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, filterGroups: filters.length, content_policy: got.data?.content_policy });
+  report.categories.push({ t: `clean-${t}`, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, filterGroups: filters.length, content_policy: got.data?.content_policy, hot_overlay_applied: got.data?.hot_overlay_applied || false, hot_rows_used: got.data?.hot_rows_used || 0, hot_duplicate_removed: got.data?.hot_duplicate_removed || 0 });
   assert(got.status === 200, `clean category ${t} status ${got.status}`, failures);
   assert((got.data?.list?.length || 0) > 0, `clean category ${t} empty`, failures);
   assert(filters.length >= 2, `clean category ${t} filters < 2`, failures);
