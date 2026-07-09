@@ -207,3 +207,43 @@ Stage 9 不再只看接口 200，而要看：
 - 用户端是否无重复。
 - 用户端分类/筛选是否全有语义结果。
 - 1000/10000 用户访问场景是否仍满足免费架构边界。
+
+## Stage 8 补充：受保护的一键发布编排
+
+新增发布编排脚本：
+
+```text
+scripts/deploy-cloudflare-v74.mjs
+scripts/deploy-cloudflare-v74.test.mjs
+```
+
+新增命令：
+
+```powershell
+npm run deploy:plan
+npm run deploy:prod
+```
+
+安全闸门：
+
+- `npm run deploy:plan`：只打印将要执行的步骤，不部署 Worker，不部署 Pages。
+- `npm run deploy:prod`：必须同时满足：
+  1. 用户已经在对话中明确批准部署 Worker 和 Pages。
+  2. 当前 shell 设置：`$env:TVBOX_DEPLOY_APPROVED='WORKER_PAGES_PRODUCTION_APPROVED'`。
+  3. 命令内部使用 `--execute`。
+
+生产发布顺序由脚本固定：
+
+1. `npm run check`
+2. `npm run audit:release-readiness`（发布前允许失败，用作 NEEDS_* 证据）
+3. `npx wrangler deploy --dry-run --outdir .wrangler\dry-run-v73`
+4. `npx wrangler deploy`
+5. `npx wrangler pages deploy dist --project-name tvbox-source-hub-v73 --branch main`
+6. 主入口 `validate:online`
+7. 同构入口 `validate:online`
+8. `audit:release-readiness`
+9. `audit:visible-freshness`
+10. `audit:tv-cache-update`
+11. `audit:zero-complaint`
+
+这保证批准后不是手工单步发布，而是同一个脚本完成 Worker + Pages + 双入口后验收。

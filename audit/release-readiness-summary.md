@@ -1,6 +1,6 @@
 # v7.4 发布准备度与更新时间可见面审计
 
-- 生成时间：2026-07-09T21:35:59.703Z
+- 生成时间：2026-07-09T21:39:42.464Z
 - 主入口：https://tv.webhome.eu.org
 - Pages：https://tvbox-source-hub-v73.pages.dev
 - gate：FAIL
@@ -13,9 +13,9 @@
 - NEEDS_PAGES_DEPLOY=3
 
 ## 检查项
-- PASS；worker-status；OK；Worker hot update is within freshness guard；code=435001706202；age=2min
-- WARN；online-worker-full-config；NEEDS_WORKER_DEPLOY；visible update code still lives in site name, TV apps can cache it and show stale time；code=435001706202
-- WARN；online-worker-clean-config；NEEDS_WORKER_DEPLOY；visible update code still lives in site name, TV apps can cache it and show stale time；code=435001706202
+- PASS；worker-status；OK；Worker hot update is within freshness guard；code=835001706202；age=2min
+- WARN；online-worker-full-config；NEEDS_WORKER_DEPLOY；visible update code still lives in site name, TV apps can cache it and show stale time；code=835001706202
+- WARN；online-worker-clean-config；NEEDS_WORKER_DEPLOY；visible update code still lives in site name, TV apps can cache it and show stale time；code=835001706202
 - PASS；local-dist-full-config；OK；stable site name with versioned API；code=904001706202
 - PASS；local-dist-clean-config；OK；stable site name with versioned API；code=904001706202
 - FAIL；pages-full-config；NEEDS_PAGES_DEPLOY；config does not match expected TVBox entry contract
