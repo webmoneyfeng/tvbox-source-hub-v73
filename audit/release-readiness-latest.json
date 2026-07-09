@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T21:39:42.464Z",
+  "generatedAt": "2026-07-09T21:58:04.156Z",
   "tvboxBase": "https://tv.webhome.eu.org",
   "pagesBase": "https://tvbox-source-hub-v73.pages.dev",
   "maxAgeMinutes": 6,
@@ -20,14 +20,14 @@
       "source": "worker-status",
       "result": "PASS",
       "root_cause": "OK",
-      "visibleUpdateText": "835001706202",
+      "visibleUpdateText": "655001706202",
       "decoded": {
         "valid": true,
-        "code": "835001706202",
-        "compact": "202607100538",
-        "display": "2026-07-10 05:38",
-        "iso": "2026-07-10T05:38:00+08:00",
-        "epochMs": 1783633080000
+        "code": "655001706202",
+        "compact": "202607100556",
+        "display": "2026-07-10 05:56",
+        "iso": "2026-07-10T05:56:00+08:00",
+        "epochMs": 1783634160000
       },
       "ageMinutes": 2,
       "maxAgeMinutes": 6,
@@ -38,16 +38,16 @@
       "result": "WARN",
       "root_cause": "NEEDS_WORKER_DEPLOY",
       "message": "visible update code still lives in site name, TV apps can cache it and show stale time",
-      "siteName": "影视点播 · 835001706202",
-      "api": "https://tv.webhome.eu.org/agg/u835001706202",
-      "visibleUpdateText": "835001706202",
+      "siteName": "影视点播 · 655001706202",
+      "api": "https://tv.webhome.eu.org/agg/u655001706202",
+      "visibleUpdateText": "655001706202",
       "decoded": {
         "valid": true,
-        "code": "835001706202",
-        "compact": "202607100538",
-        "display": "2026-07-10 05:38",
-        "iso": "2026-07-10T05:38:00+08:00",
-        "epochMs": 1783633080000
+        "code": "655001706202",
+        "compact": "202607100556",
+        "display": "2026-07-10 05:56",
+        "iso": "2026-07-10T05:56:00+08:00",
+        "epochMs": 1783634160000
       }
     },
     {
@@ -55,16 +55,16 @@
       "result": "WARN",
       "root_cause": "NEEDS_WORKER_DEPLOY",
       "message": "visible update code still lives in site name, TV apps can cache it and show stale time",
-      "siteName": "影视点播洁净 · 835001706202",
-      "api": "https://tv.webhome.eu.org/agg-clean/u835001706202",
-      "visibleUpdateText": "835001706202",
+      "siteName": "影视点播洁净 · 655001706202",
+      "api": "https://tv.webhome.eu.org/agg-clean/u655001706202",
+      "visibleUpdateText": "655001706202",
       "decoded": {
         "valid": true,
-        "code": "835001706202",
-        "compact": "202607100538",
-        "display": "2026-07-10 05:38",
-        "iso": "2026-07-10T05:38:00+08:00",
-        "epochMs": 1783633080000
+        "code": "655001706202",
+        "compact": "202607100556",
+        "display": "2026-07-10 05:56",
+        "iso": "2026-07-10T05:56:00+08:00",
+        "epochMs": 1783634160000
       }
     },
     {
@@ -123,7 +123,8 @@
       "result": "WARN",
       "root_cause": "NEEDS_PAGES_DEPLOY",
       "visibleUpdateText": "012270706202",
-      "currentWorkerCode": "835001706202",
+      "expectedStaticCode": "904001706202",
+      "currentWorkerCode": "655001706202",
       "decoded": {
         "valid": true,
         "code": "012270706202",
@@ -132,7 +133,7 @@
         "iso": "2026-07-07T22:10:00+08:00",
         "epochMs": 1783433400000
       },
-      "message": "Pages static snapshot is older than current Worker hot update"
+      "message": "Pages static snapshot does not match the local release artifact"
     }
   ],
   "endpoints": {
@@ -145,29 +146,29 @@
         "version": "2026-07-04-aggregate-v7.3-domestic-free",
         "project": "tvbox-source-hub-v73",
         "mode": "domestic-free-snapshot-first",
-        "generatedAt": "2026-07-09T21:40:05.005Z",
+        "generatedAt": "2026-07-09T21:58:26.999Z",
         "entry": "https://tv.webhome.eu.org/config.json",
         "cleanEntry": "https://tv.webhome.eu.org/config-clean.json",
         "primary": "https://tv.webhome.eu.org/config.json",
         "secondary": "https://tv.webclound.eu.org/config.json",
         "primaryClean": "https://tv.webhome.eu.org/config-clean.json",
         "secondaryClean": "https://tv.webclound.eu.org/config-clean.json",
-        "sourceDiscoveryAt": "2026-07-09T15:34:16.493Z",
-        "coverageAuditAt": "2026-07-09T15:34:16.493Z",
-        "snapshotGeneratedAt": "2026-07-09T15:39:54.236Z",
-        "visibleUpdateText": "835001706202",
+        "sourceDiscoveryAt": "2026-07-09T21:46:14.162Z",
+        "coverageAuditAt": "2026-07-09T21:46:14.162Z",
+        "snapshotGeneratedAt": "2026-07-09T21:50:38.462Z",
+        "visibleUpdateText": "655001706202",
         "visibleUpdateSource": "hot-probe",
-        "visibleUpdateAt": "2026-07-09T21:38:34.241Z",
+        "visibleUpdateAt": "2026-07-09T21:56:34.238Z",
         "hotUpdate": {
           "ok": true,
-          "generatedAt": "2026-07-09T21:38:34.241Z",
-          "visibleUpdateText": "835001706202",
+          "generatedAt": "2026-07-09T21:56:34.238Z",
+          "visibleUpdateText": "655001706202",
           "source": "hot-probe",
           "probe": {
             "ok": true,
             "reason": "*/2 * * * *",
-            "generatedAt": "2026-07-09T21:38:34.241Z",
-            "visibleUpdateText": "835001706202",
+            "generatedAt": "2026-07-09T21:56:34.238Z",
+            "visibleUpdateText": "655001706202",
             "okSources": 6,
             "checkedSources": 6,
             "totalItems": 120,
@@ -217,9 +218,9 @@
                 "ok": true,
                 "count": 20,
                 "sample": [
-                  "异界求生，我靠烧烤续命",
-                  "青禾传",
-                  "修仙：从给老祖做饭开始第二季"
+                  "重生后回到八零当富翁",
+                  "落第贤者的学院无双 第二回转生，S等级作弊魔术师冒险记",
+                  "横店跑龙套，老太我养活了古代一家"
                 ]
               },
               {
@@ -237,18 +238,17 @@
         },
         "coverageSummary": {
           "total": 10,
-          "pass": 9,
-          "warn": 1,
+          "pass": 10,
+          "warn": 0,
           "fail": 0,
           "byRootCause": {
-            "OK": 9,
-            "SOURCE_PHYSICAL_LIMIT": 1
+            "OK": 10
           }
         },
         "sourceSummary": {
-          "candidateCount": 29,
-          "active": 15,
-          "watch": 10,
+          "candidateCount": 19,
+          "active": 11,
+          "watch": 4,
           "rejected": 2,
           "blocked": 2
         },
@@ -257,27 +257,26 @@
           "manifest": {
             "ok": true,
             "version": "2026-07-04-aggregate-v7.3-domestic-free",
-            "generatedAt": "2026-07-09T15:39:54.236Z",
-            "sourceDiscoveryAt": "2026-07-09T15:34:16.493Z",
-            "coverageAuditAt": "2026-07-09T15:34:16.493Z",
-            "snapshotGeneratedAt": "2026-07-09T15:39:54.236Z",
-            "visibleUpdateText": "933290706202",
+            "generatedAt": "2026-07-09T21:50:38.462Z",
+            "sourceDiscoveryAt": "2026-07-09T21:46:14.162Z",
+            "coverageAuditAt": "2026-07-09T21:46:14.162Z",
+            "snapshotGeneratedAt": "2026-07-09T21:50:38.462Z",
+            "visibleUpdateText": "055001706202",
             "visibleUpdateFormat": "reverse-yyyyMMddHHmm",
             "sourceSummary": {
-              "candidateCount": 29,
-              "active": 15,
-              "watch": 10,
+              "candidateCount": 19,
+              "active": 11,
+              "watch": 4,
               "rejected": 2,
               "blocked": 2
             },
             "coverageSummary": {
               "total": 10,
-              "pass": 9,
-              "warn": 1,
+              "pass": 10,
+              "warn": 0,
               "fail": 0,
               "byRootCause": {
-                "OK": 9,
-                "SOURCE_PHYSICAL_LIMIT": 1
+                "OK": 10
               }
             },
             "sourceBase": "https://tv.webhome.eu.org",
@@ -302,21 +301,21 @@
                 "type_id": "0",
                 "type_name": "推荐",
                 "count": 24,
-                "total": 218,
+                "total": 287,
                 "filterGroups": 6
               },
               {
                 "type_id": "1",
                 "type_name": "电影",
                 "count": 24,
-                "total": 456,
+                "total": 454,
                 "filterGroups": 6
               },
               {
                 "type_id": "2",
                 "type_name": "剧集",
                 "count": 24,
-                "total": 243,
+                "total": 242,
                 "filterGroups": 6
               },
               {
@@ -330,21 +329,21 @@
                 "type_id": "4",
                 "type_name": "动漫",
                 "count": 24,
-                "total": 213,
+                "total": 377,
                 "filterGroups": 6
               },
               {
                 "type_id": "5",
                 "type_name": "纪录片",
                 "count": 24,
-                "total": 131,
+                "total": 147,
                 "filterGroups": 6
               },
               {
                 "type_id": "6",
                 "type_name": "短剧",
                 "count": 24,
-                "total": 211,
+                "total": 199,
                 "filterGroups": 6
               },
               {
@@ -365,20 +364,19 @@
                 "type_id": "9",
                 "type_name": "成人伦理",
                 "count": 24,
-                "total": 252,
+                "total": 272,
                 "filterGroups": 5
               }
             ],
-            "filterPackCount": 372,
-            "visibleFilterOptions": 186,
+            "filterPackCount": 368,
+            "visibleFilterOptions": 184,
             "files": {
               "categories": "categories.json",
               "validation": "validation.json"
             },
             "__snapshotBase": "https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/main/dist/snapshot/latest",
             "__snapshotUrl": "https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/main/dist/snapshot/latest/manifest.json",
-            "__snapshotFresh": true,
-            "__snapshotFromLastGood": true
+            "__snapshotFresh": true
           },
           "bases": [
             "https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/main/dist/snapshot/latest",
@@ -418,7 +416,7 @@
           "target": "hot probe <= 2 minutes by Cloudflare Cron, hot visible guard <= 6 minutes, visible label memory <= 15 seconds, full snapshot <= 2 hours by GitHub Actions, config/agg entry no-store, worker snapshot memory cache <= 5 minutes",
           "hotProbeTargetMinutes": 2,
           "hotProbeFreshGuardMinutes": 6,
-          "currentVisibleText": "835001706202",
+          "currentVisibleText": "655001706202",
           "freshDiagnostic": "https://tv.webhome.eu.org/status.json?fresh=1"
         },
         "compatibility": [
@@ -428,9 +426,9 @@
         ]
       },
       "headers": {
-        "date": "Thu, 09 Jul 2026 21:40:05 GMT",
+        "date": "Thu, 09 Jul 2026 21:58:27 GMT",
         "content-type": "application/json; charset=utf-8",
-        "content-length": "8160",
+        "content-length": "8123",
         "connection": "keep-alive",
         "access-control-allow-origin": "*",
         "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -438,13 +436,13 @@
         "pragma": "no-cache",
         "access-control-allow-headers": "range,content-type,user-agent,accept",
         "access-control-allow-methods": "GET,HEAD,OPTIONS",
-        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=FXRcrlII5vfHGk%2FLP4T7BvmQBQgVHZ6MBqiPfqEFN9WDYuwcVGcu6Aq9Nso5CDu5L90ugMg25Ua6BZgTvhkUKyDCdTeYGGjN%2Bm0f6%2BtTg0OOddmQWRJzMKvuBB20meIVJC9hgg%3D%3D\"}]}",
+        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=H3AhZtXkfOciBwSeQeRTbBPHpj7f7CUeX9TrPOGWGow8aoxCAZKMz6e7qHRq5tiyMVKFQxXLNl%2F%2B%2Fie%2BOiDlMxw6NkX2HsDR%2B0zDmmACkIl4Ej5wBaUBVl6qUWdaHZ%2BKddBLlw%3D%3D\"}]}",
         "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
         "server": "cloudflare",
-        "cf-ray": "a18a7c2a4f48d7a7-LAX",
+        "cf-ray": "a18a971158a6cba6-LAX",
         "alt-svc": "h3=\":443\"; ma=86400"
       },
-      "elapsedMs": 1285
+      "elapsedMs": 1361
     },
     "onlineConfig": {
       "ok": true,
@@ -455,9 +453,9 @@
         "sites": [
           {
             "key": "vod_unified",
-            "name": "影视点播 · 835001706202",
+            "name": "影视点播 · 655001706202",
             "type": 1,
-            "api": "https://tv.webhome.eu.org/agg/u835001706202",
+            "api": "https://tv.webhome.eu.org/agg/u655001706202",
             "searchable": 1,
             "quickSearch": 1,
             "filterable": 1,
@@ -477,7 +475,7 @@
         "wallpaper": ""
       },
       "headers": {
-        "date": "Thu, 09 Jul 2026 21:40:05 GMT",
+        "date": "Thu, 09 Jul 2026 21:58:26 GMT",
         "content-type": "application/json; charset=utf-8",
         "content-length": "491",
         "connection": "keep-alive",
@@ -487,13 +485,13 @@
         "pragma": "no-cache",
         "access-control-allow-headers": "range,content-type,user-agent,accept",
         "access-control-allow-methods": "GET,HEAD,OPTIONS",
-        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=7ezWlO4QFpC10boCacfdqqeAaS07kuXyjOVh0CaFM6U0FRzPkMMFix8SnycDLoxWuZPD3QJx2FKAPvKYiOnAL2SmQlVH1zrocEeyINlNB2%2Fj6tBNkE7pOFwctumDvs6mcvLzEw%3D%3D\"}]}",
+        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=1eSS8ydOLF8H5ryLGRLcUopBFXjZ%2FYvudAvODYgO5R8kBmMYj0rgiQHLVGPjvDLC2Iq0xEbEiGjrpW1zGwV1DELQyiyMYqG2H4GNTXX3uraWwZawlr1vGWZVOLTteWEPGASrTw%3D%3D\"}]}",
         "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
         "server": "cloudflare",
-        "cf-ray": "a18a7c2a5db429a5-LAX",
+        "cf-ray": "a18a9711893a2ac4-LAX",
         "alt-svc": "h3=\":443\"; ma=86400"
       },
-      "elapsedMs": 986
+      "elapsedMs": 1030
     },
     "onlineCleanConfig": {
       "ok": true,
@@ -504,9 +502,9 @@
         "sites": [
           {
             "key": "vod_unified_clean",
-            "name": "影视点播洁净 · 835001706202",
+            "name": "影视点播洁净 · 655001706202",
             "type": 1,
-            "api": "https://tv.webhome.eu.org/agg-clean/u835001706202",
+            "api": "https://tv.webhome.eu.org/agg-clean/u655001706202",
             "searchable": 1,
             "quickSearch": 1,
             "filterable": 1,
@@ -526,7 +524,7 @@
         "wallpaper": ""
       },
       "headers": {
-        "date": "Thu, 09 Jul 2026 21:40:05 GMT",
+        "date": "Thu, 09 Jul 2026 21:58:26 GMT",
         "content-type": "application/json; charset=utf-8",
         "content-length": "509",
         "connection": "keep-alive",
@@ -536,13 +534,13 @@
         "pragma": "no-cache",
         "access-control-allow-headers": "range,content-type,user-agent,accept",
         "access-control-allow-methods": "GET,HEAD,OPTIONS",
-        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=QOPXwM9l8KbU6M9lMQ9iNxZllEbZnC%2BsOdeJdvN3D0wwfIBryiKZPicwuUN6Y9sBi4z93tOkk%2Fx1ybYcXwG7YpItmCUmsetV0LQ4%2Bo5yTbIP%2F%2FkXFXur%2B%2FfewV9g7OsCQLqkFA%3D%3D\"}]}",
+        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=RtMFUOTNWF7vaLQJkxcnjrZXe1YMxujhF%2FH0OKj2nSHc7%2FNQUYDephzUh%2FtqY22azgsMSt20HzcqfdEtuwrbUHj%2BfaSTN4sMaNBDcYBoEYUCxqqfMxxRR43KunChIpKQ7%2FQANg%3D%3D\"}]}",
         "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
         "server": "cloudflare",
-        "cf-ray": "a18a7c2adf297eb9-LAX",
+        "cf-ray": "a18a97114cc013aa-LAX",
         "alt-svc": "h3=\":443\"; ma=86400"
       },
-      "elapsedMs": 803
+      "elapsedMs": 1030
     },
     "pagesConfig": {
       "ok": true,
@@ -575,7 +573,7 @@
         "wallpaper": ""
       },
       "headers": {
-        "date": "Thu, 09 Jul 2026 21:40:05 GMT",
+        "date": "Thu, 09 Jul 2026 21:58:27 GMT",
         "content-type": "application/json",
         "content-length": "477",
         "connection": "keep-alive",
@@ -584,13 +582,13 @@
         "etag": "\"6d6574647ebf508da6226f7c46577341\"",
         "referrer-policy": "strict-origin-when-cross-origin",
         "x-content-type-options": "nosniff",
-        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=ooIgL9SEuGPyBmD3PNvtLdOUBLuT11yH0zMX21XXgy%2BSsdpXlGmtQFZkkMenmI99NGXx6%2BP4Sie5qLq8qeli6ytV%2FzUmyAmPjTTiITsHH5b9YvZPTXUGdcnsovNLMI5I%2FUIIZh7p2aGlQFzj03dcqGk%3D\"}]}",
+        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=M%2BsPHuahI3L6cAYosK4HU4QdZhQnneKpAUH8P59CebLjdEX3wWFWQyRbxuHRBvxRIXsYCqT%2FV5%2FhuSkV%2F8gfQz7U%2F%2FV3T4c8qeunQgKJ9b%2FWRMbPZ2pcfX7PfjFbzwfxLR5hy98wMXYxQ82Yf0Z3MHM%3D\"}]}",
         "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
         "server": "cloudflare",
-        "cf-ray": "a18a7c2cd87ee41a-LAX",
+        "cf-ray": "a18a9712bc76be08-LAX",
         "alt-svc": "h3=\":443\"; ma=86400"
       },
-      "elapsedMs": 1066
+      "elapsedMs": 1141
     },
     "pagesCleanConfig": {
       "ok": false,
@@ -599,19 +597,19 @@
       "data": null,
       "body": "",
       "headers": {
-        "date": "Thu, 09 Jul 2026 21:40:05 GMT",
+        "date": "Thu, 09 Jul 2026 21:58:27 GMT",
         "content-length": "0",
         "connection": "keep-alive",
         "access-control-allow-origin": "*",
         "cache-control": "no-store",
         "referrer-policy": "strict-origin-when-cross-origin",
-        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=gC9Ax7lCP2dInPbtO4wINnRin4MDs7tuRvXfscOxXi%2FkzYJ%2F9%2FLJje3KAtS4N5%2BhDiEGkwgF52Hev4XQ0AgI82OZlLP3tELdcGLZJ48xjjAkQPwkOWEwwSXO4NWOucG%2FYaypvzQAxBoV%2FsZObapI68I%3D\"}]}",
+        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=mX%2Fx94eqj7nqNNOaI0yMJ9H5lAXu4oZa8PVa7Ns6yUNBVHq1SfKDUjnDOkDgyrso8ZosgMlfBT6%2BHT6F4NcFN%2FC2xM5i6g09U4RR6oVy48mjHnGDqi2D5jq03MU1J9zslrbbaRydTKChefz%2F4MvYbq0%3D\"}]}",
         "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
         "server": "cloudflare",
-        "cf-ray": "a18a7c2d3f6e07c6-LAX",
+        "cf-ray": "a18a9713097f83ef-LAX",
         "alt-svc": "h3=\":443\"; ma=86400"
       },
-      "elapsedMs": 1130
+      "elapsedMs": 1179
     },
     "pagesManifest": {
       "ok": true,
@@ -733,7 +731,7 @@
         }
       },
       "headers": {
-        "date": "Thu, 09 Jul 2026 21:40:05 GMT",
+        "date": "Thu, 09 Jul 2026 21:58:27 GMT",
         "content-type": "application/json",
         "content-length": "2295",
         "connection": "keep-alive",
@@ -742,13 +740,139 @@
         "etag": "\"957f4e4dd50c62849f14cbc547fc4ecf\"",
         "referrer-policy": "strict-origin-when-cross-origin",
         "x-content-type-options": "nosniff",
-        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=2Bat6FLH2XIpLiCYKcfURFDw5Uz8D%2BAU1homB522mRf5Bgcf%2BN5OMQqJvwb5hqaFXiMUPcxCY9a%2BdGcDhZp4FJH%2BZ1KzuQLr%2FNDV42c2ks7rc7bm3G03EbYKwOgnVUHhTuHxWDBPkF6GPJfNGpwmSFM%3D\"}]}",
+        "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=xp1O85SFmtv8%2FjfjsbTzXUNiSzlgiRp6YEZCB%2FV%2BcJwbsZMc6VtS1n3VF4aQHHFaQuheQjiLmra2pjl0WGmxkbdTwgwupalk6laQ2TctILgApRm1BXcasNawoVulHEc1cIS0XYRIqyNa6FxpCqCoTU0%3D\"}]}",
         "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
         "server": "cloudflare",
-        "cf-ray": "a18a7c2d4ae32b95-LAX",
+        "cf-ray": "a18a9712ff2b2d61-LAX",
         "alt-svc": "h3=\":443\"; ma=86400"
       },
-      "elapsedMs": 1206
+      "elapsedMs": 1174
+    },
+    "localManifest": {
+      "ok": true,
+      "status": 200,
+      "url": "C:\\Users\\Ten\\Documents\\Codex\\tvbox-source-hub-v73\\dist\\snapshot\\latest\\manifest.json",
+      "data": {
+        "ok": true,
+        "version": "2026-07-04-aggregate-v7.3-domestic-free",
+        "generatedAt": "2026-07-09T20:09:26.060Z",
+        "sourceDiscoveryAt": "2026-07-09T20:04:58.068Z",
+        "coverageAuditAt": "2026-07-09T20:04:58.068Z",
+        "snapshotGeneratedAt": "2026-07-09T20:09:26.060Z",
+        "visibleUpdateText": "904001706202",
+        "visibleUpdateFormat": "reverse-yyyyMMddHHmm",
+        "sourceSummary": {
+          "candidateCount": 29,
+          "active": 17,
+          "watch": 8,
+          "rejected": 2,
+          "blocked": 2
+        },
+        "coverageSummary": {
+          "total": 10,
+          "pass": 10,
+          "warn": 0,
+          "fail": 0,
+          "byRootCause": {
+            "OK": 10
+          }
+        },
+        "sourceBase": "https://tv.webhome.eu.org",
+        "publicBase": "https://tv.webhome.eu.org",
+        "entries": {
+          "full": "https://tv.webhome.eu.org/config.json",
+          "clean": "https://tv.webhome.eu.org/config-clean.json"
+        },
+        "contentPolicies": [
+          "full",
+          "clean-no-adult"
+        ],
+        "packLimit": 24,
+        "clientLimits": [
+          8,
+          12,
+          24,
+          48
+        ],
+        "categories": [
+          {
+            "type_id": "0",
+            "type_name": "推荐",
+            "count": 24,
+            "total": 287,
+            "filterGroups": 6
+          },
+          {
+            "type_id": "1",
+            "type_name": "电影",
+            "count": 24,
+            "total": 454,
+            "filterGroups": 6
+          },
+          {
+            "type_id": "2",
+            "type_name": "剧集",
+            "count": 24,
+            "total": 245,
+            "filterGroups": 6
+          },
+          {
+            "type_id": "3",
+            "type_name": "综艺",
+            "count": 24,
+            "total": 257,
+            "filterGroups": 6
+          },
+          {
+            "type_id": "4",
+            "type_name": "动漫",
+            "count": 24,
+            "total": 211,
+            "filterGroups": 6
+          },
+          {
+            "type_id": "5",
+            "type_name": "纪录片",
+            "count": 24,
+            "total": 191,
+            "filterGroups": 6
+          },
+          {
+            "type_id": "6",
+            "type_name": "短剧",
+            "count": 24,
+            "total": 196,
+            "filterGroups": 5
+          },
+          {
+            "type_id": "7",
+            "type_name": "解说",
+            "count": 24,
+            "total": 74,
+            "filterGroups": 5
+          },
+          {
+            "type_id": "8",
+            "type_name": "文娱知识",
+            "count": 24,
+            "total": 194,
+            "filterGroups": 6
+          },
+          {
+            "type_id": "9",
+            "type_name": "成人伦理",
+            "count": 24,
+            "total": 272,
+            "filterGroups": 5
+          }
+        ],
+        "filterPackCount": 318,
+        "visibleFilterOptions": 159,
+        "files": {
+          "categories": "categories.json",
+          "validation": "validation.json"
+        }
+      }
     }
   }
 }

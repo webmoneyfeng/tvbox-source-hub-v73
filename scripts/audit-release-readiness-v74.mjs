@@ -97,7 +97,7 @@ function classifyConfigSurface({ source, expectedName, expectedApiPrefix, payloa
   return { source, result: 'FAIL', root_cause: 'CONFIG_MISMATCH', message: 'config does not match expected TVBox entry contract', siteName, api, expectedName, expectedApiPrefix };
 }
 
-function classifyPagesStaticSurface({ pagesConfig, pagesCleanConfig, pagesManifest, currentWorkerCode, expectedFullName, expectedCleanName, publicBase }) {
+function classifyPagesStaticSurface({ pagesConfig, pagesCleanConfig, pagesManifest, currentWorkerCode, expectedStaticCode, expectedFullName, expectedCleanName, publicBase }) {
   const rows = [];
   const fullRow = classifyConfigSurface({
     source: 'pages-full-config',
@@ -120,12 +120,13 @@ function classifyPagesStaticSurface({ pagesConfig, pagesCleanConfig, pagesManife
     rows.push(cleanRow);
   }
   const manifestCode = String(pagesManifest?.data?.visibleUpdateText || '').trim();
+  const staticCode = String(expectedStaticCode || '').trim();
   if (!pagesManifest?.ok) {
     rows.push({ source: 'pages-manifest', result: 'FAIL', root_cause: 'NEEDS_PAGES_DEPLOY', status: pagesManifest?.status || 0, message: 'Pages snapshot manifest is missing or invalid' });
-  } else if (currentWorkerCode && manifestCode && manifestCode !== currentWorkerCode) {
-    rows.push({ source: 'pages-manifest', result: 'WARN', root_cause: 'NEEDS_PAGES_DEPLOY', visibleUpdateText: manifestCode, currentWorkerCode, decoded: decodeReverseUpdateCode(manifestCode), message: 'Pages static snapshot is older than current Worker hot update' });
+  } else if (staticCode && manifestCode !== staticCode) {
+    rows.push({ source: 'pages-manifest', result: 'WARN', root_cause: 'NEEDS_PAGES_DEPLOY', visibleUpdateText: manifestCode, expectedStaticCode: staticCode, currentWorkerCode, decoded: decodeReverseUpdateCode(manifestCode), message: 'Pages static snapshot does not match the local release artifact' });
   } else {
-    rows.push({ source: 'pages-manifest', result: 'PASS', root_cause: 'OK', visibleUpdateText: manifestCode, decoded: decodeReverseUpdateCode(manifestCode), message: 'Pages snapshot code matches current Worker code or no worker code was available' });
+    rows.push({ source: 'pages-manifest', result: 'PASS', root_cause: 'OK', visibleUpdateText: manifestCode, expectedStaticCode: staticCode, currentWorkerCode, decoded: decodeReverseUpdateCode(manifestCode), message: 'Pages snapshot code matches the local release artifact' });
   }
   return rows;
 }
@@ -193,7 +194,7 @@ async function auditReleaseReadiness(options = {}) {
   const pagesBase = options.pagesBase || process.env.PAGES_BASE || DEFAULT_PAGES_BASE;
   const maxAgeMinutes = Number(options.maxAgeMinutes || process.env.MAX_VISIBLE_AGE_MINUTES || DEFAULT_MAX_VISIBLE_AGE_MINUTES);
   const generatedAt = nowIso();
-  const [status, onlineConfig, onlineCleanConfig, pagesConfig, pagesCleanConfig, pagesManifest, localConfig, localCleanConfig] = await Promise.all([
+  const [status, onlineConfig, onlineCleanConfig, pagesConfig, pagesCleanConfig, pagesManifest, localConfig, localCleanConfig, localManifest] = await Promise.all([
     httpGetJson(`${tvboxBase}/status.json?fresh=1`),
     httpGetJson(`${tvboxBase}/config.json?fresh=1`),
     httpGetJson(`${tvboxBase}/config-clean.json?fresh=1`),
@@ -202,6 +203,7 @@ async function auditReleaseReadiness(options = {}) {
     httpGetJson(`${pagesBase}/snapshot/latest/manifest.json`),
     readLocalJson('dist/config.json'),
     readLocalJson('dist/config-clean.json'),
+    readLocalJson('dist/snapshot/latest/manifest.json'),
   ]);
 
   const rows = [];
@@ -215,6 +217,7 @@ async function auditReleaseReadiness(options = {}) {
     pagesCleanConfig,
     pagesManifest,
     currentWorkerCode: status.data?.visibleUpdateText || '',
+    expectedStaticCode: localManifest.data?.visibleUpdateText || '',
     expectedFullName: '影视点播',
     expectedCleanName: '影视点播洁净',
     publicBase: tvboxBase,
@@ -228,7 +231,7 @@ async function auditReleaseReadiness(options = {}) {
     maxAgeMinutes,
     summary,
     rows,
-    endpoints: { status, onlineConfig, onlineCleanConfig, pagesConfig, pagesCleanConfig, pagesManifest },
+    endpoints: { status, onlineConfig, onlineCleanConfig, pagesConfig, pagesCleanConfig, pagesManifest, localManifest },
   };
   await writeReport(report);
   return report;

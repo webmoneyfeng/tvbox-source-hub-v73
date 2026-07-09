@@ -52,6 +52,43 @@ test('classifyPagesStaticSurface flags stale Pages config and missing clean entr
   assert.equal(rows.some((row) => row.source === 'pages-clean-config' && row.result === 'FAIL'), true);
 });
 
+test('classifyPagesStaticSurface accepts Pages manifest matching local static snapshot even when Worker hot code is newer', () => {
+  const rows = classifyPagesStaticSurface({
+    pagesConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad', api: 'https://tv.webhome.eu.org/agg/u904001706202' }] } },
+    pagesCleanConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0', api: 'https://tv.webhome.eu.org/agg-clean/u904001706202' }] } },
+    pagesManifest: { ok: true, status: 200, data: { visibleUpdateText: '904001706202', generatedAt: '2026-07-10T10:04:00.000Z' } },
+    currentWorkerCode: '835001706202',
+    expectedStaticCode: '904001706202',
+    expectedFullName: '\u5f71\u89c6\u70b9\u64ad',
+    expectedCleanName: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0',
+    publicBase: 'https://tv.webhome.eu.org',
+  });
+  const manifest = rows.find((row) => row.source === 'pages-manifest');
+  assert.equal(manifest.result, 'PASS');
+  assert.equal(manifest.root_cause, 'OK');
+  assert.equal(manifest.visibleUpdateText, '904001706202');
+  assert.equal(manifest.currentWorkerCode, '835001706202');
+  assert.equal(manifest.expectedStaticCode, '904001706202');
+});
+
+test('classifyPagesStaticSurface flags Pages manifest that does not match local static snapshot', () => {
+  const rows = classifyPagesStaticSurface({
+    pagesConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad', api: 'https://tv.webhome.eu.org/agg/u904001706202' }] } },
+    pagesCleanConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0', api: 'https://tv.webhome.eu.org/agg-clean/u904001706202' }] } },
+    pagesManifest: { ok: true, status: 200, data: { visibleUpdateText: '012270706202', generatedAt: '2026-07-07T14:10:17.496Z' } },
+    currentWorkerCode: '255001706202',
+    expectedStaticCode: '904001706202',
+    expectedFullName: '\u5f71\u89c6\u70b9\u64ad',
+    expectedCleanName: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0',
+    publicBase: 'https://tv.webhome.eu.org',
+  });
+  const manifest = rows.find((row) => row.source === 'pages-manifest');
+  assert.equal(manifest.result, 'WARN');
+  assert.equal(manifest.root_cause, 'NEEDS_PAGES_DEPLOY');
+  assert.equal(manifest.visibleUpdateText, '012270706202');
+  assert.equal(manifest.expectedStaticCode, '904001706202');
+});
+
 test('summarizeReleaseGate keeps production deploy blocked on approval while surfacing no hard local failures', () => {
   const summary = summarizeReleaseGate([
     { result: 'PASS' },
