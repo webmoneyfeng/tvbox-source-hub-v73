@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-07-09T22:28:00.639Z",
+  "stage9_predeploy_gate": "READY_FOR_APPROVED_DEPLOY",
+  "commercial_promotion_gate": "NOT_READY",
+  "production_deploy_required": true,
+  "next_action": "AWAIT_APPROVAL_THEN_DEPLOY_WORKER_PAGES",
+  "allowed_predeploy_root_causes": [
+    "OK",
+    "NEEDS_WORKER_DEPLOY",
+    "NEEDS_PAGES_DEPLOY"
+  ],
+  "release_root_causes": {
+    "OK": 3,
+    "NEEDS_WORKER_DEPLOY": 2,
+    "NEEDS_PAGES_DEPLOY": 3
+  },
+  "inputs": {
+    "release_ok": true,
+    "zero_ok": true,
+    "free_ok": true,
+    "sla_ok": true
+  },
+  "zero_complaint": {
+    "commercial_ready": false,
+    "gate": "WARN",
+    "p0_count": 0,
+    "p1_count": 0,
+    "p2_count": 0,
+    "p3_count": 1
+  },
+  "free_tier": {
+    "pass": 6,
+    "warn": 0,
+    "fail": 0
+  },
+  "update_sla": {
+    "fail": 0,
+    "summary": {
+      "pass": 9,
+      "warn": 0,
+      "fail": 0,
+      "byRootCause": {
+        "OK": 9
+      }
+    }
+  },
+  "blockers": [
+    {
+      "kind": "release",
+      "root_cause": "NEEDS_WORKER_DEPLOY",
+      "severity": "P0",
+      "message": "production Worker still exposes stale visible freshness surfaces",
+      "evidence": {
+        "count": 2
+      }
+    },
+    {
+      "kind": "release",
+      "root_cause": "NEEDS_PAGES_DEPLOY",
+      "severity": "P0",
+      "message": "Cloudflare Pages static fallback is stale or incomplete",
+      "evidence": {
+        "count": 3
+      }
+    }
+  ],
+  "warnings": [],
+  "input_paths": {
+    "release": "audit/release-readiness-latest.json",
+    "zero": "audit/zero-complaint-latest.json",
+    "free": "audit/free-tier-latest.json",
+    "sla": "audit/update-sla-latest.json"
+  }
+}
