@@ -1,13 +1,16 @@
 # v7.3 源宇宙发现与准入审计
 
-- 生成时间：2026-07-09T08:04:35.984Z
+- 生成时间：2026-07-09T15:34:16.493Z
 - 候选源：29
-- ACTIVE/WATCH/REJECTED/BLOCKED：12/12/3/2
+- ACTIVE/WATCH/REJECTED/BLOCKED：15/10/2/2
 
 ## ACTIVE 源
 - baidu｜百度资源｜分类 54｜搜索样本 1
 - bfzy｜暴风资源｜分类 49｜搜索样本 20
+- huya｜虎牙资源｜分类 31｜搜索样本 20
+- hhzy｜火狐资源｜分类 39｜搜索样本 20
 - hongniu｜红牛资源｜分类 31｜搜索样本 20
+- guangsu｜光速资源｜分类 28｜搜索样本 20
 - modu｜魔都资源｜分类 42｜搜索样本 20
 - xinlang｜新浪资源｜分类 28｜搜索样本 20
 - seed_3｜影视 | 量子[直连]｜分类 44｜搜索样本 20
@@ -23,10 +26,7 @@
 - BLOCKED｜lzi｜量子资源｜Unexpected token '<', "<html>
 <h"... is not valid JSON
 - WATCH｜sdzy｜闪电资源｜Unexpected token '暂', "暂不支持搜索" is not valid JSON
-- REJECTED｜taopian｜淘片资源｜fetch failed
-- WATCH｜huya｜虎牙资源｜https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?ac=list
-- WATCH｜hhzy｜火狐资源｜https://hhzyapi.com/api.php/provide/vod/?ac=list
-- WATCH｜guangsu｜光速资源｜https://api.guangsuapi.com/api.php/provide/vod/?ac=list
+- WATCH｜taopian｜淘片资源｜fetch failed
 - WATCH｜ffzy｜非凡资源｜Unexpected token '<', "<!DOCTYPE "... is not valid JSON
 - WATCH｜wujin｜无尽资源｜https://api.wujinapi.me/api.php/provide/vod/?ac=list
 - BLOCKED｜yhzy｜樱花资源｜Unexpected token '<', "<html>
@@ -37,4 +37,4 @@
 - REJECTED｜seed_5｜影视 | 索尼[直连]｜Unexpected token '<', "<?xml vers"... is not valid JSON
 - WATCH｜seed_6｜影视 | 极速[直连]｜https://jszyapi.com/api.php/provide/vod/?ac=list
 - WATCH｜seed_7｜影视 | 建安｜http://154.219.117.232:9981/jacloudapi.php/provide/vod?ac=list
-- REJECTED｜haiwaikan｜海外看(墙外)｜fetch failed
+- REJECTED｜haiwaikan｜海外看(墙外)｜Unexpected token '<', "<html lang"... is not valid JSON

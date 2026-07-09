@@ -1,14 +1,17 @@
 {
-  "generatedAt": "2026-07-09T08:04:35.984Z",
+  "generatedAt": "2026-07-09T15:34:16.493Z",
   "candidateCount": 29,
-  "active": 12,
-  "watch": 12,
-  "rejected": 3,
+  "active": 15,
+  "watch": 10,
+  "rejected": 2,
   "blocked": 2,
   "activeSlugs": [
     "baidu",
     "bfzy",
+    "huya",
+    "hhzy",
     "hongniu",
+    "guangsu",
     "modu",
     "xinlang",
     "seed_3",
@@ -194,33 +197,26 @@
       "api": "https://taopianapi.com/cjapi/mc/vod/json.html",
       "tier": "aux",
       "origin": "current",
-      "status": "REJECTED",
+      "status": "WATCH",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
         "blocked": false,
-        "classOk": false,
-        "searchOk": true,
-        "detailOk": true,
-        "playOk": true
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
       },
       "metrics": {
-        "classCount": 0,
-        "searchCount": 6,
-        "sampleNames": [
-          "天道扎堆：天降一窝主角逼疯我动态漫画",
-          "天道 2023",
-          "天道 2017",
-          "天道酬勤",
-          "天道",
-          "天道图书馆动态漫"
-        ]
+        "classCount": 30,
+        "searchCount": 0,
+        "sampleNames": []
       },
       "evidence": {
         "listUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?ac=list",
         "searchUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?ac=videolist&ids=1537009",
-        "playableUrl": "https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-01-07/30/9288b25cadc2/5473ba2f403f/playlist.m3u8"
+        "detailUrl": "",
+        "playableUrl": ""
       },
       "error": "fetch failed"
     },
@@ -232,26 +228,35 @@
       "api": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
       "tier": "aux",
       "origin": "current",
-      "status": "WATCH",
+      "status": "ACTIVE",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
         "blocked": false,
         "classOk": true,
-        "searchOk": false,
-        "detailOk": false,
-        "playOk": false
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
       },
       "metrics": {
         "classCount": 31,
-        "searchCount": 0,
-        "sampleNames": []
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
       },
       "evidence": {
         "listUrl": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?ac=list",
         "searchUrl": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "",
-        "playableUrl": ""
+        "detailUrl": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?ac=videolist&ids=111867",
+        "playableUrl": "https://1080p.huyall.com/play/dBBr5LYd/index.m3u8"
       },
       "error": ""
     },
@@ -263,26 +268,35 @@
       "api": "https://hhzyapi.com/api.php/provide/vod/",
       "tier": "aux",
       "origin": "current",
-      "status": "WATCH",
+      "status": "ACTIVE",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
         "blocked": false,
         "classOk": true,
-        "searchOk": false,
-        "detailOk": false,
-        "playOk": false
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
       },
       "metrics": {
         "classCount": 39,
-        "searchCount": 0,
-        "sampleNames": []
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
       },
       "evidence": {
         "listUrl": "https://hhzyapi.com/api.php/provide/vod/?ac=list",
         "searchUrl": "https://hhzyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "",
-        "playableUrl": ""
+        "detailUrl": "https://hhzyapi.com/api.php/provide/vod/?ac=videolist&ids=136528",
+        "playableUrl": "https://play.hhuus.com/play/bDkq59Ka/index.m3u8"
       },
       "error": ""
     },
@@ -334,26 +348,35 @@
       "api": "https://api.guangsuapi.com/api.php/provide/vod/",
       "tier": "aux",
       "origin": "current",
-      "status": "WATCH",
+      "status": "ACTIVE",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
         "blocked": false,
         "classOk": true,
-        "searchOk": false,
-        "detailOk": false,
-        "playOk": false
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
       },
       "metrics": {
         "classCount": 28,
-        "searchCount": 0,
-        "sampleNames": []
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
       },
       "evidence": {
         "listUrl": "https://api.guangsuapi.com/api.php/provide/vod/?ac=list",
         "searchUrl": "https://api.guangsuapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "",
-        "playableUrl": ""
+        "detailUrl": "https://api.guangsuapi.com/api.php/provide/vod/?ac=videolist&ids=168771",
+        "playableUrl": "https://v.gsuus.com/play/azp6GKyd/index.m3u8"
       },
       "error": ""
     },
@@ -790,11 +813,11 @@
           "开心锤锤",
           "第三调解室",
           "盘龙",
-          "中餐厅南洋拾光季",
-          "歌手2026",
-          "爸爸当家第五季",
-          "妻子的浪漫旅行2026",
-          "少侠逆袭攻略"
+          "假如生活欺骗了你",
+          "档案北京卫视",
+          "潮童天下",
+          "欢乐集结号",
+          "男生女生向前冲第十四季"
         ]
       },
       "evidence": {
@@ -1025,7 +1048,7 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "fetch failed"
+      "error": "Unexpected token '<', \"<html lang\"... is not valid JSON"
     }
   ]
 }
