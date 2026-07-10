@@ -1,4 +1,4 @@
-﻿import fs from 'node:fs/promises';
+import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -13,7 +13,7 @@ const CRON_WINDOW_MS = Number(process.env.UPDATE_SLA_CRON_WINDOW_MS || 6 * 60 * 
 const AGG_DRIFT_MS = Number(process.env.UPDATE_SLA_AGG_DRIFT_MS || 2 * 60 * 1000);
 const HOT_FRESH_MS = Number(process.env.UPDATE_SLA_HOT_FRESH_MS || 6 * 60 * 1000);
 const SNAPSHOT_FRESH_MS = Number(process.env.UPDATE_SLA_SNAPSHOT_FRESH_MS || 6 * 60 * 60 * 1000);
-const HOT_WORKFLOW_TARGET_MS = Number(process.env.UPDATE_SLA_HOT_WORKFLOW_TARGET_MS || 15 * 60 * 1000);
+const HOT_WORKFLOW_TARGET_MS = Number(process.env.UPDATE_SLA_HOT_WORKFLOW_TARGET_MS || 6 * 60 * 60 * 1000);
 const HOT_WORKFLOW_PATH = path.join(ROOT, '.github', 'workflows', 'hot-refresh.yml');
 
 const ROOT_CAUSES = {
@@ -249,9 +249,9 @@ function workflowScheduleCheckFromCrons(crons, targetMs = HOT_WORKFLOW_TARGET_MS
     return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_MISSING, cron: [], max_gap_minutes: null, target_minutes: targetMinutes, message: 'hot-refresh workflow cron missing or unparsable' };
   }
   if (maxGap <= targetMinutes) {
-    return { id: 'workflow.hot_refresh_schedule', result: 'PASS', root_cause: ROOT_CAUSES.OK, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: 'hot refresh workflow within target cadence' };
+    return { id: 'workflow.hot_refresh_schedule', result: 'PASS', root_cause: ROOT_CAUSES.OK, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: 'hot static snapshot workflow within free-tier cadence' };
   }
-  return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_SCHEDULE_GAP, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: `hot refresh workflow max gap ${maxGap}min exceeds ${targetMinutes}min target` };
+  return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_SCHEDULE_GAP, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: `hot static snapshot workflow max gap ${maxGap}min exceeds ${targetMinutes}min free-tier target` };
 }
 
 async function hotRefreshWorkflowScheduleCheck() {

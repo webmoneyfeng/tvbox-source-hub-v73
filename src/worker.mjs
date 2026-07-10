@@ -1,4 +1,4 @@
-﻿const VERSION = '2026-07-04-aggregate-v7.3-domestic-free';
+const VERSION = '2026-07-04-aggregate-v7.3-domestic-free';
 const LIVE_GROUP_ORDER = ['电影频道', '经典电影', '纪录片', '动画少儿', '家庭频道', '喜剧频道', '英文影视', '美国频道', '其他频道'];
 const VOD_CATEGORIES = [
   { id: '1', key: 'classic', name: '经典电影', aliases: ['classic', '经典电影'] },
@@ -27,11 +27,14 @@ const HOT_UPDATE_TARGET_MINUTES = 2;
 const HOT_UPDATE_FRESH_GUARD_MINUTES = 6;
 const HOT_UPDATE_FRESH_MS = HOT_UPDATE_FRESH_GUARD_MINUTES * 60 * 1000;
 const HOT_UPDATE_MEMORY_TTL_MS = 15 * 1000;
+const HOT_INTERACTION_PROBE_MIN_INTERVAL_MS = 15 * 60 * 1000;
+const HOT_INTERACTION_PROBE_MAX_DAILY_WRITES = Math.ceil(24 * 60 * 60 * 1000 / HOT_INTERACTION_PROBE_MIN_INTERVAL_MS);
 const HOT_SNAPSHOT_FRESH_MS = 18 * 60 * 60 * 1000;
 const HOT_OVERLAY_CATEGORY_KEYS = new Set(['recommend', 'movie', 'tv', 'short', 'explainer', 'knowledge']);
 const SNAPSHOT_PACK_LIMIT = 24;
 const snapshotMemoryCache = new Map();
 const hotUpdateMemoryCache = { t: 0, v: null };
+const hotInteractionProbeMemory = { t: 0, p: null };
 const LIMIT_DEFAULT = 24;
 const LIMIT_MAX = 48;
 const CMS_TIMEOUT_MS = 9000;
@@ -1748,12 +1751,13 @@ function v73Mirrors(origin) {
     { name: '回滚入口', url: 'https://tvbox-source-hub.feng-yang.workers.dev/config.json', host: 'tvbox-source-hub.feng-yang.workers.dev', role: 'rollback' },
   ];
 }
-async function statusV73(request, env) {
+async function statusV73(request, env, ctx) {
   const origin = new URL(request.url).origin;
   const forceFresh = forceFreshFromRequest(request);
   const manifest = await fetchSnapshotJson(env, 'manifest.json');
   const updateInfo = await visibleUpdateInfo(env, manifest, { forceFresh });
   const hotUpdate = await readHotUpdateInfo(env, { forceFresh });
+  const interactionHotProbeScheduled = scheduleInteractionHotProbe(request, env, ctx, updateInfo, 'status');
   return json({
     ok: true,
     version: VERSION,
@@ -1773,6 +1777,7 @@ async function statusV73(request, env) {
     visibleUpdateSource: updateInfo.source,
     visibleUpdateAt: updateInfo.at,
     hotUpdate: hotUpdate ? { ok: true, generatedAt: hotUpdate.at, visibleUpdateText: hotUpdate.visibleUpdateText, source: hotUpdate.source, probe: hotUpdate.probe } : { ok: false },
+    interactionRefresh: { enabled: true, trigger: 'config/list/search/detail/status when hot probe is stale or missing', minIntervalMinutes: Math.round(HOT_INTERACTION_PROBE_MIN_INTERVAL_MS / 60000), maxFallbackWritesPerDay: HOT_INTERACTION_PROBE_MAX_DAILY_WRITES, scheduled: interactionHotProbeScheduled },
     coverageSummary: manifest?.coverageSummary || null,
     sourceSummary: manifest?.sourceSummary || null,
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
@@ -1780,7 +1785,7 @@ async function statusV73(request, env) {
     liveDelivery: liveDeliveryPolicy(origin),
     fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
     updateCadence: {
-      target: 'hot probe <= 2 minutes by Cloudflare Cron, hot visible guard <= 6 minutes, visible label memory <= 15 seconds, full snapshot <= 2 hours by GitHub Actions, config/agg entry no-store, worker snapshot memory cache <= 5 minutes',
+      target: 'hot probe <= 2 minutes by Cloudflare Cron, interaction fallback <= 15 minutes when app traffic exists, hot visible guard <= 6 minutes, visible label memory <= 15 seconds, static snapshots <= 6 hours by GitHub Actions, config/agg entry no-store, worker snapshot memory cache <= 5 minutes',
       hotProbeTargetMinutes: HOT_UPDATE_TARGET_MINUTES,
       hotProbeFreshGuardMinutes: HOT_UPDATE_FRESH_GUARD_MINUTES,
       currentVisibleText: updateInfo.visibleUpdateText,
@@ -1882,7 +1887,7 @@ async function aggDetail(request, env, ids, policy = {}) {
   const payload = { code: 1, msg: 'ok', list: [{ ...first, type_id: cat.id, type_name: cat.name, vod_name: cleanAggName(first.vod_name, 120), vod_year: first.vod_year || extractYearFromVod(first), vod_remarks: cleanAggName(first.vod_remarks || `${playFrom.length}\u7ebf`, 80), vod_content: cleanCmsText(first.vod_content || '\u5df2\u805a\u5408\u591a\u8def\u53ef\u64ad\u653e\u76f4\u8fde\uff0c\u81ea\u52a8\u8fc7\u6ee4\u5e7f\u544a\u3001\u89e3\u6790\u9875\u548c\u65e0\u6548\u64ad\u653e\u5730\u5740\u3002', 800), vod_play_from: playFrom.join('$$$'), vod_play_url: playUrl.join('$$$') }] };
   return json(sanitizeAggResponseForPolicy(payload, policy), 120);
 }
-async function agg(request, env, policy = {}) {
+async function agg(request, env, policy = {}, ctx) {
   const url = new URL(request.url);
   const params = url.searchParams;
   const forceFresh = forceFreshFromRequest(request);
@@ -1890,13 +1895,17 @@ async function agg(request, env, policy = {}) {
   const updateInfo = await visibleUpdateInfo(env, manifest, { forceFresh });
   const ac = (params.get('ac') || '').toLowerCase();
   const ids = (params.get('ids') || params.get('id') || '').trim();
-  if (ids) return aggDetail(request, env, ids, policy);
+  if (ids) {
+    scheduleInteractionHotProbe(request, env, ctx, updateInfo, 'agg-detail');
+    return aggDetail(request, env, ids, policy);
+  }
   const filters = parseAggFilters(params);
   let category = getAggCategoryParam(params);
   if (!hasAggCategoryParam(params) && category.key === 'recommend') category = inferAggCategoryFromFilters(filters) || category;
   const page = parseInt(params.get('pg') || params.get('page') || '1', 10) || 1;
   const limit = Math.min(LIMIT_MAX, parseInt(params.get('limit') || String(LIMIT_DEFAULT), 10) || LIMIT_DEFAULT);
   const wd = (params.get('wd') || params.get('search') || params.get('q') || '').trim();
+  scheduleInteractionHotProbe(request, env, ctx, updateInfo, wd ? 'agg-search' : 'agg-list');
   const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params, filters);
   if (snapshotHit) return json(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy(snapshotHit, policy), updateInfo), 0);
   const sources = selectedSources(filters);
@@ -1960,6 +1969,35 @@ async function readHotUpdateInfo(env, options = {}) {
   hotUpdateMemoryCache.v = value;
   return value;
 }
+function hotProbeFreshEnough(info, now = Date.now()) {
+  return Boolean(info?.source === 'hot-probe' && Number.isFinite(info.time) && now - info.time <= HOT_UPDATE_FRESH_MS);
+}
+function interactionHotProbeReason(request, route = 'content') {
+  try {
+    const url = new URL(request.url);
+    const params = url.searchParams;
+    const wd = params.get('wd') || params.get('search') || params.get('q') || '';
+    const ids = params.get('ids') || params.get('id') || '';
+    const ac = params.get('ac') || '';
+    const t = params.get('t') || params.get('tid') || params.get('type_id') || params.get('category') || '';
+    const action = ids ? 'detail' : wd ? 'search' : ac || t ? 'list' : 'open';
+    const target = (wd || ids || t || url.pathname || '').toString().replace(/[^\w:.-]+/g, '_').slice(0, 80);
+    return `interaction:${route}:${action}${target ? ':' + target : ''}`;
+  } catch {
+    return `interaction:${route}`;
+  }
+}
+function scheduleInteractionHotProbe(request, env, ctx, updateInfo, route = 'content') {
+  if (!ctx || typeof ctx.waitUntil !== 'function') return false;
+  const now = Date.now();
+  if (hotProbeFreshEnough(updateInfo, now)) return false;
+  if (hotInteractionProbeMemory.p && now - hotInteractionProbeMemory.t < HOT_INTERACTION_PROBE_MIN_INTERVAL_MS) return false;
+  const promise = runHotSourceProbe(env, interactionHotProbeReason(request, route)).catch((err) => ({ ok: false, reason: 'interaction-probe-error', generatedAt: new Date().toISOString(), error: String(err && err.message || err) }));
+  hotInteractionProbeMemory.t = now;
+  hotInteractionProbeMemory.p = promise;
+  ctx.waitUntil(promise);
+  return true;
+}
 async function visibleUpdateInfo(env, manifest, options = {}) {
   const candidates = [manifestUpdateInfo(manifest), await readHotUpdateInfo(env, options)].filter(Boolean);
   if (!candidates.length) return { visibleUpdateText: '', source: 'none', at: '', time: 0 };
@@ -1981,11 +2019,12 @@ function stampAggResponseWithUpdate(payload, info) {
   }
   return out;
 }
-async function config(request, env, policy = {}) {
+async function config(request, env, policy = {}, ctx) {
   const origin = new URL(request.url).origin;
   const forceFresh = forceFreshFromRequest(request);
   const manifest = await fetchSnapshotJson(env, 'manifest.json');
   const updateInfo = await visibleUpdateInfo(env, manifest, { forceFresh });
+  scheduleInteractionHotProbe(request, env, ctx, updateInfo, policy.includeAdult === false ? 'config-clean' : 'config');
   const updateText = updateInfo.visibleUpdateText;
   const clean = policy.includeAdult === false;
   const baseName = clean ? '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' : '\u5f71\u89c6\u70b9\u64ad';
@@ -2226,19 +2265,19 @@ export default {
   async scheduled(event, env, ctx) {
     ctx.waitUntil(runHotSourceProbe(env, event?.cron || 'scheduled'));
   },
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     try {
       const url = new URL(request.url);
       if (request.method === 'OPTIONS') return text('', 'text/plain; charset=utf-8', 86400);
-      if (url.pathname === '/config.json' || url.pathname === '/config') return config(request, env);
-      if (url.pathname === '/config-clean.json' || url.pathname === '/config-clean' || url.pathname === '/clean/config.json') return config(request, env, { includeAdult: false });
+      if (url.pathname === '/config.json' || url.pathname === '/config') return config(request, env, {}, ctx);
+      if (url.pathname === '/config-clean.json' || url.pathname === '/config-clean' || url.pathname === '/clean/config.json') return config(request, env, { includeAdult: false }, ctx);
       if (url.pathname === '/live.txt' || url.pathname === '/live') return liveTxt(request, env);
-      if (url.pathname === '/agg' || url.pathname === '/agg/' || url.pathname.startsWith('/agg/u')) return agg(request, env);
-      if (url.pathname === '/agg-clean' || url.pathname === '/agg-clean/' || url.pathname.startsWith('/agg-clean/u')) return agg(request, env, { includeAdult: false });
+      if (url.pathname === '/agg' || url.pathname === '/agg/' || url.pathname.startsWith('/agg/u')) return agg(request, env, {}, ctx);
+      if (url.pathname === '/agg-clean' || url.pathname === '/agg-clean/' || url.pathname.startsWith('/agg-clean/u')) return agg(request, env, { includeAdult: false }, ctx);
       if (url.pathname === '/vod' || url.pathname === '/vod/') return vod(request, env);
       if (url.pathname.startsWith('/cms/')) return cms(request, env, decodeURIComponent(url.pathname.slice('/cms/'.length)).replace(/\/$/, ''));
       if (url.pathname === '/health') return health(request, env);
-      if (url.pathname === '/status.json' || url.pathname === '/status') return statusV73(request, env);
+      if (url.pathname === '/status.json' || url.pathname === '/status') return statusV73(request, env, ctx);
       if (url.pathname === '/mirrors.json' || url.pathname === '/mirrors') return mirrorsV73(request, env);
       if (url.pathname === '/snapshot.json' || url.pathname === '/snapshot') return snapshotV73(request, env);
       if (url.pathname === '/sources.json' || url.pathname === '/sources') return sources(request, env);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T23:35:06.631Z",
+  "generatedAt": "2026-07-10T00:25:17.614Z",
   "stage9_predeploy_gate": "DEPLOYED",
   "commercial_promotion_gate": "NOT_READY",
   "production_deploy_required": false,
@@ -23,12 +23,12 @@
     "gate": "WARN",
     "p0_count": 0,
     "p1_count": 0,
-    "p2_count": 1,
+    "p2_count": 0,
     "p3_count": 2
   },
   "free_tier": {
-    "pass": 5,
-    "warn": 1,
+    "pass": 6,
+    "warn": 0,
     "fail": 0
   },
   "update_sla": {
@@ -43,17 +43,7 @@
     }
   },
   "blockers": [],
-  "warnings": [
-    {
-      "kind": "free_tier",
-      "root_cause": "FREE_TIER_WARN",
-      "severity": "P2",
-      "message": "free-tier audit has warnings",
-      "evidence": {
-        "warn": 1
-      }
-    }
-  ],
+  "warnings": [],
   "input_paths": {
     "release": "audit/release-readiness-latest.json",
     "zero": "audit/zero-complaint-latest.json",

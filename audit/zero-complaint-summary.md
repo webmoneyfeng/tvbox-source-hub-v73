@@ -2,11 +2,11 @@
 
 ## 总结
 
-- 生成时间：2026-07-09T23:34:58.387Z
+- 生成时间：2026-07-10T00:24:38.738Z
 - commercial_ready：false
 - zero_complaint_gate：WARN
-- user_love_score：93/100
-- P0/P1/P2/P3：0/0/1/2
+- user_love_score：98/100
+- P0/P1/P2/P3：0/0/0/2
 - 输入证据：audit/tv-remote-full-latest.json；audit/coverage-latest.json；audit/source-discovery-latest.json；audit/free-tier-latest.json；dist/snapshot/latest/validation.json；audit/snapshot-warning-triage-latest.json；audit/snapshot-pack-gap-latest.json；dist/snapshot/latest/manifest.json；audit/visible-freshness-latest.json
 
 ## 终局判定
@@ -36,10 +36,10 @@
 - 遥控器路径：visible=319；PASS/WARN/FAIL=319/0/0；max_duplicate_rate=0；detail=1；playable=1
 - 覆盖审计：PASS/WARN/FAIL=10/0/0
 - 源发现：candidate=19；ACTIVE/WATCH/REJECTED/BLOCKED=11/4/2/2
-- 免费层：PASS/WARN/FAIL=5/1/0
+- 免费层：PASS/WARN/FAIL=6/0/0
 - 直播承载：channels=95；proxied=0；direct=95；proxyRatio=0%
 - 快照：errors=0；warnings=3；triage=1；blocking=0；visibleUpdateText=055001706202
-- 可见更新时间：gate=PASS；diagnosis=SERVICE_FRESH；current=407001706202；observed=
+- 可见更新时间：gate=PASS；diagnosis=SERVICE_FRESH；current=028001706202；observed=
 
 ## 快照 warning 分诊
 
@@ -51,8 +51,8 @@
 
 ## 在线入口轻量探测
 
-- https://tv.webhome.eu.org；config=200；status=200；sites=影视点播；visible=437001706202
-- https://tv.webclound.eu.org；config=200；status=200；sites=影视点播；visible=437001706202
+- https://tv.webhome.eu.org；config=200；status=200；sites=影视点播；visible=428001706202
+- https://tv.webclound.eu.org；config=200；status=200；sites=影视点播；visible=428001706202
 
 ## 阻塞投诉
 
@@ -60,9 +60,8 @@
 
 ## 下一修复队列
 
-1. P2；free_tier；免费方案存在风险：github_actions_schedule；证据：3300/month；定时刷新次数过高，可能触发 Pages 构建/部署频率风险，建议降频。；建议：形成限流、缓存、降频、直连播放和不代理视频流的运营策略。
-2. P3；snapshot；快照 warning 分诊与验证数量不一致；证据：validation=3；triage=1；建议：重新运行快照分诊，避免用旧分诊解释新快照。
-3. P3；snapshot；快照 warning 已分诊为观察项；证据：total=1；visible=0；by_type=UI_HIDE_CANDIDATE=1；建议：继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。
+1. P3；snapshot；快照 warning 分诊与验证数量不一致；证据：validation=3；triage=1；建议：重新运行快照分诊，避免用旧分诊解释新快照。
+2. P3；snapshot；快照 warning 已分诊为观察项；证据：total=1；visible=0；by_type=UI_HIDE_CANDIDATE=1；建议：继续收敛 SNAPSHOT_PACK_GAP 与 UI_HIDE_CANDIDATE；当前不把它升级为用户可见投诉，但仍阻止宣称终局完成。
 
 ## 终局到下一阶段承接
 

@@ -1,6 +1,6 @@
 # v7.4 发布准备度与更新时间可见面审计
 
-- 生成时间：2026-07-09T23:05:58.007Z
+- 生成时间：2026-07-10T00:20:24.574Z
 - 主入口：https://tv.webhome.eu.org
 - Pages：https://tvbox-source-hub-v73.pages.dev
 - gate：PASS
@@ -11,9 +11,9 @@
 - OK=8
 
 ## 检查项
-- PASS；worker-status；OK；Worker hot update is within freshness guard；code=407001706202；age=2min
-- PASS；online-worker-full-config；OK；stable site name with versioned API；code=407001706202
-- PASS；online-worker-clean-config；OK；stable site name with versioned API；code=407001706202
+- PASS；worker-status；OK；Worker hot update is within freshness guard；code=028001706202；age=0min
+- PASS；online-worker-full-config；OK；stable site name with versioned API；code=028001706202
+- PASS；online-worker-clean-config；OK；stable site name with versioned API；code=028001706202
 - PASS；local-dist-full-config；OK；stable site name with versioned API；code=055001706202
 - PASS；local-dist-clean-config；OK；stable site name with versioned API；code=055001706202
 - PASS；pages-full-config；OK；stable site name with versioned API；code=055001706202

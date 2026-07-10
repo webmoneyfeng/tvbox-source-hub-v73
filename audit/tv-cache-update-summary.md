@@ -1,6 +1,6 @@
 # v7.4 电视端缓存更新时间审计
 
-- 生成时间：2026-07-09T23:06:11.529Z
+- 生成时间：2026-07-10T00:24:38.465Z
 - 主入口：https://tv.webhome.eu.org
 - 同构入口：https://tv.webclound.eu.org
 - 模拟旧码：111111111111
@@ -9,16 +9,16 @@
 
 ## 端点证据
 
-- PASS；primary.config；status=200；code=407001706202；apiCode=407001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；primary.config_clean；status=200；code=407001706202；apiCode=407001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；primary.status；status=200；code=407001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；primary.cached_full_agg；status=200；code=407001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 407001706202；list=8
-- PASS；primary.cached_clean_agg；status=200；code=407001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 407001706202；list=8
-- PASS；secondary.config；status=200；code=407001706202；apiCode=407001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；secondary.config_clean；status=200；code=407001706202；apiCode=407001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；secondary.status；status=200；code=407001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
-- PASS；secondary.cached_full_agg；status=200；code=407001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 407001706202；list=8
-- PASS；secondary.cached_clean_agg；status=200；code=407001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 407001706202；list=8
+- PASS；primary.config；status=200；code=428001706202；apiCode=428001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；primary.config_clean；status=200；code=428001706202；apiCode=428001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；primary.status；status=200；code=428001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；primary.cached_full_agg；status=200；code=428001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 428001706202；list=8
+- PASS；primary.cached_clean_agg；status=200；code=428001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 428001706202；list=8
+- PASS；secondary.config；status=200；code=428001706202；apiCode=428001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；secondary.config_clean；status=200；code=428001706202；apiCode=428001706202；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；secondary.status；status=200；code=428001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=n/a；list=0
+- PASS；secondary.cached_full_agg；status=200；code=428001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 428001706202；list=8
+- PASS；secondary.cached_clean_agg；status=200；code=428001706202；apiCode=n/a；cache=no-store, no-cache, must-revalidate, max-age=0；class0=推荐 · 428001706202；list=8
 
 ## 缓存路径关系检查
 
@@ -31,15 +31,15 @@
 - PASS；secondary.cached_full_agg.content_visible；root=OK；drift=n/a；age=n/a；cached aggregate path returns non-empty list and visible current code
 - PASS；secondary.cached_clean_agg.content_visible；root=OK；drift=n/a；age=n/a；cached aggregate path returns non-empty list and visible current code
 - PASS；primary.config_vs_clean；root=OK；drift=0min；age=n/a；within expected drift
-- PASS；primary.status_vs_config；root=OK；drift=0.8min；age=n/a；within expected drift
+- PASS；primary.status_vs_config；root=OK；drift=0min；age=n/a；within expected drift
 - PASS；primary.cached_full_vs_config；root=OK；drift=0min；age=n/a；within expected drift
 - PASS；primary.cached_clean_vs_clean_config；root=OK；drift=0min；age=n/a；within expected drift
 - PASS；secondary.config_vs_clean；root=OK；drift=0min；age=n/a；within expected drift
-- PASS；secondary.status_vs_config；root=OK；drift=0.8min；age=n/a；within expected drift
+- PASS；secondary.status_vs_config；root=OK；drift=0min；age=n/a；within expected drift
 - PASS；secondary.cached_full_vs_config；root=OK；drift=0min；age=n/a；within expected drift
 - PASS；secondary.cached_clean_vs_clean_config；root=OK；drift=0min；age=n/a；within expected drift
 - PASS；primary_vs_secondary.config；root=OK；drift=0min；age=n/a；within expected drift
-- PASS；status.hot_freshness；root=OK；drift=n/a；age=1.4min；hot probe fresh
+- PASS；status.hot_freshness；root=OK；drift=n/a；age=0.7min；hot probe fresh
 
 ## 需要关注
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T23:07:25.060Z",
+  "generatedAt": "2026-07-10T00:21:29.933Z",
   "repo": {
     "ok": true,
     "private": false,
@@ -7,7 +7,7 @@
     "url": "https://github.com/webmoneyfeng/tvbox-source-hub-v73"
   },
   "publicBase": "https://tv.webhome.eu.org",
-  "monthlyScheduledRuns": 3300,
+  "monthlyScheduledRuns": 300,
   "workerCrons": {
     "file": "wrangler.toml",
     "crons": [
@@ -16,7 +16,9 @@
     "dailyRuns": 720,
     "monthlyRuns": 21600
   },
-  "estimatedDailyKvWrites": 720,
+  "estimatedScheduledKvWrites": 720,
+  "estimatedInteractionProbeDailyWrites": 96,
+  "estimatedDailyKvWrites": 816,
   "distFileCount": 420,
   "distBytes": 49834925,
   "workflows": [
@@ -30,16 +32,16 @@
     {
       "file": ".github/workflows/full-refresh.yml",
       "crons": [
-        "17 */2 * * *"
+        "17 */6 * * *"
       ],
-      "monthlyRuns": 360
+      "monthlyRuns": 120
     },
     {
       "file": ".github/workflows/hot-refresh.yml",
       "crons": [
-        "7,22,37,52 * * * *"
+        "7 */6 * * *"
       ],
-      "monthlyRuns": 2880
+      "monthlyRuns": 120
     },
     {
       "file": ".github/workflows/manual-release.yml",
@@ -82,9 +84,9 @@
     },
     {
       "area": "github_actions_schedule",
-      "result": "WARN",
-      "metric": "3300/month",
-      "note": "定时刷新次数过高，可能触发 Pages 构建/部署频率风险，建议降频。"
+      "result": "PASS",
+      "metric": "300/month",
+      "note": "定时刷新频率按免费优先控制，保留人工发布余量。"
     },
     {
       "area": "cloudflare_pages_files",
@@ -107,11 +109,11 @@
     {
       "area": "cloudflare_kv_hot_probe_writes",
       "result": "PASS",
-      "metric": "720/1000 writes/day",
-      "note": "热探针仅写入单个 hot:last-success KV key，2 分钟一次约 720 writes/day，低于 Workers KV 免费层 1000 writes/day。"
+      "metric": "816/1000 writes/day",
+      "note": "热探针写入单个 hot:last-success KV key；定时约 720/day，交互兜底最多 96/day，合计低于 Workers KV 免费层 1000 writes/day。"
     }
   ],
-  "pass": 5,
-  "warn": 1,
+  "pass": 6,
+  "warn": 0,
   "fail": 0
 }

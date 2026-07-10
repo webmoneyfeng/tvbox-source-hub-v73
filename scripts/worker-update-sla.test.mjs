@@ -1,4 +1,4 @@
-import assert from 'node:assert/strict';
+﻿import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import worker from '../src/worker.mjs';
@@ -28,4 +28,37 @@ test('status documents commercial visible update SLA as 2 minute hot probe and 6
   assert.equal(data.updateCadence.hotProbeFreshGuardMinutes, 6);
   assert.match(data.updateCadence.target, /hot probe <= 2 minutes/);
   assert.match(data.updateCadence.target, /hot visible guard <= 6 minutes/);
+});
+
+
+function installCmsProbeFetchMock() {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ code: 1, list: [{ vod_id: 'cms-1', vod_name: '???????' }] }), { status: 200, headers: { 'content-type': 'application/json' } });
+  return () => { globalThis.fetch = realFetch; };
+}
+
+test('stale or missing hot probe is refreshed in waitUntil on natural aggregate interaction', async () => {
+  const restore = installCmsProbeFetchMock();
+  const writes = [];
+  const env = {
+    SNAPSHOT_BASES: 'https://snapshot.invalid/latest',
+    TVBOX_KV: {
+      async get() { return null; },
+      async put(key, value) { writes.push({ key, value: JSON.parse(value) }); },
+    },
+  };
+  const waited = [];
+  const ctx = { waitUntil(promise) { waited.push(promise); } };
+  try {
+    const res = await worker.fetch(new Request('https://tv.webhome.eu.org/agg?ac=videolist&t=1&pg=1&limit=8&fresh=1'), env, ctx);
+    assert.equal(res.status, 200);
+    assert.equal(waited.length, 1);
+    await Promise.all(waited);
+    assert.equal(writes.length, 1);
+    assert.equal(writes[0].key, 'hot:last-success');
+    assert.equal(writes[0].value.ok, true);
+    assert.match(writes[0].value.reason, /^interaction:agg-list:list/);
+  } finally {
+    restore();
+  }
 });

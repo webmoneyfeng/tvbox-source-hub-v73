@@ -9,6 +9,7 @@ const PAGES_FILE_WARN_LIMIT = 20000;
 const PAGES_SIZE_WARN_LIMIT_BYTES = 500 * 1024 * 1024;
 const KV_WRITE_FREE_DAILY_LIMIT = 1000;
 const KV_WRITE_DAILY_WARN_RATIO = 0.9;
+const INTERACTION_HOT_PROBE_MIN_INTERVAL_MINUTES = 15;
 const PUBLIC_BASE = (process.env.PUBLIC_BASE || 'https://tv.webhome.eu.org').replace(/\/+$/, '');
 
 async function walk(dir) {
@@ -34,6 +35,10 @@ function monthlyCronRuns(expr) {
 
 function dailyCronRuns(expr) {
   return monthlyCronRuns(expr) / 30;
+}
+
+function interactionFallbackDailyRuns(minIntervalMinutes = INTERACTION_HOT_PROBE_MIN_INTERVAL_MINUTES) {
+  return Math.ceil((24 * 60) / Math.max(1, Number(minIntervalMinutes) || INTERACTION_HOT_PROBE_MIN_INTERVAL_MINUTES));
 }
 
 async function workflowCronSummary() {
@@ -205,7 +210,9 @@ async function auditFreeTier() {
   const repo = await githubRepoVisibility();
   const liveProxy = await analyzeLiveProxy(PUBLIC_BASE);
   const monthlyRuns = workflows.reduce((n, x) => n + x.monthlyRuns, 0);
-  const estimatedDailyKvWrites = workerCrons.dailyRuns;
+  const estimatedScheduledKvWrites = workerCrons.dailyRuns;
+  const estimatedInteractionProbeDailyWrites = interactionFallbackDailyRuns();
+  const estimatedDailyKvWrites = estimatedScheduledKvWrites + estimatedInteractionProbeDailyWrites;
   const workerRequestMetric = liveProxy.ok
     ? `${liveProxy.proxiedChannels}/${liveProxy.totalChannels} proxied`
     : 'live-audit-unavailable';
@@ -229,11 +236,11 @@ async function auditFreeTier() {
       result: estimatedDailyKvWrites <= KV_WRITE_FREE_DAILY_LIMIT * KV_WRITE_DAILY_WARN_RATIO ? 'PASS' : 'WARN',
       metric: `${Math.round(estimatedDailyKvWrites)}/${KV_WRITE_FREE_DAILY_LIMIT} writes/day`,
       note: estimatedDailyKvWrites <= KV_WRITE_FREE_DAILY_LIMIT * KV_WRITE_DAILY_WARN_RATIO
-        ? '\u70ed\u63a2\u9488\u4ec5\u5199\u5165\u5355\u4e2a hot:last-success KV key\uff0c2 \u5206\u949f\u4e00\u6b21\u7ea6 720 writes/day\uff0c\u4f4e\u4e8e Workers KV \u514d\u8d39\u5c42 1000 writes/day\u3002'
+        ? `\u70ed\u63a2\u9488\u5199\u5165\u5355\u4e2a hot:last-success KV key\uff1b\u5b9a\u65f6\u7ea6 ${Math.round(estimatedScheduledKvWrites)}/day\uff0c\u4ea4\u4e92\u515c\u5e95\u6700\u591a ${estimatedInteractionProbeDailyWrites}/day\uff0c\u5408\u8ba1\u4f4e\u4e8e Workers KV \u514d\u8d39\u5c42 1000 writes/day\u3002`
         : '\u70ed\u63a2\u9488\u5199\u5165\u9891\u7387\u63a5\u8fd1\u6216\u8d85\u8fc7 Workers KV \u514d\u8d39\u5c42 1000 writes/day\uff0c\u9700\u8981\u964d\u9891\u6216\u6539\u4e3a\u65e0\u5199\u5165\u63a2\u9488\u3002',
     },
   ];
-  const summary = { generatedAt, repo, publicBase: PUBLIC_BASE, monthlyScheduledRuns: monthlyRuns, workerCrons, estimatedDailyKvWrites, distFileCount: distFiles.length, distBytes, workflows, liveProxy, rows, pass: rows.filter((x) => x.result === 'PASS').length, warn: rows.filter((x) => x.result === 'WARN').length, fail: rows.filter((x) => x.result === 'FAIL').length };
+  const summary = { generatedAt, repo, publicBase: PUBLIC_BASE, monthlyScheduledRuns: monthlyRuns, workerCrons, estimatedScheduledKvWrites, estimatedInteractionProbeDailyWrites, estimatedDailyKvWrites, distFileCount: distFiles.length, distBytes, workflows, liveProxy, rows, pass: rows.filter((x) => x.result === 'PASS').length, warn: rows.filter((x) => x.result === 'WARN').length, fail: rows.filter((x) => x.result === 'FAIL').length };
   await fs.mkdir(path.join(ROOT, 'audit'), { recursive: true });
   await fs.writeFile(path.join(ROOT, 'audit', 'free-tier-latest.json'), JSON.stringify(summary, null, 2) + '\n', 'utf8');
   await fs.writeFile(path.join(ROOT, 'audit', 'free-tier-summary.md'), renderSummary(summary), 'utf8');
@@ -266,4 +273,4 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   console.log(JSON.stringify(await auditFreeTier(), null, 2));
 }
 
-export { auditFreeTier, countProxyPlaylistChildren, monthlyCronRuns, parseLiveText, summarizeLiveProxyFromChannels };
+export { auditFreeTier, countProxyPlaylistChildren, interactionFallbackDailyRuns, monthlyCronRuns, parseLiveText, summarizeLiveProxyFromChannels };
