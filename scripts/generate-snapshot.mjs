@@ -41,7 +41,7 @@ const RELEASE_BACKFILL_CONCURRENCY = Math.max(1, Number(process.env.RELEASE_BACK
 const DOUBAN_METADATA_CONCURRENCY = Math.max(1, Number(process.env.DOUBAN_METADATA_CONCURRENCY || 2));
 const DOUBAN_METADATA_MAX_PER_RUN = Math.max(0, Number(process.env.DOUBAN_METADATA_MAX_PER_RUN || 500));
 const DOUBAN_METADATA_MIN_INTERVAL_MS = Math.max(100, Number(process.env.DOUBAN_METADATA_MIN_INTERVAL_MS || 350));
-const DOUBAN_METADATA_URL_TEMPLATE = String(process.env.DOUBAN_METADATA_URL_TEMPLATE || 'https://m.douban.com/rexxar/api/v2/movie/{id}?ck=&for_mobile=1');
+const DOUBAN_METADATA_URL_TEMPLATE = String(process.env.DOUBAN_METADATA_URL_TEMPLATE || 'https://m.douban.com/rexxar/api/v2/subject/{id}?for_mobile=1');
 const FILTER_PACK_PAGE_COUNT = Number(process.env.FILTER_PACK_PAGE_COUNT || 0);
 const FILTER_PACK_KEYS = new Set(['year', 'area', 'class', 'form', 'quality', 'state', 'episodes', 'duration', 'topic']);
 const STATIC_SNAPSHOT_BASES = (process.env.STATIC_SNAPSHOT_BASES || [
@@ -741,7 +741,7 @@ async function crawlDirectSources({ admittedSources, previousRows, previousWater
           ? result.categoryMap
           : buildSourceCategoryMap(result.classes || []),
       });
-      if (!resumed) await writeJson(`snapshot/latest/${relativeFile}`, result);
+      if (!resumed) await writeJsonFileAtomic(path.join(building, relativeFile), result);
       crawledRows.push(...(result.rows || []));
       if (result.ok) succeeded += 1;
       for (const error of result.errors || []) crawlWarnings.push(`${source.slug}: ${error}`);
@@ -1351,7 +1351,7 @@ async function main() {
     ? (previousManifest?.content_changed_at || previousManifest?.contentChangedAt || previousManifest?.generatedAt || generatedAt)
     : generatedAt;
   const visibleUpdateText = formatChinaReverseUpdateCode(contentChangedAt);
-  const indexes = buildSnapshotIndexes(views.rows, { revision, shardSize: SHARD_SIZE });
+  const indexes = buildSnapshotIndexes(views.rows, { revision, shardSize: SHARD_SIZE, maxShardBytes: MAX_FILE_BYTES });
   const indexRefs = await writeIndexShards(indexes);
   const sourceUpdatedAt = extractUpdatedAt(views.rows);
   const categoryRows = [];
@@ -1583,6 +1583,7 @@ async function main() {
     packLimit: LIMIT,
     crawlLimit: CRAWL_LIMIT,
     shardSize: SHARD_SIZE,
+    shardMaxBytes: MAX_FILE_BYTES,
     clientLimits: [8, 12, 24, 48],
     categories: categoryRows,
     visibleCategoryCount: visibleCategories.length,

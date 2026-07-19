@@ -62,6 +62,22 @@ test('interrupted snapshot build directory is ignored as a disposable process fr
   assert.match(ignore, /^dist\/snapshot\/\.building\/$/mu);
 });
 
+test('direct-source crawl checkpoints bypass published artifact limits without weakening Pages limits', async () => {
+  const generator = await read('scripts/generate-snapshot.mjs');
+  assert.match(generator, /if \(!resumed\) await writeJsonFileAtomic\(path\.join\(building, relativeFile\), result\);/u);
+  assert.doesNotMatch(generator, /if \(!resumed\) await writeJson\(`snapshot\/latest\/\$\{relativeFile\}`, result\);/u);
+  assert.match(generator, /if \(bytes > MAX_FILE_BYTES\) throw new Error\(`\$\{rel\} exceeds \$\{MAX_FILE_BYTES\} byte snapshot file limit`\);/u);
+  assert.match(generator, /buildSnapshotIndexes\(views\.rows, \{ revision, shardSize: SHARD_SIZE, maxShardBytes: MAX_FILE_BYTES \}\)/u);
+  assert.match(generator, /child === '\.crawl' \|\| child\.startsWith\(`\.crawl\$\{path\.sep\}`\) \|\| child === 'build-state\.json'/u);
+  assert.match(generator, /await rm\(path\.join\(building, '\.crawl'\), \{ recursive: true, force: true \}\);[\s\S]*await rename\(building, LATEST\);/u);
+});
+
+test('release metadata uses the public subject payload instead of the rate-limited movie payload', async () => {
+  const generator = await read('scripts/generate-snapshot.mjs');
+  assert.match(generator, /rexxar\/api\/v2\/subject\/\{id\}\?for_mobile=1/u);
+  assert.doesNotMatch(generator, /rexxar\/api\/v2\/movie\/\{id\}/u);
+});
+
 test('compatibility hot snapshot uses the canonical 13-category schema and global semantic merge', async () => {
   const hot = await read('scripts/generate-hot-snapshot-v74.mjs');
   assert.match(hot, /SNAPSHOT_CATEGORIES\.map/u);
