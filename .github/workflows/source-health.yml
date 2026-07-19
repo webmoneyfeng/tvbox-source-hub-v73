@@ -2,11 +2,9 @@ name: source-health
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '43 4 * * *'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   refresh:
@@ -21,10 +19,3 @@ jobs:
         env:
           TVBOX_BASE: https://tv.webhome.eu.org
       - run: npm run audit:free-tier
-      - name: Commit snapshot
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add audit
-          git diff --cached --quiet && echo "No snapshot changes" || git commit -m "chore(snapshot): refresh v7.3 snapshot"
-          git push

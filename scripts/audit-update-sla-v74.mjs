@@ -13,8 +13,8 @@ const CRON_WINDOW_MS = Number(process.env.UPDATE_SLA_CRON_WINDOW_MS || 6 * 60 * 
 const AGG_DRIFT_MS = Number(process.env.UPDATE_SLA_AGG_DRIFT_MS || 2 * 60 * 1000);
 const HOT_FRESH_MS = Number(process.env.UPDATE_SLA_HOT_FRESH_MS || 6 * 60 * 1000);
 const SNAPSHOT_FRESH_MS = Number(process.env.UPDATE_SLA_SNAPSHOT_FRESH_MS || 6 * 60 * 60 * 1000);
-const HOT_WORKFLOW_TARGET_MS = Number(process.env.UPDATE_SLA_HOT_WORKFLOW_TARGET_MS || 6 * 60 * 60 * 1000);
-const HOT_WORKFLOW_PATH = path.join(ROOT, '.github', 'workflows', 'hot-refresh.yml');
+const STATIC_WORKFLOW_TARGET_MS = Number(process.env.UPDATE_SLA_STATIC_WORKFLOW_TARGET_MS || 6 * 60 * 60 * 1000);
+const STATIC_WORKFLOW_PATH = path.join(ROOT, '.github', 'workflows', 'catalog-release.yml');
 
 const ROOT_CAUSES = {
   OK: 'OK',
@@ -23,8 +23,8 @@ const ROOT_CAUSES = {
   STATUS_CACHE_STALE: 'STATUS_CACHE_STALE',
   HOT_PROBE_STALE: 'HOT_PROBE_STALE',
   SNAPSHOT_STALE: 'SNAPSHOT_STALE',
-  HOT_WORKFLOW_SCHEDULE_GAP: 'HOT_WORKFLOW_SCHEDULE_GAP',
-  HOT_WORKFLOW_MISSING: 'HOT_WORKFLOW_MISSING',
+  STATIC_WORKFLOW_SCHEDULE_GAP: 'STATIC_WORKFLOW_SCHEDULE_GAP',
+  STATIC_WORKFLOW_MISSING: 'STATIC_WORKFLOW_MISSING',
   MIRROR_DRIFT: 'MIRROR_DRIFT',
   WORKER_ISOLATE_DRIFT: 'WORKER_ISOLATE_DRIFT',
   API_ERROR: 'API_ERROR',
@@ -242,24 +242,24 @@ function extractWorkflowCrons(text) {
   return out;
 }
 
-function workflowScheduleCheckFromCrons(crons, targetMs = HOT_WORKFLOW_TARGET_MS) {
+function workflowScheduleCheckFromCrons(crons, targetMs = STATIC_WORKFLOW_TARGET_MS) {
   const maxGap = maxCronGapMinutes(crons);
   const targetMinutes = Math.round(targetMs / 60000);
   if (!crons?.length || maxGap === null) {
-    return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_MISSING, cron: [], max_gap_minutes: null, target_minutes: targetMinutes, message: 'hot-refresh workflow cron missing or unparsable' };
+    return { id: 'workflow.catalog_release_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.STATIC_WORKFLOW_MISSING, cron: [], max_gap_minutes: null, target_minutes: targetMinutes, message: 'catalog-release workflow cron missing or unparsable' };
   }
   if (maxGap <= targetMinutes) {
-    return { id: 'workflow.hot_refresh_schedule', result: 'PASS', root_cause: ROOT_CAUSES.OK, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: 'hot static snapshot workflow within free-tier cadence' };
+    return { id: 'workflow.catalog_release_schedule', result: 'PASS', root_cause: ROOT_CAUSES.OK, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: 'catalog-release static snapshot workflow within free-tier cadence' };
   }
-  return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_SCHEDULE_GAP, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: `hot static snapshot workflow max gap ${maxGap}min exceeds ${targetMinutes}min free-tier target` };
+  return { id: 'workflow.catalog_release_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.STATIC_WORKFLOW_SCHEDULE_GAP, cron: crons, max_gap_minutes: maxGap, target_minutes: targetMinutes, message: `catalog-release static snapshot workflow max gap ${maxGap}min exceeds ${targetMinutes}min free-tier target` };
 }
 
-async function hotRefreshWorkflowScheduleCheck() {
+async function staticSnapshotWorkflowScheduleCheck() {
   try {
-    const text = await fs.readFile(HOT_WORKFLOW_PATH, 'utf8');
-    return { ...workflowScheduleCheckFromCrons(extractWorkflowCrons(text), HOT_WORKFLOW_TARGET_MS), path: path.relative(ROOT, HOT_WORKFLOW_PATH) };
+    const text = await fs.readFile(STATIC_WORKFLOW_PATH, 'utf8');
+    return { ...workflowScheduleCheckFromCrons(extractWorkflowCrons(text), STATIC_WORKFLOW_TARGET_MS), path: path.relative(ROOT, STATIC_WORKFLOW_PATH) };
   } catch (err) {
-    return { id: 'workflow.hot_refresh_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.HOT_WORKFLOW_MISSING, cron: [], max_gap_minutes: null, target_minutes: Math.round(HOT_WORKFLOW_TARGET_MS / 60000), path: path.relative(ROOT, HOT_WORKFLOW_PATH), message: String(err && err.message || err) };
+    return { id: 'workflow.catalog_release_schedule', result: 'FAIL', root_cause: ROOT_CAUSES.STATIC_WORKFLOW_MISSING, cron: [], max_gap_minutes: null, target_minutes: Math.round(STATIC_WORKFLOW_TARGET_MS / 60000), path: path.relative(ROOT, STATIC_WORKFLOW_PATH), message: String(err && err.message || err) };
   }
 }
 
@@ -369,9 +369,9 @@ async function auditUpdateSla() {
     freshness('primary.snapshot_freshness', byId['primary.snapshot'], SNAPSHOT_FRESH_MS, ROOT_CAUSES.SNAPSHOT_STALE, { warnOnly: true, missingAsWarn: true }),
   ];
 
-  const workflowHotRefresh = await hotRefreshWorkflowScheduleCheck();
+  const workflowCatalogRelease = await staticSnapshotWorkflowScheduleCheck();
   const endpointFailures = endpoints.filter((x) => x.result === 'FAIL').map((x) => ({ id: `endpoint.${x.id}`, result: 'FAIL', root_cause: x.root_cause, message: x.error || 'endpoint failed', target: x.id }));
-  const allChecks = [...endpointFailures, ...checks, workflowHotRefresh];
+  const allChecks = [...endpointFailures, ...checks, workflowCatalogRelease];
   const summary = {
     pass: allChecks.filter((x) => x.result === 'PASS').length,
     warn: allChecks.filter((x) => x.result === 'WARN').length,
@@ -382,8 +382,8 @@ async function auditUpdateSla() {
     generatedAt,
     primaryBase: PRIMARY_BASE,
     secondaryBase: SECONDARY_BASE,
-    thresholds: { cronTargetMs: CRON_TARGET_MS, cronWindowMs: CRON_WINDOW_MS, aggDriftMs: AGG_DRIFT_MS, hotFreshMs: HOT_FRESH_MS, snapshotFreshMs: SNAPSHOT_FRESH_MS, hotWorkflowTargetMs: HOT_WORKFLOW_TARGET_MS },
-    workflow: { hotRefresh: workflowHotRefresh },
+    thresholds: { cronTargetMs: CRON_TARGET_MS, cronWindowMs: CRON_WINDOW_MS, aggDriftMs: AGG_DRIFT_MS, hotFreshMs: HOT_FRESH_MS, snapshotFreshMs: SNAPSHOT_FRESH_MS, staticWorkflowTargetMs: STATIC_WORKFLOW_TARGET_MS },
+    workflow: { catalogRelease: workflowCatalogRelease },
     endpoints,
     checks: allChecks,
     summary,

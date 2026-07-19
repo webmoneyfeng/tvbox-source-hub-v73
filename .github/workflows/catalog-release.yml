@@ -233,7 +233,7 @@ jobs:
           mkdir -p dist audit
           cp -a "${GITHUB_WORKSPACE}/dist/." dist/
           cp -a "${GITHUB_WORKSPACE}/audit/." audit/
-          git add --all dist audit
+          git add -f --all dist audit
           if git diff --cached --quiet; then
             echo "::error title=Snapshot artifact empty::dist and audit produced no files"
             exit 1
