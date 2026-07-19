@@ -404,6 +404,50 @@ function chunk(values, shardSize) {
   return out;
 }
 
+function serializedBytes(value) {
+  return Buffer.byteLength(JSON.stringify(value, null, 2), 'utf8');
+}
+
+function byteBoundedShards(values, { maxRows, maxBytes, makeShard }) {
+  if (!Number.isFinite(maxBytes)) {
+    return chunk(values, maxRows).map((items, index) => makeShard(items, index, index * maxRows));
+  }
+  const shards = [];
+  let start = 0;
+  while (start < values.length) {
+    const maximumCount = Math.min(maxRows, values.length - start);
+    const maximumShard = makeShard(values.slice(start, start + maximumCount), shards.length, start);
+    if (serializedBytes(maximumShard) <= maxBytes) {
+      shards.push(maximumShard);
+      start += maximumCount;
+      continue;
+    }
+
+    let low = 1;
+    let high = maximumCount - 1;
+    let acceptedCount = 0;
+    let acceptedShard = null;
+    while (low <= high) {
+      const count = Math.floor((low + high) / 2);
+      const candidate = makeShard(values.slice(start, start + count), shards.length, start);
+      if (serializedBytes(candidate) <= maxBytes) {
+        acceptedCount = count;
+        acceptedShard = candidate;
+        low = count + 1;
+      } else {
+        high = count - 1;
+      }
+    }
+    if (!acceptedShard) {
+      const single = makeShard([values[start]], shards.length, start);
+      throw new RangeError(`single snapshot shard item exceeds ${maxBytes} byte limit at offset ${start} (${serializedBytes(single)} bytes)`);
+    }
+    shards.push(acceptedShard);
+    start += acceptedCount;
+  }
+  return shards;
+}
+
 function splitTerms(value) {
   if (Array.isArray(value)) return value.flatMap(splitTerms);
   return text(value).split(/[,，、/|;；]+/u).map(text).filter(Boolean);
@@ -445,24 +489,32 @@ function searchDocument(row) {
   };
 }
 
-function policyIndex(rows, policy, revision, shardSize) {
-  const catalogShards = chunk(rows, shardSize).map((shardRows, index) => ({
-    id: `catalog-${String(index + 1).padStart(5, '0')}`,
-    revision,
-    policy,
-    start: index * shardSize,
-    count: shardRows.length,
-    rows: shardRows,
-  }));
+function policyIndex(rows, policy, revision, shardSize, maxShardBytes) {
+  const catalogShards = byteBoundedShards(rows, {
+    maxRows: shardSize,
+    maxBytes: maxShardBytes,
+    makeShard: (shardRows, index, start) => ({
+      id: `catalog-${String(index + 1).padStart(5, '0')}`,
+      revision,
+      policy,
+      start,
+      count: shardRows.length,
+      rows: shardRows,
+    }),
+  });
   const documents = rows.map(searchDocument);
-  const searchShards = chunk(documents, shardSize).map((shardDocuments, index) => ({
-    id: `search-${String(index + 1).padStart(5, '0')}`,
-    revision,
-    policy,
-    start: index * shardSize,
-    count: shardDocuments.length,
-    documents: shardDocuments,
-  }));
+  const searchShards = byteBoundedShards(documents, {
+    maxRows: shardSize,
+    maxBytes: maxShardBytes,
+    makeShard: (shardDocuments, index, start) => ({
+      id: `search-${String(index + 1).padStart(5, '0')}`,
+      revision,
+      policy,
+      start,
+      count: shardDocuments.length,
+      documents: shardDocuments,
+    }),
+  });
   return { revision, policy, total: rows.length, catalogShards, searchShards };
 }
 
@@ -471,14 +523,19 @@ export function buildSnapshotIndexes(input, options = {}) {
   if (!Number.isInteger(shardSize) || shardSize < 500 || shardSize > 1000) {
     throw new RangeError('snapshot shardSize must be between 500 and 1000 rows');
   }
+  const maxShardBytes = options.maxShardBytes === undefined ? Number.POSITIVE_INFINITY : Number(options.maxShardBytes);
+  if (maxShardBytes !== Number.POSITIVE_INFINITY && (!Number.isInteger(maxShardBytes) || maxShardBytes < 1024)) {
+    throw new RangeError('snapshot maxShardBytes must be at least 1024 bytes');
+  }
   const rows = mergeSnapshotRows(input).rows;
   const revision = text(options.revision) || buildSnapshotRevision(rows);
   const cleanRows = rows.filter((row) => row.primary_category !== 'adult');
   return {
     revision,
     shardSize,
-    full: policyIndex(rows, 'full', revision, shardSize),
-    clean: policyIndex(cleanRows, 'clean-no-adult', revision, shardSize),
+    maxShardBytes: Number.isFinite(maxShardBytes) ? maxShardBytes : null,
+    full: policyIndex(rows, 'full', revision, shardSize, maxShardBytes),
+    clean: policyIndex(cleanRows, 'clean-no-adult', revision, shardSize, maxShardBytes),
   };
 }
 

@@ -168,6 +168,28 @@ test('snapshot indexes use 500-1000 row shards and full/clean share one revision
   assert.throws(() => buildSnapshotIndexes(normalized, { revision, shardSize: 1001 }), /500.*1000/);
 });
 
+test('snapshot indexes split large rows by serialized byte budget without dropping playback data', () => {
+  const rows = Array.from({ length: 520 }, (_, index) => movie({
+    vod_id: `large-${index}`,
+    vod_name: `large-title-${index}`,
+    vod_actor: `large-actor-${index}`,
+    vod_play_from: 'direct',
+    vod_play_url: `episode$https://media.example/${index}/${'x'.repeat(4096)}.m3u8`,
+  }));
+  const maxShardBytes = 128 * 1024;
+  const indexes = buildSnapshotIndexes(rows, { shardSize: 500, maxShardBytes });
+  assert.equal(indexes.full.catalogShards.flatMap((shard) => shard.rows).length, rows.length);
+  assert.equal(indexes.full.catalogShards.length > 2, true);
+  assert.equal(indexes.full.catalogShards.every((shard) => Buffer.byteLength(JSON.stringify(shard, null, 2), 'utf8') <= maxShardBytes), true);
+  assert.equal(indexes.full.searchShards.every((shard) => Buffer.byteLength(JSON.stringify(shard, null, 2), 'utf8') <= maxShardBytes), true);
+  assert.match(indexes.full.catalogShards[0].rows[0].vod_play_url, /media\.example/u);
+  assert.equal(indexes.full.catalogShards.map((shard) => shard.start).every((start, index, starts) => index === 0 || start > starts[index - 1]), true);
+  assert.throws(
+    () => buildSnapshotIndexes([rows[0]], { shardSize: 500, maxShardBytes: 1024 }),
+    /single snapshot shard item exceeds/u,
+  );
+});
+
 test('revision is content-derived and does not change with row order or generated time', () => {
   const rows = normalizeSnapshotRows([
     movie(),
