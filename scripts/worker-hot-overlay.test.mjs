@@ -64,6 +64,7 @@ function installHotOverlayFetchMock() {
   const snapshotSearchPack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('天道快照旧结果', 'snap-search', { type_id: '2', type_name: '剧集', semantic_tags: '剧集 正片' })] };
   const cleanSearchPack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('洁净天道结果', 'clean-search', { type_id: '2', type_name: '剧集', semantic_tags: '剧集 正片' })] };
   const hotSearchPack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('天道', 'hot-tiandao', { type_id: '2', type_name: '剧集', vod_year: '2008', semantic_tags: '剧集 正片 王志文' })], hot_search: { wd: '天道' } };
+  hotSearchPack.list.push(makeVod('\u5929\u9053\u8272\u60c5\u5f71\u7247', 'hot-adult-search', { type_id: '12', type_name: '\u5176\u4ed6\u7535\u5f71', vod_class: '\u5267\u60c5,\u8272\u60c5', vod_content: '\u8272\u60c5\u5185\u5bb9' }));
 
   globalThis.fetch = async (input) => {
     const url = String(input?.url || input || '');
@@ -116,9 +117,21 @@ test('aggregate search overlays hot search rows and keeps exact title first', as
     assert.equal(res.status, 200);
     const data = await res.json();
     assert.equal(data.hot_overlay_applied, true);
-    assert.equal(data.hot_rows_used, 1);
+    assert.equal(data.hot_rows_used, 2);
     assert.deepEqual(data.hot_search_terms_hit, ['天道']);
     assert.equal(data.list[0].vod_name, '天道');
+  } finally {
+    restore();
+  }
+});
+
+test('clean search hot overlay removes strong erotic evidence even outside adult category', async () => {
+  const restore = installHotOverlayFetchMock();
+  try {
+    const res = await worker.fetch(new Request('https://tv.webhome.eu.org/agg-clean?wd=天道&limit=8'), env());
+    assert.equal(res.status, 200);
+    const data = await res.json();
+    assert.equal(data.list.some((item) => item.vod_id === 'hot-adult-search'), false);
   } finally {
     restore();
   }

@@ -59,6 +59,12 @@ test('clean policy does not treat AV as an arbitrary substring in normal titles'
   assert.equal(isAdultPolicyContent({ vod_name: 'AV' }), true);
 });
 
+test('clean policy detects strong erotic and pornography evidence in any content field', () => {
+  assert.equal(isAdultPolicyContent({ vod_class: '\u5267\u60c5,\u8272\u60c5' }), true);
+  assert.equal(isAdultPolicyContent({ vod_content: 'pornography channel' }), true);
+  assert.equal(isAdultPolicyContent({ vod_name: '\u540c\u6027\u5267\u60c5' }), false);
+});
+
 test('source class names map retained video domains without inventing release channels', () => {
   assert.equal(classifySourceCategoryName('\u4f53\u80b2\u8d5b\u4e8b'), 'knowledge');
   assert.equal(classifySourceCategoryName('\u5f71\u89c6\u89e3\u8bf4'), 'explainer');
