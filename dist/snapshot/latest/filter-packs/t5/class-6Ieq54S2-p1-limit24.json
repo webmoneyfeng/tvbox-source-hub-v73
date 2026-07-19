@@ -1,0 +1,956 @@
+{
+  "filters": {
+    "5": [
+      {
+        "key": "sort",
+        "name": "排序",
+        "init": "latest",
+        "value": [
+          {
+            "n": "最新",
+            "v": "latest"
+          },
+          {
+            "n": "高清优先",
+            "v": "quality"
+          },
+          {
+            "n": "多线路优先",
+            "v": "lines"
+          },
+          {
+            "n": "片名排序",
+            "v": "name"
+          }
+        ]
+      },
+      {
+        "key": "year",
+        "name": "年份",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2027",
+            "v": "2027"
+          },
+          {
+            "n": "2026",
+            "v": "2026"
+          },
+          {
+            "n": "2025",
+            "v": "2025"
+          },
+          {
+            "n": "2024",
+            "v": "2024"
+          },
+          {
+            "n": "2023",
+            "v": "2023"
+          },
+          {
+            "n": "2020-2022",
+            "v": "2020-2022"
+          },
+          {
+            "n": "2010年代",
+            "v": "2010s"
+          },
+          {
+            "n": "更早",
+            "v": "older"
+          }
+        ]
+      },
+      {
+        "key": "area",
+        "name": "地区",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "港台",
+            "v": "港台"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "name": "主题",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "自然",
+            "v": "自然"
+          },
+          {
+            "n": "历史",
+            "v": "历史"
+          },
+          {
+            "n": "人文",
+            "v": "人文"
+          },
+          {
+            "n": "科技",
+            "v": "科技"
+          },
+          {
+            "n": "社会",
+            "v": "社会"
+          },
+          {
+            "n": "人物",
+            "v": "人物"
+          }
+        ]
+      },
+      {
+        "key": "form",
+        "name": "内容形态",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "解说",
+            "v": "解说"
+          },
+          {
+            "n": "合集",
+            "v": "合集"
+          },
+          {
+            "n": "现场",
+            "v": "现场"
+          },
+          {
+            "n": "片段",
+            "v": "片段"
+          }
+        ]
+      },
+      {
+        "key": "quality",
+        "name": "清晰度",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "高清",
+            "v": "hd"
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 1,
+  "msg": "ok",
+  "page": 1,
+  "pagecount": 1,
+  "limit": 24,
+  "total": 4,
+  "class": [
+    {
+      "type_id": "0",
+      "type_name": "推荐",
+      "key": "recommend"
+    },
+    {
+      "type_id": "10",
+      "type_name": "院线电影",
+      "key": "theatrical_movie"
+    },
+    {
+      "type_id": "11",
+      "type_name": "网络电影",
+      "key": "web_movie"
+    },
+    {
+      "type_id": "12",
+      "type_name": "其他电影",
+      "key": "other_movie"
+    },
+    {
+      "type_id": "20",
+      "type_name": "电视剧",
+      "key": "tv_series"
+    },
+    {
+      "type_id": "21",
+      "type_name": "网络剧",
+      "key": "web_series"
+    },
+    {
+      "type_id": "6",
+      "type_name": "网络短剧",
+      "key": "web_short"
+    },
+    {
+      "type_id": "3",
+      "type_name": "综艺",
+      "key": "variety"
+    },
+    {
+      "type_id": "4",
+      "type_name": "动漫",
+      "key": "anime"
+    },
+    {
+      "type_id": "5",
+      "type_name": "纪录片",
+      "key": "documentary"
+    },
+    {
+      "type_id": "7",
+      "type_name": "解说",
+      "key": "explainer"
+    },
+    {
+      "type_id": "8",
+      "type_name": "文娱知识",
+      "key": "knowledge"
+    },
+    {
+      "type_id": "9",
+      "type_name": "成人伦理",
+      "key": "adult"
+    }
+  ],
+  "list": [
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjE0OTk0MCJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2ODE0NCJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNTkwMSJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0OTQzOCJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMTI0MCJ9LHsicyI6Imx6aV9kaXJlY3QiLCJpZCI6IjE0MzU5NyJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2NTc2MCJ9XQ",
+      "type_id": "28",
+      "type_id_1": 20,
+      "group_id": 0,
+      "vod_name": "地球·劫后重生",
+      "vod_sub": "幸存地球",
+      "vod_en": "diqiujiehouzhongsheng",
+      "vod_status": 1,
+      "vod_letter": "D",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "纪录",
+      "vod_pic": "https://img.picbf.com/upload/vod/20260626-1/9147f7e97a4ef4289311e3a56430af1a.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "",
+      "vod_director": "Tim Haines",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "从2026年6月11日起，每周四晚，让我们齐聚一堂，共同领略自然世界的奇观。NBC将通过《幸存地球》带观众领略4.5亿年的生命史。这部里程碑式的系列剧颂扬了生命惊人的韧性以及每一种生物为延续至今所经历的非凡旅程；它展现了生命如何在地球最灾难性的环境危机中不仅幸存，更蓬勃发展。借助尖端的CGI技术，观众将沉浸于史前世界，跨越被陨石撞击、火山爆发、海平面骤降及灼热热浪塑造的奇异地貌，目睹从未登上荧幕的生物与它们精彩的生命故事。从4.5亿年前的巨型海蝎，到45万年前威武的猛犸象与剑齿虎，荡气回肠的地球史将会以前",
+      "vod_remarks": "更新至第6集",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2026",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 273,
+      "vod_hits_day": 733,
+      "vod_hits_week": 735,
+      "vod_hits_month": 230,
+      "vod_duration": "",
+      "vod_up": 875,
+      "vod_down": 769,
+      "vod_score": "1.0",
+      "vod_score_all": 348,
+      "vod_score_num": 348,
+      "vod_time": "2026-07-17 17:41:00",
+      "vod_time_add": "1782480308",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 35953078,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "从2026年6月11日起，每周四晚，让我们齐聚一堂，共同领略自然世界的奇观。NBC将通过《幸存地球》带观众领略4.5亿年的生命史。这部里程碑式的系列剧颂扬了生命惊人的韧性以及每一种生物为延续至今所经历的非凡旅程；它展现了生命如何在地球最灾难性的环境危机中不仅幸存，更蓬勃发展。借助尖端的CGI技术，观众将沉浸于史前世界，跨越被陨石撞击、火山爆发、海平面骤降及灼热热浪塑造的奇异地貌，目睹从未登上荧幕的生物与它们精彩的生命故事。从4.5亿年前的巨型海蝎，到45万年前威武的猛犸象与剑齿虎，荡气回肠的地球史将会以前所未见的恢弘姿态呈现！",
+      "vod_play_from": "bfzym3u8",
+      "vod_play_server": "",
+      "vod_play_note": "",
+      "vod_play_url": "第1集$https://v.baofeng11.com/video/diqiujiehouchongsheng/9ae6c5cfdf72/index.m3u8#第2集$https://v.baofeng11.com/video/diqiujiehouchongsheng/5035eecadf09/index.m3u8#第3集$https://v.baofeng11.com/video/diqiujiehouchongsheng/10dddae597d2/index.m3u8#第4集$https://v.baofeng11.com/video/diqiujiehouchongsheng/0604751abae8/index.m3u8#第5集$https://v.fengbao11.com/video/diqiujiehouchongsheng/93743c6cda9a/index.m3u8#第6集$https://v.fengbao11.com/video/diqiujiehouchongsheng/7c7e1ac89232/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "纪录片",
+      "source_category_id": "5",
+      "source_category_name": "纪录片",
+      "_sourceSlug": "huya",
+      "_sourceShort": "虎牙",
+      "source_url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+      "canonical_id": "ext:douban:35953078",
+      "primary_category": "documentary",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "documentary",
+          "field": "source_category_id",
+          "value": "5",
+          "signal": "documentary"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "149940",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "111240",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "135901",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "149438",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "168144",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "165760",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "lzi_direct",
+          "id": "143597",
+          "url": "https://cj.lziapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "第1集$https://v.baofeng11.com/video/diqiujiehouchongsheng/9ae6c5cfdf72/index.m3u8#第2集$https://v.baofeng11.com/video/diqiujiehouchongsheng/5035eecadf09/index.m3u8#第3集$https://v.baofeng11.com/video/diqiujiehouchongsheng/10dddae597d2/index.m3u8#第4集$https://v.baofeng11.com/video/diqiujiehouchongsheng/0604751abae8/index.m3u8#第5集$https://v.fengbao11.com/video/diqiujiehouchongsheng/93743c6cda9a/index.m3u8#第6集$https://v.fengbao11.com/video/diqiujiehouchongsheng/7c7e1ac89232/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "第1集$https://1080p.huyall.com/play/dPNjwpna/index.m3u8#第2集$https://1080p.huyall.com/play/av2QMkVa/index.m3u8#第3集$https://1080p.huyall.com/play/dBBrWxWd/index.m3u8#第4集$https://1080p.huyall.com/play/bmZqB2Od/index.m3u8#第5集$https://1080p.huyall.com/play/bkRrrjxa/index.m3u8#第6集$https://1080p.huyall.com/play/egJnXnrd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "bfzym3u8",
+          "url": "第1集$https://v.baofeng11.com/video/diqiujiehouchongsheng/9ae6c5cfdf72/index.m3u8#第2集$https://v.baofeng11.com/video/diqiujiehouchongsheng/5035eecadf09/index.m3u8#第3集$https://v.baofeng11.com/video/diqiujiehouchongsheng/10dddae597d2/index.m3u8#第4集$https://v.baofeng11.com/video/diqiujiehouchongsheng/0604751abae8/index.m3u8#第5集$https://v.fengbao11.com/video/diqiujiehouchongsheng/93743c6cda9a/index.m3u8#第6集$https://v.fengbao11.com/video/diqiujiehouchongsheng/7c7e1ac89232/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/aQWkxqYd#第2集$https://play.hhuus.com/play/dwp0NlJe#第3集$https://play.hhuus.com/play/bDkqgz5a#第4集$https://play.hhuus.com/play/en5RDYRd#第5集$https://play.hhuus.com/play/elY22kla#第6集$https://play.hhuus.com/play/ejR0J0ye"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/aQWkxqYd/index.m3u8#第2集$https://play.hhuus.com/play/dwp0NlJe/index.m3u8#第3集$https://play.hhuus.com/play/bDkqgz5a/index.m3u8#第4集$https://play.hhuus.com/play/en5RDYRd/index.m3u8#第5集$https://play.hhuus.com/play/elY22kla/index.m3u8#第6集$https://play.hhuus.com/play/ejR0J0ye/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "bfzym3u8",
+          "url": "第1集$https://v.baofeng11.com/video/diqiujiehouchongsheng/9ae6c5cfdf72/index.m3u8#第2集$https://v.baofeng11.com/video/diqiujiehouchongsheng/5035eecadf09/index.m3u8#第3集$https://v.baofeng11.com/video/diqiujiehouchongsheng/10dddae597d2/index.m3u8#第4集$https://v.baofeng11.com/video/diqiujiehouchongsheng/0604751abae8/index.m3u8#第5集$https://v.fengbao11.com/video/diqiujiehouchongsheng/93743c6cda9a/index.m3u8#第6集$https://v.fengbao11.com/video/diqiujiehouchongsheng/7c7e1ac89232/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "第1集$https://hn.bfvvs.com/play/aM8Zqm3e#第2集$https://hn.bfvvs.com/play/epYZDP1a#第3集$https://hn.bfvvs.com/play/dyPw30gb#第4集$https://hn.bfvvs.com/play/ejRYyvRe#第5集$https://hn.bfvvs.com/play/e0R00o7b#第6集$https://hn.bfvvs.com/play/b82MYMje"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "第1集$https://hn.bfvvs.com/play/aM8Zqm3e/index.m3u8#第2集$https://hn.bfvvs.com/play/epYZDP1a/index.m3u8#第3集$https://hn.bfvvs.com/play/dyPw30gb/index.m3u8#第4集$https://hn.bfvvs.com/play/ejRYyvRe/index.m3u8#第5集$https://hn.bfvvs.com/play/e0R00o7b/index.m3u8#第6集$https://hn.bfvvs.com/play/b82MYMje/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "bfzym3u8",
+          "url": "第1集$https://v.baofeng11.com/video/diqiujiehouchongsheng/9ae6c5cfdf72/index.m3u8#第2集$https://v.baofeng11.com/video/diqiujiehouchongsheng/5035eecadf09/index.m3u8#第3集$https://v.baofeng11.com/video/diqiujiehouchongsheng/10dddae597d2/index.m3u8#第4集$https://v.baofeng11.com/video/diqiujiehouchongsheng/0604751abae8/index.m3u8#第5集$https://v.fengbao11.com/video/diqiujiehouchongsheng/93743c6cda9a/index.m3u8#第6集$https://v.fengbao11.com/video/diqiujiehouchongsheng/7c7e1ac89232/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "第1集$https://v.gsuus.com/play/dNkOrnze#第2集$https://v.gsuus.com/play/bqxQE93a#第3集$https://v.gsuus.com/play/azp63ROd#第4集$https://v.gsuus.com/play/bkR2zw5a#第5集$https://v.gsuus.com/play/egJnnD9d#第6集$https://v.gsuus.com/play/e9rDXDJa"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "第1集$https://v.gsuus.com/play/dNkOrnze/index.m3u8#第2集$https://v.gsuus.com/play/bqxQE93a/index.m3u8#第3集$https://v.gsuus.com/play/azp63ROd/index.m3u8#第4集$https://v.gsuus.com/play/bkR2zw5a/index.m3u8#第5集$https://v.gsuus.com/play/egJnnD9d/index.m3u8#第6集$https://v.gsuus.com/play/e9rDXDJa/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "bfzym3u8",
+          "url": "第1集$https://v.baofeng11.com/video/diqiujiehouchongsheng/9ae6c5cfdf72/index.m3u8#第2集$https://v.baofeng11.com/video/diqiujiehouchongsheng/5035eecadf09/index.m3u8#第3集$https://v.baofeng11.com/video/diqiujiehouchongsheng/10dddae597d2/index.m3u8#第4集$https://v.baofeng11.com/video/diqiujiehouchongsheng/0604751abae8/index.m3u8#第5集$https://v.fengbao11.com/video/diqiujiehouchongsheng/93743c6cda9a/index.m3u8#第6集$https://v.fengbao11.com/video/diqiujiehouchongsheng/7c7e1ac89232/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "第1集$https://play.xluuss.com/play/aOYgvoNd#第2集$https://play.xluuss.com/play/erk2G6wa#第3集$https://play.xluuss.com/play/aAD6Vwpe#第4集$https://play.xluuss.com/play/elYRAv5a#第5集$https://play.xluuss.com/play/ejR00gWe#第6集$https://play.xluuss.com/play/e0R0305b"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "第1集$https://play.xluuss.com/play/aOYgvoNd/index.m3u8#第2集$https://play.xluuss.com/play/erk2G6wa/index.m3u8#第3集$https://play.xluuss.com/play/aAD6Vwpe/index.m3u8#第4集$https://play.xluuss.com/play/elYRAv5a/index.m3u8#第5集$https://play.xluuss.com/play/ejR00gWe/index.m3u8#第6集$https://play.xluuss.com/play/e0R0305b/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "bfzym3u8",
+          "url": "第1集$https://v.baofeng11.com/video/diqiujiehouchongsheng/9ae6c5cfdf72/index.m3u8#第2集$https://v.baofeng11.com/video/diqiujiehouchongsheng/5035eecadf09/index.m3u8#第3集$https://v.baofeng11.com/video/diqiujiehouchongsheng/10dddae597d2/index.m3u8#第4集$https://v.baofeng11.com/video/diqiujiehouchongsheng/0604751abae8/index.m3u8#第5集$https://v.fengbao11.com/video/diqiujiehouchongsheng/93743c6cda9a/index.m3u8#第6集$https://v.fengbao11.com/video/diqiujiehouchongsheng/7c7e1ac89232/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "liangzi",
+          "url": "第01集$https://v.lzcdn27.com/share/7ef47cedc3cf1b545688ccef17b8cfed#第02集$https://v.lzcdn27.com/share/3c0de3fec9ab8a3df01109251f137119#第03集$https://v.lzcdn27.com/share/64d29f56aa43279ba07617b9724d5597#第04集$https://v.lzcdn27.com/share/89f3c33175c57115408f4fd8a8557751#第05集$https://v.lfthirtytwo.com/share/29301521774ff3cbd26652b2d5c95996#第06集$https://v.lfthirtytwo.com/share/1e6e25d952a0d639b676ee20d0519ee2"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "lzm3u8",
+          "url": "第01集$https://v.lzcdn27.com/20260627/12175_034b9a10/index.m3u8#第02集$https://v.lzcdn27.com/20260627/12178_0830396b/index.m3u8#第03集$https://v.lzcdn27.com/20260627/12176_a5e0b638/index.m3u8#第04集$https://v.lzcdn27.com/20260704/12591_632c1d8c/index.m3u8#第05集$https://v.lfthirtytwo.com/20260711/8544_cbc97ea9/index.m3u8#第06集$https://v.lfthirtytwo.com/20260717/8732_cec7ec17/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "bfzym3u8",
+          "url": "第1集$https://v.baofeng11.com/video/diqiujiehouchongsheng/9ae6c5cfdf72/index.m3u8#第2集$https://v.baofeng11.com/video/diqiujiehouchongsheng/5035eecadf09/index.m3u8#第3集$https://v.baofeng11.com/video/diqiujiehouchongsheng/10dddae597d2/index.m3u8#第4集$https://v.baofeng11.com/video/diqiujiehouchongsheng/0604751abae8/index.m3u8#第5集$https://v.fengbao11.com/video/diqiujiehouchongsheng/93743c6cda9a/index.m3u8#第6集$https://v.fengbao11.com/video/diqiujiehouchongsheng/7c7e1ac89232/index.m3u8"
+        }
+      ],
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "class 自然 主题",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6Imd1YW5nc3UiLCJpZCI6IjE2NjgzOSJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNDYwMSJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0ODEzNSJ9LHsicyI6Imh1eWEiLCJpZCI6IjEwOTkzNSJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2NDQ1NCJ9XQ",
+      "type_id": "16",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "风暴中心，追逐者第一季",
+      "vod_sub": "",
+      "vod_en": "fengbaozhongxinzhuizhuzhediyiji",
+      "vod_status": 1,
+      "vod_letter": "F",
+      "vod_color": "",
+      "vod_tag": "纪录片,真人秀",
+      "vod_class": "纪录片,真人秀",
+      "vod_pic": "https://hhmage.com/cover/4e4dfac214f679b8ccb69992f97db952.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "Storm Chaser Teams",
+      "vod_director": "Arrow Media",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "直击自然最极端的生死时速。这部系列纪录片追踪了十二支由持证气象观测员与职业追风人组成的队伍。他们手持摄像机，在没有制片人与摄制组随行的情况下，毅然闯入美国的“龙卷风走廊”。\n　　剧集真实记录了他们在几",
+      "vod_remarks": "第6集",
+      "vod_pubdate": "2026-05-17(美国)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2026",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 660,
+      "vod_hits_day": 402,
+      "vod_hits_week": 434,
+      "vod_hits_month": 887,
+      "vod_duration": "",
+      "vod_up": 333,
+      "vod_down": 954,
+      "vod_score": "2.0",
+      "vod_score_all": 1410,
+      "vod_score_num": 705,
+      "vod_time": "2026-06-23 18:36:01",
+      "vod_time_add": "1780315921",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 38481612,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "直击自然最极端的生死时速。这部系列纪录片追踪了十二支由持证气象观测员与职业追风人组成的队伍。他们手持摄像机，在没有制片人与摄制组随行的情况下，毅然闯入美国的“龙卷风走廊”。\n　　剧集真实记录了他们在几十年来最活跃的龙卷风季中，深入美国中西部与死神赛跑的过程。这群勇士不仅要冒着生命危险捕捉狂暴的龙卷风，更要争分夺秒预警沿途居民，在灾难降临之际挽救生命。这不仅是一场对自然极限的挑战，更是一代追风人重新定义勇气与使命的震撼实录。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "第1集$https://play.hhuus.com/play/dG6RM0rb#第2集$https://play.hhuus.com/play/dyPw9jzb#第3集完结$https://play.hhuus.com/play/dwp0K3ge#第4集$https://play.hhuus.com/play/en5R4zEd#第5集$https://play.hhuus.com/play/aKr8xARe#第6集$https://play.hhuus.com/play/epYZ5X2a$$$第1集$https://play.hhuus.com/play/dG6RM0rb/index.m3u8#第2集$https://play.hhuus.com/play/dyPw9jzb/index.m3u8#第3集完结$https://play.hhuus.com/play/dwp0K3ge/index.m3u8#第4集$https://play.hhuus.com/play/en5R4zEd/index.m3u8#第5集$https://play.hhuus.com/play/aKr8xARe/index.m3u8#第6集$https://play.hhuus.com/play/epYZ5X2a/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "记录片",
+      "source_category_id": "5",
+      "source_category_name": "记录片",
+      "_sourceSlug": "huya",
+      "_sourceShort": "虎牙",
+      "source_url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+      "canonical_id": "ext:douban:38481612",
+      "primary_category": "documentary",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "documentary",
+          "field": "source_category_id",
+          "value": "5",
+          "signal": "documentary"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "huya",
+          "id": "109935",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "134601",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "148135",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "166839",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "164454",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "第1集$https://1080p.huyall.com/play/eERq0wma/index.m3u8#第2集$https://1080p.huyall.com/play/axk62gze/index.m3u8#第3集完结$https://1080p.huyall.com/play/av2Q83La/index.m3u8#第4集$https://1080p.huyall.com/play/bmZq4Erd/index.m3u8#第5集$https://1080p.huyall.com/play/dJ68wE2d/index.m3u8#第6集$https://1080p.huyall.com/play/bo2Z46ja/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb#第2集$https://play.hhuus.com/play/dyPw9jzb#第3集完结$https://play.hhuus.com/play/dwp0K3ge#第4集$https://play.hhuus.com/play/en5R4zEd#第5集$https://play.hhuus.com/play/aKr8xARe#第6集$https://play.hhuus.com/play/epYZ5X2a"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb/index.m3u8#第2集$https://play.hhuus.com/play/dyPw9jzb/index.m3u8#第3集完结$https://play.hhuus.com/play/dwp0K3ge/index.m3u8#第4集$https://play.hhuus.com/play/en5R4zEd/index.m3u8#第5集$https://play.hhuus.com/play/aKr8xARe/index.m3u8#第6集$https://play.hhuus.com/play/epYZ5X2a/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb#第2集$https://play.hhuus.com/play/dyPw9jzb#第3集完结$https://play.hhuus.com/play/dwp0K3ge#第4集$https://play.hhuus.com/play/en5R4zEd#第5集$https://play.hhuus.com/play/aKr8xARe#第6集$https://play.hhuus.com/play/epYZ5X2a"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb/index.m3u8#第2集$https://play.hhuus.com/play/dyPw9jzb/index.m3u8#第3集完结$https://play.hhuus.com/play/dwp0K3ge/index.m3u8#第4集$https://play.hhuus.com/play/en5R4zEd/index.m3u8#第5集$https://play.hhuus.com/play/aKr8xARe/index.m3u8#第6集$https://play.hhuus.com/play/epYZ5X2a/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "第1集$https://hn.bfvvs.com/play/aAD6Mp7e#第2集$https://hn.bfvvs.com/play/erk2m1Ba#第3集完结$https://hn.bfvvs.com/play/epYZk3Xa#第4集$https://hn.bfvvs.com/play/ejRY4nle#第5集$https://hn.bfvvs.com/play/bDkqnwxa#第6集$https://hn.bfvvs.com/play/elYR4M5a"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "第1集$https://hn.bfvvs.com/play/aAD6Mp7e/index.m3u8#第2集$https://hn.bfvvs.com/play/erk2m1Ba/index.m3u8#第3集完结$https://hn.bfvvs.com/play/epYZk3Xa/index.m3u8#第4集$https://hn.bfvvs.com/play/ejRY4nle/index.m3u8#第5集$https://hn.bfvvs.com/play/bDkqnwxa/index.m3u8#第6集$https://hn.bfvvs.com/play/elYR4M5a/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb#第2集$https://play.hhuus.com/play/dyPw9jzb#第3集完结$https://play.hhuus.com/play/dwp0K3ge#第4集$https://play.hhuus.com/play/en5R4zEd#第5集$https://play.hhuus.com/play/aKr8xARe#第6集$https://play.hhuus.com/play/epYZ5X2a"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb/index.m3u8#第2集$https://play.hhuus.com/play/dyPw9jzb/index.m3u8#第3集完结$https://play.hhuus.com/play/dwp0K3ge/index.m3u8#第4集$https://play.hhuus.com/play/en5R4zEd/index.m3u8#第5集$https://play.hhuus.com/play/aKr8xARe/index.m3u8#第6集$https://play.hhuus.com/play/epYZ5X2a/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "第1集$https://v.gsuus.com/play/dBBrPq2d#第2集$https://v.gsuus.com/play/av2Q81La#第3集完结$https://v.gsuus.com/play/bqxQl3Da#第4集$https://v.gsuus.com/play/bkR24oEa#第5集$https://v.gsuus.com/play/eERqoKva#第6集$https://v.gsuus.com/play/bmZq4MOd"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "第1集$https://v.gsuus.com/play/dBBrPq2d/index.m3u8#第2集$https://v.gsuus.com/play/av2Q81La/index.m3u8#第3集完结$https://v.gsuus.com/play/bqxQl3Da/index.m3u8#第4集$https://v.gsuus.com/play/bkR24oEa/index.m3u8#第5集$https://v.gsuus.com/play/eERqoKva/index.m3u8#第6集$https://v.gsuus.com/play/bmZq4MOd/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb#第2集$https://play.hhuus.com/play/dyPw9jzb#第3集完结$https://play.hhuus.com/play/dwp0K3ge#第4集$https://play.hhuus.com/play/en5R4zEd#第5集$https://play.hhuus.com/play/aKr8xARe#第6集$https://play.hhuus.com/play/epYZ5X2a"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb/index.m3u8#第2集$https://play.hhuus.com/play/dyPw9jzb/index.m3u8#第3集完结$https://play.hhuus.com/play/dwp0K3ge/index.m3u8#第4集$https://play.hhuus.com/play/en5R4zEd/index.m3u8#第5集$https://play.hhuus.com/play/aKr8xARe/index.m3u8#第6集$https://play.hhuus.com/play/epYZ5X2a/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "第1集$https://play.xluuss.com/play/bDkqQvAa#第2集$https://play.xluuss.com/play/dwp0K1ge#第3集完结$https://play.xluuss.com/play/erk2m3Ba#第4集$https://play.xluuss.com/play/elYR4pra#第5集$https://play.xluuss.com/play/dG6Rqw7b#第6集$https://play.xluuss.com/play/en5R4NRd"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "第1集$https://play.xluuss.com/play/bDkqQvAa/index.m3u8#第2集$https://play.xluuss.com/play/dwp0K1ge/index.m3u8#第3集完结$https://play.xluuss.com/play/erk2m3Ba/index.m3u8#第4集$https://play.xluuss.com/play/elYR4pra/index.m3u8#第5集$https://play.xluuss.com/play/dG6Rqw7b/index.m3u8#第6集$https://play.xluuss.com/play/en5R4NRd/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb#第2集$https://play.hhuus.com/play/dyPw9jzb#第3集完结$https://play.hhuus.com/play/dwp0K3ge#第4集$https://play.hhuus.com/play/en5R4zEd#第5集$https://play.hhuus.com/play/aKr8xARe#第6集$https://play.hhuus.com/play/epYZ5X2a"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/dG6RM0rb/index.m3u8#第2集$https://play.hhuus.com/play/dyPw9jzb/index.m3u8#第3集完结$https://play.hhuus.com/play/dwp0K3ge/index.m3u8#第4集$https://play.hhuus.com/play/en5R4zEd/index.m3u8#第5集$https://play.hhuus.com/play/aKr8xARe/index.m3u8#第6集$https://play.hhuus.com/play/epYZ5X2a/index.m3u8"
+        }
+      ],
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "class 自然 主题",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjExMzAzOSJ9XQ",
+      "type_id": "28",
+      "type_id_1": 20,
+      "group_id": 0,
+      "vod_name": "动物王国2025",
+      "vod_sub": "",
+      "vod_en": "dongwuwangguo2025",
+      "vod_status": 1,
+      "vod_letter": "D",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "纪录",
+      "vod_pic": "https://img.picbf.com/upload/vod/20251202-1/6a94b557249bfca575379b779584df4a.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "大卫·爱登堡",
+      "vod_director": "",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "在位于赞比亚腹地的南卢安瓜国家公园，花豹、鬣狗、杂色狼和狮子共同生活在卢安瓜河畔一片名为恩塞富的葱郁之地，这里生机勃勃，是养育后代的理想家园，因此，这里的生存空间十分拥挤。 ; ;",
+      "vod_remarks": "更新至第05集",
+      "vod_pubdate": "",
+      "vod_total": "6",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "英国",
+      "vod_lang": "",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 540,
+      "vod_hits_day": 304,
+      "vod_hits_week": 96,
+      "vod_hits_month": 792,
+      "vod_duration": "",
+      "vod_up": 428,
+      "vod_down": 766,
+      "vod_score": "1.0",
+      "vod_score_all": 266,
+      "vod_score_num": 266,
+      "vod_time": "2026-07-14 19:08:09",
+      "vod_time_add": "1764677019",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37828226,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "在位于赞比亚腹地的南卢安瓜国家公园，花豹、鬣狗、杂色狼和狮子共同生活在卢安瓜河畔一片名为恩塞富的葱郁之地，这里生机勃勃，是养育后代的理想家园，因此，这里的生存空间十分拥挤。 花豹母亲奥林巴在恩塞富中心地带养育幼崽，杂色狼雌性首领斯托姆率领族群突然闯入，打破了原有的平静。而斯托姆的杂色狼族群很快就要直面重返此地的狮群。狮群虽袭击了雌性鬣狗腾塔的家族，但即便是狮子也得时刻保持警惕，尤其是它们自己也在养育幼崽。 四个动物家族虽是凶猛的捕食者，但《动物王国》展现了它们温柔的一面：鬣狗妈妈哺育幼崽的时间远超其他捕食者；花豹妈妈奥林巴允许幼崽拿一头脾气暴躁的河马练习捕猎技能；杂色狼对受伤同伴展现出超乎寻常的关怀。动物家族内部同样暗流涌动——花豹母女最终竟成为彼此最大的竞争对手。同时，自然力量也在不断重塑动物们的生存环境：野火、洪水与一条滋养万物的河流主宰着这里的一切。在恩塞富，四个动物家族的命运早已紧密交织。多年来，各个家族兴衰沉浮，究竟谁能成为这片瑰丽王国的主宰？",
+      "vod_play_from": "bfzym3u8",
+      "vod_play_server": "",
+      "vod_play_note": "",
+      "vod_play_url": "第01集$https://v.fengbao8.com/video/dongwuwangguo2025/第01集/index.m3u8#第02集$https://v.fengbao8.com/video/dongwuwangguo2025/第02集/index.m3u8#第03集$https://v.fengbao8.com/video/dongwuwangguo2025/第03集/index.m3u8#第04集$https://v.fengbao8.com/video/dongwuwangguo2025/第04集/index.m3u8#第05集$https://v.baofeng9.com/video/dongwuwangguo2025/1fe4fc36303a/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "纪录片",
+      "source_category_id": "5",
+      "source_category_name": "纪录片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37828226",
+      "primary_category": "documentary",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "documentary",
+          "field": "source_category_id",
+          "value": "5",
+          "signal": "documentary"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "113039",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "第01集$https://v.fengbao8.com/video/dongwuwangguo2025/第01集/index.m3u8#第02集$https://v.fengbao8.com/video/dongwuwangguo2025/第02集/index.m3u8#第03集$https://v.fengbao8.com/video/dongwuwangguo2025/第03集/index.m3u8#第04集$https://v.fengbao8.com/video/dongwuwangguo2025/第04集/index.m3u8#第05集$https://v.baofeng9.com/video/dongwuwangguo2025/1fe4fc36303a/index.m3u8"
+        }
+      ],
+      "semantic_tags": "class 自然 主题",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6InRhb3BpYW4iLCJpZCI6IjE1MzI3MDkifV0",
+      "vod_name": "魔法王国 2014",
+      "vod_sub": "",
+      "vod_remarks": "",
+      "vod_serial": "1",
+      "type_id": "1179648",
+      "vod_actor": "伊德瑞斯·艾尔巴/海莉·乔安妮·培根",
+      "vod_director": "帕特里克·莫里斯",
+      "vod_pic": "https://taopianimage.xyz:43333/5ce09a9c5147v.jpeg",
+      "vod_content": "一段非凡而又迷人的自然王国之旅，将带您领略自然界超乎你想象的奇特与神秘。您将穿越魔法森林，来到海底世界的边缘，沉迷于超凡星球下的魔幻海洋，流连忘返于秀美的山水之间，最终来品味自然王国的饕餮盛宴。那些您闻所未闻的奇珍异兽，都将真切地展现在您的眼前，您甚至都不敢相信自己的眼睛，这将比任何一部虚构小说更加令人叹为观止。\n　　《魔法王国》的拍摄采用了突破性的的3D技术，以全新视角将地球盛况展现在观众面前，浩瀚美丽的场景让观众沉浸在超现实世界的“童话王国”当中。",
+      "vod_time": "2025-02-21 00:00:00",
+      "vod_area": "英国",
+      "vod_lang": "英语",
+      "vod_year": 2014,
+      "type_name": "电影/纪录片",
+      "vod_keywords": "伊德瑞斯·艾尔巴,海莉·乔安妮·培根,帕特里克·莫里斯,纪录片,伊德瑞斯·艾尔巴,海莉·乔安妮·培根,英语,英语,纪录片,魔法王国 2014",
+      "vod_tag": "纪录片",
+      "vod_play_server": "",
+      "vod_play_from": "tpm3u8$$$tpiframe",
+      "vod_play_url": "魔法王国 2014$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2025-02-21/1/5ce09a9c5147/1361d0010284/playlist.m3u8$$$魔法王国 2014$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2025-02-21%2F1%2F5ce09a9c5147%2F1361d0010284%2Fplaylist.m3u8",
+      "vod_play_note": "",
+      "vod_down_server": "",
+      "vod_down_from": "tpm3u8$$$tpiframe",
+      "vod_down_url": "魔法王国 2014$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2025-02-21/1/5ce09a9c5147/1361d0010284/playlist.m3u8$$$魔法王国 2014$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2025-02-21%2F1%2F5ce09a9c5147%2F1361d0010284%2Fplaylist.m3u8",
+      "vod_down_note": "",
+      "vod_length": 5220,
+      "vod_weekday": "周一",
+      "vod_copyright": "",
+      "vod_state_": 1,
+      "vod_version": "高清版",
+      "vod_tv": "",
+      "vod_total": "1",
+      "vod_continu": 0,
+      "vod_status": 1,
+      "vod_stars": 0,
+      "vod_hits": 0,
+      "vod_isend": 0,
+      "vod_douban_id": 0,
+      "list_name": "电影/纪录片",
+      "imdb": 7.5,
+      "extra_type": "",
+      "origin": "tpm3u8$$$tpiframe",
+      "vod_state": "",
+      "vod_duration": "87",
+      "vod_pubdate": "2014-05-02 00:00:00",
+      "vod_douban_score": 0,
+      "vod_ename": "",
+      "source_category_id": "5",
+      "source_category_name": "电影/纪录片",
+      "_sourceSlug": "taopian",
+      "_sourceShort": "淘片",
+      "source_url": "https://taopianapi.com/cjapi/mc/vod/json.html",
+      "vod_time_add": "",
+      "canonical_id": "meta:%E9%AD%94%E6%B3%95%E7%8E%8B%E5%9B%BD2014:2014:0:%E5%B8%95%E7%89%B9%E9%87%8C%E5%85%8B%E8%8E%AB%E9%87%8C%E6%96%AF",
+      "primary_category": "documentary",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "documentary",
+          "field": "source_category_id",
+          "value": "5",
+          "signal": "documentary"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "taopian",
+          "id": "1532709",
+          "url": "https://taopianapi.com/cjapi/mc/vod/json.html",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "taopian",
+          "name": "tpm3u8",
+          "url": "魔法王国 2014$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2025-02-21/1/5ce09a9c5147/1361d0010284/playlist.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "tpiframe",
+          "url": "魔法王国 2014$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2025-02-21%2F1%2F5ce09a9c5147%2F1361d0010284%2Fplaylist.m3u8"
+        }
+      ],
+      "semantic_tags": "class 自然 主题",
+      "snapshot_filter_evidence": "catalog-derived"
+    }
+  ],
+  "content_revision": "snapshot-b693cb2ce1ea39323d02",
+  "snapshot_mode": "generated-filter-pack",
+  "snapshot_filter": {
+    "key": "class",
+    "value": "自然"
+  }
+}

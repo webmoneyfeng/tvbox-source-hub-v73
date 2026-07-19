@@ -1,0 +1,695 @@
+{
+  "filters": {
+    "10": [
+      {
+        "key": "sort",
+        "name": "排序",
+        "init": "latest",
+        "value": [
+          {
+            "n": "最新",
+            "v": "latest"
+          },
+          {
+            "n": "高清优先",
+            "v": "quality"
+          },
+          {
+            "n": "多线路优先",
+            "v": "lines"
+          },
+          {
+            "n": "片名排序",
+            "v": "name"
+          }
+        ]
+      },
+      {
+        "key": "year",
+        "name": "年份",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2030",
+            "v": "2030"
+          },
+          {
+            "n": "2028",
+            "v": "2028"
+          },
+          {
+            "n": "2027",
+            "v": "2027"
+          },
+          {
+            "n": "2026",
+            "v": "2026"
+          },
+          {
+            "n": "2025",
+            "v": "2025"
+          },
+          {
+            "n": "2020-2022",
+            "v": "2020-2022"
+          },
+          {
+            "n": "2010年代",
+            "v": "2010s"
+          },
+          {
+            "n": "更早",
+            "v": "older"
+          }
+        ]
+      },
+      {
+        "key": "area",
+        "name": "地区",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "港台",
+            "v": "港台"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          },
+          {
+            "n": "泰国",
+            "v": "泰国"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "name": "类型",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "动作",
+            "v": "动作"
+          },
+          {
+            "n": "喜剧",
+            "v": "喜剧"
+          },
+          {
+            "n": "爱情",
+            "v": "爱情"
+          },
+          {
+            "n": "悬疑犯罪",
+            "v": "悬疑犯罪"
+          },
+          {
+            "n": "科幻奇幻",
+            "v": "科幻奇幻"
+          },
+          {
+            "n": "恐怖惊悚",
+            "v": "恐怖惊悚"
+          },
+          {
+            "n": "剧情",
+            "v": "剧情"
+          },
+          {
+            "n": "战争历史",
+            "v": "战争历史"
+          }
+        ]
+      },
+      {
+        "key": "form",
+        "name": "内容形态",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "解说",
+            "v": "解说"
+          },
+          {
+            "n": "合集",
+            "v": "合集"
+          },
+          {
+            "n": "现场",
+            "v": "现场"
+          },
+          {
+            "n": "课程",
+            "v": "课程"
+          },
+          {
+            "n": "片段",
+            "v": "片段"
+          }
+        ]
+      },
+      {
+        "key": "quality",
+        "name": "清晰度",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "高清",
+            "v": "hd"
+          },
+          {
+            "n": "4K",
+            "v": "4K"
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "抢先",
+            "v": "抢先"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 1,
+  "msg": "ok",
+  "page": 1,
+  "pagecount": 1,
+  "limit": 24,
+  "total": 2,
+  "class": [
+    {
+      "type_id": "0",
+      "type_name": "推荐",
+      "key": "recommend"
+    },
+    {
+      "type_id": "10",
+      "type_name": "院线电影",
+      "key": "theatrical_movie"
+    },
+    {
+      "type_id": "11",
+      "type_name": "网络电影",
+      "key": "web_movie"
+    },
+    {
+      "type_id": "12",
+      "type_name": "其他电影",
+      "key": "other_movie"
+    },
+    {
+      "type_id": "20",
+      "type_name": "电视剧",
+      "key": "tv_series"
+    },
+    {
+      "type_id": "21",
+      "type_name": "网络剧",
+      "key": "web_series"
+    },
+    {
+      "type_id": "6",
+      "type_name": "网络短剧",
+      "key": "web_short"
+    },
+    {
+      "type_id": "3",
+      "type_name": "综艺",
+      "key": "variety"
+    },
+    {
+      "type_id": "4",
+      "type_name": "动漫",
+      "key": "anime"
+    },
+    {
+      "type_id": "5",
+      "type_name": "纪录片",
+      "key": "documentary"
+    },
+    {
+      "type_id": "7",
+      "type_name": "解说",
+      "key": "explainer"
+    },
+    {
+      "type_id": "8",
+      "type_name": "文娱知识",
+      "key": "knowledge"
+    },
+    {
+      "type_id": "9",
+      "type_name": "成人伦理",
+      "key": "adult"
+    }
+  ],
+  "list": [
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0ODQ0NiJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NDYxOCJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "寻找龙涎香",
+      "vod_sub": "Fish, Fists and Ambergris",
+      "vod_en": "xunzhaolongxianxiang",
+      "vod_status": 1,
+      "vod_letter": "X",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260319-1/0fb0ad5f45a71139b611ee94d78d0130.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "麻兰都,光俊,元草,尹国丹,清南",
+      "vod_director": "杨明战",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;《寻找龙延香》官方预告片以角色谭（光俊）充满气概的一句话开场：“龙延香是我们村的供奉之物，谁都无权带走。”这句台词响起在紧凑的背景音乐中，为观众揭示了一段充满戏剧性的旅程，在那里忠诚、信念",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-11-14",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "越南",
+      "vod_lang": "越南语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-03-19 09:28:06",
+      "vod_time_add": "1773883686",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37813482,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;《寻找龙延香》官方预告片以角色谭（光俊）充满气概的一句话开场：“龙延香是我们村的供奉之物，谁都无权带走。”这句台词响起在紧凑的背景音乐中，为观众揭示了一段充满戏剧性的旅程，在那里忠诚、信念与亲情将面临严酷的考验。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/5e86cdd17f928cd2a20e2f946dac5131$$$HD中字$https://svip.feifei-play.com/20260319/39756_5e86cdd1/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37813482",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "48446",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "94618",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202603/06/69aab9128551461619716af2/40b0c3/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/5e86cdd17f928cd2a20e2f946dac5131"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260319/39756_5e86cdd1/index.m3u8"
+        }
+      ],
+      "douban_id": "37813482",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37813482",
+        "title": "寻找龙涎香",
+        "original_title": "Truy tìm Long Diên Hương",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-11-14(越南)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "form 片段 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6Imd1YW5nc3UiLCJpZCI6IjE2Nzk0MyJ9LHsicyI6ImhoenkiLCJpZCI6IjM0MzU5In0seyJzIjoiaG9uZ25pdSIsImlkIjoiNTE0NzgifSx7InMiOiJodXlhIiwiaWQiOiIyNTI5MCJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjM4MzMyIn1d",
+      "type_id": "11",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "青年警察",
+      "vod_sub": "",
+      "vod_en": "qingnianjingcha",
+      "vod_status": 1,
+      "vod_letter": "Q",
+      "vod_color": "",
+      "vod_tag": "喜剧,动作,犯罪",
+      "vod_class": "喜剧,动作,犯罪,喜剧片",
+      "vod_pic": "https://hhmage.com/cover/93da579a65ce84cd1d4c85c2cbb84fc5.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "朴叙俊,姜河那,朴河宣,成东日,裴侑蓝",
+      "vod_director": "金周焕",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "　　《青年警察》讲述了两位警校搭档目睹了一场绑架事件并卷入其中的故事。今日曝光预告片中，展现了朴徐俊和姜河那饰演的&quot;行动派&quot;基俊和&quot;学霸&quot;熙烈在警察学校相识相交，并一起执行任务的过程。",
+      "vod_remarks": "正片",
+      "vod_pubdate": "上映日期:",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "韩国",
+      "vod_lang": "",
+      "vod_year": "2017",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 962,
+      "vod_hits_day": 429,
+      "vod_hits_week": 729,
+      "vod_hits_month": 629,
+      "vod_duration": "",
+      "vod_up": 559,
+      "vod_down": 391,
+      "vod_score": "10.0",
+      "vod_score_all": 6960,
+      "vod_score_num": 696,
+      "vod_time": "2026-06-17 23:48:01",
+      "vod_time_add": "1685437476",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 26892281,
+      "vod_douban_score": "7.5",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "　　《青年警察》讲述了两位警校搭档目睹了一场绑架事件并卷入其中的故事。今日曝光预告片中，展现了朴徐俊和姜河那饰演的\"行动派\"基俊和\"学霸\"熙烈在警察学校相识相交，并一起执行任务的过程。\n",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/eZ689w6e$$$正片$https://play.hhuus.com/play/eZ689w6e/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "喜剧片",
+      "source_category_id": "10",
+      "source_category_name": "喜剧片",
+      "_sourceSlug": "huya",
+      "_sourceShort": "虎牙",
+      "source_url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+      "canonical_id": "ext:douban:26892281",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "huya",
+          "id": "25290",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "34359",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "51478",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "167943",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "38332",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/bYE79Qpb/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/eVOvVN1a/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/eVOvVN1a"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/bW6P98ga"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/bW6P98ga/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/eXDQ9Mme/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/eXDQ9Mme"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/eZ689w6e/index.m3u8"
+        }
+      ],
+      "douban_id": "26892281",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "26892281",
+        "title": "青年警察",
+        "original_title": "청년경찰",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2017-08-09(韩国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2017"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "form 片段 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    }
+  ],
+  "content_revision": "snapshot-b693cb2ce1ea39323d02",
+  "snapshot_mode": "generated-filter-pack",
+  "snapshot_filter": {
+    "key": "form",
+    "value": "片段"
+  }
+}

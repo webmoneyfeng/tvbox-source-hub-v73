@@ -1,0 +1,5067 @@
+{
+  "filters": {
+    "10": [
+      {
+        "key": "sort",
+        "name": "排序",
+        "init": "latest",
+        "value": [
+          {
+            "n": "最新",
+            "v": "latest"
+          },
+          {
+            "n": "高清优先",
+            "v": "quality"
+          },
+          {
+            "n": "多线路优先",
+            "v": "lines"
+          },
+          {
+            "n": "片名排序",
+            "v": "name"
+          }
+        ]
+      },
+      {
+        "key": "year",
+        "name": "年份",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2030",
+            "v": "2030"
+          },
+          {
+            "n": "2028",
+            "v": "2028"
+          },
+          {
+            "n": "2027",
+            "v": "2027"
+          },
+          {
+            "n": "2026",
+            "v": "2026"
+          },
+          {
+            "n": "2025",
+            "v": "2025"
+          },
+          {
+            "n": "2020-2022",
+            "v": "2020-2022"
+          },
+          {
+            "n": "2010年代",
+            "v": "2010s"
+          },
+          {
+            "n": "更早",
+            "v": "older"
+          }
+        ]
+      },
+      {
+        "key": "area",
+        "name": "地区",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "港台",
+            "v": "港台"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          },
+          {
+            "n": "泰国",
+            "v": "泰国"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "name": "类型",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "动作",
+            "v": "动作"
+          },
+          {
+            "n": "喜剧",
+            "v": "喜剧"
+          },
+          {
+            "n": "爱情",
+            "v": "爱情"
+          },
+          {
+            "n": "悬疑犯罪",
+            "v": "悬疑犯罪"
+          },
+          {
+            "n": "科幻奇幻",
+            "v": "科幻奇幻"
+          },
+          {
+            "n": "恐怖惊悚",
+            "v": "恐怖惊悚"
+          },
+          {
+            "n": "剧情",
+            "v": "剧情"
+          },
+          {
+            "n": "战争历史",
+            "v": "战争历史"
+          }
+        ]
+      },
+      {
+        "key": "form",
+        "name": "内容形态",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "解说",
+            "v": "解说"
+          },
+          {
+            "n": "合集",
+            "v": "合集"
+          },
+          {
+            "n": "现场",
+            "v": "现场"
+          },
+          {
+            "n": "课程",
+            "v": "课程"
+          },
+          {
+            "n": "片段",
+            "v": "片段"
+          }
+        ]
+      },
+      {
+        "key": "quality",
+        "name": "清晰度",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "高清",
+            "v": "hd"
+          },
+          {
+            "n": "4K",
+            "v": "4K"
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "抢先",
+            "v": "抢先"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 1,
+  "msg": "ok",
+  "page": 1,
+  "pagecount": 2,
+  "limit": 24,
+  "total": 31,
+  "class": [
+    {
+      "type_id": "0",
+      "type_name": "推荐",
+      "key": "recommend"
+    },
+    {
+      "type_id": "10",
+      "type_name": "院线电影",
+      "key": "theatrical_movie"
+    },
+    {
+      "type_id": "11",
+      "type_name": "网络电影",
+      "key": "web_movie"
+    },
+    {
+      "type_id": "12",
+      "type_name": "其他电影",
+      "key": "other_movie"
+    },
+    {
+      "type_id": "20",
+      "type_name": "电视剧",
+      "key": "tv_series"
+    },
+    {
+      "type_id": "21",
+      "type_name": "网络剧",
+      "key": "web_series"
+    },
+    {
+      "type_id": "6",
+      "type_name": "网络短剧",
+      "key": "web_short"
+    },
+    {
+      "type_id": "3",
+      "type_name": "综艺",
+      "key": "variety"
+    },
+    {
+      "type_id": "4",
+      "type_name": "动漫",
+      "key": "anime"
+    },
+    {
+      "type_id": "5",
+      "type_name": "纪录片",
+      "key": "documentary"
+    },
+    {
+      "type_id": "7",
+      "type_name": "解说",
+      "key": "explainer"
+    },
+    {
+      "type_id": "8",
+      "type_name": "文娱知识",
+      "key": "knowledge"
+    },
+    {
+      "type_id": "9",
+      "type_name": "成人伦理",
+      "key": "adult"
+    }
+  ],
+  "list": [
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI1MDEzNiJ9LHsicyI6ImJmenkiLCJpZCI6IjE1MTUyMSJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzYzOCJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2NjI0MyJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNDAwNCJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0NzUzOSJ9LHsicyI6Imh1eWEiLCJpZCI6IjEwOTMzOSJ9LHsicyI6Imx6aV9kaXJlY3QiLCJpZCI6IjE0NTA4MCJ9LHsicyI6Im1vZHUiLCJpZCI6Ijg1NzQ5In0seyJzIjoieGlubGFuZyIsImlkIjoiMTYzODU4In1d",
+      "type_id": "13",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "鬼上车",
+      "vod_sub": "乘吓(港) / 亡命旅人",
+      "vod_en": "guishangche",
+      "vod_status": 1,
+      "vod_letter": "G",
+      "vod_color": "",
+      "vod_tag": "恐怖",
+      "vod_class": "恐怖,恐怖片",
+      "vod_pic": "https://hhmage.com/cover/b49a12c7186dc8ec506091b41aafb7dd.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "卢·洛贝尔,雅各布·西皮奥,梅丽莎·里奥,德薇埃尔·约翰逊",
+      "vod_director": "安德烈·艾弗道夫",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "一对年轻夫妇在高速公路目睹一宗惨烈车祸，离开事发现场后不久，他们开始发现自己被神秘“乘客”尾随！这个如恶魔般纠缠不休的跟踪者，不达目的誓不罢休，令他们的公路旅行变成了一场噩梦。",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2026-05-21(中国香港)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2026",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 921,
+      "vod_hits_day": 127,
+      "vod_hits_week": 998,
+      "vod_hits_month": 40,
+      "vod_duration": "94分钟",
+      "vod_up": 559,
+      "vod_down": 457,
+      "vod_score": "1.0",
+      "vod_score_all": 781,
+      "vod_score_num": 781,
+      "vod_time": "2026-07-06 16:48:02",
+      "vod_time_add": "1779416281",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37068432,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "一对年轻夫妇在高速公路目睹一宗惨烈车祸，离开事发现场后不久，他们开始发现自己被神秘“乘客”尾随！这个如恶魔般纠缠不休的跟踪者，不达目的誓不罢休，令他们的公路旅行变成了一场噩梦。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/b4xzmVkb$$$正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "恐怖片",
+      "source_category_id": "10",
+      "source_category_name": "恐怖片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37068432",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "50136",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "bfzy",
+          "id": "151521",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "109339",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "134004",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "147539",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "166243",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "85749",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "163858",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "lzi_direct",
+          "id": "145080",
+          "url": "https://cj.lziapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "97638",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202607/06/6a4b66519ed9215f5841f539/aecd59/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "baidu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.baofeng11.com/video/guishangche/bc718b0ee516/index.m3u8"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/e31yRE9b/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/eZ6zOv8e"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/eZ6zOv8e/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/e1wG1EGb"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/e1wG1EGb/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx17.com/20260706/pFH1lroB/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "modu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/b2k742Wd"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/b2k742Wd/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "liangzi",
+          "url": "HD中字$https://v.lzcdn27.com/share/237949cceaabe986ac5c1cd65cef13ff"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "lzm3u8",
+          "url": "HD中字$https://v.lzcdn27.com/20260707/12850_b42c684c/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/46286f683f8cb3eb732593a7424496c4"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260706/55456_46286f68/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzmVkb/index.m3u8"
+        }
+      ],
+      "douban_id": "37068432",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37068432",
+        "title": "鬼上车",
+        "original_title": "Passenger",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-05-21(中国香港)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2026"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTI0OSJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NjkwNiJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2Mzk2MSJ9LHsicyI6ImhoenkiLCJpZCI6IjEzMTc2NCJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0MDI2NyJ9LHsicyI6Imh1eWEiLCJpZCI6IjEwNzEwMyJ9LHsicyI6Im1vZHUiLCJpZCI6Ijg0MjQxIn0seyJzIjoidGFvcGlhbiIsImlkIjoiMTUzOTAxNiJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2MTYxNyJ9XQ",
+      "type_id": "14",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "迈克尔·杰克逊：巨星之路",
+      "vod_sub": "Michael",
+      "vod_en": "maikeerjiekexunjuxingzhilu",
+      "vod_status": 1,
+      "vod_letter": "M",
+      "vod_color": "",
+      "vod_tag": "剧情,音乐,传记",
+      "vod_class": "剧情,音乐,传记,剧情片",
+      "vod_pic": "https://hhmage.com/cover/1c2081e55797c80a0b0b3327bda5e063.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "贾法尔·杰克逊,尼娅·朗,劳拉·哈里尔,朱利亚诺·瓦尔迪,迈尔斯·特勒,科尔曼·多明戈,乔·吉列特,卡特琳娜·格兰厄姆,拉伦兹·泰特,德里克·卢克,杰西卡·苏拉,汉克·诺思罗普,肯德里克·桑普森,约瑟夫·戴维-琼斯,内森尼尔·洛根·麦金太尔,凯林·多瑞尔·琼斯,迈卡·麦克尼尔,莫妮克·林赛,奥利维娅·塔卡格什,凯蒂·凯",
+      "vod_director": "安东尼·福奎阿",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "影片讲述迈克尔·杰克逊在音乐之外的人生旅程，从他以杰克逊五人组主唱之姿被发掘出惊人天赋的那一刻起，直到他成为一位极具远见的艺人，他以无穷无尽的创作能力激励自己成为全世界最伟大的娱乐巨星。",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2026-04-24(美国/中国大陆)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "",
+      "vod_lang": "",
+      "vod_year": "2026",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 548,
+      "vod_hits_day": 542,
+      "vod_hits_week": 216,
+      "vod_hits_month": 647,
+      "vod_duration": "",
+      "vod_up": 792,
+      "vod_down": 754,
+      "vod_score": "8.0",
+      "vod_score_all": 3016,
+      "vod_score_num": 377,
+      "vod_time": "2026-06-10 12:42:02",
+      "vod_time_add": "1776867122",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 35948919,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "影片讲述迈克尔·杰克逊在音乐之外的人生旅程，从他以杰克逊五人组主唱之姿被发掘出惊人天赋的那一刻起，直到他成为一位极具远见的艺人，他以无穷无尽的创作能力激励自己成为全世界最伟大的娱乐巨星。\n                                    <br>\n                                　　这部电影同时呈现迈克尔·杰克逊舞台之外的真实人生，并且重现他早期个人演艺生涯中最具代表性的经典表演，这部电影为观众提供最贴近的视角，以前所未见的方式窥探这位流行天王的内心世",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/dwp07ore$$$正片$https://play.hhuus.com/play/dwp07ore/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:35948919",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49249",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "taopian",
+          "id": "1539016",
+          "url": "https://taopianapi.com/cjapi/mc/vod/json.html",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "107103",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "131764",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "140267",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "163961",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "84241",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "161617",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "96906",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202606/11/6a2a39716ad3eb5f71c78717/26d546/index.m3u8#TCV2$https://b3.bdzybf22.com/videos/202604/25/69ebe772a653aee81af4df29/062f29/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "tpm3u8",
+          "url": "迈克尔·杰克逊:巨星之路$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-06-21/1/168cba9c9c01/32b9bd94dd73/playlist.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "tpiframe",
+          "url": "迈克尔·杰克逊:巨星之路$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2026-06-21%2F1%2F168cba9c9c01%2F32b9bd94dd73%2Fplaylist.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "baidu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "tpm3u8",
+          "url": "迈克尔·杰克逊:巨星之路$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-06-21/1/168cba9c9c01/32b9bd94dd73/playlist.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "tpiframe",
+          "url": "迈克尔·杰克逊:巨星之路$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2026-06-21%2F1%2F168cba9c9c01%2F32b9bd94dd73%2Fplaylist.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "taopian",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/av2QLn8a/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/epYZL4Qa"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/epYZL4Qa/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/bqxQLg7a"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/bqxQLg7a/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260609/Muj1mNcE/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "tpm3u8",
+          "url": "迈克尔·杰克逊:巨星之路$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-06-21/1/168cba9c9c01/32b9bd94dd73/playlist.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "tpiframe",
+          "url": "迈克尔·杰克逊:巨星之路$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2026-06-21%2F1%2F168cba9c9c01%2F32b9bd94dd73%2Fplaylist.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "modu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/erk2Vj2a"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/erk2Vj2a/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/6b3bcd222d6d1b0d2c29ce1d4050d633"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260609/54543_6b3bcd22/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "tpm3u8",
+          "url": "迈克尔·杰克逊:巨星之路$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-06-21/1/168cba9c9c01/32b9bd94dd73/playlist.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "tpiframe",
+          "url": "迈克尔·杰克逊:巨星之路$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2026-06-21%2F1%2F168cba9c9c01%2F32b9bd94dd73%2Fplaylist.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp07ore/index.m3u8"
+        }
+      ],
+      "douban_id": "35948919",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "35948919",
+        "title": "迈克尔·杰克逊:巨星之路",
+        "original_title": "Michael",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-04-24(美国/中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2026"
+      },
+      "episode_count": 1,
+      "latest_episode": 1,
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NDU5NiJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "亲陌公园",
+      "vod_sub": "Strangers in the Park",
+      "vod_en": "qinmogongyuan",
+      "vod_status": 1,
+      "vod_letter": "Q",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,喜剧",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260319-1/52e421ef3c93fb6f983e1f9319785a08.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "路易斯·布兰多尼,爱德华多·布兰科,Verónica Pelaccini,Agustín Aristarán,Manuela Menéndez,Matías Alarcón",
+      "vod_director": "胡安·何塞·坎帕内利亚",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;A former communist activist and a laid-back man who embraces a &amp;quot;live and let live&amp;quot; p",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2026-02-19",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "阿根廷",
+      "vod_lang": "西班牙语",
+      "vod_year": "2026",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-03-19 09:00:46",
+      "vod_time_add": "1773882046",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37125562,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;A former communist activist and a laid-back man who embraces a &quot;live and let live&quot; philosophy strike up an unlikely friendship while meeting regularly on a park bench, discovering common ground despite their contrasting worldviews.</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/c411fcc0b7f0f270042d924fc2e98bd7$$$HD中字$https://svip.feifei-play.com/20260319/39750_c411fcc0/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37125562",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "94596",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/c411fcc0b7f0f270042d924fc2e98bd7"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260319/39750_c411fcc0/index.m3u8"
+        }
+      ],
+      "douban_id": "37125562",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37125562",
+        "title": "亲陌公园",
+        "original_title": "Parque Lezama",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-02-19(阿根廷)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2026"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI1MDA2OCJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODQ3MyJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2OTMyMSJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNzA3OCJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE1MDYxNSJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMjQxOSJ9LHsicyI6Imx6aV9kaXJlY3QiLCJpZCI6IjE0NDUzOCJ9LHsicyI6Im1vZHUiLCJpZCI6Ijg1NDg3In0seyJzIjoieGlubGFuZyIsImlkIjoiMTY2OTM3In1d",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "双刃剑复活的男人",
+      "vod_sub": "",
+      "vod_en": "shuangrenjianfuhuodenanren",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,悬疑",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260703-1/81077a7bd6c289e655de82ded6d6bb1e.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "织田裕二,小野花梨,津田健次郎,明日海里奥,细田善彦,影山优佳,和久井映见,音尾琢真,光石研",
+      "vod_director": "树下直美",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;一名大人物政治家的女儿遭人杀害，遗体在河滩被发现。她的嘴被胶带缠住，身上穿着被鲜血染得通红的白色连衣裙——这种惨烈的作案手法，与三年前“本应已经死去”的连环杀人犯马饲野隆一极为相似。\r\n鉴",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2026-06-27",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "日本",
+      "vod_lang": "日语",
+      "vod_year": "2026",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-07-03 17:20:26",
+      "vod_time_add": "1783070426",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 38489165,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;一名大人物政治家的女儿遭人杀害，遗体在河滩被发现。她的嘴被胶带缠住，身上穿着被鲜血染得通红的白色连衣裙——这种惨烈的作案手法，与三年前“本应已经死去”的连环杀人犯马饲野隆一极为相似。\r\n鉴识课的中津川毅等人对现场采集到的嫌疑人毛发进行鉴定后，结果显示与三年前采集到的马饲野的毛发一致。负责指挥搜查本部的管理官国领克俊据此断定是马饲野所为，并宣布要“召回”某个男人。\r\n所谓“某个男人”，正是三年前事件中唯一与马饲野接触过的刑警——郡司孝介（织田裕二 饰）。他曾被称为“搜查一课的王牌”，破案数量遥遥领先，惹出的问题也同样数不胜数。然而，他在与马饲野接触的现场遭到刺伤，之后被调往辖区的生活安全课，如今不得不过着轮椅生活。\r\n虽然这是为了国领的升迁，但搜查一课系长富县纱荣子坚决反对召回郡司。即便郡司来到搜查一课，她也对他态度冷淡，但郡司并不在意。为了让坐轮椅的郡司也能前往案发现场，国领打算给他安排一名协助人员。郡司则提出，希望由自己在街上偶然遇到的搜查二课财务搜查官阿久都华瑠（小野花梨 饰）担任自己的支援搭档。\r\n然而，国领拒绝了这一提议。事实上，华瑠患有自闭症谱系障碍，他判断她很难应对既定日程之外的事情。但郡司看出了华瑠的能力与洞察力，仍不愿放弃，并对她说道：\r\n“你不是因为想在自己能做的工作里，选择最能帮助别人的事情，才成为警察的吗？”\r\n“如果你总是把房间的门打开，是因为内心想与外界保持联系的话，那就和我一起查案吧。”\r\n郡司的这番话打动了华瑠，她终于决定与郡司一起展开调查！\r\n郡司和华瑠随即开始调查被害者结衣的房间，并在书架后面发现了藏起来的华丽服装和假发。如果结衣还有不为人知的另一面，那么她或许并不符合马饲野一贯只挑选清纯女性作为目标的偏好。就在这样的疑问浮现时，华瑠注意到，捆绑被害者的绳结是由右撇子打出来的。而马饲野是左撇子，这就产生了矛盾。进一步调查还发现，案发现场留下的塑料瓶上的指纹也被不自然地擦拭过。然而，以纱荣子为首的搜查一课刑警们却不愿正视这些矛盾……？\r\n就在这时，又出现了新的被害者！这一次的案件中，也能看到与马饲野作案倾向相矛盾的地方。众人围绕“究竟是马饲野所为”，还是“模仿犯作案”产生分歧，而郡司与华瑠则逐渐接近了一个令人震惊的真相……！？</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff$$$HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:38489165",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "50068",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "112419",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "137078",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "150615",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "169321",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "85487",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "166937",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "lzi_direct",
+          "id": "144538",
+          "url": "https://cj.lziapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "98473",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202607/03/6a47b23d0452185f59881a92/2gb4cc/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/bYE7jLOb/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "huya",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/eZ68kM2e"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/eZ68kM2e/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "hhzy",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/eVOv4GBa"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/eVOv4GBa/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "hongniu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/bW6P5J4a"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/bW6P5J4a/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "guangsu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260701/ol7vFr3B/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "modu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/eXDQgK8e"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/eXDQgK8e/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "xinlang",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "liangzi",
+          "url": "第01集$https://v.lzcdn27.com/share/a1a3e1728ecc9bfe4ca64599f0e661df"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "lzm3u8",
+          "url": "第01集$https://v.lzcdn27.com/20260702/12314_3691005c/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/04e37611fefa45c2c3fa2c9d6668a6ff"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260703/55372_04e37611/index.m3u8"
+        }
+      ],
+      "douban_id": "38489165",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "38489165",
+        "title": "双刃剑 复活的男人",
+        "original_title": "ダブルエッジ~甦った男",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-06-27(日本)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2026"
+      },
+      "episode_count": 1,
+      "latest_episode": "",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjE1MDExMiJ9XQ",
+      "type_id": "36",
+      "type_id_1": 30,
+      "group_id": 0,
+      "vod_name": "我与你在一起的理由 特别篇",
+      "vod_sub": "",
+      "vod_en": "woyunizaiyiqideliyoutebiepian",
+      "vod_status": 1,
+      "vod_letter": "W",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "日本",
+      "vod_pic": "https://img.picbf.com/upload/vod/20260627-1/40eee1cbb14b3c8b6cd159ddd395f291.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "宫内瞳 , 前田公辉",
+      "vod_director": "八木橋ゆり",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "此次特别篇由前田公辉与宫内瞳双主演，以开放性的关岛为舞台，以“对未曾选择的未来的遐想”为主题，细腻描绘30多岁男女真实而直率的烦恼、“与过去的诀别”以及“重新确认当下的幸福”。敬请关注这部既伤感又温暖、仅此一夜的人性剧！ 作为自由撰稿人工作的花（宫内瞳 饰），虽然有交往三年的恋人，但因为同行，见面总是谈工作。虽然觉得必须谈一谈将来，但彼此似乎都对工作不甚满意，始终难以迈出人生的一步。就在这样的情况下，花独自前往关岛参加朋友的婚礼，在那里与学生时代的恋人海里（前田公辉 饰）时隔10年重逢。两人聊起热恋时的回",
+      "vod_remarks": "更新至前篇",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "日本",
+      "vod_lang": "日语",
+      "vod_year": "2026",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 848,
+      "vod_hits_day": 915,
+      "vod_hits_week": 261,
+      "vod_hits_month": 224,
+      "vod_duration": "",
+      "vod_up": 338,
+      "vod_down": 751,
+      "vod_score": "8.0",
+      "vod_score_all": 7560,
+      "vod_score_num": 945,
+      "vod_time": "2026-06-27 09:16:39",
+      "vod_time_add": "1782522994",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 38509977,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "此次特别篇由前田公辉与宫内瞳双主演，以开放性的关岛为舞台，以“对未曾选择的未来的遐想”为主题，细腻描绘30多岁男女真实而直率的烦恼、“与过去的诀别”以及“重新确认当下的幸福”。敬请关注这部既伤感又温暖、仅此一夜的人性剧！ 作为自由撰稿人工作的花（宫内瞳 饰），虽然有交往三年的恋人，但因为同行，见面总是谈工作。虽然觉得必须谈一谈将来，但彼此似乎都对工作不甚满意，始终难以迈出人生的一步。就在这样的情况下，花独自前往关岛参加朋友的婚礼，在那里与学生时代的恋人海里（前田公辉 饰）时隔10年重逢。两人聊起热恋时的回忆，在关岛这个开放的地方，花不禁想象起“如果当初没有和海里分手的话……”这一“未曾选择的未来”。虽然并不后悔与海里分手，但面对被周围人比来比去、被工作追得喘不过气的花，海里温柔地对她说了什么？在时隔10年重逢这一“那一天的延续”的尽头，花所意识到的“...",
+      "vod_play_from": "bfzym3u8",
+      "vod_play_server": "",
+      "vod_play_note": "",
+      "vod_play_url": "前篇$https://v.baofeng11.com/video/woyunizaiyiqideliyoutebiepian/422c367c5fd7/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "日本剧",
+      "source_category_id": "10",
+      "source_category_name": "日本剧",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:38509977",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "150112",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "前篇$https://v.baofeng11.com/video/woyunizaiyiqideliyoutebiepian/422c367c5fd7/index.m3u8"
+        }
+      ],
+      "douban_id": "38509977",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "38509977",
+        "title": "我与你在一起的理由 特别篇:关岛所赐、那一天的延续",
+        "original_title": "私があなたといる理由 特別編〜グアムがくれた、あの日の続き〜",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-06-24(日本)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2026"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzU2MiJ9LHsicyI6Im1vZHUiLCJpZCI6IjgzMDY2In1d",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "防风少年电影版",
+      "vod_sub": "防风铃,Wind Breaker",
+      "vod_en": "fangfengshaoniandianyingban",
+      "vod_status": 1,
+      "vod_letter": "F",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260516-1/f235a3158d9a8969f28d1533b2dcbd3a.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "水上恒司,木户大圣,纲启永,池龟树音,中泽元纪,上杉柊平,八木莉可子,山下幸辉,滨尾矩考,曾田陵介,萩原护,高桥里恩",
+      "vod_director": "萩原健太郎",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;本片改编自同名人气不良少年漫画，以“偏差值最低、打架最强”的风铃高校为舞台，讲述为成为最强而来到这座城市的少年樱遥（水上恒司 饰），加入守护街道的义气不良组织“防风铃”，与伙伴们并肩作战、",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-12-05",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "日本",
+      "vod_lang": "日语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-05-16 12:23:52",
+      "vod_time_add": "1778905432",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37295530,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;本片改编自同名人气不良少年漫画，以“偏差值最低、打架最强”的风铃高校为舞台，讲述为成为最强而来到这座城市的少年樱遥（水上恒司 饰），加入守护街道的义气不良组织“防风铃”，与伙伴们并肩作战、守护街道的热血故事。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://vip.ffzy-plays.com/share/aa119b85a393d57b578950a6bf484494$$$HD中字$https://vip.ffzy-plays.com/20260516/53631_aa119b85/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "modu",
+      "_sourceShort": "魔都",
+      "source_url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37295530",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "modu",
+          "id": "83066",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "97562",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260516/WgnW29JA/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/aa119b85a393d57b578950a6bf484494"
+        },
+        {
+          "source": "modu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260516/53631_aa119b85/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/aa119b85a393d57b578950a6bf484494"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260516/53631_aa119b85/index.m3u8"
+        }
+      ],
+      "douban_id": "37295530",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37295530",
+        "title": "防风少年",
+        "original_title": "ウィンドブレイカー",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-12-05(日本)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTc4OSJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODEzNiJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2ODA2NSJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNTgyMSJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0OTM1OSJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMTE2MSJ9LHsicyI6Im1vZHUiLCJpZCI6Ijg0ODA1In0seyJzIjoieGlubGFuZyIsImlkIjoiMTY1NjgxIn1d",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "父亲与我的永恒之歌",
+      "vod_sub": "父亲与我的无尽之歌",
+      "vod_en": "fuqinyuwodeyonghengzhige",
+      "vod_status": 1,
+      "vod_letter": "F",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260619-1/85356dca1acc1c4edb4a2940c6811cac.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "寺尾聪,松坂桃李,佐藤栞里,副岛淳,大岛美幸,斋藤飞鸟,三宅裕司,石仓三郎,佐藤浩市,松坂庆子,藤冈靛",
+      "vod_director": "小泉德宏",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;映画は日本を舞台に、神奈川・横須賀に生きる父と息子に置き換えた物語に。若き日にレコードデビューを夢見たものの、息子のためにあきらめた父・間宮哲太の姿が描かれる。生まれ育った横須賀で楽器店を",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-05-23",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "日本",
+      "vod_lang": "日语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-19 15:14:14",
+      "vod_time_add": "1781853254",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37077509,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;映画は日本を舞台に、神奈川・横須賀に生きる父と息子に置き換えた物語に。若き日にレコードデビューを夢見たものの、息子のためにあきらめた父・間宮哲太の姿が描かれる。生まれ育った横須賀で楽器店を営みながら地元のステージで歌声を披露してきた哲太は、ある日、アルツハイマー型認知症と診断されてしまう。すべてを忘れゆく父をつなぎ止めたのは、彼を信じ支え続けた息子の雄太や妻の律子、強い絆で結ばれた仲間、そして彼が愛した音楽だった。哲太はレコードデビューの夢を叶えようと再び動き出す。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe$$$HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37077509",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49789",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "111161",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "135821",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "149359",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "168065",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "84805",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "165681",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "98136",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202606/19/6a34fa152394fd5f70474133/9565d1/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/azp6gyOd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe"
+        },
+        {
+          "source": "huya",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aAD6Egpe"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aAD6Egpe/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe"
+        },
+        {
+          "source": "hhzy",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/dwp06vze"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/dwp06vze/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe"
+        },
+        {
+          "source": "hongniu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/axk6WwEe"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/axk6WwEe/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe"
+        },
+        {
+          "source": "guangsu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260619/GcjUUYCu/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe"
+        },
+        {
+          "source": "modu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/dyPwWxgb"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/dyPwWxgb/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe"
+        },
+        {
+          "source": "xinlang",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/0c1234c3719aff4c3dc2a799c6495ffe"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260619/54949_0c1234c3/index.m3u8"
+        }
+      ],
+      "douban_id": "37077509",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37077509",
+        "title": "父亲与我的永恒之歌",
+        "original_title": "父と僕の終わらない歌",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-05-23(日本)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": 1,
+      "latest_episode": "",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTM2OSJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzIzNSJ9XQ",
+      "type_id": "10",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "火葬",
+      "vod_sub": "",
+      "vod_en": "huozang",
+      "vod_status": 1,
+      "vod_letter": "H",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "恐怖",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260505-1/d6c332e914090d0df3a5a82f07760937.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "Van David,K Sinh,Ry SreyNet",
+      "vod_director": "Bun Chanpich",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;医生曾严禁丹妮怀孕，她却意外诞下双胞胎，命运的转折让母子三人接连离世。在柬埔寨传统火葬仪式筹备期间，殡葬师与僧侣按习俗处理后事，却接连遭遇毛骨悚然的怪事。停尸间的异响、诵经时的异常干扰、遗",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-03-13",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "柬埔寨",
+      "vod_lang": "其它",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-05-05 08:57:50",
+      "vod_time_add": "1777942670",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37384620,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;医生曾严禁丹妮怀孕，她却意外诞下双胞胎，命运的转折让母子三人接连离世。在柬埔寨传统火葬仪式筹备期间，殡葬师与僧侣按习俗处理后事，却接连遭遇毛骨悚然的怪事。停尸间的异响、诵经时的异常干扰、遗体旁的诡异痕迹不断出现，亡者的怨念在火葬场蔓延，原本肃穆的超度仪式，逐渐沦为被恐惧吞噬的死亡现场。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://vip.ffzy-plays.com/share/7402281d0ac9a8b55a599a5f69179d4a$$$HD中字$https://vip.ffzy-plays.com/20260505/53185_7402281d/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "恐怖片",
+      "source_category_id": "10",
+      "source_category_name": "恐怖片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37384620",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49369",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "97235",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202605/05/69f8eb2ba653aee81af610ee/3dde75/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/7402281d0ac9a8b55a599a5f69179d4a"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260505/53185_7402281d/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/7402281d0ac9a8b55a599a5f69179d4a"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260505/53185_7402281d/index.m3u8"
+        }
+      ],
+      "douban_id": "37384620",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37384620",
+        "title": "火葬",
+        "original_title": "The Cremation",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-03-13(柬埔寨)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6Imd1YW5nc3UiLCJpZCI6IjE2OTIyNiJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNjk4MyJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE1MDUyMCJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMjMyNCJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2Njg0MiJ9XQ",
+      "type_id": "11",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "逃亡乐队（2026）",
+      "vod_sub": "",
+      "vod_en": "taowangledui2026",
+      "vod_status": 1,
+      "vod_letter": "T",
+      "vod_color": "",
+      "vod_tag": "喜剧,音乐",
+      "vod_class": "喜剧,音乐,喜剧片",
+      "vod_pic": "https://hhmage.com/cover/4531af2af554807ee96fe3355fb48fda.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "拉里·巴格比,兰登·塔维尼尔",
+      "vod_director": "杰夫·哈普",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "1999 年，在底特律车库摇滚运动的鼎盛时期，一位身患慢性病的父亲、他身为音乐家的儿子和他的乐队在前往西南偏南音乐节的途中与一支对手乐队展开了一场喧闹的公路旅行，并由此结下了深厚的友谊。",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2025-06-17(美国)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 694,
+      "vod_hits_day": 368,
+      "vod_hits_week": 148,
+      "vod_hits_month": 785,
+      "vod_duration": "88分钟",
+      "vod_up": 119,
+      "vod_down": 700,
+      "vod_score": "5.0",
+      "vod_score_all": 785,
+      "vod_score_num": 157,
+      "vod_time": "2026-07-02 17:12:02",
+      "vod_time_add": "1782983522",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37424169,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "1999 年，在底特律车库摇滚运动的鼎盛时期，一位身患慢性病的父亲、他身为音乐家的儿子和他的乐队在前往西南偏南音乐节的途中与一支对手乐队展开了一场喧闹的公路旅行，并由此结下了深厚的友谊。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/dwp0QYme$$$正片$https://play.hhuus.com/play/dwp0QYme/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "喜剧片",
+      "source_category_id": "10",
+      "source_category_name": "喜剧片",
+      "_sourceSlug": "huya",
+      "_sourceShort": "虎牙",
+      "source_url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+      "canonical_id": "ext:douban:37424169",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "huya",
+          "id": "112324",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "136983",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "150520",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "169226",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "166842",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/av2QPXga/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/epYZJGra"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/epYZJGra/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/bqxQKPRa"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/bqxQKPRa/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/erk2LQka"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/erk2LQka/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dwp0QYme/index.m3u8"
+        }
+      ],
+      "douban_id": "37424169",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37424169",
+        "title": "逃亡乐队",
+        "original_title": "Band on the Run",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-06-17(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjE1MDU4NiJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2OTAyNyJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNjc4NCJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE1MDMyMSJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMjEyNSJ9LHsicyI6Imx6aV9kaXJlY3QiLCJpZCI6IjE0NDMxNiJ9LHsicyI6Im1vZHUiLCJpZCI6Ijg1Mzc5In0seyJzIjoieGlubGFuZyIsImlkIjoiMTY2NjQzIn1d",
+      "type_id": "14",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "亚洲的独特国度",
+      "vod_sub": "アジアのユニークな国",
+      "vod_en": "yazhoudeduteguodu",
+      "vod_status": 1,
+      "vod_letter": "Y",
+      "vod_color": "",
+      "vod_tag": "剧情",
+      "vod_class": "剧情,剧情片",
+      "vod_pic": "https://hhmage.com/cover/1a0e2332c54db7b790e5c6a5f6640d91.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "鄭亜美,岩本えり,金子岳憲,岩谷健司",
+      "vod_director": "山内健司",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "本作是以东京都内某栋独户住宅为舞台的&quot;纯粹社会派深刻喜剧&quot;。曜子在丈夫工作期间，既在一楼照料公公，又在二楼经营非法风俗店。对政治与社会保持敏感、同时竭力兼顾看护工作与风俗营业的曜子，其开朗勤勉的身影折",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2025-06-28(日本)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "日本",
+      "vod_lang": "日语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 550,
+      "vod_hits_day": 617,
+      "vod_hits_week": 603,
+      "vod_hits_month": 655,
+      "vod_duration": "",
+      "vod_up": 195,
+      "vod_down": 524,
+      "vod_score": "4.0",
+      "vod_score_all": 796,
+      "vod_score_num": 199,
+      "vod_time": "2026-06-29 23:36:02",
+      "vod_time_add": "1782747362",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37331442,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "本作是以东京都内某栋独户住宅为舞台的\"纯粹社会派深刻喜剧\"。曜子在丈夫工作期间，既在一楼照料公公，又在二楼经营非法风俗店。对政治与社会保持敏感、同时竭力兼顾看护工作与风俗营业的曜子，其开朗勤勉的身影折射出善恶的彼岸与这个国家的矛盾。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/b2k8K9Wd$$$正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37331442",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "150586",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "112125",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "136784",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "150321",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "169027",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "85379",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "166643",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "lzi_direct",
+          "id": "144316",
+          "url": "https://cj.lziapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "高清$https://v.baofeng11.com/video/yazhoudeduteguodu/64d24fee1d27/index.m3u8"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/e1w6J9Gb/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/eXDQ8Moe"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/eXDQ8Moe/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/bYE73MWb"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/bYE73MWb/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260629/Ea5HBpoA/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd"
+        },
+        {
+          "source": "modu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/eZ687W8e"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/eZ687W8e/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "liangzi",
+          "url": "HD中字$https://v.lzcdn27.com/share/2fdf132bc31b24922316fa3a6ec7c196"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "lzm3u8",
+          "url": "HD中字$https://v.lzcdn27.com/20260701/12292_4e4f63e8/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260629/Ea5HBpoA/index.m3u8"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b2k8K9Wd/index.m3u8"
+        }
+      ],
+      "douban_id": "37331442",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37331442",
+        "title": "亚洲的独特国度",
+        "original_title": "アジアのユニークな国",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-06-28(日本)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0ODcyMyJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NDgzNiJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "重度催眠",
+      "vod_sub": "来访者,The Visitors,Street Soul",
+      "vod_en": "zhongducuimian",
+      "vod_status": 1,
+      "vod_letter": "Z",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "悬疑,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260323-1/d837bdf91231cdf31db4315ad4274e7e.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "谢君豪,王杍逸,何杜娟,赵美钧,韩储鸽,杨帆",
+      "vod_director": "左志国",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;三层的独栋别墅里女孩发现了一具尸体，随后警方及时赶到，经检查后在案发现场又陆续发现了另外两名死者，和别墅的主人董医生。陈兵带队检查现场发现了几处疑点……幸存的董医生经过治疗逐渐恢复健康，并",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "2026-02-06",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-03-23 17:02:12",
+      "vod_time_add": "1774256532",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 35817285,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;三层的独栋别墅里女孩发现了一具尸体，随后警方及时赶到，经检查后在案发现场又陆续发现了另外两名死者，和别墅的主人董医生。陈兵带队检查现场发现了几处疑点……幸存的董医生经过治疗逐渐恢复健康，并在医院里向警察说出了一段怪异的经历，雨夜别墅里发生的一切，都逐渐明朗开来……</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-plays.com/share/c343ad6508b1a2a4c0c8800c0dd34d8d$$$HD国语$https://vip.ffzy-plays.com/20260323/51700_c343ad65/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:35817285",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "48723",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "94836",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202603/22/69bf850079ba736cf32618d4/0f04da/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-plays.com/share/c343ad6508b1a2a4c0c8800c0dd34d8d"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-plays.com/20260323/51700_c343ad65/index.m3u8"
+        }
+      ],
+      "douban_id": "35817285",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "35817285",
+        "title": "重度催眠",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-02-06(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTczMiJ9LHsicyI6Im1vZHUiLCJpZCI6Ijg0NjIzIn1d",
+      "type_id": "15",
+      "type_id_1": 7,
+      "group_id": 0,
+      "vod_name": "蓝海",
+      "vod_sub": "蓝海",
+      "vod_en": "lanhai",
+      "vod_status": 1,
+      "vod_letter": "L",
+      "vod_color": "",
+      "vod_tag": "剧情",
+      "vod_class": "剧情",
+      "vod_pic": "https://www.mdzypic.com/upload/vod/20260616-1/4492e0526c71f28c3dc0e8341ac861e6.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "叶兰,胡钰莹,王杍逸",
+      "vod_director": "宋金笑",
+      "vod_writer": "宋金笑",
+      "vod_behind": "",
+      "vod_blurb": "在一个安静的海边小村里，活泼好动的小女孩小葵有很多梦想，她既渴望和朋友们玩耍，又渴望帮助母亲红菊表演“茂腔”戏。由于小葵的父亲从海上失踪，红菊独自承担起支撑家庭的重担。她最闪亮的一刻就是登上舞台，成为",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2024-10-03",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "中国大陆",
+      "vod_lang": "汉语普通话",
+      "vod_year": "2024",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "叶兰,胡钰莹,王杍逸",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 337,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-16 18:58:09",
+      "vod_time_add": "1781607489",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37027709,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>在一个安静的海边小村里，活泼好动的小女孩小葵有很多梦想，她既渴望和朋友们玩耍，又渴望帮助母亲红菊表演“茂腔”戏。由于小葵的父亲从海上失踪，红菊独自承担起支撑家庭的重担。她最闪亮的一刻就是登上舞台，成为...</p>",
+      "vod_play_from": "modum3u8",
+      "vod_play_server": "no",
+      "vod_play_note": "",
+      "vod_play_url": "正片$https://play.modujx11.com/20260616/RE4RCQfs/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37027709",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49732",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "84623",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202606/16/6a3129d52394fd5f704508b5/f2075a/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260616/RE4RCQfs/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260616/RE4RCQfs/index.m3u8"
+        }
+      ],
+      "douban_id": "37027709",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37027709",
+        "title": "蓝海",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-03-25(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2024"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0NzI3MCJ9LHsicyI6ImJmenkiLCJpZCI6IjExMjY1NSJ9XQ",
+      "type_id": "26",
+      "type_id_1": 20,
+      "group_id": 0,
+      "vod_name": "神奇柑仔店真人版",
+      "vod_sub": "不可思议的点心店 钱天堂,神奇点心店,神奇柑仔店 钱天堂",
+      "vod_en": "shenqiganzidianzhenrenban",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,奇幻",
+      "vod_pic": "https://img.picbf.com/upload/vod/20251128-1/eae2d0ce707c052ad92db45fc7edd3cd.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "天海祐希,大桥和也,伊原六花,上白石萌音,平泽宏宏路,伊礼姬奈,白山乃爱,番家天嵩,今濱夕輝乃,山本未来,渡边圭祐,田中里衣,大河原次郎",
+      "vod_director": "中田秀夫",
+      "vod_writer": "吉田玲子",
+      "vod_behind": "",
+      "vod_blurb": "改编自畅销儿童小说，本片以只有幸运的人才能到达的粗点心店为舞台，描绘了购买了红子推荐的可以实现愿望的“不可思议的粗点心”的人们的故事。",
+      "vod_remarks": "更新至HD",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "日本",
+      "vod_lang": "日语",
+      "vod_year": "2024",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 10,
+      "vod_hits_day": 100,
+      "vod_hits_week": 44,
+      "vod_hits_month": 299,
+      "vod_duration": "",
+      "vod_up": 55,
+      "vod_down": 801,
+      "vod_score": "9.0",
+      "vod_score_all": 8091,
+      "vod_score_num": 899,
+      "vod_time": "2026-07-14 19:04:51",
+      "vod_time_add": "1764299589",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36686373,
+      "vod_douban_score": "6.1",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "改编自畅销儿童小说，本片以只有幸运的人才能到达的粗点心店为舞台，描绘了购买了红子推荐的可以实现愿望的“不可思议的粗点心”的人们的故事。",
+      "vod_play_from": "bfzym3u8",
+      "vod_play_server": "",
+      "vod_play_note": "",
+      "vod_play_url": "HD$https://v.fengbao8.com/video/shenqiganzidianzhenrenban/HD/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36686373",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "47270",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "bfzy",
+          "id": "112655",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b2.bdzybf22.com/videos/202511/28/692922819364de0888f92951/8ab5eb/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.fengbao8.com/video/shenqiganzidianzhenrenban/HD/index.m3u8"
+        },
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.fengbao8.com/video/shenqiganzidianzhenrenban/HD/index.m3u8"
+        }
+      ],
+      "douban_id": "36686373",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36686373",
+        "title": "神奇柑仔店 真人版",
+        "original_title": "ふしぎ駄菓子屋 銭天堂",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2024-12-13(日本)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2024"
+      },
+      "episode_count": "0",
+      "latest_episode": "0",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTY2OSJ9LHsicyI6Im1vZHUiLCJpZCI6Ijg0NTY3In1d",
+      "type_id": "14",
+      "type_id_1": 7,
+      "group_id": 0,
+      "vod_name": "厌女症",
+      "vod_sub": "ザ・ミソジニー",
+      "vod_en": "yannvzheng",
+      "vod_status": 1,
+      "vod_letter": "Y",
+      "vod_color": "",
+      "vod_tag": "恐怖",
+      "vod_class": "恐怖",
+      "vod_pic": "https://www.mdzypic.com/upload/vod/20260615-1/ecf91634a85761e990794fbb049e76dd.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "中原翔子,内田周作,河野知美",
+      "vod_director": "高桥洋",
+      "vod_writer": "高桥洋",
+      "vod_behind": "",
+      "vod_blurb": "本作は不気味な洋館を舞台に、呪われた事件にまつわる物語を演じる2人の女優を軸にしたホラー。女優で劇作家のナオミは一夏借りた山荘で、かつて自分の夫を略奪した女優ミズキを呼び寄せ、芝居の稽古を始める。題材",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2022-09-09",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "日本",
+      "vod_lang": "日语",
+      "vod_year": "2022",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "中原翔子,内田周作,河野知美",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 292,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-15 19:19:33",
+      "vod_time_add": "1781522373",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 35925493,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>本作は不気味な洋館を舞台に、呪われた事件にまつわる物語を演じる2人の女優を軸にしたホラー。女優で劇作家のナオミは一夏借りた山荘で、かつて自分の夫を略奪した女優ミズキを呼び寄せ、芝居の稽古を始める。題材...</p>",
+      "vod_play_from": "modum3u8",
+      "vod_play_server": "no",
+      "vod_play_note": "",
+      "vod_play_url": "正片$https://play.modujx11.com/20260615/zjg1jwiO/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "恐怖片",
+      "source_category_id": "10",
+      "source_category_name": "恐怖片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:35925493",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49669",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "84567",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202606/11/6a2ad6460452185f5979878b/2dff51/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260615/zjg1jwiO/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260615/zjg1jwiO/index.m3u8"
+        }
+      ],
+      "douban_id": "35925493",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "35925493",
+        "title": "厌女症",
+        "original_title": "ザ・ミソジニー",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2022-09-09(日本)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2022"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODEwMyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "明天我爱你",
+      "vod_sub": "I&#039;ll Love You More Tomorrow",
+      "vod_en": "mingtianwoaini",
+      "vod_status": 1,
+      "vod_letter": "M",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,喜剧,爱情",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260618-1/d144813ffcfa511214343af0388e76a1.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "潘长江,李明启,栾福仁,张晓燕",
+      "vod_director": "杨世光",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;郝三多是河东村年轻的村长，在他的带领下，河东村依靠科技兴农使村民的生活有了翻天覆地的变化。而面对富裕起来的河东村，仅一河之隔的河西村却依然固守着传统的农业操作。在河西村村长老正确的眼里，种",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1999",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "5.8",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-18 10:51:31",
+      "vod_time_add": "1781751091",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 2294295,
+      "vod_douban_score": "5.8",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;郝三多是河东村年轻的村长，在他的带领下，河东村依靠科技兴农使村民的生活有了翻天覆地的变化。而面对富裕起来的河东村，仅一河之隔的河西村却依然固守着传统的农业操作。在河西村村长老正确的眼里，种好地、多收粮永远是正确的，而河东村违背老传统的做法，对他来说是根本不能接受的，也正因此使他对郝三多非常反感。可三多却与老正确的女儿—美丽善良的小玉相爱着，这又违背了河东村与河西村互不通婚的老传统。为此，老正确费尽心思，从中作梗……这可愁坏了热情爽直的三多妈，为了儿子的幸福生活，三多妈亲自出马去找老正确。在她的劝导下，老正确的老脑筋竟也有所转变，当他看到了农业实验基地的高科技成果，以及河东村富足美好的生活后，才真正地感到自己的旧思想必须要有新认识了……为了推广农业科技，把成功致富的经验介绍给大家，郝三多把每年村里举行的传统的丰收庙会改办为农业科技大集，吸引了十里八乡的老百姓。而今年在乡技术推广站乔站长的建议下，河东村准备举办大型农民科技节，三多自筹资金聘请百名农业科技专家现场咨询、专业指导……在大家的共同努力下，科技节取得了巨大的成功，光与外商签定的合作项目就给村里吸引了上千万元的资金，而小玉与三多的婚事更是喜上加喜。面对这美满喜人的结局和充满希望的幸福生活，每个人的心里都荡漾着一句话：“明天，我爱你！”</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play9.com/share/5f1a8a8fddbc8a5ff4bf0f111dc69ff4$$$HD国语$https://vip.ffzy-play9.com/20260618/44695_5f1a8a8f/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:2294295",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98103",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play9.com/share/5f1a8a8fddbc8a5ff4bf0f111dc69ff4"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play9.com/20260618/44695_5f1a8a8f/index.m3u8"
+        }
+      ],
+      "douban_id": "2294295",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "2294295",
+        "title": "明天我爱你",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1999"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1999"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6Imd1YW5nc3UiLCJpZCI6IjE2OTE3MCJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNjkyNyJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE1MDQ2NCJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMjI2OCJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2Njc4NiJ9XQ",
+      "type_id": "9",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "极度重犯",
+      "vod_sub": "",
+      "vod_en": "jiduzhongfan",
+      "vod_status": 1,
+      "vod_letter": "J",
+      "vod_color": "",
+      "vod_tag": "动作,惊悚,犯罪",
+      "vod_class": "动作,惊悚,犯罪,动作片",
+      "vod_pic": "https://hhmage.com/cover/1b654975aa9940d29d99efe8d53f17d2.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "古天乐,张智霖,任达华",
+      "vod_director": "林岭东",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "职业杀手唐（古天乐 饰）因杀人罪被捕，在狱中度过了漫长的十二载。刑满释放后的唐暗暗下定决心，要与过去划清界限，在余生里做一个好人。可是，唐曾经的好友陈雄（任达华 饰）和马克斯（张智霖 饰）却并不愿意就",
+      "vod_remarks": "正片",
+      "vod_pubdate": "1998-07-16",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "中国香港",
+      "vod_lang": "粤语",
+      "vod_year": "1998",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 115,
+      "vod_hits_day": 699,
+      "vod_hits_week": 313,
+      "vod_hits_month": 187,
+      "vod_duration": "",
+      "vod_up": 404,
+      "vod_down": 184,
+      "vod_score": "9.0",
+      "vod_score_all": 288,
+      "vod_score_num": 32,
+      "vod_time": "2026-07-01 19:06:02",
+      "vod_time_add": "1782903962",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 1295158,
+      "vod_douban_score": "6.5",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "职业杀手唐（古天乐 饰）因杀人罪被捕，在狱中度过了漫长的十二载。刑满释放后的唐暗暗下定决心，要与过去划清界限，在余生里做一个好人。可是，唐曾经的好友陈雄（任达华 饰）和马克斯（张智霖 饰）却并不愿意就此放过他，他们希望唐能够再度出山，做掉菲律宾总统候选人。\n                                    \n                                　　对于好友的非分之请，唐断然拒绝，可是之后，候选人还是被害身亡，不仅如此，现场遗留的证据表明，唐就是凶手，一时间",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/dG6RpG5b$$$正片$https://play.hhuus.com/play/dG6RpG5b/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "huya",
+      "_sourceShort": "虎牙",
+      "source_url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+      "canonical_id": "ext:douban:1295158",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "huya",
+          "id": "112268",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "136927",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "150464",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "169170",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "166786",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/eERqnDla/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/aAD60wje"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/aAD60wje/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/dBBrkzod"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/dBBrkzod/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/bDkqmBka"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/bDkqmBka/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dG6RpG5b/index.m3u8"
+        }
+      ],
+      "douban_id": "1295158",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "1295158",
+        "title": "极度重犯",
+        "original_title": "極度重犯",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1998-07-16"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1998"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODM4NyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "十字架下的魔影",
+      "vod_sub": "",
+      "vod_en": "shizijiaxiademoying",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "悬疑,惊悚",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260629-1/bf83d3a46cb51a2f53f5e8db2a7113c4.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "吕晓禾,张继波,肖扬,尹翠兰,张媛",
+      "vod_director": "王学新",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;全国解放前夕，人民解放军占领滨江畔某城。一天傍晚，我军一辆吉普车在仁爱医院墙外遇袭，某部首长王显胜和粮食采购队队员霍强受重伤。侦察队长龙一雄率助手秦国政赶到现场，决定当时在场的医院保卫干部",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1994",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "6.1",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-29 21:24:22",
+      "vod_time_add": "1782739462",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 3930023,
+      "vod_douban_score": "6.1",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;全国解放前夕，人民解放军占领滨江畔某城。一天傍晚，我军一辆吉普车在仁爱医院墙外遇袭，某部首长王显胜和粮食采购队队员霍强受重伤。侦察队长龙一雄率助手秦国政赶到现场，决定当时在场的医院保卫干部廖大中、贾振魁协助破案。伤员抢救不及身亡，尸体不翼而飞；模拟现场时担任王显胜替身的廖大中突然死亡；深夜停尸间窗口出现的怪脸；医院教堂里修女幽灵般的行踪。这些都使案情扑朔迷离，空气中弥漫着阴森恐怖的气息。为什么匪徒要选在医院外这段不便隐蔽的地段伏击?为什么负责验尸的老医生古石文来汇报他对值班护士叶秋红的怀疑?为什么龙一雄的车上发现了定时炸弹?为什么龙一雄对卖蛇艺人发生了兴趣?为什么修女偷偷地扔给秦国政一个小纸团?又为什么古石文意外身亡后死不见尸却又突然出现?疑团重重，真假难辨。龙一雄苦思冥想，去伪存真，巧施妙计，步步紧逼，终于引敌上钩，俘获了潜伏极深的敌特“黑月一号”，并让面貌酷似敌特“乌云一号”的修女阿莹打入敌人内部，查清了敌特的活动。原来敌特的头目，就是假装积极、骗取信任的医院保卫干部贾振魁!龙一雄经精心布置，将敌特一网打尽。敌人的阴谋破产了，年轻的红色政权得到了巩固。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/dc346f5dee286bd3faa7645724ebf79f$$$HD国语$https://vip.ffzy-play10.com/20260629/69229_dc346f5d/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:3930023",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98387",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/dc346f5dee286bd3faa7645724ebf79f"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260629/69229_dc346f5d/index.m3u8"
+        }
+      ],
+      "douban_id": "3930023",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "3930023",
+        "title": "十字架下的魔影",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1994"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1994"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzkxNCJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "神秘的舞厅皇后",
+      "vod_sub": "A Mysterious Dancer",
+      "vod_en": "shenmidewutinghuanghou",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260608-1/2f37de6ba6584fab1e1892b9b84178e2.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "韩月乔,张多福,关新伟",
+      "vod_director": "于中效",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;舞厅皇后徐亚芳，不知盗窃“991秘方”的离异丈夫将它藏在口袋中屡招杀身之祸，在刘科长的保护下，徐亚芳脱离险境，重返舞台。",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1991",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-08 17:23:13",
+      "vod_time_add": "1780910593",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 4294262,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;舞厅皇后徐亚芳，不知盗窃“991秘方”的离异丈夫将它藏在口袋中屡招杀身之祸，在刘科长的保护下，徐亚芳脱离险境，重返舞台。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play9.com/share/28f82072a5a18e86fd5a4dce4fce5aa5$$$HD国语$https://vip.ffzy-play9.com/20260608/44496_28f82072/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:4294262",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "97914",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play9.com/share/28f82072a5a18e86fd5a4dce4fce5aa5"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play9.com/20260608/44496_28f82072/index.m3u8"
+        }
+      ],
+      "douban_id": "4294262",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "4294262",
+        "title": "神秘的舞厅皇后",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1991-12"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1991"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODM3NyJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "女绑架者",
+      "vod_sub": "",
+      "vod_en": "nvbangjiazhe",
+      "vod_status": 1,
+      "vod_letter": "N",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260629-1/3e51d0b540ec76af08a5889e2eae4a57.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "艾丽娅,契那日图,邬尔罕,黄小立,左华",
+      "vod_director": "孙志强",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;女绑架者 (1990)故事梗概\r\n七名歹徒在残害了揭发他们罪行的大队支部书记和队长两家人性命后，自知罪恶深重，法网难逃，在主犯张三江提议下，决定集体引爆自杀，以逃避法律制裁。事件发生后，公",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1990",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-29 21:14:34",
+      "vod_time_add": "1782738874",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 2036564,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;女绑架者 (1990)故事梗概\r\n七名歹徒在残害了揭发他们罪行的大队支部书记和队长两家人性命后，自知罪恶深重，法网难逃，在主犯张三江提议下，决定集体引爆自杀，以逃避法律制裁。事件发生后，公安机关对引爆现场进行实地勘察，确认七名犯罪分子全部自毙。但事隔不久，在一列飞驶的列车上，两名新闻记者无意中发现了曾被广播、电视报道过的已“自毙”的凶杀主犯张三江。为了进一步弄清事实真相，他们偷拍了这位神秘旅客的照片，并连夜送往公安机关。原来，张三江欺骗了六名同伙，在自杀时用的炸药包上做了手脚。深夜，他来到同伙老板哥的家中，老板哥和一伙小兄弟既惊又喜，他们妄图重整旗鼓。张三江找到他的旧相好吴梦梦。吴梦梦曾是一个纯情少女，但中学时代遭人奸污后，自暴自弃，整日与张三江一伙鬼混。公安机关发现张三江仍逍遥法外，立即下令通缉。张三江自知性命难保，便寻机窃得国家机密文件准备越境潜逃。吴梦梦紧随其后，并协助张三江绑架了地理老师敖庆，迫使他充当他们越境的向导。张三江带领吴梦梦、熊二、杨佳丽等人向边境的原始森林进发。放庆三番五次设法逃跑，都没有成功。敖庆又欲以正义感化这伙亡命之徒，但除了吴梦梦之外，其他歹徒置之不理。警方人员循迹追捕。由于迷路和缺少食物，逃犯内部开始产生动摇，继而争抢食物，互相残杀。熊二进森林后被毒蛇咬伤，在张王江授意下杨佳丽亲手杀死了自己的情人熊二。在困境中，张三江为了摆脱累赘，又把抱着出国当歌单美梦的杨佳丽杀死。我公安干警在森林警察的配合下，同追堵截，彻底粉碎了逃犯企图越境的荚梦。放庆为保护国家机密与歹徒展开了殊死搏斗，我公安干警将张二江等人先后击毙。敖庆也在激战中负伤。吴梦梦日睹了张三江等人的罪恶下场，终于彻底醒悟过来，满怀着心灵的创伤走向新岸。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/c894043c7d7056661051b7b13e53fd9d$$$HD国语$https://vip.ffzy-play10.com/20260629/69224_c894043c/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:2036564",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98377",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/c894043c7d7056661051b7b13e53fd9d"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260629/69224_c894043c/index.m3u8"
+        }
+      ],
+      "douban_id": "2036564",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "2036564",
+        "title": "女绑架者",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1990"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1990"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODI5NCJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "中国霸王花",
+      "vod_sub": "Zhong Guo ba wang hua",
+      "vod_en": "zhongguobawanghua",
+      "vod_status": 1,
+      "vod_letter": "Z",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260626-1/acfa59345cc5ce33b79552025e6742c5.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "张敬,邹倚天,李侠,闵朝辉",
+      "vod_director": "王晓民,龚艺群",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;一群来自五湖四海的年轻姑娘们，怀惴报国理想来到军营。她们分别是欧霞（邹倚天 饰）、文丽（张敬 饰)、田娥（闵朝晖 饰）、谢蓉蓉（黄莉 饰）等，每个人家庭出身不同，脾气性格迥异，但理想一致。",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1990",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "6.2",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-26 13:12:30",
+      "vod_time_add": "1782450750",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 1299164,
+      "vod_douban_score": "6.2",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;一群来自五湖四海的年轻姑娘们，怀惴报国理想来到军营。她们分别是欧霞（邹倚天 饰）、文丽（张敬 饰)、田娥（闵朝晖 饰）、谢蓉蓉（黄莉 饰）等，每个人家庭出身不同，脾气性格迥异，但理想一致。经过严格的训练和无数次摸爬滚打，她们很快成长为威震军营的女子特警队员。重大抢劫案发生后，领导一声令下，姑娘们奔赴案发现场，面对猖狂劫匪，她们机智勇敢地全部擒获。随着军营生涯的流逝，她们都成长为自觉的革命军人，个别队员克服了自身的娇气和散漫习惯，处处以大局为重，成为令人称奇的军中霸王花......</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play9.com/share/63b75e97eb97675c4264ed48771616c3$$$HD国语$https://vip.ffzy-play9.com/20260626/44845_63b75e97/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:1299164",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98294",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play9.com/share/63b75e97eb97675c4264ed48771616c3"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play9.com/20260626/44845_63b75e97/index.m3u8"
+        }
+      ],
+      "douban_id": "1299164",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "1299164",
+        "title": "中国霸王花",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1990"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1990"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Nzg4NSJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "无罪的杀手",
+      "vod_sub": "Innocent Killer",
+      "vod_en": "wuzuideshashou",
+      "vod_status": 1,
+      "vod_letter": "W",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260607-1/fef54b1a80a36219251957d1bbaa4a5c.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "杜雨露,向梅,梁丹妮,许亚军,村里,张国文,赫天罡,张百爽,陈强,史可夫,刘俊杰,李真,韦唯,林萍,陆今龙,金淑媛",
+      "vod_director": "武豫梅",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;在一个狂风暴雨之夜，可怕惊心的血腥事件接连发生。女工程师魏敏和建筑公司总经理毛志海相继离奇坠楼身亡。接到报案后，侦探长陈庭和干警奉命赶往现场勘查。更为离奇的是，在事故发生之前的数日，市委便",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1988",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-07 23:30:23",
+      "vod_time_add": "1780846223",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 4291714,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;在一个狂风暴雨之夜，可怕惊心的血腥事件接连发生。女工程师魏敏和建筑公司总经理毛志海相继离奇坠楼身亡。接到报案后，侦探长陈庭和干警奉命赶往现场勘查。更为离奇的是，在事故发生之前的数日，市委便收到了毛经理即将死亡的匿名信。因此市委相关领导高度重视此事，责令陈庭尽快破案。而就在案发后不久，接连数日情绪反常的建筑公司女书记方品也死于非命。警方顺藤摸瓜找到了担任司机的李波，继而发现更多疑点。与此同时，方品的儿子方小华以及在公司担任会计同时也是魏敏妹妹的魏莲也走入警方视野。\r\n扑朔迷离的案情背后，是无止境的欲望对生命的残害……</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/68b2e4115beb6914e8dde4c8aa578790$$$HD国语$https://vip.ffzy-play10.com/20260607/68466_68b2e411/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:4291714",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "97885",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/68b2e4115beb6914e8dde4c8aa578790"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260607/68466_68b2e411/index.m3u8"
+        }
+      ],
+      "douban_id": "4291714",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "4291714",
+        "title": "无罪的杀手",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1988-12"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1988"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODM2NiJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "欲望的火焰",
+      "vod_sub": "",
+      "vod_en": "yuwangdehuoyan",
+      "vod_status": 1,
+      "vod_letter": "Y",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260628-1/0dc360f784e536d19a76074d1f7a3763.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "杜治秋,曾红生,萨仁高娃,张燕,陈永健,方青子,杨杨,杨眉,张大万,张平,耿笨钝",
+      "vod_director": "张郁强",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;▪ 导演：张郁强\r\n▪ 编剧：钟源；舒克\r\n▪ 美术设计：黄永刚\r\n▪ 演奏：蒙乐蒙电声乐队\r\n▪ 指挥：莫尔吉胡\r\n▪ 独唱：周军\r\n角色\t演员\t备注\r\n陈庭\t杜冶秋\t----\r\n宋波",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1988",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "7.8",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-28 20:08:03",
+      "vod_time_add": "1782648483",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 1747393,
+      "vod_douban_score": "7.8",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;▪ 导演：张郁强\r\n▪ 编剧：钟源；舒克\r\n▪ 美术设计：黄永刚\r\n▪ 演奏：蒙乐蒙电声乐队\r\n▪ 指挥：莫尔吉胡\r\n▪ 独唱：周军\r\n角色\t演员\t备注\r\n陈庭\t杜冶秋\t----\r\n宋波\t曾红生\t----\r\n娜仁高娃\t萨仁高娃\t----\r\n叶苒\t张嬿\t----\r\n石满\t陈永健\t----\r\n周大头\t张大万\t----\r\n李环\t杨扬\t----\r\n杨小莉\t杨眉\t----\r\n局长\t黄小雷\t----\r\n严萍\t方青子\t----\r\n小三子\t张平\t----\r\n时装店经理宋波的妻子杨小莉突然死亡，刑警队长陈庭带着两名助手赶到现场。经化验茶几上一只有残酒的杯子和酒瓶，发现杨小莉是喝了含有氰化物的葡萄酒中毒身亡。会计叶苒证明，宋波与杨小莉吵嘴，喝了杯中的酒后负气离家的。陈庭将酒杯送去检验，杯子上确实有杨小莉与宋波两个人的指纹和唇纹，这似乎表明杨小莉是服毒自杀。富有经验的陈庭没有被这一假象所迷惑。他对杨小莉身旁一枚金戒指产生了疑问。因为杨小莉纤细的手指戴着太大，但它又不是宋波的。当陈庭摆弄这枚戒指沉思时，在旁的医院护士李环显得神色慌张。离开宋家时，陈庭还发现女大学生娜仁高娃徘徊在宋家附近。经过深入分析和周密调查，陈庭了解到李环与宋波有暧昧关系。他决定从李环这里入手，但当他们找到李环时，她已经死了。案情越来越复杂，此时，香港警暑转来一批有关黄金走私集团和材料，材料表明这个集团在国内有一个支队。眼前的案子与这个集团有没有关系呢？陈庭经过反复推理和细致工作，终于揭开此案的真相。宋波，这个某大学的高材生，在物质金钱欲望的支配下，终于堕落成黄金走私集团中的杀人犯，他受着集团头目叶苒的控制。最后他在熊熊烈火中丧命。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/6a1fa4629aff8c77aa20336bbe0f5443$$$HD国语$https://vip.ffzy-play10.com/20260628/69212_6a1fa462/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:1747393",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98366",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/6a1fa4629aff8c77aa20336bbe0f5443"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260628/69212_6a1fa462/index.m3u8"
+        }
+      ],
+      "douban_id": "1747393",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "1747393",
+        "title": "欲望的火焰",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1988"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1988"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODM4MiJ9XQ",
+      "type_id": "7",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "笑破情网",
+      "vod_sub": "乡村干部,Village&#039;s Cadre",
+      "vod_en": "xiaopoqingwang",
+      "vod_status": 1,
+      "vod_letter": "X",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "喜剧",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260629-1/891d60c31db5557ffbef5b2ebcdfffca.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "刘伟,郑健,马季,赵炎,冯巩,王金宝,王谦祥,戴志诚,赫波,刘迎春,陈立中,祁月茹,肖燕,李火,金淑之,李增瑞,刘飞,王苹",
+      "vod_director": "胡书锷",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;舞台上，著名相声演员舒怀（赵炎 饰）和搭档谢林（郑健 饰）逗得观众哈哈直笑，台下掌声雷动，观众欢呼要求返场，并且要求说个新段子。但是舒怀成名后疲于应对各种社交应酬，没有精力潜心创作，弄得他",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1987",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "7.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-29 21:18:28",
+      "vod_time_add": "1782739108",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 1963657,
+      "vod_douban_score": "7.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;舞台上，著名相声演员舒怀（赵炎 饰）和搭档谢林（郑健 饰）逗得观众哈哈直笑，台下掌声雷动，观众欢呼要求返场，并且要求说个新段子。但是舒怀成名后疲于应对各种社交应酬，没有精力潜心创作，弄得他在梦中困在舞台上羞愧难当。正在焦急万分的时候，他被老婆梅英从睡梦中叫醒，梅英和他商量要给他母亲操办六十大寿。妻子前脚刚走，有客来访邀请舒怀参加即将举行的曲艺大奖赛，当然他必须为此拿出新的段子。舒怀叫上谢林躲到某渔村搞创作，而过上新生活的村里请客送礼的歪风蔚然成行。才出狼穴，又入虎口。\r\n新的人情网让舒怀更加苦不堪言……</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/76dda52a6a36ca2e766518b633ba70b7$$$HD国语$https://vip.ffzy-play10.com/20260629/69231_76dda52a/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "喜剧片",
+      "source_category_id": "10",
+      "source_category_name": "喜剧片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:1963657",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98382",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/76dda52a6a36ca2e766518b633ba70b7"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260629/69231_76dda52a/index.m3u8"
+        }
+      ],
+      "douban_id": "1963657",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "1963657",
+        "title": "笑破情网",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1987"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1987"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODMzMyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "假脸",
+      "vod_sub": "The Mask",
+      "vod_en": "jialian",
+      "vod_status": 1,
+      "vod_letter": "J",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260627-1/06527498a178a152bf84a52db9564572.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "赵有亮,赵奎娥,徐励琍,仇晓光,王跃进,张达,马文忠,郭文坤,钟吼",
+      "vod_director": "张今标",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;张岫岩从县话剧团调到市文化局，参加戏剧节的组织筹备工作。文化局副局长佟伯夷热情地接待了他，还塞给他一个名叫《巨流》的剧本，请他好好扶植。在确定戏剧节的演出剧目时，围绕着定哪部戏为重点剧目的",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1986",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-27 21:44:51",
+      "vod_time_add": "1782567891",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 6755228,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;张岫岩从县话剧团调到市文化局，参加戏剧节的组织筹备工作。文化局副局长佟伯夷热情地接待了他，还塞给他一个名叫《巨流》的剧本，请他好好扶植。在确定戏剧节的演出剧目时，围绕着定哪部戏为重点剧目的问题展开了争论，佟伯夷极力吹捧《巨流》，贬低《酒之过》。为此，张岫岩走访了《酒之过》的作者和主演刘秉林。剧本深刻的思想内涵以及精湛的表演处理，使张岫岩非常感动。张岫岩看出了佟伯夷的真正用心--通过《巨流》的上演达到吹捧自己、捞取政治资本的目的。艺术处女办事员范若男是个外刚内柔的热心肠，她主动给张岫岩当助手，为筹划戏剧节的经费出点子拉赞助。张岫岩早在10多年前就一直爱慕着的女演员高相宜被请来当了戏剧节的经纪人。张岫岩正直的品德和积极的工作热情，唤起了她对新生活的热爱，她回想起他们年轻时代那些美好的往事，爱情的种子在心中又重新萌发。《酒之过》在大家的努力下，冲破了重重障碍终于脱颖而出，获得了成功，受到了市委领导和观众的好评。范若男也作出了爱情的选择，同正直的刘秉林结为抗俪。佟伯夷使出惯用伎俩窃取了《酒之过》的功绩，并又一次编造了有关高相宜的谣言，动摇了张岫岩对她的爱，致使高相宜刚刚复苏的生活热情又一次泯灭。首届&quot;青蓝&quot;戏剧节闭幕了，但人生舞台上的戏剧还会一幕幕地演下去……</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play9.com/share/d6e0ddfc5b05597877a7d5036789a3a1$$$HD国语$https://vip.ffzy-play9.com/20260627/44853_d6e0ddfc/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:6755228",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98333",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play9.com/share/d6e0ddfc5b05597877a7d5036789a3a1"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play9.com/20260627/44853_d6e0ddfc/index.m3u8"
+        }
+      ],
+      "douban_id": "6755228",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "6755228",
+        "title": "假脸",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1986"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1986"
+      },
+      "semantic_tags": "form 现场 内容形态",
+      "snapshot_filter_evidence": "catalog-derived"
+    }
+  ],
+  "content_revision": "snapshot-b693cb2ce1ea39323d02",
+  "snapshot_mode": "generated-filter-pack",
+  "snapshot_filter": {
+    "key": "form",
+    "value": "现场"
+  }
+}

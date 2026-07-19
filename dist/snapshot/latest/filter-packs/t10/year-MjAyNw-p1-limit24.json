@@ -1,0 +1,971 @@
+{
+  "filters": {
+    "10": [
+      {
+        "key": "sort",
+        "name": "排序",
+        "init": "latest",
+        "value": [
+          {
+            "n": "最新",
+            "v": "latest"
+          },
+          {
+            "n": "高清优先",
+            "v": "quality"
+          },
+          {
+            "n": "多线路优先",
+            "v": "lines"
+          },
+          {
+            "n": "片名排序",
+            "v": "name"
+          }
+        ]
+      },
+      {
+        "key": "year",
+        "name": "年份",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2030",
+            "v": "2030"
+          },
+          {
+            "n": "2028",
+            "v": "2028"
+          },
+          {
+            "n": "2027",
+            "v": "2027"
+          },
+          {
+            "n": "2026",
+            "v": "2026"
+          },
+          {
+            "n": "2025",
+            "v": "2025"
+          },
+          {
+            "n": "2020-2022",
+            "v": "2020-2022"
+          },
+          {
+            "n": "2010年代",
+            "v": "2010s"
+          },
+          {
+            "n": "更早",
+            "v": "older"
+          }
+        ]
+      },
+      {
+        "key": "area",
+        "name": "地区",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "港台",
+            "v": "港台"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          },
+          {
+            "n": "泰国",
+            "v": "泰国"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "name": "类型",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "动作",
+            "v": "动作"
+          },
+          {
+            "n": "喜剧",
+            "v": "喜剧"
+          },
+          {
+            "n": "爱情",
+            "v": "爱情"
+          },
+          {
+            "n": "悬疑犯罪",
+            "v": "悬疑犯罪"
+          },
+          {
+            "n": "科幻奇幻",
+            "v": "科幻奇幻"
+          },
+          {
+            "n": "恐怖惊悚",
+            "v": "恐怖惊悚"
+          },
+          {
+            "n": "剧情",
+            "v": "剧情"
+          },
+          {
+            "n": "战争历史",
+            "v": "战争历史"
+          }
+        ]
+      },
+      {
+        "key": "form",
+        "name": "内容形态",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "解说",
+            "v": "解说"
+          },
+          {
+            "n": "合集",
+            "v": "合集"
+          },
+          {
+            "n": "现场",
+            "v": "现场"
+          },
+          {
+            "n": "课程",
+            "v": "课程"
+          },
+          {
+            "n": "片段",
+            "v": "片段"
+          }
+        ]
+      },
+      {
+        "key": "quality",
+        "name": "清晰度",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "高清",
+            "v": "hd"
+          },
+          {
+            "n": "4K",
+            "v": "4K"
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "抢先",
+            "v": "抢先"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 1,
+  "msg": "ok",
+  "page": 1,
+  "pagecount": 1,
+  "limit": 24,
+  "total": 3,
+  "class": [
+    {
+      "type_id": "0",
+      "type_name": "推荐",
+      "key": "recommend"
+    },
+    {
+      "type_id": "10",
+      "type_name": "院线电影",
+      "key": "theatrical_movie"
+    },
+    {
+      "type_id": "11",
+      "type_name": "网络电影",
+      "key": "web_movie"
+    },
+    {
+      "type_id": "12",
+      "type_name": "其他电影",
+      "key": "other_movie"
+    },
+    {
+      "type_id": "20",
+      "type_name": "电视剧",
+      "key": "tv_series"
+    },
+    {
+      "type_id": "21",
+      "type_name": "网络剧",
+      "key": "web_series"
+    },
+    {
+      "type_id": "6",
+      "type_name": "网络短剧",
+      "key": "web_short"
+    },
+    {
+      "type_id": "3",
+      "type_name": "综艺",
+      "key": "variety"
+    },
+    {
+      "type_id": "4",
+      "type_name": "动漫",
+      "key": "anime"
+    },
+    {
+      "type_id": "5",
+      "type_name": "纪录片",
+      "key": "documentary"
+    },
+    {
+      "type_id": "7",
+      "type_name": "解说",
+      "key": "explainer"
+    },
+    {
+      "type_id": "8",
+      "type_name": "文娱知识",
+      "key": "knowledge"
+    },
+    {
+      "type_id": "9",
+      "type_name": "成人伦理",
+      "key": "adult"
+    }
+  ],
+  "list": [
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjE1MjA5NCJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE3MDE2OCJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNzkyNSJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE1MTQ2MiJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMzI2NyJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2Nzc4NCJ9XQ",
+      "type_id": "14",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "痴人唱颂",
+      "vod_sub": "",
+      "vod_en": "chirenchangsong",
+      "vod_status": 1,
+      "vod_letter": "C",
+      "vod_color": "",
+      "vod_tag": "剧情,喜剧",
+      "vod_class": "剧情,喜剧,剧情片",
+      "vod_pic": "https://hhmage.com/cover/df6121546e9c44610ea4ee9b7a11c93a.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "",
+      "vod_director": "纳格·阿什温",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "在一个与世隔绝的村庄里，年轻的普拉塔普寻求机会，却踏入了一个充满欺骗的世界。被卷入无法控制的力量之中，他夹在进步与传统保留之间，不断考验着自己的信念与人生目标。",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2027(未定)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "印度",
+      "vod_lang": "泰卢固语",
+      "vod_year": "2027",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 994,
+      "vod_hits_day": 29,
+      "vod_hits_week": 663,
+      "vod_hits_month": 383,
+      "vod_duration": "140分钟",
+      "vod_up": 56,
+      "vod_down": 880,
+      "vod_score": "8.0",
+      "vod_score_all": 6096,
+      "vod_score_num": 762,
+      "vod_time": "2026-07-12 16:12:01",
+      "vod_time_add": "1783843921",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37312415,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "在一个与世隔绝的村庄里，年轻的普拉塔普寻求机会，却踏入了一个充满欺骗的世界。被卷入无法控制的力量之中，他夹在进步与传统保留之间，不断考验着自己的信念与人生目标。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/aKrL6Gxe$$$正片$https://play.hhuus.com/play/aKrL6Gxe/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37312415",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "152094",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "113267",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "137925",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "151462",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "170168",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "167784",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.fengbao11.com/video/chirenchangsong/e24283cde63e/index.m3u8"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/dJ6NP1gd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/bDkQ0xKa"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/bDkQ0xKa/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/eER0Pyga"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/eER0Pyga/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/dG6M9AJb"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/dG6M9AJb/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aKrL6Gxe/index.m3u8"
+        }
+      ],
+      "douban_id": "37312415",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37312415",
+        "title": "痴人唱颂",
+        "original_title": "సింగ్ గీతం",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-06-10(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2026"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "year 2027 年份",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Njg3MSJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "痴心二人行",
+      "vod_sub": "",
+      "vod_en": "chixinerrenxing",
+      "vod_status": 1,
+      "vod_letter": "C",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,爱情",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260423-1/d93686b0790cefb86fa4cb350805be47.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "姆鲁纳尔·塔库尔,希坦特·查杜尔韦迪,Agni Agyari",
+      "vod_director": "拉维·德耶瓦尔",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;在孟买，两个社交笨拙的千禧一代，在努力自我接纳的过程中找到了爱情。当他们与内心的不安全感和社会压力斗争时，他们的旅程从城市的喧嚣一路延伸至群山的宁静之中。",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "印度",
+      "vod_lang": "其它",
+      "vod_year": "2027",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-04-23 08:59:15",
+      "vod_time_add": "1776905955",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37345775,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;在孟买，两个社交笨拙的千禧一代，在努力自我接纳的过程中找到了爱情。当他们与内心的不安全感和社会压力斗争时，他们的旅程从城市的喧嚣一路延伸至群山的宁静之中。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/ba9be94b9a84fd28d757834ac32c0d60$$$HD中字$https://svip.feifei-play.com/20260423/42154_ba9be94b/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37345775",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "96871",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/ba9be94b9a84fd28d757834ac32c0d60"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260423/42154_ba9be94b/index.m3u8"
+        }
+      ],
+      "douban_id": "37345775",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37345775",
+        "title": "痴心二人行",
+        "original_title": "Do Deewane Seher Mein",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-02-20(印度)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2026"
+      },
+      "semantic_tags": "year 2027 年份",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjE1MTY2NSJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2OTkzNiJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNzY5MyJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE1MTIzMCJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMzAzNCJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2NzU1MiJ9XQ",
+      "type_id": "13",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "对我来说你已经死了",
+      "vod_sub": "You’re Dead To Me",
+      "vod_en": "duiwolaishuoniyijingsiliao",
+      "vod_status": 1,
+      "vod_letter": "D",
+      "vod_color": "",
+      "vod_tag": "恐怖",
+      "vod_class": "恐怖,恐怖片",
+      "vod_pic": "https://hhmage.com/cover/198fa316e1f402c73db0cdc43efa641a.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "艾拉·安德森,斯艾娜·阿古顿,",
+      "vod_director": "Juan Pablo Arias Munoz",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "这部电影聚焦一群即将离家上大学的高中毕业生，讲述他们如何面对现实。仿佛高三生活还不够让人焦虑似的，还有一个连环杀手逍遥法外。",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2027(美国)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2027",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 325,
+      "vod_hits_day": 622,
+      "vod_hits_week": 762,
+      "vod_hits_month": 666,
+      "vod_duration": "96分钟",
+      "vod_up": 691,
+      "vod_down": 71,
+      "vod_score": "2.0",
+      "vod_score_all": 1860,
+      "vod_score_num": 930,
+      "vod_time": "2026-07-09 14:18:01",
+      "vod_time_add": "1783577881",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36969361,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "这部电影聚焦一群即将离家上大学的高中毕业生，讲述他们如何面对现实。仿佛高三生活还不够让人焦虑似的，还有一个连环杀手逍遥法外。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/b4xzQAJb$$$正片$https://play.hhuus.com/play/b4xzQAJb/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "恐怖片",
+      "source_category_id": "10",
+      "source_category_name": "恐怖片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36969361",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "151665",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "113034",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "137693",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "151230",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "169936",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "167552",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "高清$https://v.baofeng11.com/video/duiwolaishuoniyijingsile/37f3fdf2544f/index.m3u8"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/e31yQzpb/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/eZ6zYAge"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/eZ6zYAge/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/e1wGW0qb"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/e1wGW0qb/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/b2k7xyAd"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/b2k7xyAd/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/b4xzQAJb/index.m3u8"
+        }
+      ],
+      "douban_id": "36969361",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36969361",
+        "title": "对我来说你已经死了",
+        "original_title": "What She Doesn't Know",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-08-22(FrightFest London)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "year 2027 年份",
+      "snapshot_filter_evidence": "catalog-derived"
+    }
+  ],
+  "content_revision": "snapshot-b693cb2ce1ea39323d02",
+  "snapshot_mode": "generated-filter-pack",
+  "snapshot_filter": {
+    "key": "year",
+    "value": "2027"
+  }
+}

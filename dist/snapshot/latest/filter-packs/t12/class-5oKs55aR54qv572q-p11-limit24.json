@@ -1,0 +1,972 @@
+{
+  "filters": {
+    "12": [
+      {
+        "key": "sort",
+        "name": "排序",
+        "init": "latest",
+        "value": [
+          {
+            "n": "最新",
+            "v": "latest"
+          },
+          {
+            "n": "高清优先",
+            "v": "quality"
+          },
+          {
+            "n": "多线路优先",
+            "v": "lines"
+          },
+          {
+            "n": "片名排序",
+            "v": "name"
+          }
+        ]
+      },
+      {
+        "key": "year",
+        "name": "年份",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2027",
+            "v": "2027"
+          },
+          {
+            "n": "2026",
+            "v": "2026"
+          },
+          {
+            "n": "2025",
+            "v": "2025"
+          },
+          {
+            "n": "2024",
+            "v": "2024"
+          },
+          {
+            "n": "2023",
+            "v": "2023"
+          },
+          {
+            "n": "2020-2022",
+            "v": "2020-2022"
+          },
+          {
+            "n": "2010年代",
+            "v": "2010s"
+          },
+          {
+            "n": "更早",
+            "v": "older"
+          }
+        ]
+      },
+      {
+        "key": "area",
+        "name": "地区",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "港台",
+            "v": "港台"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          },
+          {
+            "n": "泰国",
+            "v": "泰国"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "name": "类型",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "动作",
+            "v": "动作"
+          },
+          {
+            "n": "喜剧",
+            "v": "喜剧"
+          },
+          {
+            "n": "爱情",
+            "v": "爱情"
+          },
+          {
+            "n": "悬疑犯罪",
+            "v": "悬疑犯罪"
+          },
+          {
+            "n": "科幻奇幻",
+            "v": "科幻奇幻"
+          },
+          {
+            "n": "恐怖惊悚",
+            "v": "恐怖惊悚"
+          },
+          {
+            "n": "剧情",
+            "v": "剧情"
+          },
+          {
+            "n": "战争历史",
+            "v": "战争历史"
+          }
+        ]
+      },
+      {
+        "key": "form",
+        "name": "内容形态",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "解说",
+            "v": "解说"
+          },
+          {
+            "n": "合集",
+            "v": "合集"
+          },
+          {
+            "n": "现场",
+            "v": "现场"
+          },
+          {
+            "n": "课程",
+            "v": "课程"
+          },
+          {
+            "n": "片段",
+            "v": "片段"
+          }
+        ]
+      },
+      {
+        "key": "quality",
+        "name": "清晰度",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "高清",
+            "v": "hd"
+          },
+          {
+            "n": "4K",
+            "v": "4K"
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "抢先",
+            "v": "抢先"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 1,
+  "msg": "ok",
+  "page": 11,
+  "pagecount": 11,
+  "limit": 24,
+  "total": 245,
+  "class": [
+    {
+      "type_id": "0",
+      "type_name": "推荐",
+      "key": "recommend"
+    },
+    {
+      "type_id": "10",
+      "type_name": "院线电影",
+      "key": "theatrical_movie"
+    },
+    {
+      "type_id": "11",
+      "type_name": "网络电影",
+      "key": "web_movie"
+    },
+    {
+      "type_id": "12",
+      "type_name": "其他电影",
+      "key": "other_movie"
+    },
+    {
+      "type_id": "20",
+      "type_name": "电视剧",
+      "key": "tv_series"
+    },
+    {
+      "type_id": "21",
+      "type_name": "网络剧",
+      "key": "web_series"
+    },
+    {
+      "type_id": "6",
+      "type_name": "网络短剧",
+      "key": "web_short"
+    },
+    {
+      "type_id": "3",
+      "type_name": "综艺",
+      "key": "variety"
+    },
+    {
+      "type_id": "4",
+      "type_name": "动漫",
+      "key": "anime"
+    },
+    {
+      "type_id": "5",
+      "type_name": "纪录片",
+      "key": "documentary"
+    },
+    {
+      "type_id": "7",
+      "type_name": "解说",
+      "key": "explainer"
+    },
+    {
+      "type_id": "8",
+      "type_name": "文娱知识",
+      "key": "knowledge"
+    },
+    {
+      "type_id": "9",
+      "type_name": "成人伦理",
+      "key": "adult"
+    }
+  ],
+  "list": [
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODI1OSJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "我给爸爸加颗星",
+      "vod_sub": "",
+      "vod_en": "wogeibabajiakexing",
+      "vod_status": 1,
+      "vod_letter": "W",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "儿童,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260625-1/6305be50665f8da3d711d3edc1192eb7.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "赵晓明,吴涛,周安东",
+      "vod_director": "肖锋",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;六朝古都人流涌动，刑警队熊队长着便装在人群中发现了盗窃国家文物的要犯黑头，他不动声色地给他戴上了手铐。一年后，黑头从劳改农场逃窜回城，企图报复熊队长。熊队长在妻子病故后没有再婚，儿子聪聪经",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1993",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-25 10:24:54",
+      "vod_time_add": "1782354294",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 3174621,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;六朝古都人流涌动，刑警队熊队长着便装在人群中发现了盗窃国家文物的要犯黑头，他不动声色地给他戴上了手铐。一年后，黑头从劳改农场逃窜回城，企图报复熊队长。熊队长在妻子病故后没有再婚，儿子聪聪经常一人在家。黑头和同伙马仔乘夜色到熊队长家行凶，结果被聪聪自制的易拉罐“炸弹”吓得抱头鼠窜。此后，聪聪收到了一封夹有两颗子弹的恐吓信。为了儿子的安全，熊队长决定将聪聪送到姥姥家。聪聪和爸爸走进检票口，黑头和马仔已在火车上等候他了，然而，当火车开动时，他们却发现聪聪又朝出站口走去。被熊队长抓过的哑巴小偷狗弟是个孤儿，熊队长对他的关照使他十分感激，交往中，狗弟的身世打动了聪聪，两人成了好朋友。黑头和马仔欲用大货车撞死聪聪，危急之时，狗弟奋不顾身救了他。聪聪决意要抓住这两个逃犯，他和狗弟一起踏上了搜寻逃犯的征途。在曲折惊险的追寻中，聪聪、狗弟大难不死，同时也闹出了不少笑话，致使抓到手的黑头再次逃脱。后来，聪聪落到了黑头手中，被关在一艘旧船里，狗弟到江边寻找，也被他们抓住。一天，熊队长收到聪聪的人质照片，发现儿子的字母汗衫上被泥巴涂掉了几个字母，熊队长拼出了“船”字的发音，顿时恍然大悟，他飞快地向江边跑去。轮船上，聪聪正和黑头紧张地周旋，熊队长突然出现。千钧一发之际，狗弟来到甲板上，他悄悄捡起地上的枪，枪口对准了黑头。黑头万万没有想到这位哑巴就是他当年遗弃的亲生儿子。随着一声枪响，黑头被击伤，熊队长迅速将其铐住，然后抱起血泊中的聪聪，在狗弟的搀扶下向江边走去。黑头绝望地朝狗弟的背影叫喊着儿子，狗弟蔑视地回头看了他一眼转身离去。残阳如血，清纯的童声合唱中，两个崭新的书包和那张领章上加了颗星的熊队长的照片给了人们无限的回味</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/0b3a86a506dfa027c0ad603992a2be84$$$HD国语$https://vip.ffzy-play10.com/20260624/68872_0b3a86a5/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "12",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:3174621",
+      "primary_category": "other_movie",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "other_movie",
+          "field": "source_category_id",
+          "value": "12",
+          "signal": "other_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98259",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/0b3a86a506dfa027c0ad603992a2be84"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260624/68872_0b3a86a5/index.m3u8"
+        }
+      ],
+      "douban_id": "3174621",
+      "external_release_metadata": {
+        "id": "3174621",
+        "title": "我给爸爸加颗星",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1993"
+      },
+      "semantic_tags": "class 悬疑犯罪 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODM0OSJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "神秘的旅游团",
+      "vod_sub": "",
+      "vod_en": "shenmidelvyoutuan",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,悬疑,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260628-1/09feb0ac1ee454f3fcd388b01a20b89f.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "张玲,王伟波,徐励琍",
+      "vod_director": "于石斌",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;武术冠军刘藏风为躲避单恋他的旅行社导游杨听雨，来到河滨小道，挺身相救被流氓侮辱的姑娘。姑娘是便衣警察傅晓。晓认出刘是武术冠军，欲拜他为师，遭到拒绝。晓安排藏风进了听雨所带的旅游团，她自己也",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1992",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-28 19:45:48",
+      "vod_time_add": "1782647148",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 3069018,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;武术冠军刘藏风为躲避单恋他的旅行社导游杨听雨，来到河滨小道，挺身相救被流氓侮辱的姑娘。姑娘是便衣警察傅晓。晓认出刘是武术冠军，欲拜他为师，遭到拒绝。晓安排藏风进了听雨所带的旅游团，她自己也混入团里，其中还有香港警探贺健和贩毒集团的王玉生。警察们在藏风的协助下与犯罪分子进行了一场斗智斗勇的大战。经过一场激战，傅晓率特警队终于将歹徒擒获。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/f834b70560c3ca992ff72b5983170816$$$HD国语$https://vip.ffzy-play10.com/20260628/69206_f834b705/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "12",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:3069018",
+      "primary_category": "other_movie",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "other_movie",
+          "field": "source_category_id",
+          "value": "12",
+          "signal": "other_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98349",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/f834b70560c3ca992ff72b5983170816"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260628/69206_f834b705/index.m3u8"
+        }
+      ],
+      "douban_id": "3069018",
+      "external_release_metadata": {
+        "id": "3069018",
+        "title": "神秘的旅游团",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1992"
+      },
+      "semantic_tags": "class 悬疑犯罪 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODIxMyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "蓝箭的使命",
+      "vod_sub": "Lan jian de shi ming",
+      "vod_en": "lanjiandeshiming",
+      "vod_status": 1,
+      "vod_letter": "L",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260624-1/15d75a76c1b659426f7ade72e83e4b92.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "郝一平,罗玉甫,叶蓁南,戴晓旭,张玉红,韩广萍,张荣芝,张筱玲,马春光,马允浩,王端云,卢德福,李荣先,高东升,何龙,冀秀萍,庞万灵,赵明,姚庆平",
+      "vod_director": "王雷,张平",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;久居海外的台湾公路专家唐思华带领就学美国公路专业的女儿应邀回国观光考察，并欲寻找解放前在白龙山区蒙难时促进身搭救他的恩人路铁山，以使两块失散多年的祖传珍宝--&amp;quot;洞府天光&amp;quot",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1987",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-24 16:08:20",
+      "vod_time_add": "1782288500",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 1305678,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;久居海外的台湾公路专家唐思华带领就学美国公路专业的女儿应邀回国观光考察，并欲寻找解放前在白龙山区蒙难时促进身搭救他的恩人路铁山，以使两块失散多年的祖传珍宝--&quot;洞府天光&quot;姐妹玉石雕珠联璧合。犯罪团伙得知这一消息后，一路尾随，伺机抢掠玉石雕。我公安部门已掌握了此情况，要求白龙山区交通监理所密切配合，严密监视罪犯的活动，以确保唐家父女的生命及财产安全。犯罪团伙的干将、白龙市外贸局干部吴梦拉拢、勾结废品收购站司机欧阳盾，在唐思华返家的途中，借故搭车随唐到宾馆，将窃听器放入唐的房间。吴梦将窃听到的情况向主子汇报后，主子向她面授了机宜。为了尽快实现他们的计划，吴梦谎称路铁山已死，玉石雕落到另一人手中，而且正要卖给外国人，让唐思华迅速赶到&quot;洞府天光&quot;游览区。第二天，唐家父女如约来到游览区，却不见约会的人。这时吴梦凶相毕露，趁唐不备，她派司机对唐下了手，不料，被公安人员当场抓获。随后，吴梦毒死了欧阳盾，并持枪威胁、逼迫唐思华交出宝物。正在危急时刻，欧阳盾死而复活，原来他是打入罪犯中间的公安人员，对吴梦早有防范。吴梦见状，慌忙逃窜，却被躲在暗处的王山浪一枪打死灭口。王山浪原来就是35年前抢劫唐思华夫妇的蒙面匪徒，今日犯罪团伙的首领。在欧阳盾、路鹏等公安干警和交通监理的配合下，王山浪终于俯首就擒。唐思华、路铁山两位好友久别重逢，两块姐妹玉石雕珠联璧合。唐思华为表达对祖国的一片深情，决定将40余年积累的研究资料奉献给祖国，唐小洁决定毕业后回到祖国工作。唐思华父女以无限感激的心情，惜别了他的故乡--白龙山区。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play9.com/share/047a5439c87350f600e34e40991df3c9$$$HD国语$https://vip.ffzy-play9.com/20260621/44769_047a5439/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "12",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:1305678",
+      "primary_category": "other_movie",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "other_movie",
+          "field": "source_category_id",
+          "value": "12",
+          "signal": "other_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98213",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play9.com/share/047a5439c87350f600e34e40991df3c9"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play9.com/20260621/44769_047a5439/index.m3u8"
+        }
+      ],
+      "douban_id": "1305678",
+      "external_release_metadata": {
+        "id": "1305678",
+        "title": "蓝箭的使命",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1987"
+      },
+      "semantic_tags": "class 悬疑犯罪 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0NjA4MyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "皇家密杀令",
+      "vod_sub": "",
+      "vod_en": "huangjiamishaling",
+      "vod_status": 1,
+      "vod_letter": "H",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "",
+      "vod_pic": "https://img.bdzyimg1.com/upload/vod/20250913-1/0228e17fd1ad5030b79f17ec337b8306.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "杰夫·高布伦,斯泰茜·皮克伦,卡门·阿尔根齐亚诺,安德鲁·马顿,Sue,Dugan,Elizabeth,Solorzano,丹·艾克罗伊德,Robert,Paynter,大卫·柯南伯格,Robert,Moberly,John,Hostetter,Dick,Balduzzi,理查德·富兰克林,Cal,Worthington,Wes,Dawn,米歇尔·菲佛,约翰·兰迪斯,Eric,Lee,杰克·斯坦菲尔德,瓦尔度·绍特,维奥拉·凯特·斯廷普森,布鲁斯·麦克吉尔,黛迪·菲佛,里克·贝克,科林·希金斯,凯思琳·哈",
+      "vod_director": "约翰·兰迪斯",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "本片是由曾执导过《美国狼人在伦敦》的约翰．兰迪斯导演，是一部风格特异的悬疑惊险片。还邀请了《魔鬼克星》的丹．艾克罗伊德、摇滚乐巨星戴维．鲍伊、大导演保罗．马泽斯基等人。 剧中讲述一个住在洛杉矶的工程师",
+      "vod_remarks": "更新HD中字",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "1985",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2025-09-13 16:45:43",
+      "vod_time_add": "1757753143",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 0,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "本片是由曾执导过《美国狼人在伦敦》的约翰．兰迪斯导演，是一部风格特异的悬疑惊险片。还邀请了《魔鬼克星》的丹．艾克罗伊德、摇滚乐巨星戴维．鲍伊、大导演保罗．马泽斯基等人。 剧中讲述一个住在洛杉矶的工程师艾德，在赌城拉斯维加斯巧遇美女黛安娜。黛安娜正受人之托准备把宝石秘密交给别人，但收货人却被人暗算，残暴的杀手组织对黛安娜仍紧追不放，这使她和艾德陷入危机四伏的处境中。",
+      "vod_play_from": "dbm3u8",
+      "vod_play_server": "no",
+      "vod_play_note": "",
+      "vod_play_url": "HD中字$https://b2.bdzybf22.com/videos/202509/13/68b1e0f513363f09466d4c0a/75a00b/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "12",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "meta:%E7%9A%87%E5%AE%B6%E5%AF%86%E6%9D%80%E4%BB%A4:1985:0:%E7%BA%A6%E7%BF%B0%E5%85%B0%E8%BF%AA%E6%96%AF",
+      "primary_category": "other_movie",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "other_movie",
+          "field": "source_category_id",
+          "value": "12",
+          "signal": "other_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "46083",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD中字$https://b2.bdzybf22.com/videos/202509/13/68b1e0f513363f09466d4c0a/75a00b/index.m3u8"
+        }
+      ],
+      "semantic_tags": "class 悬疑犯罪 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODI1NyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "神女峰的迷雾",
+      "vod_sub": "",
+      "vod_en": "shennvfengdemiwu",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260625-1/f9d5855697260fc63c8187ddeacb3fbb.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "郭法曾,何玲,张国民,陈肖依,台怡玲,袁苑,刘昭昆,张林,乐伊莉,侯克明,袁范,赵守凯,顾萌,王英,朱振东,滕培修,耿引",
+      "vod_director": "郭宝昌",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;故事发生在1970年代未，正在神女峰写生的女画家赵欣（何玲 饰）发现有人斗殴，忙向公安局报案。当夜，侦察员姜涧（张国民 饰）、覃南（赵守凯 饰）在崖下发现了陶荣荣的尸体。陶母因骄纵儿子导致",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1980",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "6.6",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-25 10:23:48",
+      "vod_time_add": "1782354228",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 2045987,
+      "vod_douban_score": "6.6",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;故事发生在1970年代未，正在神女峰写生的女画家赵欣（何玲 饰）发现有人斗殴，忙向公安局报案。当夜，侦察员姜涧（张国民 饰）、覃南（赵守凯 饰）在崖下发现了陶荣荣的尸体。陶母因骄纵儿子导致其犯罪而不敢认领尸体，不得已，姜涧只好把破案希望寄托在目击者赵欣身上，通过耐心启发，赵欣终于为破案提供了线索。一个偶然的机会，吴新竹（侯克明 饰）发现岩洞中藏有一套价值连城的古书，不料被尾随而至的陶荣荣发现，两人发生打斗，吴坠崖侥幸不死，后被认为疑犯而受关押，真正的凶手则想杀死姜涧携书外逃。姜涧在神女峰下与之进行殊死博斗，最终，这套完整文物重新回到人民手中......</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/3f894abe73d5746d41b5b50453e2d4fb$$$HD国语$https://vip.ffzy-play10.com/20260624/68869_3f894abe/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "12",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:2045987",
+      "primary_category": "other_movie",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "other_movie",
+          "field": "source_category_id",
+          "value": "12",
+          "signal": "other_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98257",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/3f894abe73d5746d41b5b50453e2d4fb"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260624/68869_3f894abe/index.m3u8"
+        }
+      ],
+      "douban_id": "2045987",
+      "external_release_metadata": {
+        "id": "2045987",
+        "title": "神女峰的迷雾",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1980"
+      },
+      "semantic_tags": "class 悬疑犯罪 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    }
+  ],
+  "content_revision": "snapshot-b693cb2ce1ea39323d02",
+  "snapshot_mode": "generated-filter-pack",
+  "snapshot_filter": {
+    "key": "class",
+    "value": "悬疑犯罪"
+  }
+}

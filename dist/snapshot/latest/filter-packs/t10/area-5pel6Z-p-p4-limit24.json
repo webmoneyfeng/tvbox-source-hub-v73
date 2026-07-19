@@ -1,0 +1,873 @@
+{
+  "filters": {
+    "10": [
+      {
+        "key": "sort",
+        "name": "排序",
+        "init": "latest",
+        "value": [
+          {
+            "n": "最新",
+            "v": "latest"
+          },
+          {
+            "n": "高清优先",
+            "v": "quality"
+          },
+          {
+            "n": "多线路优先",
+            "v": "lines"
+          },
+          {
+            "n": "片名排序",
+            "v": "name"
+          }
+        ]
+      },
+      {
+        "key": "year",
+        "name": "年份",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2030",
+            "v": "2030"
+          },
+          {
+            "n": "2028",
+            "v": "2028"
+          },
+          {
+            "n": "2027",
+            "v": "2027"
+          },
+          {
+            "n": "2026",
+            "v": "2026"
+          },
+          {
+            "n": "2025",
+            "v": "2025"
+          },
+          {
+            "n": "2020-2022",
+            "v": "2020-2022"
+          },
+          {
+            "n": "2010年代",
+            "v": "2010s"
+          },
+          {
+            "n": "更早",
+            "v": "older"
+          }
+        ]
+      },
+      {
+        "key": "area",
+        "name": "地区",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "港台",
+            "v": "港台"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          },
+          {
+            "n": "泰国",
+            "v": "泰国"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "name": "类型",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "动作",
+            "v": "动作"
+          },
+          {
+            "n": "喜剧",
+            "v": "喜剧"
+          },
+          {
+            "n": "爱情",
+            "v": "爱情"
+          },
+          {
+            "n": "悬疑犯罪",
+            "v": "悬疑犯罪"
+          },
+          {
+            "n": "科幻奇幻",
+            "v": "科幻奇幻"
+          },
+          {
+            "n": "恐怖惊悚",
+            "v": "恐怖惊悚"
+          },
+          {
+            "n": "剧情",
+            "v": "剧情"
+          },
+          {
+            "n": "战争历史",
+            "v": "战争历史"
+          }
+        ]
+      },
+      {
+        "key": "form",
+        "name": "内容形态",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "解说",
+            "v": "解说"
+          },
+          {
+            "n": "合集",
+            "v": "合集"
+          },
+          {
+            "n": "现场",
+            "v": "现场"
+          },
+          {
+            "n": "课程",
+            "v": "课程"
+          },
+          {
+            "n": "片段",
+            "v": "片段"
+          }
+        ]
+      },
+      {
+        "key": "quality",
+        "name": "清晰度",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "高清",
+            "v": "hd"
+          },
+          {
+            "n": "4K",
+            "v": "4K"
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "抢先",
+            "v": "抢先"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 1,
+  "msg": "ok",
+  "page": 4,
+  "pagecount": 4,
+  "limit": 24,
+  "total": 76,
+  "class": [
+    {
+      "type_id": "0",
+      "type_name": "推荐",
+      "key": "recommend"
+    },
+    {
+      "type_id": "10",
+      "type_name": "院线电影",
+      "key": "theatrical_movie"
+    },
+    {
+      "type_id": "11",
+      "type_name": "网络电影",
+      "key": "web_movie"
+    },
+    {
+      "type_id": "12",
+      "type_name": "其他电影",
+      "key": "other_movie"
+    },
+    {
+      "type_id": "20",
+      "type_name": "电视剧",
+      "key": "tv_series"
+    },
+    {
+      "type_id": "21",
+      "type_name": "网络剧",
+      "key": "web_series"
+    },
+    {
+      "type_id": "6",
+      "type_name": "网络短剧",
+      "key": "web_short"
+    },
+    {
+      "type_id": "3",
+      "type_name": "综艺",
+      "key": "variety"
+    },
+    {
+      "type_id": "4",
+      "type_name": "动漫",
+      "key": "anime"
+    },
+    {
+      "type_id": "5",
+      "type_name": "纪录片",
+      "key": "documentary"
+    },
+    {
+      "type_id": "7",
+      "type_name": "解说",
+      "key": "explainer"
+    },
+    {
+      "type_id": "8",
+      "type_name": "文娱知识",
+      "key": "knowledge"
+    },
+    {
+      "type_id": "9",
+      "type_name": "成人伦理",
+      "key": "adult"
+    }
+  ],
+  "list": [
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Nzg4NiJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "谭嗣同",
+      "vod_sub": "戊戌政变(港)",
+      "vod_en": "tansitong",
+      "vod_status": 1,
+      "vod_letter": "T",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,传记,历史",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260607-1/91c886f76bfcd1ad1dc0ca3da729eedd.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "达式常,郑榕,颜彼得,王洪生,顾岚,宋晓英,王玉梅,王志华,王洪涛,马盛君,刘江,马连骥,牛星丽,朱艺丹,辛欣,胡奇,李耀华,巢萍,王文祥,赵淑兰,浦克",
+      "vod_director": "陈家林",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;1898年6月11日，光绪皇帝向全国颁布了&amp;quot;明定国是&amp;quot;诏书，中国近代史上轰轰烈烈的戊戌变法运动开始了。为了网罗天下英才，军机处两次拍电报催促谭嗣同火速进京。谭嗣同辞别了",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1984",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "7.9",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-07 23:30:48",
+      "vod_time_add": "1780846248",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 4189670,
+      "vod_douban_score": "7.9",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;1898年6月11日，光绪皇帝向全国颁布了&quot;明定国是&quot;诏书，中国近代史上轰轰烈烈的戊戌变法运动开始了。为了网罗天下英才，军机处两次拍电报催促谭嗣同火速进京。谭嗣同辞别了妻子李闰，踏上征途。途中，黄河两岸饿殍满地，哀鸿遍野的景象深深震动了谭嗣同，他更坚信只有变法才能救中国。与此同时，在颐和园的慈禧太后及心腹老臣们不动声色地把辅佐皇上变法、为皇上保荐人才的军机大臣翁同和撤了职，遣送回乡。提升荣禄为直隶总督兼北洋大臣，把持兵权，统摄北洋三军，给刚刚开始的变法维新一个警告和打击。谭嗣同到京后，马上受到光绪皇帝的召见。他横溢的才思和无畏的胆识备受皇上赞赏。光绪皇帝激动地授予他四品章京衔，命他在军机处供职，希望他成为中兴之臣。革新志士康有为、杨深秀、林旭、刘光第等在得月楼设宴为谭嗣同洗尘。他们烛下长谈，共谋维新大业。兵部侍郎袁世凯也前来拜访谭嗣同，并献五百两银子，对维新大业略表微衷。礼部尚书怀塔布扣押了主事王照奏请皇上游历东西各国的折子，革新志士抓住了这件事，奏请皇上，撤了礼部六堂官怀塔布、许应骙等。光绪皇帝依靠谭嗣同、康有为变法图强的决心，深深地震惊了以太后为首的封建专制势力。此时，谭嗣同、康有为等准备乘胜追击，奏请皇上开设懋勤殿，驾空昏庸老臣，实行朝钢独断。太后和荣禄也频频来往，密室共议。他们一面调动军队做好防范，一面筹划9月天津阅兵，准备到时废掉皇上。新旧两党的斗争达到白热化。在这关键时刻，光绪皇帝遭到太后的软禁，相知相爱的珍妃亦被打入冷宫。康有为、谭嗣同等了5天不见君面，只得到一道光绪设法传出来的要他们设法相救的特谕。他们当时都惊愕不已，束手无策。谭嗣同突然想到兵部侍郎袁世凯，决定孤注一掷，夜访法华寺，求助于袁世凯。看了皇上亲笔手谕，袁世凯万分震惊。他慷慨陈词发誓要效犬马之劳。但在打发下了谭嗣同后，袁世凯权衡利弊，最后，决定投靠太后，出卖了谭嗣同和维新大业。慈禧太后得到密报，连夜返回紫禁城，发动了震惊中外的戊戌政变，再度训政。除康有为、梁启超逃往国外外，革新志士纷纷被捕。谭嗣同谢绝了梁启超、日本友人及好友大刀王五的诚恳相救，决心以一死来惊醒黎民百姓。谭嗣同的爱妻突然来到了北京，没想到相聚竟是死别。残烛前，夫妻凄然把酒相对。谭嗣同等6位维新派志士被押往菜市口刑场。谭嗣同为无力回天而感叹，为死得其所而慰藉。他们把满腔热血喷洒在祖国的大地上。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/417a7942b623c780edbda6b1ba8e79d4$$$HD国语$https://vip.ffzy-play10.com/20260607/68465_417a7942/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:4189670",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "97886",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/417a7942b623c780edbda6b1ba8e79d4"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260607/68465_417a7942/index.m3u8"
+        }
+      ],
+      "douban_id": "4189670",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "4189670",
+        "title": "谭嗣同",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1984-12(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1984"
+      },
+      "semantic_tags": "area 日韩 地区",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODMyNSJ9XQ",
+      "type_id": "12",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "贺龙军长",
+      "vod_sub": "He Long jun zhang",
+      "vod_en": "helongjunchang",
+      "vod_status": 1,
+      "vod_letter": "H",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "战争",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260627-1/7dbcba2665248decd4d55d5b3ae60fa8.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "夏宗佑,马红鹰,刘玉,丛培信,张勇汉,王志明,周子和,卢问章,李檀,郑伟民,谢万和,姚军,李一兵,黄凯,郑在石,胡庆树,张元方,孟庆芳,孙伟",
+      "vod_director": "史文炽",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;1927年7月，率军北伐的贺龙在河南打败了张作霖的部队，取得了临颖大捷。武汉国民政府主席汪精卫与蒋介石暗中勾结，强令贺龙返回武汉，为笼络军心，委任贺龙成为国民革命军第二十军军长。随即，汪精",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "1983-01-01",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1983",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "6.9",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-27 21:26:53",
+      "vod_time_add": "1782566813",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 1297893,
+      "vod_douban_score": "6.9",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;1927年7月，率军北伐的贺龙在河南打败了张作霖的部队，取得了临颖大捷。武汉国民政府主席汪精卫与蒋介石暗中勾结，强令贺龙返回武汉，为笼络军心，委任贺龙成为国民革命军第二十军军长。随即，汪精卫策划二十军童怀才部叛变，贺龙不顾《国民日报》随军纪者白莹劝阻，冒着枪林弹雨，策马前往，平息了这场哗变。贺龙从士兵口中知道，汪精卫已偷放了沾满中国人民鲜血的日本人山田。他赶往码头，堵截货船，用计抓住了藏在煤堆中的山田。汪精卫又指使武汉绅士名流重金收买贺龙，&quot;鸿运楼&quot;上，贺龙当着他们的面，把价值连城的珠宝尽数抛入湖中，使豪绅们心惊胆战。汪精卫一面高喊&quot;东征讨蒋&quot;，一面暗中收缴工人武装枪支，逮捕屠杀工农群众。贺龙当面义正词严地怒斥汪精卫的反革命行为。汪精卫理屈词穷，用调虎离山之计调贺龙部队东征。贺龙将计就计，以设豆腐宴转移了中共两湖省委领导同志。在宴会厅上，贺龙下令收缴了强行撞入搜查的搜捕队的枪支，枪毙了搜捕队长。在共产党处于逆境时，贺龙对党一片忠心，却遭到张国焘的怀疑猜忌。张认为贺龙早有当皇帝的野心，不可相信和依靠，他的观点受到周恩来的驳斥。东征前夕，周恩来特意去送贺龙，贺龙表达了&quot;真要救中国，只有共产党&quot;的革命信念。贺龙侄子学瑞从老家赶来，哭诉家乡反动武装对贺龙家人的迫害，贺龙怒火中烧。他想到东征是跟着共产党去救全中国老百姓，克制了个人感情，命令部队出发。二十军东征途中停泊于九江，周恩来向贺龙传达党中央决议，以贺部为主力，适当时机在南昌举行武装暴动，贺龙欣然接受。汪精卫企图将贺龙骗上庐山，遭贺龙拒绝，他又派刺客刺杀贺龙，也未能得逞。不得已，汪精卫一方面企图炸桥阻止贺龙部队，一方面任命贺龙为第二方面军总指挥，企图笼络贺龙。随军记者、蒋介石特务白莹也亮出自己的身分，诱劝贺与蒋合作。面对蒋、汪的阴谋诡计，贺龙选择了革命道路，率部向南昌开进，加入了&quot;八一&quot;起义的行列。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play9.com/share/7da2f6b51c55362c4adb62cdf6a5b83a$$$HD国语$https://vip.ffzy-play9.com/20260627/44852_7da2f6b5/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "战争片",
+      "source_category_id": "10",
+      "source_category_name": "战争片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:1297893",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98325",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play9.com/share/7da2f6b51c55362c4adb62cdf6a5b83a"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play9.com/20260627/44852_7da2f6b5/index.m3u8"
+        }
+      ],
+      "douban_id": "1297893",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "1297893",
+        "title": "贺龙军长",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1983-01-01(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1983"
+      },
+      "semantic_tags": "area 日韩 地区",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5ODAyNyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "诱捕之后",
+      "vod_sub": "After Being Trapped",
+      "vod_en": "youbozhihou",
+      "vod_status": 1,
+      "vod_letter": "Y",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "悬疑",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260615-1/6ddb8932054bd7acf12e033043745efd.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "梁同裕,王华英,姜黎黎,李岚,俞立文,庞敏,杨培松,刘丰,罗永贵,于天堂,郑乾龙,陈述,由长科,王惠芬,梅熹,车轩,顾谦,李显刚",
+      "vod_director": "华克",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;抗日战争前夕，青岛地下党农运部长郑子龙，在万国公墓接头时被诱捕。当晚，以牙医为掩护的地下工作者丁建堂，从门缝里收到了交通员鲁成顺发出的告急信号。不久，党的交通员、丁建堂的新婚妻子叶玉芝从天",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1982",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "6.6",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-15 13:36:38",
+      "vod_time_add": "1781501798",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 1305118,
+      "vod_douban_score": "6.6",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;抗日战争前夕，青岛地下党农运部长郑子龙，在万国公墓接头时被诱捕。当晚，以牙医为掩护的地下工作者丁建堂，从门缝里收到了交通员鲁成顺发出的告急信号。不久，党的交通员、丁建堂的新婚妻子叶玉芝从天津归来，她告诉丁建堂未找到上级领导，仅带回一只古瓶和在船上收到的一张画有古瓶与古币的纸条。丁建堂判断上级又派人来了，要她按期去慈云轩古玩店以兑换古董为名进行接头。叶玉芝到慈云轩后，老板见她没有古币，拒绝兑换。她回到家中，曾在船上注意过她的一位青年军官，现已改变装束来到她家门前。丁建堂闻声出门，一眼认出他是阔别多年的义弟夏东岳。虽然丁建堂曾救过夏东岳，两人是生死之交，但因多年未见，互相有些生疏，彼此经过一番探查，夏东岳才亮出古币，讲明自己受党派遣，前来打通崂山关系，准备建立抗日武装。在谈到郑子龙被捕情况时，丁建堂认为可能是叛徒出卖，并怀疑鲁成顺。为弄清组织情况，夏东岳在叶玉芝的表姐苏瑞娟的帮助下，化装成神父到狱中会见了危在旦夕的郑子龙。不料，他俩刚谈了几句话就被查监的军法处长焦金栋冲散。接着，夏东岳机智地制服了敌特孙厉，并从他口中得知青岛有人将自己的行踪告密。为营救老郑，他未能及时逃脱，被焦金栋逮捕。焦金栋为追查地下党新领导人，对夏东岳软硬兼施。夏东岳坚贞不屈，并设法逃出了虎口。他回到青岛，向新领导人汇报了情况，根据郑子龙提供的线索，派人去观海路9号查找交通员，找到的竟是鲁成顺。鲁成顺见到夏东岳后，非常激动，向他汇报了买武器的情况，并将夏以武术师的名义安排在日本豪士成川家中隐身。一天夜晚，夏东岳躲避搜捕时，偶然闯入丁建堂新居院内，听到他们夫妻正在银川。原来，叶玉芝已证实丁建堂叛变投敌，决定决裂。夏东岳佯装巧遇，借口藏身，并立即让丁建堂去见新领导人。叶玉芝乘他出门之际，告诉夏东岳丁建堂已叛变。夏东岳叮嘱叶玉芝要稳住他，然后迅速离去。丁建堂误认为神父是新领导人，便从苏瑞娟手中骗走古币，到教学&quot;接头&quot;，还约神父到原丁宅看牙，以便下手。他刚刚出门，被匆匆赶来的苏瑞娟堵住质问，丁建堂为灭口，将她杀死。地下党接通了崂山关系，找到了武器下落，认清了丁建堂的面目，于是将计就计，惩办了叛徒。叶玉芝经过严酷的考验，与夏东岳等地下党的同志一道带着购买的武器，奔向崂山，去迎接新的战斗。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play9.com/share/57768606c3164d03a9f2fd033a9895ee$$$HD国语$https://vip.ffzy-play9.com/20260613/44649_57768606/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:1305118",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "98027",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play9.com/share/57768606c3164d03a9f2fd033a9895ee"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play9.com/20260613/44649_57768606/index.m3u8"
+        }
+      ],
+      "douban_id": "1305118",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "1305118",
+        "title": "诱捕之后",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1982-09"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1982"
+      },
+      "semantic_tags": "area 日韩 地区",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Nzk4OSJ9XQ",
+      "type_id": "12",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "东进序曲",
+      "vod_sub": "Sinfonia Of Going East",
+      "vod_en": "dongjinxuqu",
+      "vod_status": 1,
+      "vod_letter": "D",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "战争",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260612-1/829b64b8dc52533c47220980825c8f28.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "李炎,张钟英,于纯绵,张宪,文卜东,王林佳,周正禹,杨兆权,张立法,刘磊,彭奇愚,白钢,王者,李恩琪,王孝忠,师伟,魏启明,丛志军,张璋",
+      "vod_director": "华纯,苏凡",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;1940年，抗日战争进入了第三个同时也是极为艰苦的念头。中国共产党所率领的八路军和新四军依照毛泽东同志制定的方针与日本侵略者展开殊死的斗争，与之形成鲜明对比的是，国民党方面则试图趁乱限制中",
+      "vod_remarks": "HD国语",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "1962",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "7.3",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-12 09:07:17",
+      "vod_time_add": "1781226437",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 1827612,
+      "vod_douban_score": "7.3",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;1940年，抗日战争进入了第三个同时也是极为艰苦的念头。中国共产党所率领的八路军和新四军依照毛泽东同志制定的方针与日本侵略者展开殊死的斗争，与之形成鲜明对比的是，国民党方面则试图趁乱限制中共的发展，从而阻碍了抗战胜利的前进步伐。新四军挺进纵队攻占苏北据点桥头镇，再往前即可踏上东进抗日的道路。而在这片国民党实际掌控的地区，许多顽固派建议趁机向新四军发动进攻。挺进纵队司令员孟器宇（张钟英 饰）与国民党代表谈判，并成功策反苏鲁皖部第一纵队司令周明哲（文卜东 饰）。\r\n家国大义当前，中华儿女做出最为正确的选择……</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD国语$https://vip.ffzy-play10.com/share/069026dd46efb390001a2661e32c84c4$$$HD国语$https://vip.ffzy-play10.com/20260611/68477_069026dd/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "战争片",
+      "source_category_id": "10",
+      "source_category_name": "战争片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:1827612",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "97989",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD国语$https://vip.ffzy-play10.com/share/069026dd46efb390001a2661e32c84c4"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD国语$https://vip.ffzy-play10.com/20260611/68477_069026dd/index.m3u8"
+        }
+      ],
+      "douban_id": "1827612",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "1827612",
+        "title": "东进序曲",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "1962"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "1962"
+      },
+      "semantic_tags": "area 日韩 地区",
+      "snapshot_filter_evidence": "catalog-derived"
+    }
+  ],
+  "content_revision": "snapshot-b693cb2ce1ea39323d02",
+  "snapshot_mode": "generated-filter-pack",
+  "snapshot_filter": {
+    "key": "area",
+    "value": "日韩"
+  }
+}

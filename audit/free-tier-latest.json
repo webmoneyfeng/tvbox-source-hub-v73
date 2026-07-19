@@ -1,0 +1,132 @@
+{
+  "generatedAt": "2026-07-19T10:29:47.461Z",
+  "repo": {
+    "ok": true,
+    "private": false,
+    "visibility": "public",
+    "url": "https://github.com/webmoneyfeng/tvbox-source-hub-v73"
+  },
+  "publicBase": "https://tv.webhome.eu.org",
+  "monthlyScheduledRuns": 120,
+  "workerCrons": {
+    "file": "wrangler.toml",
+    "crons": [
+      "*/5 * * * *"
+    ],
+    "dailyRuns": 288,
+    "monthlyRuns": 8640
+  },
+  "kvEstimate": {
+    "cronSlots": 288,
+    "contentWrites": 576,
+    "healthWrites": 48,
+    "interactionWrites": 0,
+    "totalWrites": 624
+  },
+  "estimatedScheduledKvWrites": 624,
+  "estimatedInteractionProbeDailyWrites": 0,
+  "estimatedDailyKvWrites": 624,
+  "estimatedDailyWorkerRequests": 80000,
+  "distFileCount": 17254,
+  "distBytes": 8321800909,
+  "workflows": [
+    {
+      "file": ".github/workflows/catalog-release.yml",
+      "crons": [
+        "17 */6 * * *"
+      ],
+      "monthlyRuns": 120
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "crons": [],
+      "monthlyRuns": 0
+    },
+    {
+      "file": ".github/workflows/deep-verify.yml",
+      "crons": [],
+      "monthlyRuns": 0
+    },
+    {
+      "file": ".github/workflows/full-refresh.yml",
+      "crons": [],
+      "monthlyRuns": 0
+    },
+    {
+      "file": ".github/workflows/hot-refresh.yml",
+      "crons": [],
+      "monthlyRuns": 0
+    },
+    {
+      "file": ".github/workflows/source-health.yml",
+      "crons": [],
+      "monthlyRuns": 0
+    }
+  ],
+  "liveProxy": {
+    "ok": true,
+    "liveTxtUrl": "https://tv.webhome.eu.org/live.txt",
+    "groupCount": 9,
+    "totalChannels": 95,
+    "proxiedChannels": 0,
+    "directChannels": 95,
+    "unknownChannels": 0,
+    "proxyRatio": 0,
+    "samplePlaylist": {
+      "ok": true,
+      "channelName": "24 Hour Free Movies",
+      "url": "https://d1b5mlajbmvkjv.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b743c6411d25f62fc25/UDU-DistroTV/145.m3u8?ads.vf=7FhdsxqVxOi",
+      "mediaLines": 4,
+      "proxiedChildLines": 0,
+      "directChildLines": 4,
+      "childProxyRatio": 0
+    }
+  },
+  "rows": [
+    {
+      "area": "github_repo",
+      "result": "PASS",
+      "metric": "public",
+      "note": "公共仓库，GitHub Actions 标准 runner 按免费优先方案使用。"
+    },
+    {
+      "area": "github_actions_schedule",
+      "result": "PASS",
+      "metric": "120/month",
+      "note": "定时刷新频率按免费优先控制，保留人工发布余量。"
+    },
+    {
+      "area": "cloudflare_pages_files",
+      "result": "PASS",
+      "metric": "17254",
+      "note": "dist 静态快照采用打包文件，不采用每个节目一个文件。"
+    },
+    {
+      "area": "cloudflare_pages_size",
+      "result": "WARN",
+      "metric": "8321800909 bytes",
+      "note": "dist 总体积处于轻量级静态分发范围。"
+    },
+    {
+      "area": "cloudflare_worker_requests",
+      "result": "PASS",
+      "metric": "0/95 proxied",
+      "note": "live.txt groups=9 channels=95；直播直连=95，经 Worker 代理=0，代理占比=0%；抽样播放清单子链接 0/4 继续走 Worker"
+    },
+    {
+      "area": "cloudflare_kv_hot_probe_writes",
+      "result": "PASS",
+      "metric": "624/1000 writes/day",
+      "note": "每5分钟最多一次原子内容发布：576/day；30分钟健康心跳：48/day；交互触发复用同一发布时隙，不叠加预算。"
+    },
+    {
+      "area": "cloudflare_worker_request_budget",
+      "result": "PASS",
+      "metric": "80000/80000 requests/day",
+      "note": "不代理视频分片；用KV热包、Pages快照和边缘缓存将日请求预算压在80000以内。"
+    }
+  ],
+  "pass": 6,
+  "warn": 1,
+  "fail": 0
+}

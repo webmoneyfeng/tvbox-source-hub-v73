@@ -1,0 +1,807 @@
+{
+  "filters": {
+    "4": [
+      {
+        "key": "sort",
+        "name": "排序",
+        "init": "latest",
+        "value": [
+          {
+            "n": "最新",
+            "v": "latest"
+          },
+          {
+            "n": "高清优先",
+            "v": "quality"
+          },
+          {
+            "n": "多线路优先",
+            "v": "lines"
+          },
+          {
+            "n": "片名排序",
+            "v": "name"
+          }
+        ]
+      },
+      {
+        "key": "year",
+        "name": "年份",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2030",
+            "v": "2030"
+          },
+          {
+            "n": "2026",
+            "v": "2026"
+          },
+          {
+            "n": "2025",
+            "v": "2025"
+          },
+          {
+            "n": "2024",
+            "v": "2024"
+          },
+          {
+            "n": "2023",
+            "v": "2023"
+          },
+          {
+            "n": "2020-2022",
+            "v": "2020-2022"
+          },
+          {
+            "n": "2010年代",
+            "v": "2010s"
+          },
+          {
+            "n": "更早",
+            "v": "older"
+          }
+        ]
+      },
+      {
+        "key": "area",
+        "name": "地区",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "港台",
+            "v": "港台"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "name": "类型",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "国漫",
+            "v": "国漫"
+          },
+          {
+            "n": "日漫",
+            "v": "日漫"
+          },
+          {
+            "n": "欧美动漫",
+            "v": "欧美动漫"
+          },
+          {
+            "n": "动画电影",
+            "v": "动画电影"
+          },
+          {
+            "n": "少儿",
+            "v": "少儿"
+          }
+        ]
+      },
+      {
+        "key": "state",
+        "name": "状态",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "已完结",
+            "v": "已完结"
+          },
+          {
+            "n": "更新中",
+            "v": "更新中"
+          },
+          {
+            "n": "合集",
+            "v": "合集"
+          }
+        ]
+      },
+      {
+        "key": "quality",
+        "name": "清晰度",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "高清",
+            "v": "hd"
+          },
+          {
+            "n": "4K",
+            "v": "4K"
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "抢先",
+            "v": "抢先"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 1,
+  "msg": "ok",
+  "page": 1,
+  "pagecount": 1,
+  "limit": 24,
+  "total": 3,
+  "class": [
+    {
+      "type_id": "0",
+      "type_name": "推荐",
+      "key": "recommend"
+    },
+    {
+      "type_id": "10",
+      "type_name": "院线电影",
+      "key": "theatrical_movie"
+    },
+    {
+      "type_id": "11",
+      "type_name": "网络电影",
+      "key": "web_movie"
+    },
+    {
+      "type_id": "12",
+      "type_name": "其他电影",
+      "key": "other_movie"
+    },
+    {
+      "type_id": "20",
+      "type_name": "电视剧",
+      "key": "tv_series"
+    },
+    {
+      "type_id": "21",
+      "type_name": "网络剧",
+      "key": "web_series"
+    },
+    {
+      "type_id": "6",
+      "type_name": "网络短剧",
+      "key": "web_short"
+    },
+    {
+      "type_id": "3",
+      "type_name": "综艺",
+      "key": "variety"
+    },
+    {
+      "type_id": "4",
+      "type_name": "动漫",
+      "key": "anime"
+    },
+    {
+      "type_id": "5",
+      "type_name": "纪录片",
+      "key": "documentary"
+    },
+    {
+      "type_id": "7",
+      "type_name": "解说",
+      "key": "explainer"
+    },
+    {
+      "type_id": "8",
+      "type_name": "文娱知识",
+      "key": "knowledge"
+    },
+    {
+      "type_id": "9",
+      "type_name": "成人伦理",
+      "key": "adult"
+    }
+  ],
+  "list": [
+    {
+      "vod_id": "agg_W3sicyI6Imd1YW5nc3UiLCJpZCI6IjE2NzIzMCJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNDk5MiJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0ODUyNiJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMDMyNyJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2NDg0NSJ9XQ",
+      "type_id": "24",
+      "type_id_1": 17,
+      "group_id": 0,
+      "vod_name": "给孩子的上下五千年",
+      "vod_sub": "",
+      "vod_en": "geihaizideshangxiawuqiannian",
+      "vod_status": 1,
+      "vod_letter": "G",
+      "vod_color": "",
+      "vod_tag": "少儿,历史",
+      "vod_class": "少儿,历史,中国动漫",
+      "vod_pic": "https://hhmage.com/cover/a24f1629a37c678c36cf3ce182a7c7d3.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "",
+      "vod_director": "",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "百大UP主“唠点历史”团队倾力打造，送给中国孩子的启蒙历史科普！【有趣】互动对话、身临其境的音效，带你穿越历史现场；【有料】严谨史料，尊重历史，从源头塑造中国人价值观；【有用】365期主题，涵盖17代",
+      "vod_remarks": "第30集",
+      "vod_pubdate": "",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "中国大陆",
+      "vod_lang": "普通话",
+      "vod_year": "2026",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 620,
+      "vod_hits_day": 768,
+      "vod_hits_week": 667,
+      "vod_hits_month": 7,
+      "vod_duration": "",
+      "vod_up": 539,
+      "vod_down": 35,
+      "vod_score": "10.0",
+      "vod_score_all": 1540,
+      "vod_score_num": 154,
+      "vod_time": "2026-07-14 10:06:01",
+      "vod_time_add": "1780927922",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 0,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "百大UP主“唠点历史”团队倾力打造，送给中国孩子的启蒙历史科普！【有趣】互动对话、身临其境的音效，带你穿越历史现场；【有料】严谨史料，尊重历史，从源头塑造中国人价值观；【有用】365期主题，涵盖17代王朝更迭，看遍5000年中国历史兴衰",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "第1集$https://play.hhuus.com/play/elYRXL6a#第2集$https://play.hhuus.com/play/erk2B56a#第3集$https://play.hhuus.com/play/bDkq6AYa#第4集$https://play.hhuus.com/play/aQWkjq7d#第5集$https://play.hhuus.com/play/eZ68vDve#第6集$https://play.hhuus.com/play/eXDQq0ke#第7集$https://play.hhuus.com/play/epYZB61a#第8集$https://play.hhuus.com/play/b68WG77e#第9集$https://play.hhuus.com/play/aKr8zkre#第10集$https://play.hhuus.com/play/en5R7o4d#第11集$https://play.hhuus.com/play/dG6Rz7yb#第12集$https://play.hhuus.com/play/dyPw7OVb#第13集$https://play.hhuus.com/play/elYRXLla#第14集$https://play.hhuus.com/play/erk2B5wa#第15集$https://play.hhuus.com/play/ejRY5VWe#第16集$https://play.hhuus.com/play/en5R7oDd#第17集$https://play.hhuus.com/play/aAD6WoBe#第18集$https://play.hhuus.com/play/dwp02AJe#第19集$https://play.hhuus.com/play/aOYgL2gd#第20集$https://play.hhuus.com/play/b4x6Vq2b#第21集$https://play.hhuus.com/play/e0R8Em7b#第22集$https://play.hhuus.com/play/dwp02lme#第23集$https://play.hhuus.com/play/eZ68X4Je#第24集$https://play.hhuus.com/play/dyPwDPEb#第25集$https://play.hhuus.com/play/ejRYwr4e#第26集$https://play.hhuus.com/play/epYZDAya#第27集$https://play.hhuus.com/play/b68W50le#第28集$https://play.hhuus.com/play/aKrLXP8e#第29集$https://play.hhuus.com/play/b82Moxje#第30集$https://play.hhuus.com/play/elY2vmja$$$第1集$https://play.hhuus.com/play/elYRXL6a/index.m3u8#第2集$https://play.hhuus.com/play/erk2B56a/index.m3u8#第3集$https://play.hhuus.com/play/bDkq6AYa/index.m3u8#第4集$https://play.hhuus.com/play/aQWkjq7d/index.m3u8#第5集$https://play.hhuus.com/play/eZ68vDve/index.m3u8#第6集$https://play.hhuus.com/play/eXDQq0ke/index.m3u8#第7集$https://play.hhuus.com/play/epYZB61a/index.m3u8#第8集$https://play.hhuus.com/play/b68WG77e/index.m3u8#第9集$https://play.hhuus.com/play/aKr8zkre/index.m3u8#第10集$https://play.hhuus.com/play/en5R7o4d/index.m3u8#第11集$https://play.hhuus.com/play/dG6Rz7yb/index.m3u8#第12集$https://play.hhuus.com/play/dyPw7OVb/index.m3u8#第13集$https://play.hhuus.com/play/elYRXLla/index.m3u8#第14集$https://play.hhuus.com/play/erk2B5wa/index.m3u8#第15集$https://play.hhuus.com/play/ejRY5VWe/index.m3u8#第16集$https://play.hhuus.com/play/en5R7oDd/index.m3u8#第17集$https://play.hhuus.com/play/aAD6WoBe/index.m3u8#第18集$https://play.hhuus.com/play/dwp02AJe/index.m3u8#第19集$https://play.hhuus.com/play/aOYgL2gd/index.m3u8#第20集$https://play.hhuus.com/play/b4x6Vq2b/index.m3u8#第21集$https://play.hhuus.com/play/e0R8Em7b/index.m3u8#第22集$https://play.hhuus.com/play/dwp02lme/index.m3u8#第23集$https://play.hhuus.com/play/eZ68X4Je/index.m3u8#第24集$https://play.hhuus.com/play/dyPwDPEb/index.m3u8#第25集$https://play.hhuus.com/play/ejRYwr4e/index.m3u8#第26集$https://play.hhuus.com/play/epYZDAya/index.m3u8#第27集$https://play.hhuus.com/play/b68W50le/index.m3u8#第28集$https://play.hhuus.com/play/aKrLXP8e/index.m3u8#第29集$https://play.hhuus.com/play/b82Moxje/index.m3u8#第30集$https://play.hhuus.com/play/elY2vmja/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "中国动漫",
+      "source_category_id": "4",
+      "source_category_name": "中国动漫",
+      "_sourceSlug": "huya",
+      "_sourceShort": "虎牙",
+      "source_url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+      "canonical_id": "meta:%E7%BB%99%E5%AD%A9%E5%AD%90%E7%9A%84%E4%B8%8A%E4%B8%8B%E4%BA%94%E5%8D%83%E5%B9%B4:2026:0:unknown",
+      "primary_category": "anime",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "anime",
+          "field": "source_category_id",
+          "value": "4",
+          "signal": "anime"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "huya",
+          "id": "110327",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "134992",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "148526",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "167230",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "164845",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "第1集$https://1080p.huyall.com/play/bkR2BKXa/index.m3u8#第2集$https://1080p.huyall.com/play/bqxQ65ra/index.m3u8#第3集$https://1080p.huyall.com/play/dBBrOynd/index.m3u8#第4集$https://1080p.huyall.com/play/dPNjgpza/index.m3u8#第5集$https://1080p.huyall.com/play/bYE7rB0b/index.m3u8#第6集$https://1080p.huyall.com/play/bW6PplWa/index.m3u8#第7集$https://1080p.huyall.com/play/bo2Z89za/index.m3u8#第8集$https://1080p.huyall.com/play/e5y7VExe/index.m3u8#第9集$https://1080p.huyall.com/play/dJ68zjDd/index.m3u8#第10集$https://1080p.huyall.com/play/bmZq8npd/index.m3u8#第11集$https://1080p.huyall.com/play/eERq17Na/index.m3u8#第12集$https://1080p.huyall.com/play/axk68NJe/index.m3u8#第13集$https://1080p.huyall.com/play/bkR2BKxa/index.m3u8#第14集$https://1080p.huyall.com/play/bqxQ653a/index.m3u8#第15集$https://1080p.huyall.com/play/egJp8V9d/index.m3u8#第16集$https://1080p.huyall.com/play/bmZq8nAd/index.m3u8#第17集$https://1080p.huyall.com/play/azp6Q5rd/index.m3u8#第18集$https://1080p.huyall.com/play/av2QRzVa/index.m3u8#第19集$https://1080p.huyall.com/play/dNkOX2Le/index.m3u8#第20集$https://1080p.huyall.com/play/e316Eprb/index.m3u8#第21集$https://1080p.huyall.com/play/e9r9GyPa/index.m3u8#第22集$https://1080p.huyall.com/play/av2QRkga/index.m3u8#第23集$https://1080p.huyall.com/play/bYE7X6Kb/index.m3u8#第24集$https://1080p.huyall.com/play/axk6Bk3e/index.m3u8#第25集$https://1080p.huyall.com/play/egJpqojd/index.m3u8#第26集$https://1080p.huyall.com/play/bo2ZBzLa/index.m3u8#第27集$https://1080p.huyall.com/play/e5y75Wve/index.m3u8#第28集$https://1080p.huyall.com/play/dJ6NDOyd/index.m3u8#第29集$https://1080p.huyall.com/play/e73pnwQe/index.m3u8#第30集$https://1080p.huyall.com/play/bkRrwlJa/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a#第2集$https://play.hhuus.com/play/erk2B56a#第3集$https://play.hhuus.com/play/bDkq6AYa#第4集$https://play.hhuus.com/play/aQWkjq7d#第5集$https://play.hhuus.com/play/eZ68vDve#第6集$https://play.hhuus.com/play/eXDQq0ke#第7集$https://play.hhuus.com/play/epYZB61a#第8集$https://play.hhuus.com/play/b68WG77e#第9集$https://play.hhuus.com/play/aKr8zkre#第10集$https://play.hhuus.com/play/en5R7o4d#第11集$https://play.hhuus.com/play/dG6Rz7yb#第12集$https://play.hhuus.com/play/dyPw7OVb#第13集$https://play.hhuus.com/play/elYRXLla#第14集$https://play.hhuus.com/play/erk2B5wa#第15集$https://play.hhuus.com/play/ejRY5VWe#第16集$https://play.hhuus.com/play/en5R7oDd#第17集$https://play.hhuus.com/play/aAD6WoBe#第18集$https://play.hhuus.com/play/dwp02AJe#第19集$https://play.hhuus.com/play/aOYgL2gd#第20集$https://play.hhuus.com/play/b4x6Vq2b#第21集$https://play.hhuus.com/play/e0R8Em7b#第22集$https://play.hhuus.com/play/dwp02lme#第23集$https://play.hhuus.com/play/eZ68X4Je#第24集$https://play.hhuus.com/play/dyPwDPEb#第25集$https://play.hhuus.com/play/ejRYwr4e#第26集$https://play.hhuus.com/play/epYZDAya#第27集$https://play.hhuus.com/play/b68W50le#第28集$https://play.hhuus.com/play/aKrLXP8e#第29集$https://play.hhuus.com/play/b82Moxje#第30集$https://play.hhuus.com/play/elY2vmja"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a/index.m3u8#第2集$https://play.hhuus.com/play/erk2B56a/index.m3u8#第3集$https://play.hhuus.com/play/bDkq6AYa/index.m3u8#第4集$https://play.hhuus.com/play/aQWkjq7d/index.m3u8#第5集$https://play.hhuus.com/play/eZ68vDve/index.m3u8#第6集$https://play.hhuus.com/play/eXDQq0ke/index.m3u8#第7集$https://play.hhuus.com/play/epYZB61a/index.m3u8#第8集$https://play.hhuus.com/play/b68WG77e/index.m3u8#第9集$https://play.hhuus.com/play/aKr8zkre/index.m3u8#第10集$https://play.hhuus.com/play/en5R7o4d/index.m3u8#第11集$https://play.hhuus.com/play/dG6Rz7yb/index.m3u8#第12集$https://play.hhuus.com/play/dyPw7OVb/index.m3u8#第13集$https://play.hhuus.com/play/elYRXLla/index.m3u8#第14集$https://play.hhuus.com/play/erk2B5wa/index.m3u8#第15集$https://play.hhuus.com/play/ejRY5VWe/index.m3u8#第16集$https://play.hhuus.com/play/en5R7oDd/index.m3u8#第17集$https://play.hhuus.com/play/aAD6WoBe/index.m3u8#第18集$https://play.hhuus.com/play/dwp02AJe/index.m3u8#第19集$https://play.hhuus.com/play/aOYgL2gd/index.m3u8#第20集$https://play.hhuus.com/play/b4x6Vq2b/index.m3u8#第21集$https://play.hhuus.com/play/e0R8Em7b/index.m3u8#第22集$https://play.hhuus.com/play/dwp02lme/index.m3u8#第23集$https://play.hhuus.com/play/eZ68X4Je/index.m3u8#第24集$https://play.hhuus.com/play/dyPwDPEb/index.m3u8#第25集$https://play.hhuus.com/play/ejRYwr4e/index.m3u8#第26集$https://play.hhuus.com/play/epYZDAya/index.m3u8#第27集$https://play.hhuus.com/play/b68W50le/index.m3u8#第28集$https://play.hhuus.com/play/aKrLXP8e/index.m3u8#第29集$https://play.hhuus.com/play/b82Moxje/index.m3u8#第30集$https://play.hhuus.com/play/elY2vmja/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a#第2集$https://play.hhuus.com/play/erk2B56a#第3集$https://play.hhuus.com/play/bDkq6AYa#第4集$https://play.hhuus.com/play/aQWkjq7d#第5集$https://play.hhuus.com/play/eZ68vDve#第6集$https://play.hhuus.com/play/eXDQq0ke#第7集$https://play.hhuus.com/play/epYZB61a#第8集$https://play.hhuus.com/play/b68WG77e#第9集$https://play.hhuus.com/play/aKr8zkre#第10集$https://play.hhuus.com/play/en5R7o4d#第11集$https://play.hhuus.com/play/dG6Rz7yb#第12集$https://play.hhuus.com/play/dyPw7OVb#第13集$https://play.hhuus.com/play/elYRXLla#第14集$https://play.hhuus.com/play/erk2B5wa#第15集$https://play.hhuus.com/play/ejRY5VWe#第16集$https://play.hhuus.com/play/en5R7oDd#第17集$https://play.hhuus.com/play/aAD6WoBe#第18集$https://play.hhuus.com/play/dwp02AJe#第19集$https://play.hhuus.com/play/aOYgL2gd#第20集$https://play.hhuus.com/play/b4x6Vq2b#第21集$https://play.hhuus.com/play/e0R8Em7b#第22集$https://play.hhuus.com/play/dwp02lme#第23集$https://play.hhuus.com/play/eZ68X4Je#第24集$https://play.hhuus.com/play/dyPwDPEb#第25集$https://play.hhuus.com/play/ejRYwr4e#第26集$https://play.hhuus.com/play/epYZDAya#第27集$https://play.hhuus.com/play/b68W50le#第28集$https://play.hhuus.com/play/aKrLXP8e#第29集$https://play.hhuus.com/play/b82Moxje#第30集$https://play.hhuus.com/play/elY2vmja"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a/index.m3u8#第2集$https://play.hhuus.com/play/erk2B56a/index.m3u8#第3集$https://play.hhuus.com/play/bDkq6AYa/index.m3u8#第4集$https://play.hhuus.com/play/aQWkjq7d/index.m3u8#第5集$https://play.hhuus.com/play/eZ68vDve/index.m3u8#第6集$https://play.hhuus.com/play/eXDQq0ke/index.m3u8#第7集$https://play.hhuus.com/play/epYZB61a/index.m3u8#第8集$https://play.hhuus.com/play/b68WG77e/index.m3u8#第9集$https://play.hhuus.com/play/aKr8zkre/index.m3u8#第10集$https://play.hhuus.com/play/en5R7o4d/index.m3u8#第11集$https://play.hhuus.com/play/dG6Rz7yb/index.m3u8#第12集$https://play.hhuus.com/play/dyPw7OVb/index.m3u8#第13集$https://play.hhuus.com/play/elYRXLla/index.m3u8#第14集$https://play.hhuus.com/play/erk2B5wa/index.m3u8#第15集$https://play.hhuus.com/play/ejRY5VWe/index.m3u8#第16集$https://play.hhuus.com/play/en5R7oDd/index.m3u8#第17集$https://play.hhuus.com/play/aAD6WoBe/index.m3u8#第18集$https://play.hhuus.com/play/dwp02AJe/index.m3u8#第19集$https://play.hhuus.com/play/aOYgL2gd/index.m3u8#第20集$https://play.hhuus.com/play/b4x6Vq2b/index.m3u8#第21集$https://play.hhuus.com/play/e0R8Em7b/index.m3u8#第22集$https://play.hhuus.com/play/dwp02lme/index.m3u8#第23集$https://play.hhuus.com/play/eZ68X4Je/index.m3u8#第24集$https://play.hhuus.com/play/dyPwDPEb/index.m3u8#第25集$https://play.hhuus.com/play/ejRYwr4e/index.m3u8#第26集$https://play.hhuus.com/play/epYZDAya/index.m3u8#第27集$https://play.hhuus.com/play/b68W50le/index.m3u8#第28集$https://play.hhuus.com/play/aKrLXP8e/index.m3u8#第29集$https://play.hhuus.com/play/b82Moxje/index.m3u8#第30集$https://play.hhuus.com/play/elY2vmja/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "第1集$https://hn.bfvvs.com/play/e0R8EpXb#第2集$https://hn.bfvvs.com/play/en5R7Xld#第3集$https://hn.bfvvs.com/play/dyPw7nwb#第4集$https://hn.bfvvs.com/play/aM8ZNmQe#第5集$https://hn.bfvvs.com/play/eVOvoy5a#第6集$https://hn.bfvvs.com/play/aQWkj27d#第7集$https://hn.bfvvs.com/play/elYRXVla#第8集$https://hn.bfvvs.com/play/b2k82AJd#第9集$https://hn.bfvvs.com/play/bDkq6rBa#第10集$https://hn.bfvvs.com/play/ejRY5kWe#第11集$https://hn.bfvvs.com/play/aAD6W7Be#第12集$https://hn.bfvvs.com/play/erk2BNwa#第13集$https://hn.bfvvs.com/play/dwp025we#第14集$https://hn.bfvvs.com/play/en5R7X4d#第15集$https://hn.bfvvs.com/play/b823W7le#第16集$https://hn.bfvvs.com/play/ejRY5kze#第17集$https://hn.bfvvs.com/play/dwp025Je#第18集$https://hn.bfvvs.com/play/epYZBq1a#第19集$https://hn.bfvvs.com/play/aKr8z2re#第20集$https://hn.bfvvs.com/play/eZ68vove#第21集$https://hn.bfvvs.com/play/b68WGv7e#第22集$https://hn.bfvvs.com/play/epYZBqra#第23集$https://hn.bfvvs.com/play/eVOvZmMa#第24集$https://hn.bfvvs.com/play/erk2vk4a#第25集$https://hn.bfvvs.com/play/erk2GDWa#第26集$https://hn.bfvvs.com/play/elYRyw1a#第27集$https://hn.bfvvs.com/play/b2k859Nd#第28集$https://hn.bfvvs.com/play/bDkQNGka#第29集$https://hn.bfvvs.com/play/b4xzkq7b#第30集$https://hn.bfvvs.com/play/e0R02m5b"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "第1集$https://hn.bfvvs.com/play/e0R8EpXb/index.m3u8#第2集$https://hn.bfvvs.com/play/en5R7Xld/index.m3u8#第3集$https://hn.bfvvs.com/play/dyPw7nwb/index.m3u8#第4集$https://hn.bfvvs.com/play/aM8ZNmQe/index.m3u8#第5集$https://hn.bfvvs.com/play/eVOvoy5a/index.m3u8#第6集$https://hn.bfvvs.com/play/aQWkj27d/index.m3u8#第7集$https://hn.bfvvs.com/play/elYRXVla/index.m3u8#第8集$https://hn.bfvvs.com/play/b2k82AJd/index.m3u8#第9集$https://hn.bfvvs.com/play/bDkq6rBa/index.m3u8#第10集$https://hn.bfvvs.com/play/ejRY5kWe/index.m3u8#第11集$https://hn.bfvvs.com/play/aAD6W7Be/index.m3u8#第12集$https://hn.bfvvs.com/play/erk2BNwa/index.m3u8#第13集$https://hn.bfvvs.com/play/dwp025we/index.m3u8#第14集$https://hn.bfvvs.com/play/en5R7X4d/index.m3u8#第15集$https://hn.bfvvs.com/play/b823W7le/index.m3u8#第16集$https://hn.bfvvs.com/play/ejRY5kze/index.m3u8#第17集$https://hn.bfvvs.com/play/dwp025Je/index.m3u8#第18集$https://hn.bfvvs.com/play/epYZBq1a/index.m3u8#第19集$https://hn.bfvvs.com/play/aKr8z2re/index.m3u8#第20集$https://hn.bfvvs.com/play/eZ68vove/index.m3u8#第21集$https://hn.bfvvs.com/play/b68WGv7e/index.m3u8#第22集$https://hn.bfvvs.com/play/epYZBqra/index.m3u8#第23集$https://hn.bfvvs.com/play/eVOvZmMa/index.m3u8#第24集$https://hn.bfvvs.com/play/erk2vk4a/index.m3u8#第25集$https://hn.bfvvs.com/play/erk2GDWa/index.m3u8#第26集$https://hn.bfvvs.com/play/elYRyw1a/index.m3u8#第27集$https://hn.bfvvs.com/play/b2k859Nd/index.m3u8#第28集$https://hn.bfvvs.com/play/bDkQNGka/index.m3u8#第29集$https://hn.bfvvs.com/play/b4xzkq7b/index.m3u8#第30集$https://hn.bfvvs.com/play/e0R02m5b/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a#第2集$https://play.hhuus.com/play/erk2B56a#第3集$https://play.hhuus.com/play/bDkq6AYa#第4集$https://play.hhuus.com/play/aQWkjq7d#第5集$https://play.hhuus.com/play/eZ68vDve#第6集$https://play.hhuus.com/play/eXDQq0ke#第7集$https://play.hhuus.com/play/epYZB61a#第8集$https://play.hhuus.com/play/b68WG77e#第9集$https://play.hhuus.com/play/aKr8zkre#第10集$https://play.hhuus.com/play/en5R7o4d#第11集$https://play.hhuus.com/play/dG6Rz7yb#第12集$https://play.hhuus.com/play/dyPw7OVb#第13集$https://play.hhuus.com/play/elYRXLla#第14集$https://play.hhuus.com/play/erk2B5wa#第15集$https://play.hhuus.com/play/ejRY5VWe#第16集$https://play.hhuus.com/play/en5R7oDd#第17集$https://play.hhuus.com/play/aAD6WoBe#第18集$https://play.hhuus.com/play/dwp02AJe#第19集$https://play.hhuus.com/play/aOYgL2gd#第20集$https://play.hhuus.com/play/b4x6Vq2b#第21集$https://play.hhuus.com/play/e0R8Em7b#第22集$https://play.hhuus.com/play/dwp02lme#第23集$https://play.hhuus.com/play/eZ68X4Je#第24集$https://play.hhuus.com/play/dyPwDPEb#第25集$https://play.hhuus.com/play/ejRYwr4e#第26集$https://play.hhuus.com/play/epYZDAya#第27集$https://play.hhuus.com/play/b68W50le#第28集$https://play.hhuus.com/play/aKrLXP8e#第29集$https://play.hhuus.com/play/b82Moxje#第30集$https://play.hhuus.com/play/elY2vmja"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a/index.m3u8#第2集$https://play.hhuus.com/play/erk2B56a/index.m3u8#第3集$https://play.hhuus.com/play/bDkq6AYa/index.m3u8#第4集$https://play.hhuus.com/play/aQWkjq7d/index.m3u8#第5集$https://play.hhuus.com/play/eZ68vDve/index.m3u8#第6集$https://play.hhuus.com/play/eXDQq0ke/index.m3u8#第7集$https://play.hhuus.com/play/epYZB61a/index.m3u8#第8集$https://play.hhuus.com/play/b68WG77e/index.m3u8#第9集$https://play.hhuus.com/play/aKr8zkre/index.m3u8#第10集$https://play.hhuus.com/play/en5R7o4d/index.m3u8#第11集$https://play.hhuus.com/play/dG6Rz7yb/index.m3u8#第12集$https://play.hhuus.com/play/dyPw7OVb/index.m3u8#第13集$https://play.hhuus.com/play/elYRXLla/index.m3u8#第14集$https://play.hhuus.com/play/erk2B5wa/index.m3u8#第15集$https://play.hhuus.com/play/ejRY5VWe/index.m3u8#第16集$https://play.hhuus.com/play/en5R7oDd/index.m3u8#第17集$https://play.hhuus.com/play/aAD6WoBe/index.m3u8#第18集$https://play.hhuus.com/play/dwp02AJe/index.m3u8#第19集$https://play.hhuus.com/play/aOYgL2gd/index.m3u8#第20集$https://play.hhuus.com/play/b4x6Vq2b/index.m3u8#第21集$https://play.hhuus.com/play/e0R8Em7b/index.m3u8#第22集$https://play.hhuus.com/play/dwp02lme/index.m3u8#第23集$https://play.hhuus.com/play/eZ68X4Je/index.m3u8#第24集$https://play.hhuus.com/play/dyPwDPEb/index.m3u8#第25集$https://play.hhuus.com/play/ejRYwr4e/index.m3u8#第26集$https://play.hhuus.com/play/epYZDAya/index.m3u8#第27集$https://play.hhuus.com/play/b68W50le/index.m3u8#第28集$https://play.hhuus.com/play/aKrLXP8e/index.m3u8#第29集$https://play.hhuus.com/play/b82Moxje/index.m3u8#第30集$https://play.hhuus.com/play/elY2vmja/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "第1集$https://v.gsuus.com/play/egJp8K6d#第2集$https://v.gsuus.com/play/bo2Z8KKa#第3集$https://v.gsuus.com/play/azp6Qo7d#第4集$https://v.gsuus.com/play/dNkOXnLe#第5集$https://v.gsuus.com/play/bW6PpzWa#第6集$https://v.gsuus.com/play/dR6lk0Ld#第7集$https://v.gsuus.com/play/bmZq8Vpd#第8集$https://v.gsuus.com/play/e316E0rb#第9集$https://v.gsuus.com/play/eERq1vNa#第10集$https://v.gsuus.com/play/bkR2Blxa#第11集$https://v.gsuus.com/play/dBBrO7xd#第12集$https://v.gsuus.com/play/av2QR7Va#第13集$https://v.gsuus.com/play/egJp8K9d#第14集$https://v.gsuus.com/play/bo2Z8Kza#第15集$https://v.gsuus.com/play/e9r9G7Pa#第16集$https://v.gsuus.com/play/bkR2BlYa#第17集$https://v.gsuus.com/play/axk685Je#第18集$https://v.gsuus.com/play/bqxQ6r3a#第19集$https://v.gsuus.com/play/dL9Z02ge#第20集$https://v.gsuus.com/play/e1w6En3b#第21集$https://v.gsuus.com/play/e739Ywwe#第22集$https://v.gsuus.com/play/bqxQ69Ra#第23集$https://v.gsuus.com/play/bW6PBnJa#第24集$https://v.gsuus.com/play/av2Qz20a#第25集$https://v.gsuus.com/play/av2QM0Ma#第26集$https://v.gsuus.com/play/bmZqzx3d#第27集$https://v.gsuus.com/play/e31659xb#第28集$https://v.gsuus.com/play/eER0OJla#第29集$https://v.gsuus.com/play/e5yRlrYe#第30集$https://v.gsuus.com/play/egJnxGrd"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "第1集$https://v.gsuus.com/play/egJp8K6d/index.m3u8#第2集$https://v.gsuus.com/play/bo2Z8KKa/index.m3u8#第3集$https://v.gsuus.com/play/azp6Qo7d/index.m3u8#第4集$https://v.gsuus.com/play/dNkOXnLe/index.m3u8#第5集$https://v.gsuus.com/play/bW6PpzWa/index.m3u8#第6集$https://v.gsuus.com/play/dR6lk0Ld/index.m3u8#第7集$https://v.gsuus.com/play/bmZq8Vpd/index.m3u8#第8集$https://v.gsuus.com/play/e316E0rb/index.m3u8#第9集$https://v.gsuus.com/play/eERq1vNa/index.m3u8#第10集$https://v.gsuus.com/play/bkR2Blxa/index.m3u8#第11集$https://v.gsuus.com/play/dBBrO7xd/index.m3u8#第12集$https://v.gsuus.com/play/av2QR7Va/index.m3u8#第13集$https://v.gsuus.com/play/egJp8K9d/index.m3u8#第14集$https://v.gsuus.com/play/bo2Z8Kza/index.m3u8#第15集$https://v.gsuus.com/play/e9r9G7Pa/index.m3u8#第16集$https://v.gsuus.com/play/bkR2BlYa/index.m3u8#第17集$https://v.gsuus.com/play/axk685Je/index.m3u8#第18集$https://v.gsuus.com/play/bqxQ6r3a/index.m3u8#第19集$https://v.gsuus.com/play/dL9Z02ge/index.m3u8#第20集$https://v.gsuus.com/play/e1w6En3b/index.m3u8#第21集$https://v.gsuus.com/play/e739Ywwe/index.m3u8#第22集$https://v.gsuus.com/play/bqxQ69Ra/index.m3u8#第23集$https://v.gsuus.com/play/bW6PBnJa/index.m3u8#第24集$https://v.gsuus.com/play/av2Qz20a/index.m3u8#第25集$https://v.gsuus.com/play/av2QM0Ma/index.m3u8#第26集$https://v.gsuus.com/play/bmZqzx3d/index.m3u8#第27集$https://v.gsuus.com/play/e31659xb/index.m3u8#第28集$https://v.gsuus.com/play/eER0OJla/index.m3u8#第29集$https://v.gsuus.com/play/e5yRlrYe/index.m3u8#第30集$https://v.gsuus.com/play/egJnxGrd/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a#第2集$https://play.hhuus.com/play/erk2B56a#第3集$https://play.hhuus.com/play/bDkq6AYa#第4集$https://play.hhuus.com/play/aQWkjq7d#第5集$https://play.hhuus.com/play/eZ68vDve#第6集$https://play.hhuus.com/play/eXDQq0ke#第7集$https://play.hhuus.com/play/epYZB61a#第8集$https://play.hhuus.com/play/b68WG77e#第9集$https://play.hhuus.com/play/aKr8zkre#第10集$https://play.hhuus.com/play/en5R7o4d#第11集$https://play.hhuus.com/play/dG6Rz7yb#第12集$https://play.hhuus.com/play/dyPw7OVb#第13集$https://play.hhuus.com/play/elYRXLla#第14集$https://play.hhuus.com/play/erk2B5wa#第15集$https://play.hhuus.com/play/ejRY5VWe#第16集$https://play.hhuus.com/play/en5R7oDd#第17集$https://play.hhuus.com/play/aAD6WoBe#第18集$https://play.hhuus.com/play/dwp02AJe#第19集$https://play.hhuus.com/play/aOYgL2gd#第20集$https://play.hhuus.com/play/b4x6Vq2b#第21集$https://play.hhuus.com/play/e0R8Em7b#第22集$https://play.hhuus.com/play/dwp02lme#第23集$https://play.hhuus.com/play/eZ68X4Je#第24集$https://play.hhuus.com/play/dyPwDPEb#第25集$https://play.hhuus.com/play/ejRYwr4e#第26集$https://play.hhuus.com/play/epYZDAya#第27集$https://play.hhuus.com/play/b68W50le#第28集$https://play.hhuus.com/play/aKrLXP8e#第29集$https://play.hhuus.com/play/b82Moxje#第30集$https://play.hhuus.com/play/elY2vmja"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a/index.m3u8#第2集$https://play.hhuus.com/play/erk2B56a/index.m3u8#第3集$https://play.hhuus.com/play/bDkq6AYa/index.m3u8#第4集$https://play.hhuus.com/play/aQWkjq7d/index.m3u8#第5集$https://play.hhuus.com/play/eZ68vDve/index.m3u8#第6集$https://play.hhuus.com/play/eXDQq0ke/index.m3u8#第7集$https://play.hhuus.com/play/epYZB61a/index.m3u8#第8集$https://play.hhuus.com/play/b68WG77e/index.m3u8#第9集$https://play.hhuus.com/play/aKr8zkre/index.m3u8#第10集$https://play.hhuus.com/play/en5R7o4d/index.m3u8#第11集$https://play.hhuus.com/play/dG6Rz7yb/index.m3u8#第12集$https://play.hhuus.com/play/dyPw7OVb/index.m3u8#第13集$https://play.hhuus.com/play/elYRXLla/index.m3u8#第14集$https://play.hhuus.com/play/erk2B5wa/index.m3u8#第15集$https://play.hhuus.com/play/ejRY5VWe/index.m3u8#第16集$https://play.hhuus.com/play/en5R7oDd/index.m3u8#第17集$https://play.hhuus.com/play/aAD6WoBe/index.m3u8#第18集$https://play.hhuus.com/play/dwp02AJe/index.m3u8#第19集$https://play.hhuus.com/play/aOYgL2gd/index.m3u8#第20集$https://play.hhuus.com/play/b4x6Vq2b/index.m3u8#第21集$https://play.hhuus.com/play/e0R8Em7b/index.m3u8#第22集$https://play.hhuus.com/play/dwp02lme/index.m3u8#第23集$https://play.hhuus.com/play/eZ68X4Je/index.m3u8#第24集$https://play.hhuus.com/play/dyPwDPEb/index.m3u8#第25集$https://play.hhuus.com/play/ejRYwr4e/index.m3u8#第26集$https://play.hhuus.com/play/epYZDAya/index.m3u8#第27集$https://play.hhuus.com/play/b68W50le/index.m3u8#第28集$https://play.hhuus.com/play/aKrLXP8e/index.m3u8#第29集$https://play.hhuus.com/play/b82Moxje/index.m3u8#第30集$https://play.hhuus.com/play/elY2vmja/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "第1集$https://play.xluuss.com/play/ejRY5M5e#第2集$https://play.xluuss.com/play/epYZBK6a#第3集$https://play.xluuss.com/play/aAD6Wx1e#第4集$https://play.xluuss.com/play/aOYgLogd#第5集$https://play.xluuss.com/play/eXDQqAke#第6集$https://play.xluuss.com/play/eVOvok5a#第7集$https://play.xluuss.com/play/en5R7V4d#第8集$https://play.xluuss.com/play/b4x6VD2b#第9集$https://play.xluuss.com/play/dG6Rzxyb#第10集$https://play.xluuss.com/play/elYRXmla#第11集$https://play.xluuss.com/play/bDkq67Ba#第12集$https://play.xluuss.com/play/dwp028Je#第13集$https://play.xluuss.com/play/ejRY5MWe#第14集$https://play.xluuss.com/play/epYZBK1a#第15集$https://play.xluuss.com/play/e0R8Ey7b#第16集$https://play.xluuss.com/play/elYRXmJa#第17集$https://play.xluuss.com/play/dyPw75Vb#第18集$https://play.xluuss.com/play/erk2Bvwa#第19集$https://play.xluuss.com/play/aM8ZN2Qe#第20集$https://play.xluuss.com/play/b2k82oJd#第21集$https://play.xluuss.com/play/b823Wxle#第22集$https://play.xluuss.com/play/erk2B6ka#第23集$https://play.xluuss.com/play/eXDQV6We#第24集$https://play.xluuss.com/play/dwp0Ap1e#第25集$https://play.xluuss.com/play/dwp0NLze#第26集$https://play.xluuss.com/play/en5RAypd#第27集$https://play.xluuss.com/play/b4x679nb#第28集$https://play.xluuss.com/play/dG6MnL5b#第29集$https://play.xluuss.com/play/b68BmvOe#第30集$https://play.xluuss.com/play/ejR0vkye"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "第1集$https://play.xluuss.com/play/ejRY5M5e/index.m3u8#第2集$https://play.xluuss.com/play/epYZBK6a/index.m3u8#第3集$https://play.xluuss.com/play/aAD6Wx1e/index.m3u8#第4集$https://play.xluuss.com/play/aOYgLogd/index.m3u8#第5集$https://play.xluuss.com/play/eXDQqAke/index.m3u8#第6集$https://play.xluuss.com/play/eVOvok5a/index.m3u8#第7集$https://play.xluuss.com/play/en5R7V4d/index.m3u8#第8集$https://play.xluuss.com/play/b4x6VD2b/index.m3u8#第9集$https://play.xluuss.com/play/dG6Rzxyb/index.m3u8#第10集$https://play.xluuss.com/play/elYRXmla/index.m3u8#第11集$https://play.xluuss.com/play/bDkq67Ba/index.m3u8#第12集$https://play.xluuss.com/play/dwp028Je/index.m3u8#第13集$https://play.xluuss.com/play/ejRY5MWe/index.m3u8#第14集$https://play.xluuss.com/play/epYZBK1a/index.m3u8#第15集$https://play.xluuss.com/play/e0R8Ey7b/index.m3u8#第16集$https://play.xluuss.com/play/elYRXmJa/index.m3u8#第17集$https://play.xluuss.com/play/dyPw75Vb/index.m3u8#第18集$https://play.xluuss.com/play/erk2Bvwa/index.m3u8#第19集$https://play.xluuss.com/play/aM8ZN2Qe/index.m3u8#第20集$https://play.xluuss.com/play/b2k82oJd/index.m3u8#第21集$https://play.xluuss.com/play/b823Wxle/index.m3u8#第22集$https://play.xluuss.com/play/erk2B6ka/index.m3u8#第23集$https://play.xluuss.com/play/eXDQV6We/index.m3u8#第24集$https://play.xluuss.com/play/dwp0Ap1e/index.m3u8#第25集$https://play.xluuss.com/play/dwp0NLze/index.m3u8#第26集$https://play.xluuss.com/play/en5RAypd/index.m3u8#第27集$https://play.xluuss.com/play/b4x679nb/index.m3u8#第28集$https://play.xluuss.com/play/dG6MnL5b/index.m3u8#第29集$https://play.xluuss.com/play/b68BmvOe/index.m3u8#第30集$https://play.xluuss.com/play/ejR0vkye/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a#第2集$https://play.hhuus.com/play/erk2B56a#第3集$https://play.hhuus.com/play/bDkq6AYa#第4集$https://play.hhuus.com/play/aQWkjq7d#第5集$https://play.hhuus.com/play/eZ68vDve#第6集$https://play.hhuus.com/play/eXDQq0ke#第7集$https://play.hhuus.com/play/epYZB61a#第8集$https://play.hhuus.com/play/b68WG77e#第9集$https://play.hhuus.com/play/aKr8zkre#第10集$https://play.hhuus.com/play/en5R7o4d#第11集$https://play.hhuus.com/play/dG6Rz7yb#第12集$https://play.hhuus.com/play/dyPw7OVb#第13集$https://play.hhuus.com/play/elYRXLla#第14集$https://play.hhuus.com/play/erk2B5wa#第15集$https://play.hhuus.com/play/ejRY5VWe#第16集$https://play.hhuus.com/play/en5R7oDd#第17集$https://play.hhuus.com/play/aAD6WoBe#第18集$https://play.hhuus.com/play/dwp02AJe#第19集$https://play.hhuus.com/play/aOYgL2gd#第20集$https://play.hhuus.com/play/b4x6Vq2b#第21集$https://play.hhuus.com/play/e0R8Em7b#第22集$https://play.hhuus.com/play/dwp02lme#第23集$https://play.hhuus.com/play/eZ68X4Je#第24集$https://play.hhuus.com/play/dyPwDPEb#第25集$https://play.hhuus.com/play/ejRYwr4e#第26集$https://play.hhuus.com/play/epYZDAya#第27集$https://play.hhuus.com/play/b68W50le#第28集$https://play.hhuus.com/play/aKrLXP8e#第29集$https://play.hhuus.com/play/b82Moxje#第30集$https://play.hhuus.com/play/elY2vmja"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/elYRXL6a/index.m3u8#第2集$https://play.hhuus.com/play/erk2B56a/index.m3u8#第3集$https://play.hhuus.com/play/bDkq6AYa/index.m3u8#第4集$https://play.hhuus.com/play/aQWkjq7d/index.m3u8#第5集$https://play.hhuus.com/play/eZ68vDve/index.m3u8#第6集$https://play.hhuus.com/play/eXDQq0ke/index.m3u8#第7集$https://play.hhuus.com/play/epYZB61a/index.m3u8#第8集$https://play.hhuus.com/play/b68WG77e/index.m3u8#第9集$https://play.hhuus.com/play/aKr8zkre/index.m3u8#第10集$https://play.hhuus.com/play/en5R7o4d/index.m3u8#第11集$https://play.hhuus.com/play/dG6Rz7yb/index.m3u8#第12集$https://play.hhuus.com/play/dyPw7OVb/index.m3u8#第13集$https://play.hhuus.com/play/elYRXLla/index.m3u8#第14集$https://play.hhuus.com/play/erk2B5wa/index.m3u8#第15集$https://play.hhuus.com/play/ejRY5VWe/index.m3u8#第16集$https://play.hhuus.com/play/en5R7oDd/index.m3u8#第17集$https://play.hhuus.com/play/aAD6WoBe/index.m3u8#第18集$https://play.hhuus.com/play/dwp02AJe/index.m3u8#第19集$https://play.hhuus.com/play/aOYgL2gd/index.m3u8#第20集$https://play.hhuus.com/play/b4x6Vq2b/index.m3u8#第21集$https://play.hhuus.com/play/e0R8Em7b/index.m3u8#第22集$https://play.hhuus.com/play/dwp02lme/index.m3u8#第23集$https://play.hhuus.com/play/eZ68X4Je/index.m3u8#第24集$https://play.hhuus.com/play/dyPwDPEb/index.m3u8#第25集$https://play.hhuus.com/play/ejRYwr4e/index.m3u8#第26集$https://play.hhuus.com/play/epYZDAya/index.m3u8#第27集$https://play.hhuus.com/play/b68W50le/index.m3u8#第28集$https://play.hhuus.com/play/aKrLXP8e/index.m3u8#第29集$https://play.hhuus.com/play/b82Moxje/index.m3u8#第30集$https://play.hhuus.com/play/elY2vmja/index.m3u8"
+        }
+      ],
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "class 少儿 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6Imd1YW5nc3UiLCJpZCI6IjE2NzA3MiJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNDgzNCJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0ODM2OCJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMDE2OSJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2NDY4OCJ9XQ",
+      "type_id": "24",
+      "type_id_1": 17,
+      "group_id": 0,
+      "vod_name": "熊猫和奇异鸟",
+      "vod_sub": "",
+      "vod_en": "xiongmaoheqiyiniao",
+      "vod_status": 1,
+      "vod_letter": "X",
+      "vod_color": "",
+      "vod_tag": "动画,儿童",
+      "vod_class": "动画,儿童,中国动漫",
+      "vod_pic": "https://hhmage.com/cover/c31f44edeb9250193778a13fc58f75de.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "马程,李姗姗,张磊",
+      "vod_director": "曾伟京",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "和和的新朋友奇奇上线啦！中国和新西兰合拍的动画系列片《熊猫和奇异鸟》于2月10日在中国中央广播电视总台少儿频道开播，为春节假期送上温馨美好的祝愿！该片由央视动漫集团和新西兰自然历史有限公司联合制作，以",
+      "vod_remarks": "第52集已完结",
+      "vod_pubdate": "2021-02-10(中国大陆)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "中国大陆",
+      "vod_lang": "普通话",
+      "vod_year": "2021",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 382,
+      "vod_hits_day": 892,
+      "vod_hits_week": 306,
+      "vod_hits_month": 399,
+      "vod_duration": "",
+      "vod_up": 413,
+      "vod_down": 909,
+      "vod_score": "1.0",
+      "vod_score_all": 345,
+      "vod_score_num": 345,
+      "vod_time": "2026-06-05 21:36:02",
+      "vod_time_add": "1780666562",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 35954302,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "和和的新朋友奇奇上线啦！中国和新西兰合拍的动画系列片《熊猫和奇异鸟》于2月10日在中国中央广播电视总台少儿频道开播，为春节假期送上温馨美好的祝愿！该片由央视动漫集团和新西兰自然历史有限公司联合制作，以中国国宝熊猫和新西兰国鸟奇异鸟为主角，讲述了熊猫“和和”与奇异鸟“奇奇”的妙趣冒险经历，传递了保护自然和爱护动物的美好理念。《熊猫和奇异鸟》以国际化的视角、充满童真的情景演绎，呈现了中国和新西兰多姿多彩的民族风情、自然美景、文化特色。该片还将在新西兰等多国媒体平台播出，为中国和新西兰以及更多国家的观众搭建起互",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "第1集$https://play.hhuus.com/play/eZ68ZAQe#第2集$https://play.hhuus.com/play/aKr8A38e#第3集$https://play.hhuus.com/play/eZ68Z7ge#第4集$https://play.hhuus.com/play/aKr8AgGe#第5集$https://play.hhuus.com/play/aAD68R9e#第6集$https://play.hhuus.com/play/aOYgJAEd#第7集$https://play.hhuus.com/play/bDkqw55a#第8集$https://play.hhuus.com/play/en5RGE5d#第9集$https://play.hhuus.com/play/elYR8G1a#第10集$https://play.hhuus.com/play/dyPwpLRb#第11集$https://play.hhuus.com/play/aQWkA95d#第12集$https://play.hhuus.com/play/erk2gOLa#第13集$https://play.hhuus.com/play/b4x6W7kb#第14集$https://play.hhuus.com/play/dG6Rwp5b#第15集$https://play.hhuus.com/play/bDkqwy6a#第16集$https://play.hhuus.com/play/dwp0nGXe#第17集$https://play.hhuus.com/play/erk2gj2a#第18集$https://play.hhuus.com/play/b823X4We#第19集$https://play.hhuus.com/play/eVOvJ6Oa#第20集$https://play.hhuus.com/play/aOYgJwQd#第21集$https://play.hhuus.com/play/elYR8Bja#第22集$https://play.hhuus.com/play/e0R8A63b#第23集$https://play.hhuus.com/play/epYZ9yya#第24集$https://play.hhuus.com/play/eXDQYEoe#第25集$https://play.hhuus.com/play/erk2gOWa#第26集$https://play.hhuus.com/play/b2k8GVWd#第27集$https://play.hhuus.com/play/dyPwpZnb#第28集$https://play.hhuus.com/play/b4x6WNJb#第29集$https://play.hhuus.com/play/aOYgJWrd#第30集$https://play.hhuus.com/play/dwp0nQre#第31集$https://play.hhuus.com/play/b68WYDOe#第32集$https://play.hhuus.com/play/dwp0nBze#第33集$https://play.hhuus.com/play/epYZ9NQa#第34集$https://play.hhuus.com/play/dG6Rwl3b#第35集$https://play.hhuus.com/play/ejRYAXye#第36集$https://play.hhuus.com/play/en5RGpPd#第37集$https://play.hhuus.com/play/b2k8GYMd#第38集$https://play.hhuus.com/play/eXDQYNVe#第39集$https://play.hhuus.com/play/b68WYONe#第40集$https://play.hhuus.com/play/aM8Z7Lme#第41集$https://play.hhuus.com/play/ejRYAEve#第42集$https://play.hhuus.com/play/ejRYAp4e#第43集$https://play.hhuus.com/play/elYR8GVa#第44集$https://play.hhuus.com/play/epYZ9NVa#第45集$https://play.hhuus.com/play/en5RGvpd#第46集$https://play.hhuus.com/play/eVOvJXza#第47集$https://play.hhuus.com/play/b823Xjje#第48集$https://play.hhuus.com/play/dG6RwLJb#第49集$https://play.hhuus.com/play/e0R8AJNb#第50集$https://play.hhuus.com/play/aM8Z7pRe#第51集$https://play.hhuus.com/play/aAD684je#第52集已完结$https://play.hhuus.com/play/aQWkAoGd$$$第1集$https://play.hhuus.com/play/eZ68ZAQe/index.m3u8#第2集$https://play.hhuus.com/play/aKr8A38e/index.m3u8#第3集$https://play.hhuus.com/play/eZ68Z7ge/index.m3u8#第4集$https://play.hhuus.com/play/aKr8AgGe/index.m3u8#第5集$https://play.hhuus.com/play/aAD68R9e/index.m3u8#第6集$https://play.hhuus.com/play/aOYgJAEd/index.m3u8#第7集$https://play.hhuus.com/play/bDkqw55a/index.m3u8#第8集$https://play.hhuus.com/play/en5RGE5d/index.m3u8#第9集$https://play.hhuus.com/play/elYR8G1a/index.m3u8#第10集$https://play.hhuus.com/play/dyPwpLRb/index.m3u8#第11集$https://play.hhuus.com/play/aQWkA95d/index.m3u8#第12集$https://play.hhuus.com/play/erk2gOLa/index.m3u8#第13集$https://play.hhuus.com/play/b4x6W7kb/index.m3u8#第14集$https://play.hhuus.com/play/dG6Rwp5b/index.m3u8#第15集$https://play.hhuus.com/play/bDkqwy6a/index.m3u8#第16集$https://play.hhuus.com/play/dwp0nGXe/index.m3u8#第17集$https://play.hhuus.com/play/erk2gj2a/index.m3u8#第18集$https://play.hhuus.com/play/b823X4We/index.m3u8#第19集$https://play.hhuus.com/play/eVOvJ6Oa/index.m3u8#第20集$https://play.hhuus.com/play/aOYgJwQd/index.m3u8#第21集$https://play.hhuus.com/play/elYR8Bja/index.m3u8#第22集$https://play.hhuus.com/play/e0R8A63b/index.m3u8#第23集$https://play.hhuus.com/play/epYZ9yya/index.m3u8#第24集$https://play.hhuus.com/play/eXDQYEoe/index.m3u8#第25集$https://play.hhuus.com/play/erk2gOWa/index.m3u8#第26集$https://play.hhuus.com/play/b2k8GVWd/index.m3u8#第27集$https://play.hhuus.com/play/dyPwpZnb/index.m3u8#第28集$https://play.hhuus.com/play/b4x6WNJb/index.m3u8#第29集$https://play.hhuus.com/play/aOYgJWrd/index.m3u8#第30集$https://play.hhuus.com/play/dwp0nQre/index.m3u8#第31集$https://play.hhuus.com/play/b68WYDOe/index.m3u8#第32集$https://play.hhuus.com/play/dwp0nBze/index.m3u8#第33集$https://play.hhuus.com/play/epYZ9NQa/index.m3u8#第34集$https://play.hhuus.com/play/dG6Rwl3b/index.m3u8#第35集$https://play.hhuus.com/play/ejRYAXye/index.m3u8#第36集$https://play.hhuus.com/play/en5RGpPd/index.m3u8#第37集$https://play.hhuus.com/play/b2k8GYMd/index.m3u8#第38集$https://play.hhuus.com/play/eXDQYNVe/index.m3u8#第39集$https://play.hhuus.com/play/b68WYONe/index.m3u8#第40集$https://play.hhuus.com/play/aM8Z7Lme/index.m3u8#第41集$https://play.hhuus.com/play/ejRYAEve/index.m3u8#第42集$https://play.hhuus.com/play/ejRYAp4e/index.m3u8#第43集$https://play.hhuus.com/play/elYR8GVa/index.m3u8#第44集$https://play.hhuus.com/play/epYZ9NVa/index.m3u8#第45集$https://play.hhuus.com/play/en5RGvpd/index.m3u8#第46集$https://play.hhuus.com/play/eVOvJXza/index.m3u8#第47集$https://play.hhuus.com/play/b823Xjje/index.m3u8#第48集$https://play.hhuus.com/play/dG6RwLJb/index.m3u8#第49集$https://play.hhuus.com/play/e0R8AJNb/index.m3u8#第50集$https://play.hhuus.com/play/aM8Z7pRe/index.m3u8#第51集$https://play.hhuus.com/play/aAD684je/index.m3u8#第52集已完结$https://play.hhuus.com/play/aQWkAoGd/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "中国动漫",
+      "source_category_id": "4",
+      "source_category_name": "中国动漫",
+      "_sourceSlug": "hhzy",
+      "_sourceShort": "火狐",
+      "source_url": "https://hhzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:35954302",
+      "primary_category": "anime",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "anime",
+          "field": "source_category_id",
+          "value": "4",
+          "signal": "anime"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "huya",
+          "id": "110169",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "134834",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "148368",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "167072",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "164688",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "第1集$https://1080p.huyall.com/play/bYE7VzAb/index.m3u8#第2集$https://1080p.huyall.com/play/dJ68E3yd/index.m3u8#第3集$https://1080p.huyall.com/play/bYE7V3Yb/index.m3u8#第4集$https://1080p.huyall.com/play/dJ68E4Kd/index.m3u8#第5集$https://1080p.huyall.com/play/azp6qrqd/index.m3u8#第6集$https://1080p.huyall.com/play/dNkO7z8e/index.m3u8#第7集$https://1080p.huyall.com/play/dBBr15Wd/index.m3u8#第8集$https://1080p.huyall.com/play/bmZq7DRd/index.m3u8#第9集$https://1080p.huyall.com/play/bkR26Eva/index.m3u8#第10集$https://1080p.huyall.com/play/axk6oKPe/index.m3u8#第11集$https://1080p.huyall.com/play/dPNj636a/index.m3u8#第12集$https://1080p.huyall.com/play/bqxQANya/index.m3u8#第13集$https://1080p.huyall.com/play/e316Y59b/index.m3u8#第14集$https://1080p.huyall.com/play/eERqKnla/index.m3u8#第15集$https://1080p.huyall.com/play/dBBr1wQd/index.m3u8#第16集$https://1080p.huyall.com/play/av2QmEna/index.m3u8#第17集$https://1080p.huyall.com/play/bqxQAg7a/index.m3u8#第18集$https://1080p.huyall.com/play/e739D4Oe/index.m3u8#第19集$https://1080p.huyall.com/play/dR6l89Yd/index.m3u8#第20集$https://1080p.huyall.com/play/dNkO7vNe/index.m3u8#第21集$https://1080p.huyall.com/play/bkR26AJa/index.m3u8#第22集$https://1080p.huyall.com/play/e9r935Ya/index.m3u8#第23集$https://1080p.huyall.com/play/bo2ZAxLa/index.m3u8#第24集$https://1080p.huyall.com/play/bW6PWDna/index.m3u8#第25集$https://1080p.huyall.com/play/bqxQANka/index.m3u8#第26集$https://1080p.huyall.com/play/e1w6VRGb/index.m3u8#第27集$https://1080p.huyall.com/play/axk6oYBe/index.m3u8#第28集$https://1080p.huyall.com/play/e316YMpb/index.m3u8#第29集$https://1080p.huyall.com/play/dNkO7Vve/index.m3u8#第30集$https://1080p.huyall.com/play/av2QmP8a/index.m3u8#第31集$https://1080p.huyall.com/play/e5y7ABYe/index.m3u8#第32集$https://1080p.huyall.com/play/av2QmAMa/index.m3u8#第33集$https://1080p.huyall.com/play/bo2ZAMYa/index.m3u8#第34集$https://1080p.huyall.com/play/eERqKj4a/index.m3u8#第35集$https://1080p.huyall.com/play/egJp7Rrd/index.m3u8#第36集$https://1080p.huyall.com/play/bmZq7ond/index.m3u8#第37集$https://1080p.huyall.com/play/e1w6VXZb/index.m3u8#第38集$https://1080p.huyall.com/play/bW6PWMoa/index.m3u8#第39集$https://1080p.huyall.com/play/e5y7ANXe/index.m3u8#第40集$https://1080p.huyall.com/play/dL9ZAKDe/index.m3u8#第41集$https://1080p.huyall.com/play/egJp7Akd/index.m3u8#第42集$https://1080p.huyall.com/play/egJp7mjd/index.m3u8#第43集$https://1080p.huyall.com/play/bkR26EKa/index.m3u8#第44集$https://1080p.huyall.com/play/bo2ZAMXa/index.m3u8#第45集$https://1080p.huyall.com/play/bmZq7r3d/index.m3u8#第46集$https://1080p.huyall.com/play/dR6l8QVd/index.m3u8#第47集$https://1080p.huyall.com/play/e739DgQe/index.m3u8#第48集$https://1080p.huyall.com/play/eERqKJga/index.m3u8#第49集$https://1080p.huyall.com/play/e9r93Vza/index.m3u8#第50集$https://1080p.huyall.com/play/dL9ZAoje/index.m3u8#第51集$https://1080p.huyall.com/play/azp6qZ2d/index.m3u8#第52集已完结$https://1080p.huyall.com/play/dPNj6nAa/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "第1集$https://play.hhuus.com/play/eZ68ZAQe#第2集$https://play.hhuus.com/play/aKr8A38e#第3集$https://play.hhuus.com/play/eZ68Z7ge#第4集$https://play.hhuus.com/play/aKr8AgGe#第5集$https://play.hhuus.com/play/aAD68R9e#第6集$https://play.hhuus.com/play/aOYgJAEd#第7集$https://play.hhuus.com/play/bDkqw55a#第8集$https://play.hhuus.com/play/en5RGE5d#第9集$https://play.hhuus.com/play/elYR8G1a#第10集$https://play.hhuus.com/play/dyPwpLRb#第11集$https://play.hhuus.com/play/aQWkA95d#第12集$https://play.hhuus.com/play/erk2gOLa#第13集$https://play.hhuus.com/play/b4x6W7kb#第14集$https://play.hhuus.com/play/dG6Rwp5b#第15集$https://play.hhuus.com/play/bDkqwy6a#第16集$https://play.hhuus.com/play/dwp0nGXe#第17集$https://play.hhuus.com/play/erk2gj2a#第18集$https://play.hhuus.com/play/b823X4We#第19集$https://play.hhuus.com/play/eVOvJ6Oa#第20集$https://play.hhuus.com/play/aOYgJwQd#第21集$https://play.hhuus.com/play/elYR8Bja#第22集$https://play.hhuus.com/play/e0R8A63b#第23集$https://play.hhuus.com/play/epYZ9yya#第24集$https://play.hhuus.com/play/eXDQYEoe#第25集$https://play.hhuus.com/play/erk2gOWa#第26集$https://play.hhuus.com/play/b2k8GVWd#第27集$https://play.hhuus.com/play/dyPwpZnb#第28集$https://play.hhuus.com/play/b4x6WNJb#第29集$https://play.hhuus.com/play/aOYgJWrd#第30集$https://play.hhuus.com/play/dwp0nQre#第31集$https://play.hhuus.com/play/b68WYDOe#第32集$https://play.hhuus.com/play/dwp0nBze#第33集$https://play.hhuus.com/play/epYZ9NQa#第34集$https://play.hhuus.com/play/dG6Rwl3b#第35集$https://play.hhuus.com/play/ejRYAXye#第36集$https://play.hhuus.com/play/en5RGpPd#第37集$https://play.hhuus.com/play/b2k8GYMd#第38集$https://play.hhuus.com/play/eXDQYNVe#第39集$https://play.hhuus.com/play/b68WYONe#第40集$https://play.hhuus.com/play/aM8Z7Lme#第41集$https://play.hhuus.com/play/ejRYAEve#第42集$https://play.hhuus.com/play/ejRYAp4e#第43集$https://play.hhuus.com/play/elYR8GVa#第44集$https://play.hhuus.com/play/epYZ9NVa#第45集$https://play.hhuus.com/play/en5RGvpd#第46集$https://play.hhuus.com/play/eVOvJXza#第47集$https://play.hhuus.com/play/b823Xjje#第48集$https://play.hhuus.com/play/dG6RwLJb#第49集$https://play.hhuus.com/play/e0R8AJNb#第50集$https://play.hhuus.com/play/aM8Z7pRe#第51集$https://play.hhuus.com/play/aAD684je#第52集已完结$https://play.hhuus.com/play/aQWkAoGd"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "第1集$https://play.hhuus.com/play/eZ68ZAQe/index.m3u8#第2集$https://play.hhuus.com/play/aKr8A38e/index.m3u8#第3集$https://play.hhuus.com/play/eZ68Z7ge/index.m3u8#第4集$https://play.hhuus.com/play/aKr8AgGe/index.m3u8#第5集$https://play.hhuus.com/play/aAD68R9e/index.m3u8#第6集$https://play.hhuus.com/play/aOYgJAEd/index.m3u8#第7集$https://play.hhuus.com/play/bDkqw55a/index.m3u8#第8集$https://play.hhuus.com/play/en5RGE5d/index.m3u8#第9集$https://play.hhuus.com/play/elYR8G1a/index.m3u8#第10集$https://play.hhuus.com/play/dyPwpLRb/index.m3u8#第11集$https://play.hhuus.com/play/aQWkA95d/index.m3u8#第12集$https://play.hhuus.com/play/erk2gOLa/index.m3u8#第13集$https://play.hhuus.com/play/b4x6W7kb/index.m3u8#第14集$https://play.hhuus.com/play/dG6Rwp5b/index.m3u8#第15集$https://play.hhuus.com/play/bDkqwy6a/index.m3u8#第16集$https://play.hhuus.com/play/dwp0nGXe/index.m3u8#第17集$https://play.hhuus.com/play/erk2gj2a/index.m3u8#第18集$https://play.hhuus.com/play/b823X4We/index.m3u8#第19集$https://play.hhuus.com/play/eVOvJ6Oa/index.m3u8#第20集$https://play.hhuus.com/play/aOYgJwQd/index.m3u8#第21集$https://play.hhuus.com/play/elYR8Bja/index.m3u8#第22集$https://play.hhuus.com/play/e0R8A63b/index.m3u8#第23集$https://play.hhuus.com/play/epYZ9yya/index.m3u8#第24集$https://play.hhuus.com/play/eXDQYEoe/index.m3u8#第25集$https://play.hhuus.com/play/erk2gOWa/index.m3u8#第26集$https://play.hhuus.com/play/b2k8GVWd/index.m3u8#第27集$https://play.hhuus.com/play/dyPwpZnb/index.m3u8#第28集$https://play.hhuus.com/play/b4x6WNJb/index.m3u8#第29集$https://play.hhuus.com/play/aOYgJWrd/index.m3u8#第30集$https://play.hhuus.com/play/dwp0nQre/index.m3u8#第31集$https://play.hhuus.com/play/b68WYDOe/index.m3u8#第32集$https://play.hhuus.com/play/dwp0nBze/index.m3u8#第33集$https://play.hhuus.com/play/epYZ9NQa/index.m3u8#第34集$https://play.hhuus.com/play/dG6Rwl3b/index.m3u8#第35集$https://play.hhuus.com/play/ejRYAXye/index.m3u8#第36集$https://play.hhuus.com/play/en5RGpPd/index.m3u8#第37集$https://play.hhuus.com/play/b2k8GYMd/index.m3u8#第38集$https://play.hhuus.com/play/eXDQYNVe/index.m3u8#第39集$https://play.hhuus.com/play/b68WYONe/index.m3u8#第40集$https://play.hhuus.com/play/aM8Z7Lme/index.m3u8#第41集$https://play.hhuus.com/play/ejRYAEve/index.m3u8#第42集$https://play.hhuus.com/play/ejRYAp4e/index.m3u8#第43集$https://play.hhuus.com/play/elYR8GVa/index.m3u8#第44集$https://play.hhuus.com/play/epYZ9NVa/index.m3u8#第45集$https://play.hhuus.com/play/en5RGvpd/index.m3u8#第46集$https://play.hhuus.com/play/eVOvJXza/index.m3u8#第47集$https://play.hhuus.com/play/b823Xjje/index.m3u8#第48集$https://play.hhuus.com/play/dG6RwLJb/index.m3u8#第49集$https://play.hhuus.com/play/e0R8AJNb/index.m3u8#第50集$https://play.hhuus.com/play/aM8Z7pRe/index.m3u8#第51集$https://play.hhuus.com/play/aAD684je/index.m3u8#第52集已完结$https://play.hhuus.com/play/aQWkAoGd/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "第1集$https://hn.bfvvs.com/play/eVOvJwza#第2集$https://hn.bfvvs.com/play/bDkqw3ka#第3集$https://hn.bfvvs.com/play/eVOvJ3oa#第4集$https://hn.bfvvs.com/play/bDkqwX6a#第5集$https://hn.bfvvs.com/play/dwp0nore#第6集$https://hn.bfvvs.com/play/aKr8Aw8e#第7集$https://hn.bfvvs.com/play/dyPwpEgb#第8集$https://hn.bfvvs.com/play/ejRYAoye#第9集$https://hn.bfvvs.com/play/dwp0nWze#第10集$https://hn.bfvvs.com/play/erk2gALa#第11集$https://hn.bfvvs.com/play/aM8Z731e#第12集$https://hn.bfvvs.com/play/en5RGKpd#第13集$https://hn.bfvvs.com/play/eZ68ZJ8e#第14集$https://hn.bfvvs.com/play/aAD683je#第15集$https://hn.bfvvs.com/play/dyPwpV6b#第16集$https://hn.bfvvs.com/play/epYZ9xya#第17集$https://hn.bfvvs.com/play/en5RG25d#第18集$https://hn.bfvvs.com/play/b4x6WXkb#第19集$https://hn.bfvvs.com/play/aOYgJrQd#第20集$https://hn.bfvvs.com/play/aKr8ApJe#第21集$https://hn.bfvvs.com/play/e0R8AW5b#第22集$https://hn.bfvvs.com/play/b68WY5ze#第23集$https://hn.bfvvs.com/play/elYR8r1a#第24集$https://hn.bfvvs.com/play/aQWkAyZd#第25集$https://hn.bfvvs.com/play/en5RGKPd#第26集$https://hn.bfvvs.com/play/eXDQY4oe#第27集$https://hn.bfvvs.com/play/erk2gPpa#第28集$https://hn.bfvvs.com/play/eZ68ZPge#第29集$https://hn.bfvvs.com/play/aKr8APxe#第30集$https://hn.bfvvs.com/play/epYZ9JQa#第31集$https://hn.bfvvs.com/play/b2k8GyMd#第32集$https://hn.bfvvs.com/play/epYZ90ma#第33集$https://hn.bfvvs.com/play/elYR8Zja#第34集$https://hn.bfvvs.com/play/aAD68Vpe#第35集$https://hn.bfvvs.com/play/b823XGje#第36集$https://hn.bfvvs.com/play/ejRYAlBe#第37集$https://hn.bfvvs.com/play/eXDQYZve#第38集$https://hn.bfvvs.com/play/aQWkAD5d#第39集$https://hn.bfvvs.com/play/b2k8GKAd#第40集$https://hn.bfvvs.com/play/dG6RwBKb#第41集$https://hn.bfvvs.com/play/erk2gP2a#第42集$https://hn.bfvvs.com/play/b823XQre#第43集$https://hn.bfvvs.com/play/e0R8AQ3b#第44集$https://hn.bfvvs.com/play/elYR8JMa#第45集$https://hn.bfvvs.com/play/ejRYAo4e#第46集$https://hn.bfvvs.com/play/aOYgJNRd#第47集$https://hn.bfvvs.com/play/b4x6W17b#第48集$https://hn.bfvvs.com/play/aAD68Ble#第49集$https://hn.bfvvs.com/play/b68WYPNe#第50集$https://hn.bfvvs.com/play/dG6Rwj3b#第51集$https://hn.bfvvs.com/play/dwp0nWXe#第52集已完结$https://hn.bfvvs.com/play/aM8Z7kme"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "第1集$https://hn.bfvvs.com/play/eVOvJwza/index.m3u8#第2集$https://hn.bfvvs.com/play/bDkqw3ka/index.m3u8#第3集$https://hn.bfvvs.com/play/eVOvJ3oa/index.m3u8#第4集$https://hn.bfvvs.com/play/bDkqwX6a/index.m3u8#第5集$https://hn.bfvvs.com/play/dwp0nore/index.m3u8#第6集$https://hn.bfvvs.com/play/aKr8Aw8e/index.m3u8#第7集$https://hn.bfvvs.com/play/dyPwpEgb/index.m3u8#第8集$https://hn.bfvvs.com/play/ejRYAoye/index.m3u8#第9集$https://hn.bfvvs.com/play/dwp0nWze/index.m3u8#第10集$https://hn.bfvvs.com/play/erk2gALa/index.m3u8#第11集$https://hn.bfvvs.com/play/aM8Z731e/index.m3u8#第12集$https://hn.bfvvs.com/play/en5RGKpd/index.m3u8#第13集$https://hn.bfvvs.com/play/eZ68ZJ8e/index.m3u8#第14集$https://hn.bfvvs.com/play/aAD683je/index.m3u8#第15集$https://hn.bfvvs.com/play/dyPwpV6b/index.m3u8#第16集$https://hn.bfvvs.com/play/epYZ9xya/index.m3u8#第17集$https://hn.bfvvs.com/play/en5RG25d/index.m3u8#第18集$https://hn.bfvvs.com/play/b4x6WXkb/index.m3u8#第19集$https://hn.bfvvs.com/play/aOYgJrQd/index.m3u8#第20集$https://hn.bfvvs.com/play/aKr8ApJe/index.m3u8#第21集$https://hn.bfvvs.com/play/e0R8AW5b/index.m3u8#第22集$https://hn.bfvvs.com/play/b68WY5ze/index.m3u8#第23集$https://hn.bfvvs.com/play/elYR8r1a/index.m3u8#第24集$https://hn.bfvvs.com/play/aQWkAyZd/index.m3u8#第25集$https://hn.bfvvs.com/play/en5RGKPd/index.m3u8#第26集$https://hn.bfvvs.com/play/eXDQY4oe/index.m3u8#第27集$https://hn.bfvvs.com/play/erk2gPpa/index.m3u8#第28集$https://hn.bfvvs.com/play/eZ68ZPge/index.m3u8#第29集$https://hn.bfvvs.com/play/aKr8APxe/index.m3u8#第30集$https://hn.bfvvs.com/play/epYZ9JQa/index.m3u8#第31集$https://hn.bfvvs.com/play/b2k8GyMd/index.m3u8#第32集$https://hn.bfvvs.com/play/epYZ90ma/index.m3u8#第33集$https://hn.bfvvs.com/play/elYR8Zja/index.m3u8#第34集$https://hn.bfvvs.com/play/aAD68Vpe/index.m3u8#第35集$https://hn.bfvvs.com/play/b823XGje/index.m3u8#第36集$https://hn.bfvvs.com/play/ejRYAlBe/index.m3u8#第37集$https://hn.bfvvs.com/play/eXDQYZve/index.m3u8#第38集$https://hn.bfvvs.com/play/aQWkAD5d/index.m3u8#第39集$https://hn.bfvvs.com/play/b2k8GKAd/index.m3u8#第40集$https://hn.bfvvs.com/play/dG6RwBKb/index.m3u8#第41集$https://hn.bfvvs.com/play/erk2gP2a/index.m3u8#第42集$https://hn.bfvvs.com/play/b823XQre/index.m3u8#第43集$https://hn.bfvvs.com/play/e0R8AQ3b/index.m3u8#第44集$https://hn.bfvvs.com/play/elYR8JMa/index.m3u8#第45集$https://hn.bfvvs.com/play/ejRYAo4e/index.m3u8#第46集$https://hn.bfvvs.com/play/aOYgJNRd/index.m3u8#第47集$https://hn.bfvvs.com/play/b4x6W17b/index.m3u8#第48集$https://hn.bfvvs.com/play/aAD68Ble/index.m3u8#第49集$https://hn.bfvvs.com/play/b68WYPNe/index.m3u8#第50集$https://hn.bfvvs.com/play/dG6Rwj3b/index.m3u8#第51集$https://hn.bfvvs.com/play/dwp0nWXe/index.m3u8#第52集已完结$https://hn.bfvvs.com/play/aM8Z7kme/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "第1集$https://v.gsuus.com/play/bW6PWxEa#第2集$https://v.gsuus.com/play/eERqK3la#第3集$https://v.gsuus.com/play/bW6PW3oa#第4集$https://v.gsuus.com/play/eERqKYWa#第5集$https://v.gsuus.com/play/axk6ople#第6集$https://v.gsuus.com/play/dL9ZAxve#第7集$https://v.gsuus.com/play/azp6qGOd#第8集$https://v.gsuus.com/play/bkR26pJa#第9集$https://v.gsuus.com/play/egJp7zjd#第10集$https://v.gsuus.com/play/av2QmGna#第11集$https://v.gsuus.com/play/dNkO738e#第12集$https://v.gsuus.com/play/bo2ZALLa#第13集$https://v.gsuus.com/play/e1w6V8Gb#第14集$https://v.gsuus.com/play/dBBr1kod#第15集$https://v.gsuus.com/play/azp6qWqd#第16集$https://v.gsuus.com/play/bqxQAyya#第17集$https://v.gsuus.com/play/bo2ZA3Ya#第18集$https://v.gsuus.com/play/e5y7AYAe#第19集$https://v.gsuus.com/play/dPNj6v2a#第20集$https://v.gsuus.com/play/dL9ZAqje#第21集$https://v.gsuus.com/play/egJp7wrd#第22集$https://v.gsuus.com/play/e739D5Oe#第23集$https://v.gsuus.com/play/bmZq7v3d#第24集$https://v.gsuus.com/play/dR6l8xYd#第25集$https://v.gsuus.com/play/bo2ZALka#第26集$https://v.gsuus.com/play/bYE7VgWb#第27集$https://v.gsuus.com/play/av2QmW5a#第28集$https://v.gsuus.com/play/e1w6VKqb#第29集$https://v.gsuus.com/play/dL9ZAQre#第30集$https://v.gsuus.com/play/bqxQAK7a#第31集$https://v.gsuus.com/play/e316YzAb#第32集$https://v.gsuus.com/play/bqxQAvka#第33集$https://v.gsuus.com/play/bmZq7KRd#第34集$https://v.gsuus.com/play/dBBr1WWd#第35集$https://v.gsuus.com/play/e9r93JJa#第36集$https://v.gsuus.com/play/bkR26mKa#第37集$https://v.gsuus.com/play/bYE7V1Ab#第38集$https://v.gsuus.com/play/dR6l8Ewd#第39集$https://v.gsuus.com/play/e316YLpb#第40集$https://v.gsuus.com/play/dJ68E0Kd#第41集$https://v.gsuus.com/play/av2QmW8a#第42集$https://v.gsuus.com/play/e9r930za#第43集$https://v.gsuus.com/play/egJp7zDd#第44集$https://v.gsuus.com/play/bmZq7KGd#第45集$https://v.gsuus.com/play/bkR26pva#第46集$https://v.gsuus.com/play/dPNj6OAa#第47集$https://v.gsuus.com/play/e5y7A2Ye#第48集$https://v.gsuus.com/play/dBBr1DYd#第49集$https://v.gsuus.com/play/e739DQBe#第50集$https://v.gsuus.com/play/dJ68Emvd#第51集$https://v.gsuus.com/play/axk6oXPe#第52集已完结$https://v.gsuus.com/play/dNkO7l2e"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "第1集$https://v.gsuus.com/play/bW6PWxEa/index.m3u8#第2集$https://v.gsuus.com/play/eERqK3la/index.m3u8#第3集$https://v.gsuus.com/play/bW6PW3oa/index.m3u8#第4集$https://v.gsuus.com/play/eERqKYWa/index.m3u8#第5集$https://v.gsuus.com/play/axk6ople/index.m3u8#第6集$https://v.gsuus.com/play/dL9ZAxve/index.m3u8#第7集$https://v.gsuus.com/play/azp6qGOd/index.m3u8#第8集$https://v.gsuus.com/play/bkR26pJa/index.m3u8#第9集$https://v.gsuus.com/play/egJp7zjd/index.m3u8#第10集$https://v.gsuus.com/play/av2QmGna/index.m3u8#第11集$https://v.gsuus.com/play/dNkO738e/index.m3u8#第12集$https://v.gsuus.com/play/bo2ZALLa/index.m3u8#第13集$https://v.gsuus.com/play/e1w6V8Gb/index.m3u8#第14集$https://v.gsuus.com/play/dBBr1kod/index.m3u8#第15集$https://v.gsuus.com/play/azp6qWqd/index.m3u8#第16集$https://v.gsuus.com/play/bqxQAyya/index.m3u8#第17集$https://v.gsuus.com/play/bo2ZA3Ya/index.m3u8#第18集$https://v.gsuus.com/play/e5y7AYAe/index.m3u8#第19集$https://v.gsuus.com/play/dPNj6v2a/index.m3u8#第20集$https://v.gsuus.com/play/dL9ZAqje/index.m3u8#第21集$https://v.gsuus.com/play/egJp7wrd/index.m3u8#第22集$https://v.gsuus.com/play/e739D5Oe/index.m3u8#第23集$https://v.gsuus.com/play/bmZq7v3d/index.m3u8#第24集$https://v.gsuus.com/play/dR6l8xYd/index.m3u8#第25集$https://v.gsuus.com/play/bo2ZALka/index.m3u8#第26集$https://v.gsuus.com/play/bYE7VgWb/index.m3u8#第27集$https://v.gsuus.com/play/av2QmW5a/index.m3u8#第28集$https://v.gsuus.com/play/e1w6VKqb/index.m3u8#第29集$https://v.gsuus.com/play/dL9ZAQre/index.m3u8#第30集$https://v.gsuus.com/play/bqxQAK7a/index.m3u8#第31集$https://v.gsuus.com/play/e316YzAb/index.m3u8#第32集$https://v.gsuus.com/play/bqxQAvka/index.m3u8#第33集$https://v.gsuus.com/play/bmZq7KRd/index.m3u8#第34集$https://v.gsuus.com/play/dBBr1WWd/index.m3u8#第35集$https://v.gsuus.com/play/e9r93JJa/index.m3u8#第36集$https://v.gsuus.com/play/bkR26mKa/index.m3u8#第37集$https://v.gsuus.com/play/bYE7V1Ab/index.m3u8#第38集$https://v.gsuus.com/play/dR6l8Ewd/index.m3u8#第39集$https://v.gsuus.com/play/e316YLpb/index.m3u8#第40集$https://v.gsuus.com/play/dJ68E0Kd/index.m3u8#第41集$https://v.gsuus.com/play/av2QmW8a/index.m3u8#第42集$https://v.gsuus.com/play/e9r930za/index.m3u8#第43集$https://v.gsuus.com/play/egJp7zDd/index.m3u8#第44集$https://v.gsuus.com/play/bmZq7KGd/index.m3u8#第45集$https://v.gsuus.com/play/bkR26pva/index.m3u8#第46集$https://v.gsuus.com/play/dPNj6OAa/index.m3u8#第47集$https://v.gsuus.com/play/e5y7A2Ye/index.m3u8#第48集$https://v.gsuus.com/play/dBBr1DYd/index.m3u8#第49集$https://v.gsuus.com/play/e739DQBe/index.m3u8#第50集$https://v.gsuus.com/play/dJ68Emvd/index.m3u8#第51集$https://v.gsuus.com/play/axk6oXPe/index.m3u8#第52集已完结$https://v.gsuus.com/play/dNkO7l2e/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "第1集$https://play.xluuss.com/play/eXDQYyve#第2集$https://play.xluuss.com/play/dG6Rw35b#第3集$https://play.xluuss.com/play/eXDQY8Ve#第4集$https://play.xluuss.com/play/dG6Rw1Kb#第5集$https://play.xluuss.com/play/dyPwpq6b#第6集$https://play.xluuss.com/play/aM8Z7y1e#第7集$https://play.xluuss.com/play/aAD685pe#第8集$https://play.xluuss.com/play/elYR8qja#第9集$https://play.xluuss.com/play/ejRYAD4e#第10集$https://play.xluuss.com/play/dwp0nJXe#第11集$https://play.xluuss.com/play/aOYgJ3Ed#第12集$https://play.xluuss.com/play/epYZ9Mya#第13集$https://play.xluuss.com/play/b2k8G5Wd#第14集$https://play.xluuss.com/play/bDkqwmka#第15集$https://play.xluuss.com/play/aAD68v9e#第16集$https://play.xluuss.com/play/erk2gzLa#第17集$https://play.xluuss.com/play/epYZ94Qa#第18集$https://play.xluuss.com/play/b68WYZze#第19集$https://play.xluuss.com/play/aQWkAwZd#第20集$https://play.xluuss.com/play/aM8Z7rRe#第21集$https://play.xluuss.com/play/ejRYAzye#第22集$https://play.xluuss.com/play/b823X5We#第23集$https://play.xluuss.com/play/en5RGwpd#第24集$https://play.xluuss.com/play/eVOvJBOa#第25集$https://play.xluuss.com/play/epYZ9Mma#第26集$https://play.xluuss.com/play/eZ68Zj8e#第27集$https://play.xluuss.com/play/dwp0nX8e#第28集$https://play.xluuss.com/play/b2k8GLAd#第29集$https://play.xluuss.com/play/aM8Z7RGe#第30集$https://play.xluuss.com/play/erk2gL2a#第31集$https://play.xluuss.com/play/b4x6WA7b#第32集$https://play.xluuss.com/play/erk2gwWa#第33集$https://play.xluuss.com/play/en5RGL5d#第34集$https://play.xluuss.com/play/bDkqwg5a#第35集$https://play.xluuss.com/play/e0R8Aw5b#第36集$https://play.xluuss.com/play/elYR8nVa#第37集$https://play.xluuss.com/play/eZ68Z2Qe#第38集$https://play.xluuss.com/play/eVOvJLoa#第39集$https://play.xluuss.com/play/b4x6WMJb#第40集$https://play.xluuss.com/play/aKr8AJGe#第41集$https://play.xluuss.com/play/dwp0nXre#第42集$https://play.xluuss.com/play/e0R8AGNb#第43集$https://play.xluuss.com/play/ejRYADBe#第44集$https://play.xluuss.com/play/en5RGL7d#第45集$https://play.xluuss.com/play/elYR8q1a#第46集$https://play.xluuss.com/play/aQWkAPGd#第47集$https://play.xluuss.com/play/b68WY3Oe#第48集$https://play.xluuss.com/play/bDkqwGKa#第49集$https://play.xluuss.com/play/b823XRre#第50集$https://play.xluuss.com/play/aKr8AnJe#第51集$https://play.xluuss.com/play/dyPwpYRb#第52集已完结$https://play.xluuss.com/play/aOYgJmRd"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "第1集$https://play.xluuss.com/play/eXDQYyve/index.m3u8#第2集$https://play.xluuss.com/play/dG6Rw35b/index.m3u8#第3集$https://play.xluuss.com/play/eXDQY8Ve/index.m3u8#第4集$https://play.xluuss.com/play/dG6Rw1Kb/index.m3u8#第5集$https://play.xluuss.com/play/dyPwpq6b/index.m3u8#第6集$https://play.xluuss.com/play/aM8Z7y1e/index.m3u8#第7集$https://play.xluuss.com/play/aAD685pe/index.m3u8#第8集$https://play.xluuss.com/play/elYR8qja/index.m3u8#第9集$https://play.xluuss.com/play/ejRYAD4e/index.m3u8#第10集$https://play.xluuss.com/play/dwp0nJXe/index.m3u8#第11集$https://play.xluuss.com/play/aOYgJ3Ed/index.m3u8#第12集$https://play.xluuss.com/play/epYZ9Mya/index.m3u8#第13集$https://play.xluuss.com/play/b2k8G5Wd/index.m3u8#第14集$https://play.xluuss.com/play/bDkqwmka/index.m3u8#第15集$https://play.xluuss.com/play/aAD68v9e/index.m3u8#第16集$https://play.xluuss.com/play/erk2gzLa/index.m3u8#第17集$https://play.xluuss.com/play/epYZ94Qa/index.m3u8#第18集$https://play.xluuss.com/play/b68WYZze/index.m3u8#第19集$https://play.xluuss.com/play/aQWkAwZd/index.m3u8#第20集$https://play.xluuss.com/play/aM8Z7rRe/index.m3u8#第21集$https://play.xluuss.com/play/ejRYAzye/index.m3u8#第22集$https://play.xluuss.com/play/b823X5We/index.m3u8#第23集$https://play.xluuss.com/play/en5RGwpd/index.m3u8#第24集$https://play.xluuss.com/play/eVOvJBOa/index.m3u8#第25集$https://play.xluuss.com/play/epYZ9Mma/index.m3u8#第26集$https://play.xluuss.com/play/eZ68Zj8e/index.m3u8#第27集$https://play.xluuss.com/play/dwp0nX8e/index.m3u8#第28集$https://play.xluuss.com/play/b2k8GLAd/index.m3u8#第29集$https://play.xluuss.com/play/aM8Z7RGe/index.m3u8#第30集$https://play.xluuss.com/play/erk2gL2a/index.m3u8#第31集$https://play.xluuss.com/play/b4x6WA7b/index.m3u8#第32集$https://play.xluuss.com/play/erk2gwWa/index.m3u8#第33集$https://play.xluuss.com/play/en5RGL5d/index.m3u8#第34集$https://play.xluuss.com/play/bDkqwg5a/index.m3u8#第35集$https://play.xluuss.com/play/e0R8Aw5b/index.m3u8#第36集$https://play.xluuss.com/play/elYR8nVa/index.m3u8#第37集$https://play.xluuss.com/play/eZ68Z2Qe/index.m3u8#第38集$https://play.xluuss.com/play/eVOvJLoa/index.m3u8#第39集$https://play.xluuss.com/play/b4x6WMJb/index.m3u8#第40集$https://play.xluuss.com/play/aKr8AJGe/index.m3u8#第41集$https://play.xluuss.com/play/dwp0nXre/index.m3u8#第42集$https://play.xluuss.com/play/e0R8AGNb/index.m3u8#第43集$https://play.xluuss.com/play/ejRYADBe/index.m3u8#第44集$https://play.xluuss.com/play/en5RGL7d/index.m3u8#第45集$https://play.xluuss.com/play/elYR8q1a/index.m3u8#第46集$https://play.xluuss.com/play/aQWkAPGd/index.m3u8#第47集$https://play.xluuss.com/play/b68WY3Oe/index.m3u8#第48集$https://play.xluuss.com/play/bDkqwGKa/index.m3u8#第49集$https://play.xluuss.com/play/b823XRre/index.m3u8#第50集$https://play.xluuss.com/play/aKr8AnJe/index.m3u8#第51集$https://play.xluuss.com/play/dyPwpYRb/index.m3u8#第52集已完结$https://play.xluuss.com/play/aOYgJmRd/index.m3u8"
+        }
+      ],
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "class 少儿 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Njc4OSJ9XQ",
+      "type_id": "29",
+      "type_id_1": 4,
+      "group_id": 0,
+      "vod_name": "蔬菜不寂寞第1季",
+      "vod_sub": "蔬菜不寂寞第一季",
+      "vod_en": "shucaibujimodi1ji",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动画",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260421-1/83744737d69b9e33432db8f0929966f1.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "",
+      "vod_director": "易海峰",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;首部独立自主发行的原创二维动画系列片《蔬菜不寂寞》，在央视少儿频道“动画大巴·国产动画新片”栏目首播。总长52集的原创动画系列片《蔬菜不寂寞》，由武汉天娱动画设计有限公司历时两年制作完成。",
+      "vod_remarks": "已完结",
+      "vod_pubdate": "",
+      "vod_total": "26",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "2011",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-04-21 15:30:59",
+      "vod_time_add": "1776756659",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 26844155,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;首部独立自主发行的原创二维动画系列片《蔬菜不寂寞》，在央视少儿频道“动画大巴·国产动画新片”栏目首播。总长52集的原创动画系列片《蔬菜不寂寞》，由武汉天娱动画设计有限公司历时两年制作完成。该片以其绚丽的色彩，生动鲜明的动画形象，幽默且富有教育意义的故事情节，开播前已在杭州、深圳、安徽等地举办的动漫 展上亮相并受到观众好评，其衍生产品也于11月在各大城市陆续上市。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "第01集$https://vip.ffzy-play10.com/share/1cc827440d03eb5e949d200d5d03894c#第02集$https://vip.ffzy-play10.com/share/c229acc455bc0c2176f02370a3dee032#第03集$https://vip.ffzy-play10.com/share/f9c72bf63a16cf2a796d68fe71a73109#第04集$https://vip.ffzy-play10.com/share/ec232f76820d2cc7fead727ed14487ba#第05集$https://vip.ffzy-play10.com/share/572db77188410e0cd6b5a8755716423c#第06集$https://vip.ffzy-play10.com/share/5ddc335a3ffda583d15bef0ad722687d#第07集$https://vip.ffzy-play10.com/share/94075db0d38a61eaabe44c25e8bb6423#第08集$https://vip.ffzy-play10.com/share/42ee10f5e3bf07e153d48d2ff8bdb520#第09集$https://vip.ffzy-play10.com/share/9aae757849cd8dd4be3a8bea4fb251cb#第10集$https://vip.ffzy-play10.com/share/12bafde59a5d598b20702ef99289dea0#第11集$https://vip.ffzy-play10.com/share/1d6bd97abc49624ba1fc5a9d78dc9740#第12集$https://vip.ffzy-play10.com/share/22f4c86b7bf05b9a299d046e8c66c2b4#第13集$https://vip.ffzy-play10.com/share/39332ecd0f17eda90f20369c8a0f7673#第14集$https://vip.ffzy-play10.com/share/b039c4c571b9a717cbc017960bc65569#第15集$https://vip.ffzy-play10.com/share/d621598e205fa1271963477139a804bd#第16集$https://vip.ffzy-play10.com/share/5b6b64af9cc0125ed76d4e5a8fe30a1c#第17集$https://vip.ffzy-play10.com/share/b6ba649a436fcc1bd78d1874ab645bda#第18集$https://vip.ffzy-play10.com/share/fb37f9064da23d9ce6153774d6b3e8d0#第19集$https://vip.ffzy-play10.com/share/3960640388a9f1cac137cabd09aac79c#第20集$https://vip.ffzy-play10.com/share/919538026ca3a9e482448f3e0afe8941#第21集$https://vip.ffzy-play10.com/share/516c4bb4f7c4da2fb47511ce1d3dce7a#第22集$https://vip.ffzy-play10.com/share/c53ddc79538dae513b566180325c8511#第23集$https://vip.ffzy-play10.com/share/1876c68de3dccb22bd7533eb9ca78eb4#第24集$https://vip.ffzy-play10.com/share/853267151491651de0b06db27ba51ed9#第25集$https://vip.ffzy-play10.com/share/0be57268feb94662e75a1211a7e426d0#第26集$https://vip.ffzy-play10.com/share/a004dc426c3c6f97259d7b2f10df424c$$$第01集$https://vip.ffzy-play10.com/20260420/53350_1cc82744/index.m3u8#第02集$https://vip.ffzy-play10.com/20260420/53351_c229acc4/index.m3u8#第03集$https://vip.ffzy-play10.com/20260420/53352_f9c72bf6/index.m3u8#第04集$https://vip.ffzy-play10.com/20260420/53353_ec232f76/index.m3u8#第05集$https://vip.ffzy-play10.com/20260420/53354_572db771/index.m3u8#第06集$https://vip.ffzy-play10.com/20260420/53355_5ddc335a/index.m3u8#第07集$https://vip.ffzy-play10.com/20260420/53356_94075db0/index.m3u8#第08集$https://vip.ffzy-play10.com/20260420/53357_42ee10f5/index.m3u8#第09集$https://vip.ffzy-play10.com/20260420/53358_9aae7578/index.m3u8#第10集$https://vip.ffzy-play10.com/20260420/53359_12bafde5/index.m3u8#第11集$https://vip.ffzy-play10.com/20260420/53360_1d6bd97a/index.m3u8#第12集$https://vip.ffzy-play10.com/20260420/53361_22f4c86b/index.m3u8#第13集$https://vip.ffzy-play10.com/20260420/53362_39332ecd/index.m3u8#第14集$https://vip.ffzy-play10.com/20260420/53363_b039c4c5/index.m3u8#第15集$https://vip.ffzy-play10.com/20260420/53364_d621598e/index.m3u8#第16集$https://vip.ffzy-play10.com/20260420/53365_5b6b64af/index.m3u8#第17集$https://vip.ffzy-play10.com/20260420/53366_b6ba649a/index.m3u8#第18集$https://vip.ffzy-play10.com/20260420/53367_fb37f906/index.m3u8#第19集$https://vip.ffzy-play10.com/20260420/53368_39606403/index.m3u8#第20集$https://vip.ffzy-play10.com/20260420/53369_91953802/index.m3u8#第21集$https://vip.ffzy-play10.com/20260420/53370_516c4bb4/index.m3u8#第22集$https://vip.ffzy-play10.com/20260420/53371_c53ddc79/index.m3u8#第23集$https://vip.ffzy-play10.com/20260420/53372_1876c68d/index.m3u8#第24集$https://vip.ffzy-play10.com/20260420/53373_85326715/index.m3u8#第25集$https://vip.ffzy-play10.com/20260420/53374_0be57268/index.m3u8#第26集$https://vip.ffzy-play10.com/20260420/53375_a004dc42/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "国产动漫",
+      "source_category_id": "4",
+      "source_category_name": "国产动漫",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:26844155",
+      "primary_category": "anime",
+      "movie_release_channel": "unknown",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "anime",
+          "field": "source_category_id",
+          "value": "4",
+          "signal": "anime"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "96789",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "第01集$https://vip.ffzy-play10.com/share/1cc827440d03eb5e949d200d5d03894c#第02集$https://vip.ffzy-play10.com/share/c229acc455bc0c2176f02370a3dee032#第03集$https://vip.ffzy-play10.com/share/f9c72bf63a16cf2a796d68fe71a73109#第04集$https://vip.ffzy-play10.com/share/ec232f76820d2cc7fead727ed14487ba#第05集$https://vip.ffzy-play10.com/share/572db77188410e0cd6b5a8755716423c#第06集$https://vip.ffzy-play10.com/share/5ddc335a3ffda583d15bef0ad722687d#第07集$https://vip.ffzy-play10.com/share/94075db0d38a61eaabe44c25e8bb6423#第08集$https://vip.ffzy-play10.com/share/42ee10f5e3bf07e153d48d2ff8bdb520#第09集$https://vip.ffzy-play10.com/share/9aae757849cd8dd4be3a8bea4fb251cb#第10集$https://vip.ffzy-play10.com/share/12bafde59a5d598b20702ef99289dea0#第11集$https://vip.ffzy-play10.com/share/1d6bd97abc49624ba1fc5a9d78dc9740#第12集$https://vip.ffzy-play10.com/share/22f4c86b7bf05b9a299d046e8c66c2b4#第13集$https://vip.ffzy-play10.com/share/39332ecd0f17eda90f20369c8a0f7673#第14集$https://vip.ffzy-play10.com/share/b039c4c571b9a717cbc017960bc65569#第15集$https://vip.ffzy-play10.com/share/d621598e205fa1271963477139a804bd#第16集$https://vip.ffzy-play10.com/share/5b6b64af9cc0125ed76d4e5a8fe30a1c#第17集$https://vip.ffzy-play10.com/share/b6ba649a436fcc1bd78d1874ab645bda#第18集$https://vip.ffzy-play10.com/share/fb37f9064da23d9ce6153774d6b3e8d0#第19集$https://vip.ffzy-play10.com/share/3960640388a9f1cac137cabd09aac79c#第20集$https://vip.ffzy-play10.com/share/919538026ca3a9e482448f3e0afe8941#第21集$https://vip.ffzy-play10.com/share/516c4bb4f7c4da2fb47511ce1d3dce7a#第22集$https://vip.ffzy-play10.com/share/c53ddc79538dae513b566180325c8511#第23集$https://vip.ffzy-play10.com/share/1876c68de3dccb22bd7533eb9ca78eb4#第24集$https://vip.ffzy-play10.com/share/853267151491651de0b06db27ba51ed9#第25集$https://vip.ffzy-play10.com/share/0be57268feb94662e75a1211a7e426d0#第26集$https://vip.ffzy-play10.com/share/a004dc426c3c6f97259d7b2f10df424c"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "第01集$https://vip.ffzy-play10.com/20260420/53350_1cc82744/index.m3u8#第02集$https://vip.ffzy-play10.com/20260420/53351_c229acc4/index.m3u8#第03集$https://vip.ffzy-play10.com/20260420/53352_f9c72bf6/index.m3u8#第04集$https://vip.ffzy-play10.com/20260420/53353_ec232f76/index.m3u8#第05集$https://vip.ffzy-play10.com/20260420/53354_572db771/index.m3u8#第06集$https://vip.ffzy-play10.com/20260420/53355_5ddc335a/index.m3u8#第07集$https://vip.ffzy-play10.com/20260420/53356_94075db0/index.m3u8#第08集$https://vip.ffzy-play10.com/20260420/53357_42ee10f5/index.m3u8#第09集$https://vip.ffzy-play10.com/20260420/53358_9aae7578/index.m3u8#第10集$https://vip.ffzy-play10.com/20260420/53359_12bafde5/index.m3u8#第11集$https://vip.ffzy-play10.com/20260420/53360_1d6bd97a/index.m3u8#第12集$https://vip.ffzy-play10.com/20260420/53361_22f4c86b/index.m3u8#第13集$https://vip.ffzy-play10.com/20260420/53362_39332ecd/index.m3u8#第14集$https://vip.ffzy-play10.com/20260420/53363_b039c4c5/index.m3u8#第15集$https://vip.ffzy-play10.com/20260420/53364_d621598e/index.m3u8#第16集$https://vip.ffzy-play10.com/20260420/53365_5b6b64af/index.m3u8#第17集$https://vip.ffzy-play10.com/20260420/53366_b6ba649a/index.m3u8#第18集$https://vip.ffzy-play10.com/20260420/53367_fb37f906/index.m3u8#第19集$https://vip.ffzy-play10.com/20260420/53368_39606403/index.m3u8#第20集$https://vip.ffzy-play10.com/20260420/53369_91953802/index.m3u8#第21集$https://vip.ffzy-play10.com/20260420/53370_516c4bb4/index.m3u8#第22集$https://vip.ffzy-play10.com/20260420/53371_c53ddc79/index.m3u8#第23集$https://vip.ffzy-play10.com/20260420/53372_1876c68d/index.m3u8#第24集$https://vip.ffzy-play10.com/20260420/53373_85326715/index.m3u8#第25集$https://vip.ffzy-play10.com/20260420/53374_0be57268/index.m3u8#第26集$https://vip.ffzy-play10.com/20260420/53375_a004dc42/index.m3u8"
+        }
+      ],
+      "semantic_tags": "class 少儿 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    }
+  ],
+  "content_revision": "snapshot-b693cb2ce1ea39323d02",
+  "snapshot_mode": "generated-filter-pack",
+  "snapshot_filter": {
+    "key": "class",
+    "value": "少儿"
+  }
+}

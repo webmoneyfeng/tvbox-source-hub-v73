@@ -1,0 +1,1485 @@
+{
+  "generatedAt": "2026-07-19T10:17:53.878Z",
+  "candidateCount": 29,
+  "active": 11,
+  "watch": 13,
+  "rejected": 1,
+  "blocked": 4,
+  "activeSlugs": [
+    "baidu",
+    "bfzy",
+    "taopian",
+    "huya",
+    "hhzy",
+    "hongniu",
+    "guangsu",
+    "modu",
+    "xinlang",
+    "lzi_direct",
+    "ffzy_direct"
+  ],
+  "rows": [
+    {
+      "slug": "sony",
+      "key": "cms_sony",
+      "short": "索尼",
+      "name": "索尼资源",
+      "api": "https://suoniapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "BLOCKED",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 61,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "https://suoniapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://suoniapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON",
+      "physicalSourceKey": "suoniapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "REGISTERED_BLOCKED",
+        "observedStatus": "WATCH",
+        "registeredStatus": "BLOCKED",
+        "physicalSourceKey": "suoniapi.com"
+      }
+    },
+    {
+      "slug": "lzi",
+      "key": "cms_lzi",
+      "short": "量子",
+      "name": "量子资源",
+      "api": "https://lzizy1.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "BLOCKED",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": true,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 44,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "https://lzizy1.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://lzizy1.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '<', \"<html>\r\n<h\"... is not valid JSON",
+      "physicalSourceKey": "lzizy1.com",
+      "rollingHealth": {
+        "status": "BLOCKED",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "REGISTERED_BLOCKED",
+        "observedStatus": "BLOCKED",
+        "registeredStatus": "BLOCKED",
+        "physicalSourceKey": "lzizy1.com"
+      }
+    },
+    {
+      "slug": "baidu",
+      "key": "cms_baidu",
+      "short": "百度",
+      "name": "百度资源",
+      "api": "https://api.apibdzy.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 54,
+        "searchCount": 1,
+        "sampleNames": [
+          "天道王"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://api.apibdzy.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://api.apibdzy.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://api.apibdzy.com/api.php/provide/vod/?ac=videolist&ids=19941",
+        "playableUrl": "https://b2.bdzybf22.com/videos/202504/25/68015b1b33c14013d3eaed3b/cca18d/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "api.apibdzy.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "api.apibdzy.com"
+      }
+    },
+    {
+      "slug": "sdzy",
+      "key": "cms_sdzy",
+      "short": "闪电",
+      "name": "闪电资源",
+      "api": "http://sdzyapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 59,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "http://sdzyapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "http://sdzyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON",
+      "physicalSourceKey": "sdzyapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "REGISTERED_WATCH",
+        "observedStatus": "WATCH",
+        "registeredStatus": "WATCH",
+        "physicalSourceKey": "sdzyapi.com"
+      }
+    },
+    {
+      "slug": "bfzy",
+      "key": "cms_bfzy",
+      "short": "暴风",
+      "name": "暴风资源",
+      "api": "https://bfzyapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 49,
+        "searchCount": 20,
+        "sampleNames": [
+          "天道",
+          "天道被退婚，我分走她一半修为",
+          "天道在手诈骗无路走",
+          "天道好轮回",
+          "天道金榜公布我威震九州",
+          "天道幼崽被弃三界大佬抢着当爹",
+          "天道2023",
+          "天道轮回疯人院"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://bfzyapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://bfzyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://bfzyapi.com/api.php/provide/vod/?ac=videolist&ids=33549",
+        "playableUrl": "https://c1.rrcdnbf2.com/video/tiandao/第01集/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "bfzyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "bfzyapi.com"
+      }
+    },
+    {
+      "slug": "taopian",
+      "key": "cms_taopian",
+      "short": "淘片",
+      "name": "淘片资源",
+      "api": "https://taopianapi.com/cjapi/mc/vod/json.html",
+      "tier": "aux",
+      "origin": "current",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 30,
+        "searchCount": 6,
+        "sampleNames": [
+          "天道扎堆：天降一窝主角逼疯我动态漫画",
+          "天道 2023",
+          "天道 2017",
+          "天道酬勤",
+          "天道",
+          "天道图书馆动态漫"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?ac=list",
+        "searchUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?ac=videolist&ids=1537009",
+        "playableUrl": "https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-01-07/30/9288b25cadc2/5473ba2f403f/playlist.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "taopianapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "taopianapi.com"
+      }
+    },
+    {
+      "slug": "huya",
+      "key": "cms_huya",
+      "short": "虎牙",
+      "name": "虎牙资源",
+      "api": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+      "tier": "aux",
+      "origin": "current",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 31,
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?ac=list",
+        "searchUrl": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?ac=videolist&ids=111867",
+        "playableUrl": "https://1080p.huyall.com/play/dBBr5LYd/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "huyaapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "huyaapi.com"
+      }
+    },
+    {
+      "slug": "hhzy",
+      "key": "cms_hhzy",
+      "short": "火狐",
+      "name": "火狐资源",
+      "api": "https://hhzyapi.com/api.php/provide/vod/",
+      "tier": "aux",
+      "origin": "current",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 39,
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://hhzyapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://hhzyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://hhzyapi.com/api.php/provide/vod/?ac=videolist&ids=136528",
+        "playableUrl": "https://play.hhuus.com/play/bDkq59Ka/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "hhzyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "hhzyapi.com"
+      }
+    },
+    {
+      "slug": "hongniu",
+      "key": "cms_hongniu",
+      "short": "红牛",
+      "name": "红牛资源",
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
+      "tier": "aux",
+      "origin": "current",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 31,
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道图书馆",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://www.hongniuzy2.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://www.hongniuzy2.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://www.hongniuzy2.com/api.php/provide/vod/?ac=videolist&ids=150065",
+        "playableUrl": "https://hn.bfvvs.com/play/dyPwErnb/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "hongniuzy2.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "hongniuzy2.com"
+      }
+    },
+    {
+      "slug": "guangsu",
+      "key": "cms_guangsu",
+      "short": "光速",
+      "name": "光速资源",
+      "api": "https://api.guangsuapi.com/api.php/provide/vod/",
+      "tier": "aux",
+      "origin": "current",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 28,
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://api.guangsuapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://api.guangsuapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://api.guangsuapi.com/api.php/provide/vod/?ac=videolist&ids=168771",
+        "playableUrl": "https://v.gsuus.com/play/azp6GKyd/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "api.guangsuapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "api.guangsuapi.com"
+      }
+    },
+    {
+      "slug": "ffzy",
+      "key": "cms_ffzy",
+      "short": "非凡",
+      "name": "非凡资源",
+      "api": "https://api.ffzyapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "discovered",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 31,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "https://api.ffzyapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://api.ffzyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "physicalSourceKey": "api.ffzyapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "REGISTERED_WATCH",
+        "observedStatus": "WATCH",
+        "registeredStatus": "WATCH",
+        "physicalSourceKey": "api.ffzyapi.com"
+      }
+    },
+    {
+      "slug": "wujin",
+      "key": "cms_wujin",
+      "short": "无尽",
+      "name": "无尽资源",
+      "api": "https://api.wujinapi.me/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "discovered",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 63,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "https://api.wujinapi.me/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://api.wujinapi.me/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "",
+      "physicalSourceKey": "api.wujinapi.me",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "REGISTERED_WATCH",
+        "observedStatus": "WATCH",
+        "registeredStatus": "WATCH",
+        "physicalSourceKey": "api.wujinapi.me"
+      }
+    },
+    {
+      "slug": "modu",
+      "key": "cms_modu",
+      "short": "魔都",
+      "name": "魔都资源",
+      "api": "https://caiji.moduapi.cc/api.php/provide/vod/",
+      "tier": "aux",
+      "origin": "discovered",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 42,
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "玄幻： 我以凡躯撼天道",
+          "天道在手诈骗无路走 吾乃天道化身你敢骗我",
+          "挂机亿万年：我比天道还有钱"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://caiji.moduapi.cc/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://caiji.moduapi.cc/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://caiji.moduapi.cc/api.php/provide/vod/?ac=videolist&ids=85288",
+        "playableUrl": "https://play.modujx11.com/20260628/G3wCzJat/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "caiji.moduapi.cc",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "caiji.moduapi.cc"
+      }
+    },
+    {
+      "slug": "yhzy",
+      "key": "cms_yhzy",
+      "short": "樱花",
+      "name": "樱花资源",
+      "api": "https://m3u8.apiyhzy.com/api.php/provide/vod/",
+      "tier": "aux",
+      "origin": "discovered",
+      "status": "BLOCKED",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": true,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 33,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "https://m3u8.apiyhzy.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://m3u8.apiyhzy.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '<', \"<html>\r\n<h\"... is not valid JSON",
+      "physicalSourceKey": "m3u8.apiyhzy.com",
+      "rollingHealth": {
+        "status": "BLOCKED",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "REGISTERED_BLOCKED",
+        "observedStatus": "BLOCKED",
+        "registeredStatus": "BLOCKED",
+        "physicalSourceKey": "m3u8.apiyhzy.com"
+      }
+    },
+    {
+      "slug": "xinlang",
+      "key": "cms_xinlang",
+      "short": "新浪",
+      "name": "新浪资源",
+      "api": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+      "tier": "aux",
+      "origin": "discovered",
+      "status": "ACTIVE",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 28,
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/?ac=list",
+        "searchUrl": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/?ac=videolist&ids=166386",
+        "playableUrl": "https://play.xluuss.com/play/aAD65Ple/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "api.xinlangapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "api.xinlangapi.com"
+      }
+    },
+    {
+      "slug": "dytt",
+      "key": "cms_dytt",
+      "short": "天堂",
+      "name": "电影天堂资源",
+      "api": "http://caiji.dyttzyapi.com/api.php/provide/vod/from/dyttm3u8/at/m3u8/",
+      "tier": "watch",
+      "origin": "seed-config",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 32,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "http://caiji.dyttzyapi.com/api.php/provide/vod/from/dyttm3u8/at/m3u8/?ac=list",
+        "searchUrl": "http://caiji.dyttzyapi.com/api.php/provide/vod/from/dyttm3u8/at/m3u8/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "physicalSourceKey": "caiji.dyttzyapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "WATCH",
+        "physicalSourceKey": "caiji.dyttzyapi.com"
+      }
+    },
+    {
+      "slug": "lzi_direct",
+      "key": "cms_lzi_direct",
+      "short": "量子直连",
+      "name": "量子直连资源",
+      "tier": "main",
+      "status": "ACTIVE",
+      "origin": "discovered",
+      "api": "https://cj.lziapi.com/api.php/provide/vod/",
+      "canonicalApiUrl": "https://cj.lziapi.com/api.php/provide/vod/",
+      "physicalSourceKey": "cj.lziapi.com",
+      "healthWindow": {
+        "windowDays": 7,
+        "probeIntervalMinutes": 5,
+        "minimumSamples": 24,
+        "activeSuccessRateMin": 0.8,
+        "watchSuccessRateMin": 0.6,
+        "maxConsecutiveFailures": 3,
+        "staleAfterMinutes": 15
+      },
+      "participatesInHotRefresh": true,
+      "participatesInFullSnapshot": true,
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 44,
+        "searchCount": 20,
+        "sampleNames": [
+          "天道",
+          "天道王",
+          "天道2008[电影解说]",
+          "天道王志文版",
+          "天道幼崽闹京城",
+          "天道幼崽被弃三界大佬抢着当爹",
+          "天道在手诈骗无路走",
+          "天道被退婚，我分走她一半修为"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://cj.lziapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://cj.lziapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://cj.lziapi.com/api.php/provide/vod/?ac=videolist&ids=100048",
+        "playableUrl": "https://v.lzcdn26.com/20250104/4142_81547c23/index.m3u8"
+      },
+      "error": "",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "cj.lziapi.com"
+      }
+    },
+    {
+      "slug": "ffzy_direct",
+      "key": "cms_ffzy_direct",
+      "short": "非凡直连",
+      "name": "非凡直连资源",
+      "tier": "main",
+      "status": "ACTIVE",
+      "origin": "discovered",
+      "api": "http://ffzy.tv/api.php/provide/vod/",
+      "canonicalApiUrl": "http://ffzy.tv/api.php/provide/vod/",
+      "physicalSourceKey": "ffzy.tv",
+      "healthWindow": {
+        "windowDays": 7,
+        "probeIntervalMinutes": 5,
+        "minimumSamples": 24,
+        "activeSuccessRateMin": 0.8,
+        "watchSuccessRateMin": 0.6,
+        "maxConsecutiveFailures": 3,
+        "staleAfterMinutes": 15
+      },
+      "participatesInHotRefresh": true,
+      "participatesInFullSnapshot": true,
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 31,
+        "searchCount": 10,
+        "sampleNames": [
+          "天道在手诈骗无路走",
+          "天道闺女不爱了",
+          "天道轮回疯人院",
+          "天道2023",
+          "天道亲儿子",
+          "天道好轮回",
+          "天道金榜公布我威震九州",
+          "天道2017"
+        ]
+      },
+      "evidence": {
+        "listUrl": "http://ffzy.tv/api.php/provide/vod/?ac=list",
+        "searchUrl": "http://ffzy.tv/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "http://ffzy.tv/api.php/provide/vod/?ac=videolist&ids=93269",
+        "playableUrl": "https://vod.feifei-online.com/20260301/368268_0e17465c/index.m3u8"
+      },
+      "error": "",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "ffzy.tv"
+      }
+    },
+    {
+      "slug": "seed_1",
+      "key": "电影天堂",
+      "short": "影视电影天堂",
+      "name": "影视 | 电影天堂",
+      "api": "http://caiji.dyttzyapi.com/api.php/provide/vod",
+      "tier": "watch",
+      "origin": "https://szyyds.cn/tv/x.json",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 32,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "http://caiji.dyttzyapi.com/api.php/provide/vod?ac=list",
+        "searchUrl": "http://caiji.dyttzyapi.com/api.php/provide/vod?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "physicalSourceKey": "caiji.dyttzyapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "WATCH",
+        "physicalSourceKey": "caiji.dyttzyapi.com"
+      }
+    },
+    {
+      "slug": "seed_2",
+      "key": "天涯采集",
+      "short": "影视天涯",
+      "name": "影视 | 天涯",
+      "api": "http://tyyszy.com/api.php/provide/vod",
+      "tier": "watch",
+      "origin": "https://szyyds.cn/tv/x.json",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 59,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "http://tyyszy.com/api.php/provide/vod?ac=list",
+        "searchUrl": "http://tyyszy.com/api.php/provide/vod?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON",
+      "physicalSourceKey": "tyyszy.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "WATCH",
+        "physicalSourceKey": "tyyszy.com"
+      }
+    },
+    {
+      "slug": "sony",
+      "key": "cms_sony",
+      "short": "索尼",
+      "name": "索尼资源",
+      "api": "https://suoniapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "BLOCKED",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": false,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 0,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "https://suoniapi.com/api.php/provide/vod/at/xml/?ac=list",
+        "searchUrl": "https://suoniapi.com/api.php/provide/vod/at/xml/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "Unexpected token '<', \"<?xml vers\"... is not valid JSON",
+      "physicalSourceKey": "suoniapi.com",
+      "rollingHealth": {
+        "status": "REJECTED",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "REGISTERED_BLOCKED",
+        "observedStatus": "REJECTED",
+        "registeredStatus": "BLOCKED",
+        "physicalSourceKey": "suoniapi.com"
+      }
+    },
+    {
+      "slug": "seed_6",
+      "key": "极速资源",
+      "short": "影视极速直连",
+      "name": "影视 | 极速[直连]",
+      "api": "https://jszyapi.com/api.php/provide/vod/",
+      "tier": "watch",
+      "origin": "https://szyyds.cn/tv/x.json",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 39,
+        "searchCount": 14,
+        "sampleNames": [
+          "天道被退婚，我分走她一半修为",
+          "天道幼崽闹京城",
+          "天道萌宝之天劫篇",
+          "天道长生",
+          "天道图书馆",
+          "天道轮回疯人院",
+          "天道好轮回",
+          "天道亲儿子"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://jszyapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://jszyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://jszyapi.com/api.php/provide/vod/?ac=videolist&ids=106458",
+        "playableUrl": "https://vv.jisuzyv.com/play/ejRZkPWe/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "jszyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "ACTIVE",
+        "physicalSourceKey": "jszyapi.com"
+      }
+    },
+    {
+      "slug": "seed_7",
+      "key": "建安采集",
+      "short": "影视建安",
+      "name": "影视 | 建安",
+      "api": "http://154.219.117.232:9981/jacloudapi.php/provide/vod",
+      "tier": "watch",
+      "origin": "https://szyyds.cn/tv/x.json",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 21,
+        "searchCount": 20,
+        "sampleNames": [
+          "搜神记",
+          "开心锤锤",
+          "盘龙",
+          "第三调解室",
+          "姐姐当家第二季",
+          "说唱巅峰对决2026",
+          "我家先祖执掌幽界",
+          "SSS级暗影觉醒：超能学院"
+        ]
+      },
+      "evidence": {
+        "listUrl": "http://154.219.117.232:9981/jacloudapi.php/provide/vod?ac=list",
+        "searchUrl": "http://154.219.117.232:9981/jacloudapi.php/provide/vod?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "http://154.219.117.232:9981/jacloudapi.php/provide/vod?ac=videolist&ids=48696",
+        "playableUrl": ""
+      },
+      "error": "",
+      "physicalSourceKey": "154.219.117.232",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "WATCH",
+        "physicalSourceKey": "154.219.117.232"
+      }
+    },
+    {
+      "slug": "baidu",
+      "key": "cms_baidu",
+      "short": "百度",
+      "name": "百度资源",
+      "api": "https://api.apibdzy.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 54,
+        "searchCount": 1,
+        "sampleNames": [
+          "天道王"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://api.apibdzy.com/api.php/provide/vod?ac=list",
+        "searchUrl": "https://api.apibdzy.com/api.php/provide/vod?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://api.apibdzy.com/api.php/provide/vod?ac=videolist&ids=19941",
+        "playableUrl": "https://b2.bdzybf22.com/videos/202504/25/68015b1b33c14013d3eaed3b/cca18d/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "api.apibdzy.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "DUPLICATE_PHYSICAL_SOURCE",
+        "selectedSlug": "baidu",
+        "physicalSourceKey": "api.apibdzy.com"
+      }
+    },
+    {
+      "slug": "lzi_direct",
+      "key": "cms_lzi_direct",
+      "short": "量子直连",
+      "name": "量子直连资源",
+      "api": "https://cj.lziapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "discovered",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 44,
+        "searchCount": 20,
+        "sampleNames": [
+          "天道",
+          "天道王",
+          "天道2008[电影解说]",
+          "天道王志文版",
+          "天道幼崽闹京城",
+          "天道幼崽被弃三界大佬抢着当爹",
+          "天道在手诈骗无路走",
+          "天道被退婚，我分走她一半修为"
+        ]
+      },
+      "evidence": {
+        "listUrl": "http://cj.lziapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "http://cj.lziapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "http://cj.lziapi.com/api.php/provide/vod/?ac=videolist&ids=100048",
+        "playableUrl": "https://v.lzcdn26.com/20250104/4142_81547c23/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "cj.lziapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "DUPLICATE_PHYSICAL_SOURCE",
+        "selectedSlug": "lzi_direct",
+        "physicalSourceKey": "cj.lziapi.com"
+      }
+    },
+    {
+      "slug": "xinlang",
+      "key": "cms_xinlang",
+      "short": "新浪",
+      "name": "新浪资源",
+      "api": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+      "tier": "aux",
+      "origin": "discovered",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 28,
+        "searchCount": 20,
+        "sampleNames": [
+          "开直播判生死，她是天道你记住",
+          "惹她干嘛！她可是天道亲闺女！",
+          "天道被退婚，我分走她一半修为",
+          "惹她干嘛，真千金有天道宠着",
+          "开局迎财神天道赐我钞能力",
+          "我当天道CEO，神仙为我996",
+          "玄幻：我以凡躯撼天道",
+          "乱马1/2：天道家混乱的圣诞节天道家"
+        ]
+      },
+      "evidence": {
+        "listUrl": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/?ac=list",
+        "searchUrl": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/?ac=videolist&ids=166386",
+        "playableUrl": "https://play.xluuss.com/play/aAD65Ple/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "api.xinlangapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "DUPLICATE_PHYSICAL_SOURCE",
+        "selectedSlug": "xinlang",
+        "physicalSourceKey": "api.xinlangapi.com"
+      }
+    },
+    {
+      "slug": "bfzy",
+      "key": "cms_bfzy",
+      "short": "暴风",
+      "name": "暴风资源",
+      "api": "https://bfzyapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 49,
+        "searchCount": 20,
+        "sampleNames": [
+          "天道",
+          "天道被退婚，我分走她一半修为",
+          "天道在手诈骗无路走",
+          "天道好轮回",
+          "天道金榜公布我威震九州",
+          "天道幼崽被弃三界大佬抢着当爹",
+          "天道2023",
+          "天道轮回疯人院"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://bfzyapi.com/api.php/provide/vod?ac=list",
+        "searchUrl": "https://bfzyapi.com/api.php/provide/vod?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://bfzyapi.com/api.php/provide/vod?ac=videolist&ids=33549",
+        "playableUrl": "https://c1.rrcdnbf2.com/video/tiandao/第01集/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "bfzyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "DUPLICATE_PHYSICAL_SOURCE",
+        "selectedSlug": "bfzy",
+        "physicalSourceKey": "bfzyapi.com"
+      }
+    },
+    {
+      "slug": "ik",
+      "key": "IK",
+      "short": "IK",
+      "name": "IK",
+      "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
+      "tier": "watch",
+      "origin": "https://dxawi.github.io/0/0.json",
+      "status": "WATCH",
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 53,
+        "searchCount": 6,
+        "sampleNames": [
+          "天道扎堆：天降一窝主角逼疯我",
+          "天道2023",
+          "天道赊命人",
+          "天道",
+          "天道图书馆第一季",
+          "天道"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/?ac=list",
+        "searchUrl": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/?ac=videolist&ids=66849",
+        "playableUrl": "https://bfikuncdn.com/20260104/TVqlcUZb/index.m3u8"
+      },
+      "error": "",
+      "physicalSourceKey": "ikunzyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 6,
+        "succeeded": 6,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "ACTIVE",
+        "physicalSourceKey": "ikunzyapi.com"
+      }
+    },
+    {
+      "slug": "haiwaikan",
+      "key": "haiwaikan",
+      "short": "海外看墙外",
+      "name": "海外看(墙外)",
+      "api": "https://haiwaikan.com/api.php/provide/vod",
+      "tier": "watch",
+      "origin": "https://dxawi.github.io/0/0.json",
+      "status": "REJECTED",
+      "checks": {
+        "httpStatus": 0,
+        "timeout": false,
+        "blocked": false,
+        "classOk": false,
+        "searchOk": false,
+        "detailOk": false,
+        "playOk": false
+      },
+      "metrics": {
+        "classCount": 0,
+        "searchCount": 0,
+        "sampleNames": []
+      },
+      "evidence": {
+        "listUrl": "https://haiwaikan.com/api.php/provide/vod?ac=list",
+        "searchUrl": "https://haiwaikan.com/api.php/provide/vod?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "",
+        "playableUrl": ""
+      },
+      "error": "fetch failed",
+      "physicalSourceKey": "haiwaikan.com",
+      "rollingHealth": {
+        "status": "REJECTED",
+        "sampleCount": 6,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 6
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "REJECTED",
+        "physicalSourceKey": "haiwaikan.com"
+      }
+    }
+  ]
+}

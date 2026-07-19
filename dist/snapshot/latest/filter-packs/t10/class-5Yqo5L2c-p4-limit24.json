@@ -1,0 +1,4596 @@
+{
+  "filters": {
+    "10": [
+      {
+        "key": "sort",
+        "name": "排序",
+        "init": "latest",
+        "value": [
+          {
+            "n": "最新",
+            "v": "latest"
+          },
+          {
+            "n": "高清优先",
+            "v": "quality"
+          },
+          {
+            "n": "多线路优先",
+            "v": "lines"
+          },
+          {
+            "n": "片名排序",
+            "v": "name"
+          }
+        ]
+      },
+      {
+        "key": "year",
+        "name": "年份",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2030",
+            "v": "2030"
+          },
+          {
+            "n": "2028",
+            "v": "2028"
+          },
+          {
+            "n": "2027",
+            "v": "2027"
+          },
+          {
+            "n": "2026",
+            "v": "2026"
+          },
+          {
+            "n": "2025",
+            "v": "2025"
+          },
+          {
+            "n": "2020-2022",
+            "v": "2020-2022"
+          },
+          {
+            "n": "2010年代",
+            "v": "2010s"
+          },
+          {
+            "n": "更早",
+            "v": "older"
+          }
+        ]
+      },
+      {
+        "key": "area",
+        "name": "地区",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "港台",
+            "v": "港台"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          },
+          {
+            "n": "泰国",
+            "v": "泰国"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "name": "类型",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "动作",
+            "v": "动作"
+          },
+          {
+            "n": "喜剧",
+            "v": "喜剧"
+          },
+          {
+            "n": "爱情",
+            "v": "爱情"
+          },
+          {
+            "n": "悬疑犯罪",
+            "v": "悬疑犯罪"
+          },
+          {
+            "n": "科幻奇幻",
+            "v": "科幻奇幻"
+          },
+          {
+            "n": "恐怖惊悚",
+            "v": "恐怖惊悚"
+          },
+          {
+            "n": "剧情",
+            "v": "剧情"
+          },
+          {
+            "n": "战争历史",
+            "v": "战争历史"
+          }
+        ]
+      },
+      {
+        "key": "form",
+        "name": "内容形态",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "解说",
+            "v": "解说"
+          },
+          {
+            "n": "合集",
+            "v": "合集"
+          },
+          {
+            "n": "现场",
+            "v": "现场"
+          },
+          {
+            "n": "课程",
+            "v": "课程"
+          },
+          {
+            "n": "片段",
+            "v": "片段"
+          }
+        ]
+      },
+      {
+        "key": "quality",
+        "name": "清晰度",
+        "init": "",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "高清",
+            "v": "hd"
+          },
+          {
+            "n": "4K",
+            "v": "4K"
+          },
+          {
+            "n": "正片",
+            "v": "正片"
+          },
+          {
+            "n": "抢先",
+            "v": "抢先"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 1,
+  "msg": "ok",
+  "page": 4,
+  "pagecount": 6,
+  "limit": 24,
+  "total": 136,
+  "class": [
+    {
+      "type_id": "0",
+      "type_name": "推荐",
+      "key": "recommend"
+    },
+    {
+      "type_id": "10",
+      "type_name": "院线电影",
+      "key": "theatrical_movie"
+    },
+    {
+      "type_id": "11",
+      "type_name": "网络电影",
+      "key": "web_movie"
+    },
+    {
+      "type_id": "12",
+      "type_name": "其他电影",
+      "key": "other_movie"
+    },
+    {
+      "type_id": "20",
+      "type_name": "电视剧",
+      "key": "tv_series"
+    },
+    {
+      "type_id": "21",
+      "type_name": "网络剧",
+      "key": "web_series"
+    },
+    {
+      "type_id": "6",
+      "type_name": "网络短剧",
+      "key": "web_short"
+    },
+    {
+      "type_id": "3",
+      "type_name": "综艺",
+      "key": "variety"
+    },
+    {
+      "type_id": "4",
+      "type_name": "动漫",
+      "key": "anime"
+    },
+    {
+      "type_id": "5",
+      "type_name": "纪录片",
+      "key": "documentary"
+    },
+    {
+      "type_id": "7",
+      "type_name": "解说",
+      "key": "explainer"
+    },
+    {
+      "type_id": "8",
+      "type_name": "文娱知识",
+      "key": "knowledge"
+    },
+    {
+      "type_id": "9",
+      "type_name": "成人伦理",
+      "key": "adult"
+    }
+  ],
+  "list": [
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6Ijk5Mjg5In1d",
+      "type_id": "21",
+      "type_id_1": 20,
+      "group_id": 0,
+      "vod_name": "女王神剑",
+      "vod_sub": "神剑女王,新女王神剑",
+      "vod_en": "nvwangshenjian",
+      "vod_status": 1,
+      "vod_letter": "N",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,动作,惊悚,奇幻,冒险",
+      "vod_pic": "https://img.picbf.com/upload/vod/20250826-1/712f87d658a84419d787d55ee7e5b157.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "玛蒂尔达·鲁茨,马丁·福特,罗伯特·席安,沃利斯·戴,迈克尔·比斯平,菲利普·文切斯特,特雷沃·伊芙,卢克·帕斯夸尼洛,罗娜·迈特拉,卡特琳娜·杜尔登,Robert Rhodes,维罗尼卡·费瑞尔,凯特·尼科尔斯,奥利弗·特雷韦纳,埃莉扎·德苏扎,蕾妮·威利特,玛纳尔·埃尔-费图里,马克斯·克劳斯,内森·库珀,特雷弗·范乌登,王可欣,Danica Davis",
+      "vod_director": "迈克尔·巴塞特",
+      "vod_writer": "塔莎·霍,罗伯特·霍华德,罗伊·托马斯",
+      "vod_behind": "",
+      "vod_blurb": "改编自经典漫画，讲述了红发索尼娅如何从暴政中崛起并领导一支反抗军的故事，目标是为忠实粉丝和新观众呈现一个充满力量与激情的故事。",
+      "vod_remarks": "更新至HD",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 287,
+      "vod_hits_day": 428,
+      "vod_hits_week": 169,
+      "vod_hits_month": 370,
+      "vod_duration": "110分钟",
+      "vod_up": 473,
+      "vod_down": 697,
+      "vod_score": "5.0",
+      "vod_score_all": 3010,
+      "vod_score_num": 602,
+      "vod_time": "2026-07-14 19:00:34",
+      "vod_time_add": "1756212862",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 3075380,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "改编自经典漫画，讲述了红发索尼娅如何从暴政中崛起并领导一支反抗军的故事，目标是为忠实粉丝和新观众呈现一个充满力量与激情的故事。",
+      "vod_play_from": "bfzym3u8",
+      "vod_play_server": "",
+      "vod_play_note": "",
+      "vod_play_url": "HD$https://v.fengbao8.com/video/nvwangshenjian/HD/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:3075380",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "99289",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.fengbao8.com/video/nvwangshenjian/HD/index.m3u8"
+        }
+      ],
+      "douban_id": "3075380",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "3075380",
+        "title": "女王神剑",
+        "original_title": "Red Sonja",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-08-15(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTA4NiJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Njc1MCJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "杀戮轮回",
+      "vod_sub": "明日边缘",
+      "vod_en": "shalulunhui",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作,科幻,动画",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260418-1/b3762d1a46bb81701104ce418d8469c0.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "见上爱,花江夏树,Mô Chûgakusei,花泽香菜,希科罗希",
+      "vod_director": "秋本贤一郎,中村幸憲",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;情报师爆料：汤姆·克鲁斯 主演的科幻电影《明日边缘》原作《All You Need Is Kill》动画电影化确定！\r\n《All You Need Is Kill》是由樱坂洋原作，旧版安倍",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-06-09",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "日本",
+      "vod_lang": "日语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-04-18 10:14:42",
+      "vod_time_add": "1776478482",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37232669,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;情报师爆料：汤姆·克鲁斯 主演的科幻电影《明日边缘》原作《All You Need Is Kill》动画电影化确定！\r\n《All You Need Is Kill》是由樱坂洋原作，旧版安倍吉俊负责插画，新版小畑健负责插画的科幻魔幻小说。该作品2004年在日本出版，获得著名作家筒井康隆和神林长平的赞赏，被提名为日本SF大赏；2006年，获得“这本轻小说真厉害！”第九位；2009年，被翻译成英文在美国出版。电影版2014年6月6日上映。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/45ea7a74693f661f47516842014b1f76$$$HD中字$https://svip.feifei-play.com/20260418/41865_45ea7a74/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37232669",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49086",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "96750",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202604/14/69de434479ba736cf331c87d/56c0ba/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/45ea7a74693f661f47516842014b1f76"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260418/41865_45ea7a74/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/45ea7a74693f661f47516842014b1f76"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260418/41865_45ea7a74/index.m3u8"
+        }
+      ],
+      "douban_id": "37232669",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37232669",
+        "title": "杀戮轮回",
+        "original_title": "All You Need Is Kill",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-06-09(昂西动画节)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6Imd1YW5nc3UiLCJpZCI6IjE2ODM5MSJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNjE0OCJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0OTY4NSJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMTQ4NiJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2NjAwNiJ9XQ",
+      "type_id": "9",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "失控无人机",
+      "vod_sub": "终结者猎杀",
+      "vod_en": "shikongwurenji",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "剧情,动作,科幻,惊悚,恐怖",
+      "vod_class": "剧情,动作,科幻,惊悚,恐怖,动作片",
+      "vod_pic": "https://hhmage.com/cover/1790f3c878d8e705642aa5efc0332823.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "詹姆斯·帕克斯顿,莉莉·库拉格,",
+      "vod_director": "彼得·韦柏",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "科技公司组织员工前往偏远森林开展团建拓展，原本旨在凝聚团队的户外之旅，很快演变为一场绝望的生存噩梦。一架代号DRAGN的自主AI无人机突然失控叛变，凭借红外追踪、高速机动与致命武器，将整支团队锁定为猎",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2025-05-10(爱尔兰)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "爱尔兰",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 542,
+      "vod_hits_day": 304,
+      "vod_hits_week": 527,
+      "vod_hits_month": 178,
+      "vod_duration": "92分钟",
+      "vod_up": 611,
+      "vod_down": 460,
+      "vod_score": "9.0",
+      "vod_score_all": 8820,
+      "vod_score_num": 980,
+      "vod_time": "2026-06-23 11:36:02",
+      "vod_time_add": "1782185762",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37070340,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "科技公司组织员工前往偏远森林开展团建拓展，原本旨在凝聚团队的户外之旅，很快演变为一场绝望的生存噩梦。一架代号DRAGN的自主AI无人机突然失控叛变，凭借红外追踪、高速机动与致命武器，将整支团队锁定为猎杀目标。众人被困陌生密林，与外界彻底失联，职场上的旧日恩怨与私人矛盾，在死亡威胁下迅速发酵。随着无人机预判、反制逃生策略的精准度不断升级，幸存者们必须在被逐个清除前，直面自己亲手缔造的科技梦魇，争求一线生机。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/dyPwGqzb$$$正片$https://play.hhuus.com/play/dyPwGqzb/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "huya",
+      "_sourceShort": "虎牙",
+      "source_url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+      "canonical_id": "ext:douban:37070340",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "huya",
+          "id": "111486",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "136148",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "149685",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "168391",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "166006",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/axk6Epze/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/erk2xjBa"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/erk2xjBa/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/av2QBnLa"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/av2QBnLa/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/dwp0Doge"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/dwp0Doge/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/dyPwGqzb/index.m3u8"
+        }
+      ],
+      "douban_id": "37070340",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37070340",
+        "title": "失控无人机",
+        "original_title": "DRAGN",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-05-10(爱尔兰)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0NzE0NyJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NDYwMyJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2ODM1NyJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNjExNyJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0OTY1MyJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMTQ1MyJ9LHsicyI6InRhb3BpYW4iLCJpZCI6IjE1MzkxNTYifSx7InMiOiJ4aW5sYW5nIiwiaWQiOiIxNjU5NzMifV0",
+      "type_id": "9",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "死钻倒影",
+      "vod_sub": "",
+      "vod_en": "sizuandaoying",
+      "vod_status": 1,
+      "vod_letter": "S",
+      "vod_color": "",
+      "vod_tag": "动作,科幻,悬疑,惊悚",
+      "vod_class": "动作,科幻,悬疑,惊悚,动作片",
+      "vod_pic": "https://hhmage.com/cover/3b341fbed5a206e0ab764f5fdada4b1b.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "法比奥·泰斯蒂,芭芭拉·赫勒曼斯",
+      "vod_director": "伊莲娜·卡泰特",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "约翰年届七十，独居于蔚蓝海岸的豪华酒店。他被隔壁神秘女子吸引，唤起对1960年代作为国际间谍的回忆。女子突然失踪后，约翰陷入一连串光怪陆离的回忆或幻想——魅惑的女人、邪恶的反派、血腥又迷人的往昔。他试",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2025-11-28(中国大陆)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "法国",
+      "vod_lang": "法语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 465,
+      "vod_hits_day": 816,
+      "vod_hits_week": 362,
+      "vod_hits_month": 729,
+      "vod_duration": "85分钟",
+      "vod_up": 639,
+      "vod_down": 872,
+      "vod_score": "5.0",
+      "vod_score_all": 2130,
+      "vod_score_num": 426,
+      "vod_time": "2026-06-22 16:48:02",
+      "vod_time_add": "1782118082",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36219474,
+      "vod_douban_score": "6.9",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "约翰年届七十，独居于蔚蓝海岸的豪华酒店。他被隔壁神秘女子吸引，唤起对1960年代作为国际间谍的回忆。女子突然失踪后，约翰陷入一连串光怪陆离的回忆或幻想——魅惑的女人、邪恶的反派、血腥又迷人的往昔。他试图解开记忆的谜团，却逐渐分不清现实与幻觉。影片以致敬欧洲谍战片的风格，描绘一个被电影幻象吞噬的灵魂：旧敌是否重现？阴谋是否仍在？还是他只是沉溺于银幕的诱惑？",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/aAD6Glle$$$正片$https://play.hhuus.com/play/aAD6Glle/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "taopian",
+      "_sourceShort": "淘片",
+      "source_url": "https://taopianapi.com/cjapi/mc/vod/json.html",
+      "canonical_id": "ext:douban:36219474",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "47147",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "taopian",
+          "id": "1539156",
+          "url": "https://taopianapi.com/cjapi/mc/vod/json.html",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "111453",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "136117",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "149653",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "168357",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "165973",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "94603",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b2.bdzybf22.com/videos/202511/15/69187ac99364de0888cfb7bd/73ffe2/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle"
+        },
+        {
+          "source": "baidu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle/index.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "tpm3u8",
+          "url": "死钻倒影$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-07-04/1/88b9cad0202b/acb4d486b284/playlist.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "tpiframe",
+          "url": "死钻倒影$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2026-07-04%2F1%2F88b9cad0202b%2Facb4d486b284%2Fplaylist.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle"
+        },
+        {
+          "source": "taopian",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/azp6Jzyd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/dJ68gxgd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aKr8jyxe"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aKr8jyxe/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/bDkqLoKa"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/bDkqLoKa/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/dwp0Dw8e"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/dwp0Dw8e/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/eERqMpga"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/eERqMpga/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/axk6ExBe"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/axk6ExBe/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/dG6ROrJb"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/dG6ROrJb/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/dyPwGynb"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/dyPwGynb/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aAD6Glle/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/fc5a33a1edbfce6519e15efd1b25edfb"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260319/39753_fc5a33a1/index.m3u8"
+        }
+      ],
+      "episode_count": 1,
+      "latest_episode": 1,
+      "douban_id": "36219474",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36219474",
+        "title": "死钻倒影",
+        "original_title": "Reflet dans un Diamant Mort",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-11-28(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjE1MDEyMiJ9XQ",
+      "type_id": "21",
+      "type_id_1": 20,
+      "group_id": 0,
+      "vod_name": "天赋的代价",
+      "vod_sub": "",
+      "vod_en": "tianfudedaijia",
+      "vod_status": 1,
+      "vod_letter": "T",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作",
+      "vod_pic": "https://img.picbf.com/upload/vod/20260627-1/145c1a62ee228794643c51155c29f785.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "Tobias Jon , Sarah Jane Duncan , Aaron Bladen , 迪伦·鲍德温 , 卡尔·柯林斯 , 迈克尔·马罗尼 , Ava Allchurch , Robert Andrews , Daryl Bestford , Sam Byrne , Lucy Sheree Cooper , Chris Cordell , Scott Cullen , Anni Davey , Faustino Gjoka , Charles Humphreys , Darren A Irish",
+      "vod_director": "Tobias Jon",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "A loner struggles with childhood tragedy. Seeking refuge, he immerses himself in martial art films. A life changing moment releases unknown abilities, taking him closer to solving the mystery of his past. But the truth will come at a cost",
+      "vod_remarks": "更新至HD",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "英国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 143,
+      "vod_hits_day": 901,
+      "vod_hits_week": 900,
+      "vod_hits_month": 339,
+      "vod_duration": "",
+      "vod_up": 480,
+      "vod_down": 976,
+      "vod_score": "9.0",
+      "vod_score_all": 360,
+      "vod_score_num": 40,
+      "vod_time": "2026-06-27 15:03:03",
+      "vod_time_add": "1782543766",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36071886,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "A loner struggles with childhood tragedy. Seeking refuge, he immerses himself in martial art films. A life changing moment releases unknown abilities, taking him closer to solving the mystery of his past. But the truth will come at a cost",
+      "vod_play_from": "bfzym3u8",
+      "vod_play_server": "",
+      "vod_play_note": "",
+      "vod_play_url": "HD$https://v.baofeng11.com/video/tianfudedaijia/1cdf94cbd95a/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36071886",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "150122",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.baofeng11.com/video/tianfudedaijia/1cdf94cbd95a/index.m3u8"
+        }
+      ],
+      "douban_id": "36071886",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36071886",
+        "title": "天赋的代价",
+        "original_title": "Gifted Pain",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-09-06(英国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6Imx6aV9kaXJlY3QiLCJpZCI6IjE0NjMyMCJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "突击忍者2：入侵美国",
+      "vod_sub": "",
+      "vod_en": "tujirenzhe2ruqinmeiguo",
+      "vod_status": 1,
+      "vod_letter": "T",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作",
+      "vod_pic": "https://img.lzipic.com/upload/vod/20260716-1/28f74d18c5ed2019d808e9e70021c28e.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "Philippe Allier,Stéphane Asensio,艾瑞克·柯西莱",
+      "vod_director": "Benjamin Combes",
+      "vod_writer": "Benjamin Combes",
+      "vod_behind": "",
+      "vod_blurb": "突击忍者约翰亨特和他的盟友们奉命阻止冷战结束后反美联盟构成的威胁。然而，他们的敌人却出乎意料：并非他们预想中的“红色威胁”，而是美国在战争期间散播的毒剂，这些毒剂催生了一群嗜血成性的变种人，他们一心复",
+      "vod_remarks": "HD",
+      "vod_pubdate": "2025-10-01(美国)",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "法国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "120分钟",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-07-16 09:27:04",
+      "vod_time_add": "1784165224",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 38554560,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "突击忍者约翰亨特和他的盟友们奉命阻止冷战结束后反美联盟构成的威胁。然而，他们的敌人却出乎意料：并非他们预想中的“红色威胁”，而是美国在战争期间散播的毒剂，这些毒剂催生了一群嗜血成性的变种人，他们一心复仇。为了生存，我们的英雄们必须直面自己的过去，并与远比他们想像中更可怕的敌人展开殊死搏斗。",
+      "vod_play_from": "liangzi$$$lzm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://v.lfthirtytwo.com/share/3d017ba05931017b15345e3ae2c73cd0$$$HD中字$https://v.lfthirtytwo.com/20260715/8656_2ebd27eb/index.m3u8",
+      "vod_down_from": "http",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "HD中字$https://lzdown27.com/20260715/8656_2ebd27eb/突击忍者2：入侵美国 Commando Ninja 2 Invasion America (2025).mp4",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "lzi_direct",
+      "_sourceShort": "量子直连",
+      "source_url": "https://cj.lziapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:38554560",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "lzi_direct",
+          "id": "146320",
+          "url": "https://cj.lziapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "lzi_direct",
+          "name": "liangzi",
+          "url": "HD中字$https://v.lfthirtytwo.com/share/3d017ba05931017b15345e3ae2c73cd0"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "lzm3u8",
+          "url": "HD中字$https://v.lfthirtytwo.com/20260715/8656_2ebd27eb/index.m3u8"
+        }
+      ],
+      "douban_id": "38554560",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "38554560",
+        "title": "突击忍者2:入侵美国",
+        "original_title": "Commando Ninja 2: Invasion America",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-10-01(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI1MDMwMSJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE3MDQzNyJ9LHsicyI6ImhoenkiLCJpZCI6IjEzODE5NCJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE1MTczMSJ9LHsicyI6Imh1eWEiLCJpZCI6IjExMzUzNSJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2ODA1MyJ9XQ",
+      "type_id": "9",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "万圣夜之女",
+      "vod_sub": "",
+      "vod_en": "wanshengyezhinv",
+      "vod_status": 1,
+      "vod_letter": "W",
+      "vod_color": "",
+      "vod_tag": "动作",
+      "vod_class": "动作,动作片",
+      "vod_pic": "https://hhmage.com/cover/b3e9772d6c6e5f2957269015016f5613.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "凯丽‧考恩,琳达·珀儿,马克斯·马蒂尼",
+      "vod_director": "Ryan Curtis",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "一位侦探必须与黑帮、女明星以及自己内心的恶魔作斗争，揭开洛杉矶霓虹灯背后潜伏的阴险真相！",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2025(美国)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 628,
+      "vod_hits_day": 80,
+      "vod_hits_week": 961,
+      "vod_hits_month": 379,
+      "vod_duration": "102分钟",
+      "vod_up": 2,
+      "vod_down": 329,
+      "vod_score": "6.0",
+      "vod_score_all": 1038,
+      "vod_score_num": 173,
+      "vod_time": "2026-07-16 18:54:02",
+      "vod_time_add": "1784199242",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36846542,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "一位侦探必须与黑帮、女明星以及自己内心的恶魔作斗争，揭开洛杉矶霓虹灯背后潜伏的阴险真相！",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/en5g8GPd$$$正片$https://play.hhuus.com/play/en5g8GPd/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36846542",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "50301",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "113535",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "138194",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "151731",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "170437",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "168053",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202607/16/6a57cabd9ed9215f58489255/bbb200/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd"
+        },
+        {
+          "source": "baidu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/bmZYG7nd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/ejR0LABe"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/ejR0LABe/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/bkRrD6Ka"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/bkRrD6Ka/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/elY2D8Va"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/elY2D8Va/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/en5g8GPd/index.m3u8"
+        }
+      ],
+      "douban_id": "36846542",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36846542",
+        "title": "万圣夜之女",
+        "original_title": "Hollywood Grit",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6Imx6aV9kaXJlY3QiLCJpZCI6IjE0NTYxNSJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "我朋友是杀人犯",
+      "vod_sub": "My Friend is A Murderer",
+      "vod_en": "wopengyoushisharenfan",
+      "vod_status": 1,
+      "vod_letter": "W",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "喜剧,动作",
+      "vod_pic": "https://img.lzipic.com/upload/vod/20260712-1/5ccd8a2c8cbd35616198f872cd1b50e0.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "池承炫,郑惠成,奇周峯,金明国,朴努植",
+      "vod_director": "金喜圣",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "在为女友报仇后逃亡的宋哲，假扮成一位患有痴呆症的老妇人的儿子，躲在一个农村小镇。当镇上的人拥抱他时，他开始感到一种归属感——直到一个大坝项目带来了一波又一波的抗议者和暴力执法者。距离他的犯罪时效仅剩一",
+      "vod_remarks": "HD",
+      "vod_pubdate": "2025(韩国)",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "韩国",
+      "vod_lang": "韩语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "89分钟",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-07-12 15:58:12",
+      "vod_time_add": "1783843092",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37116587,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "在为女友报仇后逃亡的宋哲，假扮成一位患有痴呆症的老妇人的儿子，躲在一个农村小镇。当镇上的人拥抱他时，他开始感到一种归属感——直到一个大坝项目带来了一波又一波的抗议者和暴力执法者。距离他的犯罪时效仅剩一天，宋哲必须在逃离城镇或站起来保护那些接受他的人之间做出选择。",
+      "vod_play_from": "liangzi$$$lzm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://v.lfthirtytwo.com/share/452e91de642a8e9c43121664d5d3c05c$$$HD中字$https://v.lfthirtytwo.com/20260711/8573_3421ca83/index.m3u8",
+      "vod_down_from": "http",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "HD中字$https://lzdown27.com/20260711/8573_3421ca83/我朋友是杀人犯 내 친구는 살인범 (2025).mp4",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "lzi_direct",
+      "_sourceShort": "量子直连",
+      "source_url": "https://cj.lziapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37116587",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "lzi_direct",
+          "id": "145615",
+          "url": "https://cj.lziapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "lzi_direct",
+          "name": "liangzi",
+          "url": "HD中字$https://v.lfthirtytwo.com/share/452e91de642a8e9c43121664d5d3c05c"
+        },
+        {
+          "source": "lzi_direct",
+          "name": "lzm3u8",
+          "url": "HD中字$https://v.lfthirtytwo.com/20260711/8573_3421ca83/index.m3u8"
+        }
+      ],
+      "douban_id": "37116587",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37116587",
+        "title": "我朋友是杀人犯",
+        "original_title": "내 친구는 살인범",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025(韩国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjExMjYxNiJ9XQ",
+      "type_id": "21",
+      "type_id_1": 20,
+      "group_id": 0,
+      "vod_name": "限时营救",
+      "vod_sub": "",
+      "vod_en": "xianshiyingjiu",
+      "vod_status": 1,
+      "vod_letter": "X",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作,惊悚",
+      "vod_pic": "https://img.picbf.com/upload/vod/20251127-1/177ddba62d305f3e10fe18ff992879ad.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "凯特·贝金赛尔,刘易斯·陈,艾丽丝·克里奇,汤姆·班尼特,贝利·帕特里克,拉斯穆斯·哈迪克,马特·威利斯,Roxy Striar",
+      "vod_director": "詹姆斯·纳恩",
+      "vod_writer": "Dominic Burns",
+      "vod_behind": "",
+      "vod_blurb": "Follows an ex-black ops team that reunites to pull off a desperate heist and save the life of an eig",
+      "vod_remarks": "更新至HD",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 534,
+      "vod_hits_day": 155,
+      "vod_hits_week": 130,
+      "vod_hits_month": 495,
+      "vod_duration": "",
+      "vod_up": 359,
+      "vod_down": 12,
+      "vod_score": "6.0",
+      "vod_score_all": 5034,
+      "vod_score_num": 839,
+      "vod_time": "2026-07-14 19:04:52",
+      "vod_time_add": "1764234800",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36956282,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "Follows an ex-black ops team that reunites to pull off a desperate heist and save the life of an eight-year-old girl.",
+      "vod_play_from": "bfzym3u8",
+      "vod_play_server": "",
+      "vod_play_note": "",
+      "vod_play_url": "HD$https://v.fengbao8.com/video/xianshiyingjiu/HD/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36956282",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "112616",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.fengbao8.com/video/xianshiyingjiu/HD/index.m3u8"
+        }
+      ],
+      "douban_id": "36956282",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36956282",
+        "title": "限时营救",
+        "original_title": "Wildcat",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-11-25(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzY5MyJ9LHsicyI6Imd1YW5nc3UiLCJpZCI6IjE2NjU1MSJ9LHsicyI6ImhoenkiLCJpZCI6IjEzNDMxMyJ9LHsicyI6ImhvbmduaXUiLCJpZCI6IjE0Nzg0NyJ9LHsicyI6Imh1eWEiLCJpZCI6IjEwOTY0NyJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjE2NDE2NiJ9XQ",
+      "type_id": "9",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "限时拯救",
+      "vod_sub": "禁止失察",
+      "vod_en": "xianshizhengjiu",
+      "vod_status": 1,
+      "vod_letter": "X",
+      "vod_color": "",
+      "vod_tag": "动作,悬疑,惊悚,犯罪",
+      "vod_class": "动作,悬疑,惊悚,犯罪,动作片",
+      "vod_pic": "https://hhmage.com/cover/ab63a2bf69d7fa182bab5148c1cc5c84.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "乔什·杜哈明,迪伦·斯普罗斯,蒂尔·施威格",
+      "vod_director": "大卫·理柏",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "快退休的警探肖被威胁儿子将被连环杀手活埋。他必须按照匪徒的要求快速解决三起谋杀案，才能得到儿子获救的线索。",
+      "vod_remarks": "抢先版",
+      "vod_pubdate": "2025-10-18(美国)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 13,
+      "vod_hits_day": 397,
+      "vod_hits_week": 997,
+      "vod_hits_month": 936,
+      "vod_duration": "87分钟",
+      "vod_up": 333,
+      "vod_down": 362,
+      "vod_score": "7.0",
+      "vod_score_all": 4732,
+      "vod_score_num": 676,
+      "vod_time": "2026-05-27 12:54:01",
+      "vod_time_add": "1779857641",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37182750,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "快退休的警探肖被威胁儿子将被连环杀手活埋。他必须按照匪徒的要求快速解决三起谋杀案，才能得到儿子获救的线索。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "抢先版$https://play.hhuus.com/play/bDkqk8ka$$$抢先版$https://play.hhuus.com/play/bDkqk8ka/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "hhzy",
+      "_sourceShort": "火狐",
+      "source_url": "https://hhzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37182750",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "huya",
+          "id": "109647",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "134313",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "147847",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "166551",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "164166",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "97693",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "抢先版$https://1080p.huyall.com/play/dBBrB6od/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "抢先版$https://play.hhuus.com/play/bDkqk8ka"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "抢先版$https://play.hhuus.com/play/bDkqk8ka/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "抢先版$https://hn.bfvvs.com/play/dyPwP9Rb"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "抢先版$https://hn.bfvvs.com/play/dyPwP9Rb/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "抢先版$https://v.gsuus.com/play/azp6p72d"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "抢先版$https://v.gsuus.com/play/azp6p72d/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "抢先版$https://play.xluuss.com/play/aAD6DMje"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "抢先版$https://play.xluuss.com/play/aAD6DMje/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "TC中字$https://vip.ffzy-play9.com/share/d229abbb7795bca04ff7fbfe2a61497d"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "TC中字$https://vip.ffzy-play9.com/20260527/41708_d229abbb/index.m3u8"
+        }
+      ],
+      "douban_id": "37182750",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37182750",
+        "title": "限时拯救",
+        "original_title": "Neglected",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-10-18(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0NzU4MyJ9LHsicyI6Im1vZHUiLCJpZCI6IjczNjgzIn1d",
+      "type_id": "10",
+      "type_id_1": 7,
+      "group_id": 0,
+      "vod_name": "新狂蟒之灾",
+      "vod_sub": "大蟒蛇(台),狂蟒之灾重启版,Anaconda Reboot,新狂蟒之灾 Anaconda",
+      "vod_en": "xinkuangmangzhizai",
+      "vod_status": 1,
+      "vod_letter": "X",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "喜剧,动作,冒险",
+      "vod_pic": "https://www.mdzypic.com/upload/vod/20260112-1/a191e07c6cd8c40913a5f0fccb9bfb1e.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "保罗·路德,杰克·布莱克,史蒂夫·扎恩,坦迪·牛顿,艾斯·库珀,丹妮拉·曼希沃,艾农·斯凯,本·劳森,赛尔顿·梅罗,蕾妮·赫伯特,娅丝明·卡西姆,艾米·巴赫,塞巴斯蒂安·瑟罗,杰克·沃特斯,迭戈·阿纳里,卡尔·雷恩,马特·阿里斯蒂萨巴尔,胡依·西卡多·吉亚斯,罗密欧·埃拉德,里根·乔治",
+      "vod_director": "汤姆·戈米肯",
+      "vod_writer": "凯文·埃滕,汤姆·戈米肯",
+      "vod_behind": "",
+      "vod_blurb": "为了翻拍影史经典《狂蟒之灾》，格里夫（保罗·路德饰）和道格（杰克·布莱克饰）成立史上最穷剧组！在唯一一条演员蛇因伤下线后，他们决定深入亚马逊雨林捉蛇补位，却意外遇上真巨蟒，原本滑稽混乱的片场瞬间沦为致",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2026-01-09(中国大陆),2025-12-25(美国)",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 5340,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "100",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "5.6",
+      "vod_score_all": 362,
+      "vod_score_num": 483,
+      "vod_time": "2026-06-29 10:35:57",
+      "vod_time_add": "1768222320",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37014022,
+      "vod_douban_score": "5.6",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>为了翻拍影史经典《狂蟒之灾》，格里夫（保罗·路德饰）和道格（杰克·布莱克饰）成立史上最穷剧组！在唯一一条演员蛇因伤下线后，他们决定深入亚马逊雨林捉蛇补位，却意外遇上真巨蟒，原本滑稽混乱的片场瞬间沦为致命险境。在蛇口之下四处逃窜的他们，最终是会全员殒命还是顺利杀青？</p>",
+      "vod_play_from": "modum3u8",
+      "vod_play_server": "no",
+      "vod_play_note": "",
+      "vod_play_url": "正片$https://play.modujx11.com/20260127/S89tNauo/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37014022",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "47583",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "73683",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "中字$https://b2.bdzybf22.com/videos/202512/26/694e6e334203f608c35e9138/dedc0f/index.m3u8#HD$https://b3.bdzybf22.com/videos/202601/29/697ae3aa8551461619471b2a/b388da/index.m3u8#TCV2$https://b3.bdzybf22.com/videos/202601/08/695f6c30f6eb7916106f20b6/12a6e4/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260127/S89tNauo/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260127/S89tNauo/index.m3u8"
+        }
+      ],
+      "douban_id": "37014022",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37014022",
+        "title": "新狂蟒之灾",
+        "original_title": "Anaconda",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-01-09(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Njc3OCJ9LHsicyI6InRhb3BpYW4iLCJpZCI6IjE1Mzg1MTEifV0",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "英雄三元里",
+      "vod_sub": "Hero Sanyuanli",
+      "vod_en": "yingxiongsanyuanli",
+      "vod_status": 1,
+      "vod_letter": "Y",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,历史,战争",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260420-1/b613877a5a2677955f604a34a45c59c8.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "严屹宽,刘秋实,孙昊,闻雨,王光辉,孙蛟龙,陶奕希,方洋飞,文东俊,李圣雄,王禹森,吕文军,陆丰,爱多,马铁摩",
+      "vod_director": "王一诺",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;1840年鸦片战争爆发，英军侵略军攻破广州，饱经鸦片毒害的百姓活在至暗时刻。萧岗士绅何玉成（严屹宽饰）受关天培之托嘱，立志寻找时机保卫广州城。 故事从三元里村武馆教头刘三义（刘秋实饰）和其",
+      "vod_remarks": "HD国语|粤语",
+      "vod_pubdate": "2025-11-28",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "大陆",
+      "vod_lang": "国语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-04-20 17:55:41",
+      "vod_time_add": "1776678941",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37395403,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;1840年鸦片战争爆发，英军侵略军攻破广州，饱经鸦片毒害的百姓活在至暗时刻。萧岗士绅何玉成（严屹宽饰）受关天培之托嘱，立志寻找时机保卫广州城。 故事从三元里村武馆教头刘三义（刘秋实饰）和其兄弟韦绍光（孙昊饰）企图烧毁十三行码头的洋商趸船开始... 影片质朴还原了三元里抗英这段鲜为人知的史实，用悲壮美学与历史质感交织的视听讲述了鸦片馆血案的个人复仇，到牛栏岗生死战的民族抗争。致敬民族先辈，当外侮侵犯时，每一个挺身而出的小人物，都是照亮民族暗夜的英雄。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "国语$https://svip.feifei-play.com/share/bb00d1c8cf377a49b8e5bac839ced4e9#粤语$https://svip.feifei-play.com/share/401824122ab093701a7e77def38d370f$$$国语$https://svip.feifei-play.com/20260420/41987_bb00d1c8/index.m3u8#粤语$https://svip.feifei-play.com/20260420/41988_40182412/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "taopian",
+      "_sourceShort": "淘片",
+      "source_url": "https://taopianapi.com/cjapi/mc/vod/json.html",
+      "canonical_id": "ext:douban:37395403",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "taopian",
+          "id": "1538511",
+          "url": "https://taopianapi.com/cjapi/mc/vod/json.html",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "96778",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "taopian",
+          "name": "tpm3u8",
+          "url": "英雄三元里$https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-05-05/1/a936a33a90d1/13109230e9f1/playlist.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "tpiframe",
+          "url": "英雄三元里$https://www.tpvod.com/player.html?uri=https%3A%2F%2Fsd8.taopianplay1.com%3A43333%2Fc56b1bc09da3%2FHD%2F2026-05-05%2F1%2Fa936a33a90d1%2F13109230e9f1%2Fplaylist.m3u8"
+        },
+        {
+          "source": "taopian",
+          "name": "feifan",
+          "url": "国语$https://svip.feifei-play.com/share/bb00d1c8cf377a49b8e5bac839ced4e9#粤语$https://svip.feifei-play.com/share/401824122ab093701a7e77def38d370f"
+        },
+        {
+          "source": "taopian",
+          "name": "ffm3u8",
+          "url": "国语$https://svip.feifei-play.com/20260420/41987_bb00d1c8/index.m3u8#粤语$https://svip.feifei-play.com/20260420/41988_40182412/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "国语$https://svip.feifei-play.com/share/bb00d1c8cf377a49b8e5bac839ced4e9#粤语$https://svip.feifei-play.com/share/401824122ab093701a7e77def38d370f"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "国语$https://svip.feifei-play.com/20260420/41987_bb00d1c8/index.m3u8#粤语$https://svip.feifei-play.com/20260420/41988_40182412/index.m3u8"
+        }
+      ],
+      "douban_id": "37395403",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37395403",
+        "title": "英雄三元里",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-11-28(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": 1,
+      "latest_episode": 1,
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzExMCJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "硬汉2",
+      "vod_sub": "",
+      "vod_en": "yinghan2",
+      "vod_status": 1,
+      "vod_letter": "Y",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,动作",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260501-1/2de438139761a6c46223aa437a275f96.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "乔尔·赫沃宁,萨穆里·埃德尔曼,Linda Wiklund,萨丽·哈瓦斯,塞韦里·沙里宁,Ilkka Heiskanen,Saaga Salo,Petja Lähde,Kheba Touray,卡里姆·拉帕蒂,亚历克斯·安东,Ali Al-Saffu,Roderick Kabanga,埃萨·拉特瓦-埃伊约,Andrew Smith",
+      "vod_director": "Aleksi Mäkelä",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;康斯塔·卡尔胡刑满出狱，回到芬兰南部的乡村故土。过去的恩怨纠葛如影随形，让他在旁人的劝阻下，仍一步步被拉回毒品交易的漩涡。身边的人试图将他拉回正轨，可过往的阴影始终无法摆脱。一次与黑暗过往",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-02-19",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "芬兰",
+      "vod_lang": "芬兰语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-05-01 08:44:10",
+      "vod_time_add": "1777596250",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36850783,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;康斯塔·卡尔胡刑满出狱，回到芬兰南部的乡村故土。过去的恩怨纠葛如影随形，让他在旁人的劝阻下，仍一步步被拉回毒品交易的漩涡。身边的人试图将他拉回正轨，可过往的阴影始终无法摆脱。一次与黑暗过往的意外遭遇，迫使他直面自己犯下的错，在暴力与救赎的拉扯中，做出足以改变余生走向的选择。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://vip.ffzy-plays.com/share/cc5365068a04ef4474e262c73238b370$$$HD中字$https://vip.ffzy-plays.com/20260501/53022_cc536506/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36850783",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "97110",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/cc5365068a04ef4474e262c73238b370"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260501/53022_cc536506/index.m3u8"
+        }
+      ],
+      "douban_id": "36850783",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36850783",
+        "title": "硬汉2",
+        "original_title": "Häjyt 2",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-02-19(芬兰)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjE0OTkyMSJ9XQ",
+      "type_id": "21",
+      "type_id_1": 20,
+      "group_id": 0,
+      "vod_name": "远古狂蟒",
+      "vod_sub": "巨蛇之灾",
+      "vod_en": "yuangukuangmang",
+      "vod_status": 1,
+      "vod_letter": "Y",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作",
+      "vod_pic": "https://img.picbf.com/upload/vod/20260626-1/d414cabe2e414b91c827ec6fe5edf76f.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "Diego Escobar , Giselle Garci , Hannah Hueston , Jordan Iverach , 菲利浦·卡纳 , 多米尼克·基汀 , Maureen Kedes",
+      "vod_director": "马塞尔·沃尔兹",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "在墨西哥的丛林深处的神庙，考古学家们发现了一种古老的蛇崇拜文化，同时他们不小心释放了一条沉睡了几个世纪的巨大而可怕的蟒蛇。",
+      "vod_remarks": "更新至HD",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 380,
+      "vod_hits_day": 794,
+      "vod_hits_week": 638,
+      "vod_hits_month": 191,
+      "vod_duration": "",
+      "vod_up": 956,
+      "vod_down": 84,
+      "vod_score": "7.0",
+      "vod_score_all": 490,
+      "vod_score_num": 70,
+      "vod_time": "2026-06-26 14:04:54",
+      "vod_time_add": "1782453881",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 38033003,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "在墨西哥的丛林深处的神庙，考古学家们发现了一种古老的蛇崇拜文化，同时他们不小心释放了一条沉睡了几个世纪的巨大而可怕的蟒蛇。",
+      "vod_play_from": "bfzym3u8",
+      "vod_play_server": "",
+      "vod_play_note": "",
+      "vod_play_url": "HD$https://v.baofeng11.com/video/yuangukuangmang/f77f31523c11/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:38033003",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "149921",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.baofeng11.com/video/yuangukuangmang/f77f31523c11/index.m3u8"
+        }
+      ],
+      "douban_id": "38033003",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "38033003",
+        "title": "远古狂蟒",
+        "original_title": "THE ANACONDAS",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-12-19(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTAwNyJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NjY4NSJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "追分夺秒",
+      "vod_sub": "反恐危机",
+      "vod_en": "zhuifenduomiao",
+      "vod_status": 1,
+      "vod_letter": "Z",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作,惊悚",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260415-1/57755b21e83171a94e34805f0e762eef.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "伊科·乌艾斯,奥法·阿萨加,吉米·科博高,Yasamin Jasem,优素福·马哈迪卡",
+      "vod_director": "伊科·乌艾斯",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;Timur is an action-thriller that follows the real-life international hostage crisis that took",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-12-18",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "其它",
+      "vod_lang": "其它",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-04-15 08:58:17",
+      "vod_time_add": "1776214697",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37227417,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;Timur is an action-thriller that follows the real-life international hostage crisis that took place in Mapenduma in 1996. The subsequent rescue operation was overseen by now-Indonesian President Prabowo Subianto.</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/8c39b2769d3491e81f42c162bc8e30d5$$$HD中字$https://svip.feifei-play.com/20260415/41641_8c39b276/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37227417",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49007",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "96685",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202604/09/69d7a4f1299dab6cc657186d/6b8550/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/8c39b2769d3491e81f42c162bc8e30d5"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260415/41641_8c39b276/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/8c39b2769d3491e81f42c162bc8e30d5"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260415/41641_8c39b276/index.m3u8"
+        }
+      ],
+      "douban_id": "37227417",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37227417",
+        "title": "追分夺秒",
+        "original_title": "Timur",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-12-18(印度尼西亚)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Njk4NyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "最后一枪2025",
+      "vod_sub": "The Last Shot",
+      "vod_en": "zuihouyiqiang2025",
+      "vod_status": 1,
+      "vod_letter": "Z",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,动作,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260425-1/a2481ba7065c8ac448931b217f449885.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "萨里卡·塞思苏帕,帕塔纳·埃桑固,察猜·本班尼,本杰明·约瑟夫·瓦尼,Somphol Rungphanit",
+      "vod_director": "Putthipong Naktong",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;Petch是一名顶尖职业杀手，早已厌倦了枪火与血腥，渴望带着爱人逃离这个世界，过普通人的生活。但江湖从不是说走就能走的地方——当他被卷入一场关于兄弟情义、黑帮背叛与复仇的漩涡时，被迫接下了",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-11-27",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "泰国",
+      "vod_lang": "其它",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-04-25 14:29:08",
+      "vod_time_add": "1777098548",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37425180,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;Petch是一名顶尖职业杀手，早已厌倦了枪火与血腥，渴望带着爱人逃离这个世界，过普通人的生活。但江湖从不是说走就能走的地方——当他被卷入一场关于兄弟情义、黑帮背叛与复仇的漩涡时，被迫接下了最后一次任务。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/bf5a72f10c8a5910f76537e4a7ed07dc$$$HD中字$https://svip.feifei-play.com/20260425/42325_bf5a72f1/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37425180",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "96987",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/bf5a72f10c8a5910f76537e4a7ed07dc"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260425/42325_bf5a72f1/index.m3u8"
+        }
+      ],
+      "douban_id": "37425180",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37425180",
+        "title": "最后一枪",
+        "original_title": "มือปืน",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-11-27(泰国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5Njc1OCJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "罪之代价",
+      "vod_sub": "致命追凶",
+      "vod_en": "zuizhidaijia",
+      "vod_status": 1,
+      "vod_letter": "Z",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "惊悚,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260418-1/a7917d44a091ad103e1da918dbc7e27e.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "保罗·斯隆,丹尼·特雷霍,杰里米·卢克,蒂芬·赛勒斯·沙斐,Nazo Bravo,Sophie Blondin,Marcus Ray,Jamal Trulove,Caroline Hallum,Anthony Sinopoli,Byron Coolie,梅勒迪斯·万丘克",
+      "vod_director": "Victor Rios",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;故事聚焦洛杉矶最黑暗的芬太尼地下世界：主角托马斯·布莱克威尔本是一名致力于终结芬太尼交易的执法者，却意外陷入致命陷阱，被心狠手辣的芬太尼犯罪集团追杀，同时遭到从中牟利的腐败势力背叛。为了洗",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2025-09-05",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2025",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-04-18 10:26:44",
+      "vod_time_add": "1776479204",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36895440,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;故事聚焦洛杉矶最黑暗的芬太尼地下世界：主角托马斯·布莱克威尔本是一名致力于终结芬太尼交易的执法者，却意外陷入致命陷阱，被心狠手辣的芬太尼犯罪集团追杀，同时遭到从中牟利的腐败势力背叛。为了洗清污名、拯救自己和家人的性命，他必须孤身闯入黑帮腹地，以暴制暴，在黑白两道的夹缝中杀出一条血路。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/ce625c9ab179898b1a9b3736df9bff79$$$HD中字$https://svip.feifei-play.com/20260418/41873_ce625c9a/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36895440",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "96758",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/ce625c9ab179898b1a9b3736df9bff79"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260418/41873_ce625c9a/index.m3u8"
+        }
+      ],
+      "douban_id": "36895440",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36895440",
+        "title": "罪之代价",
+        "original_title": "Wages of Sin",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2025-09-05(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2025"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0ODc1OCJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NTI0OCJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "戴维·克罗克特之歌",
+      "vod_sub": "",
+      "vod_en": "daiweikeluoketezhige",
+      "vod_status": 1,
+      "vod_letter": "D",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,动作,传记",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260330-1/4a58c32ac22c661408566dca77917fdd.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "Colm Meaney,William Moseley,Jesse Hutch,Ryan Green,Brian Hite,Gray Wolf Herrera",
+      "vod_director": "Derek Estlin Purvis",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;In 1815, an American Legend, whose wife has fallen deathly ill, leaving his young children to",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2024-03-28",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2024",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-03-30 09:27:04",
+      "vod_time_add": "1774834024",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37527824,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;In 1815, an American Legend, whose wife has fallen deathly ill, leaving his young children to survive on their own, must fight his way back to them across the many perils found in the Savage Lands of the wild frontier.</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/4fdeceef54c4e757fdbf8ea9132b22c9$$$HD中字$https://svip.feifei-play.com/20260330/40572_4fdeceef/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37527824",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "48758",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "95248",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202603/25/69c3d20b4a8e466cd3225e00/gcaf9a/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/4fdeceef54c4e757fdbf8ea9132b22c9"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260330/40572_4fdeceef/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/4fdeceef54c4e757fdbf8ea9132b22c9"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260330/40572_4fdeceef/index.m3u8"
+        }
+      ],
+      "douban_id": "37527824",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37527824",
+        "title": "戴维·克罗克特之歌",
+        "original_title": "The Ballad of Davy Crockett",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2024-03-28(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2024"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTY3MyJ9LHsicyI6Im1vZHUiLCJpZCI6Ijg0NDA4In1d",
+      "type_id": "10",
+      "type_id_1": 7,
+      "group_id": 0,
+      "vod_name": "飞虎神爪",
+      "vod_sub": "飞虎神爪",
+      "vod_en": "feihushenzhua",
+      "vod_status": 1,
+      "vod_letter": "F",
+      "vod_color": "",
+      "vod_tag": "动作,古装",
+      "vod_class": "动作,古装",
+      "vod_pic": "https://www.mdzypic.com/upload/vod/20260612-1/2bac07b113b03a70cf0276d56856ed31.webp",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "淳于珊珊,程琢,孙文雪,任宇",
+      "vod_director": "田少波",
+      "vod_writer": "张骁",
+      "vod_behind": "",
+      "vod_blurb": "飞虎门郑坤奉命押送赈灾粮，他押送回来的赈灾粮全是沙石，郑坤锒铛入狱，几经周折，郑坤查出调换赈灾粮的罪魁祸首，郑坤与州府捕快左绫联手将贪污赈灾粮的人一干人等绳之以法，将他们一网打尽",
+      "vod_remarks": "正片",
+      "vod_pubdate": "",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "中国大陆",
+      "vod_lang": "汉语普通话",
+      "vod_year": "2024",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "淳于珊珊,程琢,孙文雪,任宇",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 921,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-06-12 16:52:01",
+      "vod_time_add": "1781254321",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 38365499,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>飞虎门郑坤奉命押送赈灾粮，他押送回来的赈灾粮全是沙石，郑坤锒铛入狱，几经周折，郑坤查出调换赈灾粮的罪魁祸首，郑坤与州府捕快左绫联手将贪污赈灾粮的人一干人等绳之以法，将他们一网打尽</p>",
+      "vod_play_from": "modum3u8",
+      "vod_play_server": "no",
+      "vod_play_note": "",
+      "vod_play_url": "正片$https://play.modujx11.com/20260612/VtBgwnVw/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:38365499",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49673",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "modu",
+          "id": "84408",
+          "url": "https://caiji.moduapi.cc/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202606/12/6a2b0f540452185f5979b60c/b50f41/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260612/VtBgwnVw/index.m3u8"
+        },
+        {
+          "source": "modu",
+          "name": "modum3u8",
+          "url": "正片$https://play.modujx11.com/20260612/VtBgwnVw/index.m3u8"
+        }
+      ],
+      "douban_id": "38365499",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "38365499",
+        "title": "飞虎神爪",
+        "original_title": "",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2024-12-11(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2024"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJmenkiLCJpZCI6IjkxNTYzIn0seyJzIjoiZ3VhbmdzdSIsImlkIjoiMTMzNTY5In0seyJzIjoiaGh6eSIsImlkIjoiOTkzODMifSx7InMiOiJob25nbml1IiwiaWQiOiIxMDk5NTgifSx7InMiOiJodXlhIiwiaWQiOiI3NjQ4NiJ9LHsicyI6InhpbmxhbmciLCJpZCI6IjEzMDQyOCJ9XQ",
+      "type_id": "9",
+      "type_id_1": 2,
+      "group_id": 0,
+      "vod_name": "角头：大桥头",
+      "vod_sub": "GATAO: Like Father Like Son/ 角頭：大橋頭",
+      "vod_en": "jiaotoudaqiaotou",
+      "vod_status": 1,
+      "vod_letter": "J",
+      "vod_color": "",
+      "vod_tag": "剧情,动作,犯罪",
+      "vod_class": "剧情,动作,犯罪,动作片",
+      "vod_pic": "https://hhmage.com/cover/317a0b126253f5299567b437d8260796.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": null,
+      "vod_actor": "蔡振南,龙天翔,喜翔,高捷,太保,孙鹏,王识贤,王阳明,张怀秋,施名帅,郑人硕,张再兴",
+      "vod_director": "姜瑞智",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "故事时间回到源头，英文片名暗示故事聚焦父子关系。大桥头第二代Michael（王阳明 饰）横空出世，瞒着父亲（龙天翔 饰）与兄弟（张怀秋 饰）私下打算重整角头新的秩序，惹火了北馆（高捷、王识贤）、顶庄（",
+      "vod_remarks": "正片",
+      "vod_pubdate": "2024-08-16(中国台湾)",
+      "vod_total": "1",
+      "vod_serial": "0",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "中国台湾",
+      "vod_lang": "汉语普通话",
+      "vod_year": "2024",
+      "vod_version": "",
+      "vod_state": "",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 1,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 627,
+      "vod_hits_day": 899,
+      "vod_hits_week": 715,
+      "vod_hits_month": 716,
+      "vod_duration": "100分钟",
+      "vod_up": 822,
+      "vod_down": 363,
+      "vod_score": "2.0",
+      "vod_score_all": 632,
+      "vod_score_num": 316,
+      "vod_time": "2026-07-09 11:54:03",
+      "vod_time_add": "1746074881",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36126098,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "故事时间回到源头，英文片名暗示故事聚焦父子关系。大桥头第二代Michael（王阳明 饰）横空出世，瞒着父亲（龙天翔 饰）与兄弟（张怀秋 饰）私下打算重整角头新的秩序，惹火了北馆（高捷、王识贤）、顶庄（蔡振南、孙鹏）、北城（太保 饰）共同对抗，四方角头正式开战。",
+      "vod_play_from": "hhyun$$$hhm3u8",
+      "vod_play_server": "$$$",
+      "vod_play_note": "$$$",
+      "vod_play_url": "正片$https://play.hhuus.com/play/aOYPMjNd$$$正片$https://play.hhuus.com/play/aOYPMjNd/index.m3u8",
+      "vod_down_from": "",
+      "vod_down_server": "",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "bfzy",
+      "_sourceShort": "暴风",
+      "source_url": "https://bfzyapi.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36126098",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "bfzy",
+          "id": "91563",
+          "url": "https://bfzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "huya",
+          "id": "76486",
+          "url": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/",
+          "updated_at": ""
+        },
+        {
+          "source": "hhzy",
+          "id": "99383",
+          "url": "https://hhzyapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "hongniu",
+          "id": "109958",
+          "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "guangsu",
+          "id": "133569",
+          "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "xinlang",
+          "id": "130428",
+          "url": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "bfzy",
+          "name": "bfzym3u8",
+          "url": "HD$https://v.baofeng11.com/video/jiaotoudaqiaotou/HD/index.m3u8"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd"
+        },
+        {
+          "source": "bfzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hym3u8",
+          "url": "正片$https://1080p.huyall.com/play/dNkYLgze/index.m3u8"
+        },
+        {
+          "source": "huya",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd"
+        },
+        {
+          "source": "huya",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd/index.m3u8"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd"
+        },
+        {
+          "source": "hhzy",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnyun",
+          "url": "正片$https://hn.bfvvs.com/play/aKrL1Nne"
+        },
+        {
+          "source": "hongniu",
+          "name": "hnm3u8",
+          "url": "正片$https://hn.bfvvs.com/play/aKrL1Nne/index.m3u8"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd"
+        },
+        {
+          "source": "hongniu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsyun",
+          "url": "正片$https://v.gsuus.com/play/dL9v7O4e"
+        },
+        {
+          "source": "guangsu",
+          "name": "gsm3u8",
+          "url": "正片$https://v.gsuus.com/play/dL9v7O4e/index.m3u8"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd"
+        },
+        {
+          "source": "guangsu",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlyun",
+          "url": "正片$https://play.xluuss.com/play/aM8JwP3e"
+        },
+        {
+          "source": "xinlang",
+          "name": "xlm3u8",
+          "url": "正片$https://play.xluuss.com/play/aM8JwP3e/index.m3u8"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhyun",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd"
+        },
+        {
+          "source": "xinlang",
+          "name": "hhm3u8",
+          "url": "正片$https://play.hhuus.com/play/aOYPMjNd/index.m3u8"
+        }
+      ],
+      "douban_id": "36126098",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36126098",
+        "title": "角头:大桥头",
+        "original_title": "角頭:大橋頭",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2026-04-10(中国大陆)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2024"
+      },
+      "episode_count": 1,
+      "latest_episode": "0",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzMxMSJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "绝岭遗志",
+      "vod_sub": "Son&#039;s Will,The Will of the Son,Sword of Vengeance",
+      "vod_en": "juelingyizhi",
+      "vod_status": 1,
+      "vod_letter": "J",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260507-1/cf675078dd1085c7d38f7193425fd7bb.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "谢尔盖·特里富诺维奇,杰克·迪米奇,Igor Bencina,扎尔科·劳舍维奇,Slavko Labovic,斯韦托扎尔·茨韦特科维奇,拉多耶·楚皮奇,Petar Bencina,Marta Bjelica",
+      "vod_director": "Nemanja Ceranic",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;A post-apocalyptic tale set in the west Balkans, after a nuclear war.",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2024-11-26",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "塞尔维亚",
+      "vod_lang": "塞尔维亚语",
+      "vod_year": "2024",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-05-07 08:52:15",
+      "vod_time_add": "1778115135",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 27115990,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;A post-apocalyptic tale set in the west Balkans, after a nuclear war.</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://vip.ffzy-plays.com/share/3cb7db32bce3d9b1db8d8645f3831fd8$$$HD中字$https://vip.ffzy-plays.com/20260507/53264_3cb7db32/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "ffzy_direct",
+      "_sourceShort": "非凡直连",
+      "source_url": "http://ffzy.tv/api.php/provide/vod/",
+      "canonical_id": "ext:douban:27115990",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "ffzy_direct",
+          "id": "97311",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/3cb7db32bce3d9b1db8d8645f3831fd8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260507/53264_3cb7db32/index.m3u8"
+        }
+      ],
+      "douban_id": "27115990",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "27115990",
+        "title": "绝岭遗志",
+        "original_title": "Volja sinovljeva",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2024-11-26(塞尔维亚)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2024"
+      },
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTMzNyJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzE5MyJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "狂野世道",
+      "vod_sub": "",
+      "vod_en": "kuangyeshidao",
+      "vod_status": 1,
+      "vod_letter": "K",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,动作,犯罪",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260504-1/12c0f85304126eaf727df11ffebdc172.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "杰克·卡鲁索,埃里克·罗伯茨,罗芙洛,约瑟夫·米尔森,哈里特·索普,瑞奇·格罗弗,马克·班纳曼,Paul Marlon,Aaron Sidwell,Tina Barnes,丹·理查森,Mily Cultrera di Montesano,Tia Owomoyela,Alana Wallace,Charlene Aldridge",
+      "vod_director": "Paul Knight",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;身负债务的理查德·法伊尔早已放下杀手身份，只想做个普通人。但狂热分子“牧师”找上门来，提出一笔交易：帮他除掉国际犯罪圈的竞争对手，就能勾销所有债务。法伊尔被迫重返黑暗世界，潜入西班牙海岸线",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2024-05-31",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "英国",
+      "vod_lang": "英语",
+      "vod_year": "2024",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-05-04 08:09:53",
+      "vod_time_add": "1777853393",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 37019196,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;身负债务的理查德·法伊尔早已放下杀手身份，只想做个普通人。但狂热分子“牧师”找上门来，提出一笔交易：帮他除掉国际犯罪圈的竞争对手，就能勾销所有债务。法伊尔被迫重返黑暗世界，潜入西班牙海岸线，伪装成毒枭亚历杭德罗执行任务。他一边躲避犯罪集团的追杀，一边与过去的暴力记忆对抗，每一步都在生存与良知的边缘游走。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://vip.ffzy-plays.com/share/29ac064fb5188ace5235ea15f52d8377$$$HD中字$https://vip.ffzy-plays.com/20260504/53141_29ac064f/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:37019196",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49337",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "97193",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202605/02/69f5d703a653aee81af5bee3/4ced74/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/29ac064fb5188ace5235ea15f52d8377"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260504/53141_29ac064f/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/29ac064fb5188ace5235ea15f52d8377"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260504/53141_29ac064f/index.m3u8"
+        }
+      ],
+      "douban_id": "37019196",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "37019196",
+        "title": "狂野世道",
+        "original_title": "Fyre Rises",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2024-05-31(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2024"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0ODgxMCJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NTY4NiJ9XQ",
+      "type_id": "6",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "冥界司机",
+      "vod_sub": "紧追不舍",
+      "vod_en": "mingjiesiji",
+      "vod_status": 1,
+      "vod_letter": "M",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "动作,惊悚,恐怖",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260404-1/4edcefc5c8fc95c8e4e99a06ef052634.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "Nicole Mattox,Milo Hayden,Dare Taylor,/Katherine Gibson,劳伦·帕金森,吉姆·帕尔默,Dwayne Hilton Jr.,Ian Hummel,Chuck Cirino,瑞恩·拉特本",
+      "vod_director": "Errol Sack",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;一名长途卡车司机的家人在一场由鲁莽青少年引发的车祸中丧生，他奇迹般生还后，在一位神秘老人的照料下康复，将悲痛与愤怒转化为残酷的复仇，对那些摧毁他生活的少年展开了一场公路追杀。",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2024-10-31",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "美国",
+      "vod_lang": "英语",
+      "vod_year": "2024",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-04-04 09:49:20",
+      "vod_time_add": "1775267360",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 38364032,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;一名长途卡车司机的家人在一场由鲁莽青少年引发的车祸中丧生，他奇迹般生还后，在一位神秘老人的照料下康复，将悲痛与愤怒转化为残酷的复仇，对那些摧毁他生活的少年展开了一场公路追杀。</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://svip.feifei-play.com/share/a127c5a2ed0a7a7790327f59706b0b77$$$HD中字$https://svip.feifei-play.com/20260404/40966_a127c5a2/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "动作片",
+      "source_category_id": "10",
+      "source_category_name": "动作片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:38364032",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "48810",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "95686",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202603/29/69c8d090299dab6cc651de22/efgd67/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/a127c5a2ed0a7a7790327f59706b0b77"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260404/40966_a127c5a2/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://svip.feifei-play.com/share/a127c5a2ed0a7a7790327f59706b0b77"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://svip.feifei-play.com/20260404/40966_a127c5a2/index.m3u8"
+        }
+      ],
+      "douban_id": "38364032",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "38364032",
+        "title": "冥界司机",
+        "original_title": "Trucker",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2024-10-31(美国)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2024"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    },
+    {
+      "vod_id": "agg_W3sicyI6ImJhaWR1IiwiaWQiOiI0OTM2NyJ9LHsicyI6ImZmenlfZGlyZWN0IiwiaWQiOiI5NzI2OSJ9XQ",
+      "type_id": "11",
+      "type_id_1": 1,
+      "group_id": 0,
+      "vod_name": "庞尼因·塞尔文：第二部分",
+      "vod_sub": "",
+      "vod_en": "pangniyinsaierwendierbufen",
+      "vod_status": 1,
+      "vod_letter": "P",
+      "vod_color": "",
+      "vod_tag": "",
+      "vod_class": "剧情,动作,冒险",
+      "vod_pic": "https://tupian.ffeiimg.com/upload/vod/20260506-1/1cc0dd867e72796a97a73df67182b004.jpg",
+      "vod_pic_thumb": "",
+      "vod_pic_slide": "",
+      "vod_pic_screenshot": "",
+      "vod_actor": "维克拉姆,艾西瓦娅·雷,杰亚姆·拉维,特丽莎·克里希南,卡尔迪,艾西瓦娅·莱克希米,索比塔·杜里帕拉,贾亚拉姆,萨拉特·库马尔,帕提班·拉达克里希南,帕布,普拉卡什·拉贾,拉赫曼,基肖尔·库马尔·G·,拉尔,尼扎加尔·拉维,纳赛尔,维克拉姆·帕布,阿什温·卡库马努,莎拉·阿尔琼,巴拉吉·沙克蒂维尔,卡马尔·哈山,维杰·耶苏达斯,马卡兰德·德斯潘德",
+      "vod_director": "曼尼·拉特纳姆",
+      "vod_writer": "",
+      "vod_behind": "",
+      "vod_blurb": "&amp;nbsp;《庞尼因·塞尔文:第二部分》揭示了前作中朱罗王朝内忧外患的源头：阿迪亚王子和楠蒂妮之间一段凄美的爱情悲剧。朱罗王朝年轻的王子阿迪亚和孤儿楠蒂妮青梅竹马，彼此相爱，然而王室为了拆散他们，流放",
+      "vod_remarks": "HD中字",
+      "vod_pubdate": "2023-04-28",
+      "vod_total": "0",
+      "vod_serial": "",
+      "vod_tv": "",
+      "vod_weekday": "",
+      "vod_area": "印度",
+      "vod_lang": "马拉雅拉姆语 / 泰",
+      "vod_year": "2023",
+      "vod_version": "",
+      "vod_state": "正片",
+      "vod_author": "",
+      "vod_jumpurl": "",
+      "vod_tpl": "",
+      "vod_tpl_play": "",
+      "vod_tpl_down": "",
+      "vod_isend": 0,
+      "vod_lock": 0,
+      "vod_level": 0,
+      "vod_copyright": 0,
+      "vod_points": 0,
+      "vod_points_play": 0,
+      "vod_points_down": 0,
+      "vod_hits": 0,
+      "vod_hits_day": 0,
+      "vod_hits_week": 0,
+      "vod_hits_month": 0,
+      "vod_duration": "",
+      "vod_up": 0,
+      "vod_down": 0,
+      "vod_score": "0.0",
+      "vod_score_all": 0,
+      "vod_score_num": 0,
+      "vod_time": "2026-05-06 08:40:46",
+      "vod_time_add": "1778028046",
+      "vod_time_hits": 0,
+      "vod_time_make": 0,
+      "vod_trysee": 0,
+      "vod_douban_id": 36208165,
+      "vod_douban_score": "0.0",
+      "vod_reurl": "",
+      "vod_rel_vod": "",
+      "vod_rel_art": "",
+      "vod_pwd": "",
+      "vod_pwd_url": "",
+      "vod_pwd_play": "",
+      "vod_pwd_play_url": "",
+      "vod_pwd_down": "",
+      "vod_pwd_down_url": "",
+      "vod_content": "<p>&nbsp;《庞尼因·塞尔文:第二部分》揭示了前作中朱罗王朝内忧外患的源头：阿迪亚王子和楠蒂妮之间一段凄美的爱情悲剧。朱罗王朝年轻的王子阿迪亚和孤儿楠蒂妮青梅竹马，彼此相爱，然而王室为了拆散他们，流放了年轻的楠蒂妮。\r\n公元978年，楠蒂妮决意为战死的潘地亚国王向王子和他的父亲孙陀罗国王复仇。为了深入朱罗朝廷，她嫁给了朱罗王朝的财政大臣。财政大臣伙同其他朝臣密谋另立国王的兄弟马杜兰塔卡姆为新王，以取代王储阿迪亚王子。潘地亚人誓要灭绝朱罗王族，他们率先向小王子庞尼因·塞尔文下手，但王子在海上突遇风暴，下落不明。听闻王子被大海所吞噬，王叔马杜兰塔卡姆自称为王位继承人夺取政权，并获得了外邦的支持。密林中，潘地亚人谋划着他们对朱罗王朝最后的致命一击，而楠蒂妮决心亲手杀死阿迪亚王子……</p>",
+      "vod_play_from": "feifan$$$ffm3u8",
+      "vod_play_server": "no$$$no",
+      "vod_play_note": "$$$",
+      "vod_play_url": "HD中字$https://vip.ffzy-plays.com/share/b7425de83e28220a3f8054b0a0b5a0ab$$$HD中字$https://vip.ffzy-plays.com/20260506/53226_b7425de8/index.m3u8",
+      "vod_down_from": "no",
+      "vod_down_server": "no",
+      "vod_down_note": "",
+      "vod_down_url": "",
+      "vod_plot": 0,
+      "vod_plot_name": "",
+      "vod_plot_detail": "",
+      "type_name": "剧情片",
+      "source_category_id": "10",
+      "source_category_name": "剧情片",
+      "_sourceSlug": "baidu",
+      "_sourceShort": "百度",
+      "source_url": "https://api.apibdzy.com/api.php/provide/vod/",
+      "canonical_id": "ext:douban:36208165",
+      "primary_category": "theatrical_movie",
+      "movie_release_channel": "theatrical",
+      "classification_evidence": [
+        {
+          "source": "source_category_id",
+          "priority": 1,
+          "category": "theatrical_movie",
+          "field": "source_category_id",
+          "value": "10",
+          "signal": "theatrical_movie"
+        }
+      ],
+      "classification_confidence": 0.99,
+      "classification_confidence_level": "high",
+      "classification_confidence_score": 0.99,
+      "source_candidates": [
+        {
+          "source": "baidu",
+          "id": "49367",
+          "url": "https://api.apibdzy.com/api.php/provide/vod/",
+          "updated_at": ""
+        },
+        {
+          "source": "ffzy_direct",
+          "id": "97269",
+          "url": "http://ffzy.tv/api.php/provide/vod/",
+          "updated_at": ""
+        }
+      ],
+      "play_lines": [
+        {
+          "source": "baidu",
+          "name": "dbm3u8",
+          "url": "HD$https://b3.bdzybf22.com/videos/202605/05/69f8eb22a653aee81af610ad/151gb1/index.m3u8"
+        },
+        {
+          "source": "baidu",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/b7425de83e28220a3f8054b0a0b5a0ab"
+        },
+        {
+          "source": "baidu",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260506/53226_b7425de8/index.m3u8"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "feifan",
+          "url": "HD中字$https://vip.ffzy-plays.com/share/b7425de83e28220a3f8054b0a0b5a0ab"
+        },
+        {
+          "source": "ffzy_direct",
+          "name": "ffm3u8",
+          "url": "HD中字$https://vip.ffzy-plays.com/20260506/53226_b7425de8/index.m3u8"
+        }
+      ],
+      "douban_id": "36208165",
+      "explicit_tags": [
+        "院线电影"
+      ],
+      "release_channel": "theatrical",
+      "external_release_metadata": {
+        "id": "36208165",
+        "title": "庞尼因·塞尔文:第二部分",
+        "original_title": "Ponniyin Selvan: Part Two",
+        "subtype": "movie",
+        "is_tv": false,
+        "pubdate": [
+          "2023-04-28(印度)"
+        ],
+        "release_date": [],
+        "pre_release_desc": "",
+        "year": "2023"
+      },
+      "episode_count": "0",
+      "latest_episode": "",
+      "semantic_tags": "class 动作 类型",
+      "snapshot_filter_evidence": "catalog-derived"
+    }
+  ],
+  "content_revision": "snapshot-b693cb2ce1ea39323d02",
+  "snapshot_mode": "generated-filter-pack",
+  "snapshot_filter": {
+    "key": "class",
+    "value": "动作"
+  }
+}
