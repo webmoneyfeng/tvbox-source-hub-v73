@@ -134,6 +134,13 @@ const GENERIC_SERIES_RULES = [
 const THEATRICAL_CHANNEL_PATTERN = /\u9662\u7ebf|\u5f71\u9662|\btheatrical\b|\bcinema/iu;
 const WEB_MOVIE_CHANNEL_PATTERN = /\u7f51\u7edc(?:\u5927)?\u7535\u5f71|\u7f51\u5927|\bonline[\s-]*movie\b|\bweb[\s-]*movie\b|\bstreaming[\s-]*film\b/iu;
 
+const ADULT_POLICY_RE = /(\u4f26\u7406|\u4f26\u7406\u7247|\u7406\u8bba|\u798f\u5229|\u6210\u4eba|\u60c5\u8da3|\u5348\u591c|\u5199\u771f|\u4e09\u7ea7|\u91cc\u756a|\u756a\u53f7|\bAV\b)/iu;
+const ADULT_POLICY_FIELDS = [
+  '_macro', 'category', 'primary_category', 'type_id', 'type_name', 'vod_name', 'vod_sub',
+  'vod_remarks', 'vod_class', 'vod_state', 'vod_area', 'vod_lang', 'vod_actor', 'vod_director',
+  'vod_content', 'vod_play_from', 'semantic_tags', 'snapshot_filter_evidence',
+];
+
 const SOURCE_CLASS_RULES = [
   ['adult', /\u4f26\u7406|\u798f\u5229|\u6210\u4eba|\u5199\u771f|\u4e09\u7ea7|\u8272\u60c5|\bxxx\b/iu],
   ['explainer', /\u89e3\u8bf4|\u5f71\u8bc4|\u76d8\u70b9|\u8bb2\u89e3/iu],
@@ -161,6 +168,15 @@ const DIRECT_EXTERNAL_FIELDS = [
 
 function isRecord(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+export function isAdultPolicyContent(item) {
+  if (!isRecord(item)) return false;
+  if (String(item.primary_category || '').toLowerCase() === 'adult') return true;
+  if (String(item.category || '').toLowerCase() === 'adult') return true;
+  if (String(item._macro || '').toLowerCase() === 'adult') return true;
+  if (String(item.type_id || '') === '9') return true;
+  return ADULT_POLICY_RE.test(ADULT_POLICY_FIELDS.map((field) => item[field]).join(' '));
 }
 
 export function classifySourceCategoryName(value) {

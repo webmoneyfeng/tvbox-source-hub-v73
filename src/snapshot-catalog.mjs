@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import { normalizeContentItem } from './content-model.mjs';
+import { isAdultPolicyContent, normalizeContentItem } from './content-model.mjs';
 import { inspectSourceTimestamp, latestPlausibleSourceTimestamp } from './source-time.mjs';
 
 export const SNAPSHOT_CATEGORIES = Object.freeze([
@@ -529,7 +529,7 @@ export function buildSnapshotIndexes(input, options = {}) {
   }
   const rows = mergeSnapshotRows(input).rows;
   const revision = text(options.revision) || buildSnapshotRevision(rows);
-  const cleanRows = rows.filter((row) => row.primary_category !== 'adult');
+  const cleanRows = rows.filter((row) => !isAdultPolicyContent(row));
   return {
     revision,
     shardSize,

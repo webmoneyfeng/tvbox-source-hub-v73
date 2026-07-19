@@ -19,6 +19,7 @@ import {
 import { buildSourceCategoryMap, crawlSourceWindow, normalizeCmsPayload, normalizeSourceRows, sourceRowsFromPrevious } from '../src/snapshot-source-crawler.mjs';
 import { FULL_SNAPSHOT_SOURCES } from '../src/source-registry.mjs';
 import { enrichRowsWithDoubanMetadata, tagReleaseBackfillRow } from '../src/release-metadata.mjs';
+import { isAdultPolicyContent } from '../src/content-model.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.resolve(process.env.SNAPSHOT_OUTPUT_DIR || path.join(ROOT, 'dist'));
@@ -276,8 +277,9 @@ function endpoint(pathname) {
 function filterToken(value) {
   return Buffer.from(String(value || ''), 'utf8').toString('base64url');
 }
-function filterPackRel(t, key, value, pg) {
-  return `snapshot/latest/filter-packs/t${t}/${key}-${filterToken(value)}-p${pg}-limit${LIMIT}.json`;
+function filterPackRel(t, key, value, pg, policy = 'full') {
+  const prefix = policy === 'clean' ? 'filter-packs/clean' : 'filter-packs';
+  return `snapshot/latest/${prefix}/t${t}/${key}-${filterToken(value)}-p${pg}-limit${LIMIT}.json`;
 }
 function visibleFilterOptions(data, t) {
   const groups = data?.filters?.[String(t)] || data?.class?.find((c) => String(c.type_id) === String(t))?.filters || [];
@@ -826,14 +828,17 @@ async function fetchReleaseBackfillRows(admittedSources, sourceContexts = new Ma
   return { rows: mergeSnapshotRows(rows).rows, reports };
 }
 
-async function writeCategoryPackSet(views, category, baseData, contentRevision, visibleCategories = SNAPSHOT_CATEGORIES) {
-  const rows = views.canonical[category.key] || [];
+async function writeCategoryPackSet(views, category, baseData, contentRevision, visibleCategories = SNAPSHOT_CATEGORIES, policy = 'full') {
+  const sourceRows = views.canonical[category.key] || [];
+  const rows = policy === 'clean' ? sourceRows.filter((row) => !isAdultPolicyContent(row)) : sourceRows;
   const pageCount = Math.max(1, Math.ceil(rows.length / LIMIT));
+  const prefix = policy === 'clean' ? 'catalog-packs/clean' : 'catalog-packs';
   const packs = [];
   for (let pg = 1; pg <= pageCount; pg += 1) {
     const data = categoryResponse(baseData, category, rows, pg, visibleCategories);
     data.content_revision = contentRevision;
-    await writeJson(`snapshot/latest/catalog-packs/t${category.id}-p${pg}-limit${LIMIT}.json`, data);
+    if (policy === 'clean') data.policy = 'clean-no-adult';
+    await writeJson(`snapshot/latest/${prefix}/t${category.id}-p${pg}-limit${LIMIT}.json`, data);
     packs.push({ pg, data });
   }
   return packs;
@@ -1355,7 +1360,9 @@ async function main() {
   const indexRefs = await writeIndexShards(indexes);
   const sourceUpdatedAt = extractUpdatedAt(views.rows);
   const categoryRows = [];
+  const cleanCategorySummaries = {};
   const catalogPacksByCategory = new Map();
+  const cleanCatalogPacksByCategory = new Map();
   const filterJobs = [];
   const validation = {
     generatedAt,
@@ -1395,8 +1402,14 @@ async function main() {
     const packs = visible
       ? await writeCategoryPackSet(views, category, categoryBases.get(category.id), revision, visibleCategories)
       : [];
+    const cleanPacks = visible
+      ? await writeCategoryPackSet(views, category, categoryBases.get(category.id), revision, visibleCategories, 'clean')
+      : [];
     catalogPacksByCategory.set(category.id, packs);
+    cleanCatalogPacksByCategory.set(category.id, cleanPacks);
     const first = packs[0]?.data || categoryResponse({}, category, [], 1, visibleCategories);
+    const cleanRows = rows.filter((row) => !isAdultPolicyContent(row));
+    const cleanFirst = cleanPacks[0]?.data || categoryResponse({}, category, [], 1, visibleCategories);
     const filterGroups = first.filters?.[category.id]?.length
       || first.class?.find((entry) => String(entry.type_id) === category.id)?.filters?.length
       || 0;
@@ -1411,6 +1424,14 @@ async function main() {
       visible,
       root_cause: visible ? 'OK' : 'SOURCE_COVERAGE_GAP',
     });
+    cleanCategorySummaries[category.id] = {
+      total: cleanRows.length,
+      count: cleanFirst.list?.length || 0,
+      filterGroups: cleanFirst.filters?.[category.id]?.length
+        || cleanFirst.class?.find((entry) => String(entry.type_id) === category.id)?.filters?.length
+        || 0,
+      visible: cleanRows.length > 0,
+    };
     validation.categories.push({ id: category.id, key: category.key, name: category.name, count: rows.length, visible, ok: visible, root_cause: visible ? 'OK' : 'SOURCE_COVERAGE_GAP' });
     if (!visible) validation.errors.push(`required category ${category.id}/${category.name} empty`);
     for (const option of visible ? visibleFilterOptions(first, category.id) : []) {
@@ -1434,10 +1455,13 @@ async function main() {
   const searchBackfillCache = new Map();
   const dynamicFilterBackfillCache = new Map();
   const viableFilterOptions = new Set();
+  const cleanViableFilterOptions = new Set();
   let filterPackFileCount = 0;
   for (const job of filterJobs) {
     const packs = catalogPacksByCategory.get(job.t) || [];
+    const cleanPacks = cleanCatalogPacksByCategory.get(job.t) || [];
     const basePack = packs[0]?.data || { code: 1, msg: 'ok', class: categoryClassList(visibleCategories), filters: {}, list: [] };
+    const cleanBasePack = cleanPacks[0]?.data || basePack;
     const catalogRows = views.canonical[job.categoryKey] || [];
     let filterRows = await buildFilterRows(job, catalogRows, searchBackfillCache);
     if (!filterRows.length) filterRows = await backfillRowsByDynamicFilter(job, dynamicFilterBackfillCache);
@@ -1468,6 +1492,19 @@ async function main() {
         ok: (data.list?.length || 0) > 0,
       });
     }
+    const cleanFilterRows = mergeSnapshotRows(filterRows.filter((row) => !isAdultPolicyContent(row))).rows;
+    if (cleanFilterRows.length) {
+      cleanViableFilterOptions.add(`${job.t}\u0000${job.key}\u0000${job.value}`);
+      const cleanAvailablePages = Math.max(1, Math.ceil(cleanFilterRows.length / LIMIT));
+      const cleanPageCount = FILTER_PACK_PAGE_COUNT > 0 ? Math.min(FILTER_PACK_PAGE_COUNT, cleanAvailablePages) : cleanAvailablePages;
+      for (let pg = 1; pg <= cleanPageCount; pg += 1) {
+        const data = filterPackFromRows(cleanBasePack, cleanFilterRows, job, pg);
+        data.content_revision = revision;
+        data.policy = 'clean-no-adult';
+        await writeJson(filterPackRel(job.t, job.key, job.value, pg, 'clean'), data);
+        filterPackFileCount += 1;
+      }
+    }
   }
 
   for (const category of SNAPSHOT_CATEGORIES) {
@@ -1478,9 +1515,20 @@ async function main() {
       pack.data = pruned;
       await writeJson(`snapshot/latest/catalog-packs/t${category.id}-p${pack.pg}-limit${LIMIT}.json`, pruned);
     }
+    const cleanPacks = cleanCatalogPacksByCategory.get(category.id) || [];
+    for (const pack of cleanPacks) {
+      const pruned = pruneFiltersForCategory(pack.data, category.id, cleanViableFilterOptions);
+      pruned.content_revision = revision;
+      pruned.policy = 'clean-no-adult';
+      pack.data = pruned;
+      await writeJson(`snapshot/latest/catalog-packs/clean/t${category.id}-p${pack.pg}-limit${LIMIT}.json`, pruned);
+    }
     const row = categoryRows.find((entry) => entry.type_id === category.id);
     const first = packs[0]?.data;
     if (row && first) row.filterGroups = first.filters?.[category.id]?.length || 0;
+    const cleanSummary = cleanCategorySummaries[category.id];
+    const cleanFirst = cleanPacks[0]?.data;
+    if (cleanSummary && cleanFirst) cleanSummary.filterGroups = cleanFirst.filters?.[category.id]?.length || 0;
   }
 
   for (const wd of SEARCH_TERMS) {
@@ -1509,7 +1557,7 @@ async function main() {
       snapshot_mode: 'catalog-search-index',
     };
     await writeJson(`snapshot/latest/search-packs/${encodeURIComponent(wd)}-p1-limit${LIMIT}.json`, pack);
-    const cleanRows = rows.filter((row) => row.primary_category !== 'adult');
+    const cleanRows = rows.filter((row) => !isAdultPolicyContent(row));
     await writeJson(`snapshot/latest/search-packs/clean/${encodeURIComponent(wd)}-p1-limit${LIMIT}.json`, {
       ...pack,
       total: cleanRows.length,
@@ -1578,7 +1626,7 @@ async function main() {
     sourceQuorum,
     variants: {
       full: { revision, total: indexes.full.total },
-      clean: { revision, total: indexes.clean.total },
+      clean: { revision, total: indexes.clean.total, categories: cleanCategorySummaries },
     },
     packLimit: LIMIT,
     crawlLimit: CRAWL_LIMIT,

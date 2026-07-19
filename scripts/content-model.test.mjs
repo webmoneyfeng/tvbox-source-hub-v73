@@ -7,6 +7,7 @@ import {
   buildCanonicalId,
   classifyContent,
   classifySourceCategoryName,
+  isAdultPolicyContent,
   normalizeContentItem,
 } from '../src/content-model.mjs';
 
@@ -35,6 +36,27 @@ test('content without stronger evidence falls back to a content owner, never rec
 
   assert.equal(result.primary_category, 'other_movie');
   assert.equal(result.classification_evidence[0].source, 'fallback');
+});
+
+test('clean policy detects adult evidence even when source category ownership is non-adult', () => {
+  assert.equal(isAdultPolicyContent({
+    primary_category: 'web_series',
+    type_id: '21',
+    type_name: '\u7f51\u7edc\u5267',
+    vod_name: '\u5348\u591c\u6210\u4eba\u5267\u573a',
+  }), true);
+  assert.equal(isAdultPolicyContent({
+    primary_category: 'web_series',
+    type_id: '21',
+    type_name: '\u7f51\u7edc\u5267',
+    vod_name: '\u666e\u901a\u7f51\u7edc\u5267',
+  }), false);
+});
+
+test('clean policy does not treat AV as an arbitrary substring in normal titles', () => {
+  assert.equal(isAdultPolicyContent({ vod_name: 'Travel 2026' }), false);
+  assert.equal(isAdultPolicyContent({ vod_name: 'Marvel Studios' }), false);
+  assert.equal(isAdultPolicyContent({ vod_name: 'AV' }), true);
 });
 
 test('source class names map retained video domains without inventing release channels', () => {

@@ -148,7 +148,7 @@ test('catalog views keep primary categories mutually exclusive and derive recomm
 test('snapshot indexes use 500-1000 row shards and full/clean share one revision', () => {
   const rows = Array.from({ length: 1_501 }, (_, index) => movie({
     vod_id: `m-${index}`,
-    vod_name: `院线电影${index}`,
+    vod_name: index === 1_499 ? '\u5348\u591c\u6210\u4eba\u5267\u573a' : `院线电影${index}`,
     vod_year: String(2000 + (index % 27)),
     vod_actor: `演员${index}`,
     type_id: index === 1_500 ? '9' : '10',
@@ -162,8 +162,9 @@ test('snapshot indexes use 500-1000 row shards and full/clean share one revision
   assert.deepEqual(indexes.full.catalogShards.map((x) => x.rows.length), [750, 750, 1]);
   assert.deepEqual(indexes.full.searchShards.map((x) => x.documents.length), [750, 750, 1]);
   assert.equal(indexes.full.total, 1_501);
-  assert.equal(indexes.clean.total, 1_500);
+  assert.equal(indexes.clean.total, 1_499);
   assert.equal(indexes.clean.catalogShards.flatMap((x) => x.rows).some((x) => x.primary_category === 'adult'), false);
+  assert.equal(indexes.clean.catalogShards.flatMap((x) => x.rows).some((x) => x.vod_id === 'm-1499'), false);
   assert.throws(() => buildSnapshotIndexes(normalized, { revision, shardSize: 499 }), /500.*1000/);
   assert.throws(() => buildSnapshotIndexes(normalized, { revision, shardSize: 1001 }), /500.*1000/);
 });
@@ -384,6 +385,7 @@ test('generator publishes an atomic 13-class snapshot with legacy packs and one 
     assert.equal(manifest.variants.full.revision, manifest.variants.clean.revision);
     assert.equal(manifest.variants.full.total, 12);
     assert.equal(manifest.variants.clean.total, 11);
+    assert.equal(manifest.variants.clean.categories['20'].total, 1);
     assert.equal(manifest.shardSize, 500);
     assert.equal(manifest.indexes.full.catalogShards[0].count, 12);
     assert.equal(manifest.indexes.clean.catalogShards[0].count, 11);
@@ -396,6 +398,7 @@ test('generator publishes an atomic 13-class snapshot with legacy packs and one 
     await readFile(path.join(latest, 'catalog-packs', 't1-p1-limit24.json'), 'utf8');
     await readFile(path.join(latest, 'catalog-packs', 't2-p1-limit24.json'), 'utf8');
     await readFile(path.join(latest, 'catalog-packs', 't6-p1-limit24.json'), 'utf8');
+    await readFile(path.join(latest, 'catalog-packs', 'clean', 't20-p1-limit24.json'), 'utf8');
     assert.match(config.sites[0].name, /^影视点播 · \d{12}$/u);
     assert.match(cleanConfig.sites[0].name, /^影视点播洁净 · \d{12}$/u);
     assert.equal(requests.some((entry) => new URL(entry, 'http://127.0.0.1').searchParams.get('wd') === '天道'), true);

@@ -1,5 +1,5 @@
 import { buildHotPackage, filterHotRows, mergeHotRows, rowsIdentityCompatible, canonicalKey as hotCanonicalKey, shouldPublishHotPackage } from './hot-catalog.mjs';
-import { normalizeContentItem } from './content-model.mjs';
+import { isAdultPolicyContent, normalizeContentItem } from './content-model.mjs';
 import { HOT_REFRESH_SOURCES } from './source-registry.mjs';
 import { latestPlausibleSourceTimestamp } from './source-time.mjs';
 
@@ -792,12 +792,7 @@ function sanitizeFilterGroupsForPolicy(groups, policy = {}) {
   }).filter((group) => group.key === 'sort' || (group.value || []).some((opt) => String(opt?.v ?? '').trim()));
 }
 function isAdultAggRecord(item) {
-  if (!item) return false;
-  if (String(item._macro || '').toLowerCase() === ADULT_CATEGORY_KEY) return true;
-  if (String(item.primary_category || '').toLowerCase() === ADULT_CATEGORY_KEY) return true;
-  if (String(item.category || '').toLowerCase() === ADULT_CATEGORY_KEY) return true;
-  if (String(item.type_id || '') === ADULT_CATEGORY_ID) return true;
-  return ADULT_TEXT_RE.test([item.type_name, item.vod_name, item.vod_sub, item.vod_remarks, item.vod_class, item.vod_state, item.vod_area, item.vod_lang, item.vod_actor, item.vod_director, item.vod_content, item.vod_play_from, item.semantic_tags, item.snapshot_filter_evidence].join(' '));
+  return isAdultPolicyContent(item);
 }
 export function sanitizeAggResponseForPolicy(payload, policy = {}) {
   const includeAdult = policy.includeAdult !== false;
@@ -1493,14 +1488,17 @@ function isSnapshotBypass(params) {
 function snapshotFilterToken(value) {
   return b64urlEncode(String(value || ''));
 }
-function snapshotBasePath(category, packPage = 1) {
-  return 'catalog-packs/t' + category.id + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
+function snapshotBasePath(category, packPage = 1, clean = false) {
+  const prefix = clean ? 'catalog-packs/clean/' : 'catalog-packs/';
+  return prefix + 't' + category.id + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
 }
-function snapshotSearchPath(wd, packPage = 1) {
-  return 'search-packs/' + encodeURIComponent(String(wd || '')) + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
+function snapshotSearchPath(wd, packPage = 1, clean = false) {
+  const prefix = clean ? 'search-packs/clean/' : 'search-packs/';
+  return prefix + encodeURIComponent(String(wd || '')) + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
 }
-function snapshotFilterPath(category, key, value, packPage = 1) {
-  return 'filter-packs/t' + category.id + '/' + key + '-' + snapshotFilterToken(value) + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
+function snapshotFilterPath(category, key, value, packPage = 1, clean = false) {
+  const prefix = clean ? 'filter-packs/clean/' : 'filter-packs/';
+  return prefix + 't' + category.id + '/' + key + '-' + snapshotFilterToken(value) + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
 }
 function snapshotFilterEntries(filters) {
   const keys = ['year', 'area', 'class', 'form', 'quality', 'state', 'episodes', 'duration', 'topic'];
@@ -1721,8 +1719,10 @@ function hotRowCategoryMatches(row, category) {
   if (actual === 'web_short') return wanted.includes('short');
   return false;
 }
-function hotRowsForRequest(packageData, category, wd, filters) {
-  const rows = Array.isArray(packageData?.rows) ? packageData.rows.filter((row) => hotRowCategoryMatches(row, category)) : [];
+function hotRowsForRequest(packageData, category, wd, filters, policy = {}) {
+  const rows = Array.isArray(packageData?.rows)
+    ? packageData.rows.filter((row) => hotRowCategoryMatches(row, category) && (policy.includeAdult !== false || !isAdultAggRecord(row)))
+    : [];
   const variants = wd ? searchVariantsFor(wd) : [];
   let filtered = variants.length ? variants.flatMap((query) => filterHotRows(rows, { query })) : rows;
   const seen = new Set();
@@ -1735,10 +1735,10 @@ function hotRowsForRequest(packageData, category, wd, filters) {
   for (const [key, value] of snapshotFilterEntries(filters)) filtered = filtered.filter((row) => snapshotListItemMatches(row, key, value));
   return filtered;
 }
-async function hotKvOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload) {
+async function hotKvOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload, policy = {}) {
   const packageData = await readHotCatalogPackage(env);
   if (!packageData?.rows?.length) return null;
-  const rows = hotRowsForRequest(packageData, category, wd, filters);
+  const rows = hotRowsForRequest(packageData, category, wd, filters, policy);
   if (!rows.length) return null;
   const base = snapshotPayload || { code: 1, msg: 'ok', page: 1, pagecount: 1, limit: SNAPSHOT_PACK_LIMIT, class: aggClasses(category.key, rows, {}) };
   const baseList = Array.isArray(base.list) ? base.list : [];
@@ -1874,8 +1874,8 @@ function mergeHotAndSnapshotLists(hotList, snapshotList, filters, searchContext 
   else list.sort((a, b) => Number(isHot(b)) - Number(isHot(a)) || compareDisplayName(a.vod_name, b.vod_name));
   return { list, duplicateRemoved: combined.length - list.length, hotRowsUsed: hot.length };
 }
-async function hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload) {
-  const kvOverlay = await hotKvOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload);
+async function hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload, policy = {}) {
+  const kvOverlay = await hotKvOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload, policy);
   if (kvOverlay) return kvOverlay;
   const manifest = await fetchHotJson(env, 'manifest.json');
   if (!manifest?.__hotFresh) return snapshotPayload;
@@ -1889,6 +1889,7 @@ async function hotOverlayForSnapshot(env, category, page, limit, wd, filters, sn
       if (!pack || !Array.isArray(pack.list) || !pack.list.length) continue;
       termsHit.push(term);
       for (const item of pack.list) {
+        if (policy.includeAdult === false && isAdultAggRecord(item)) continue;
         const key = String(item.vod_id || item.vod_name || '').trim();
         if (!key || seen.has(key)) continue;
         seen.add(key);
@@ -1899,7 +1900,10 @@ async function hotOverlayForSnapshot(env, category, page, limit, wd, filters, sn
     if (rows.length) hotPayload = { ...(snapshotPayload || {}), list: rows, total: rows.length };
   } else if (HOT_OVERLAY_CATEGORY_KEYS.has(category.key) && !snapshotFilterEntries(filters).length && !hasExplicitSnapshotSort(filters)) {
     const pack = await fetchHotJson(env, hotCatalogPath(category));
-    if (pack && Array.isArray(pack.list) && pack.list.length) hotPayload = pack;
+    if (pack && Array.isArray(pack.list) && pack.list.length) {
+      const list = policy.includeAdult === false ? pack.list.filter((item) => !isAdultAggRecord(item)) : pack.list;
+      if (list.length) hotPayload = { ...pack, list };
+    }
   }
   if (!hotPayload?.list?.length) return snapshotPayload;
   const baseList = Array.isArray(snapshotPayload?.list) ? snapshotPayload.list : [];
@@ -1971,15 +1975,16 @@ async function fetchSnapshotPacks(env, pathForPage, page, limit) {
   }
   return packs;
 }
-async function snapshotAggResponse(request, env, category, page, limit, wd, params, filters) {
+async function snapshotAggResponse(request, env, category, page, limit, wd, params, filters, policy = {}) {
   if (isSnapshotBypass(params)) return null;
+  const clean = policy.includeAdult === false;
   if (wd) {
     const variants = searchVariantsFor(wd);
     const rows = [];
     const seen = new Set();
     let firstPack = null;
     for (const term of variants) {
-      const pack = await fetchSnapshotJson(env, snapshotSearchPath(term, 1));
+      const pack = await fetchSnapshotJson(env, snapshotSearchPath(term, 1, clean));
       if (!pack || !Array.isArray(pack.list) || !pack.list.length) continue;
       if (!firstPack) firstPack = pack;
       for (const item of pack.list) {
@@ -1993,7 +1998,7 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
       const context = buildSearchContext(wd);
       const sorted = dedupeSnapshotList(rows).sort((a, b) => searchScoreItem(b, context) - searchScoreItem(a, context) || compareDisplayName(a.vod_name, b.vod_name));
       const snapshotPayload = snapshotApplyListPaging(firstPack || { code: 1, msg: 'ok', page: 1, limit: SNAPSHOT_PACK_LIMIT }, sorted, page, limit, 'search-pack', { snapshot_search: { terms: variants } });
-      return hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload);
+      return hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload, policy);
     }
     return null;
   }
@@ -2001,26 +2006,26 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
   const entries = snapshotFilterEntries(filters);
   if (entries.length === 1) {
     const [key, value] = entries[0];
-    const packs = await fetchSnapshotPacks(env, (packPage) => snapshotFilterPath(category, key, value, packPage), page, limit);
+    const packs = await fetchSnapshotPacks(env, (packPage) => snapshotFilterPath(category, key, value, packPage, clean), page, limit);
     if (packs && packs[0]?.list?.length) {
       if (hasExplicitSnapshotSort(filters)) {
         const sorted = sortSnapshotList(packs.flatMap((p) => Array.isArray(p.list) ? p.list : []), filters);
         const filteredPayload = snapshotApplyListPaging(packs[0], sorted, page, limit, 'filter-pack-sort', { snapshot_filter: { key, value } });
-        return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload);
+        return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload, policy);
       }
       const filteredPayload = snapshotApplyPaging(packs[0], packs, page, limit, 'filter-pack', { snapshot_filter: { key, value } });
-      return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload);
+      return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload, policy);
     }
   }
 
-  const basePacks = await fetchSnapshotPacks(env, (packPage) => snapshotBasePath(category, packPage), page, limit);
+  const basePacks = await fetchSnapshotPacks(env, (packPage) => snapshotBasePath(category, packPage, clean), page, limit);
   if (!basePacks || !basePacks[0]?.list?.length) return null;
 
   if (!entries.length) {
     if (hasExplicitSnapshotSort(filters)) {
       const sortPacks = [];
       for (const packPage of [1, 2]) {
-        const got = await fetchSnapshotJson(env, snapshotBasePath(category, packPage));
+        const got = await fetchSnapshotJson(env, snapshotBasePath(category, packPage, clean));
         if (got && Array.isArray(got.list)) sortPacks.push(got);
       }
       if (sortPacks.length) {
@@ -2029,12 +2034,12 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
       }
     }
     const snapshotPayload = snapshotApplyPaging(basePacks[0], basePacks, page, limit, 'catalog-pack');
-    return hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload);
+    return hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload, policy);
   }
 
   const localFilterPacks = [];
   for (const packPage of [1, 2]) {
-    const got = await fetchSnapshotJson(env, snapshotBasePath(category, packPage));
+    const got = await fetchSnapshotJson(env, snapshotBasePath(category, packPage, clean));
     if (got && Array.isArray(got.list)) localFilterPacks.push(got);
   }
   if (!localFilterPacks.length) return null;
@@ -2044,7 +2049,7 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
   if (!filtered.length) return null;
   const first = { ...basePacks[0], total: filtered.length, list: filtered };
   const filteredPayload = snapshotApplyListPaging(first, filtered, page, limit, 'catalog-local-filter', { snapshot_filter: Object.fromEntries(entries), root_cause: 'SNAPSHOT_MISS' });
-  return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload);
+  return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload, policy);
 }
 function v73Mirrors(origin) {
   return [
@@ -2229,14 +2234,15 @@ async function agg(request, env, policy = {}, ctx) {
   const limit = Math.min(LIMIT_MAX, parseInt(params.get('limit') || String(LIMIT_DEFAULT), 10) || LIMIT_DEFAULT);
   const wd = (params.get('wd') || params.get('search') || params.get('q') || '').trim();
   scheduleInteractionHotProbe(request, env, ctx, updateInfo, wd ? 'agg-search' : 'agg-list');
-  const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params, filters);
+  const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params, filters, policy);
   if (snapshotHit) {
+    const cleanCategoryTotal = Number(manifest?.variants?.clean?.categories?.[String(category.id)]?.total);
     const cleanTotal = policy.includeAdult === false
-      ? category.key === ADULT_CATEGORY_KEY
-        ? 0
+      ? Number.isFinite(cleanCategoryTotal)
+        ? cleanCategoryTotal
         : category.key === 'recommend' && !wd && snapshotFilterEntries(filters).length === 0
           ? Number(manifest?.variants?.clean?.total)
-          : undefined
+          : category.key === ADULT_CATEGORY_KEY ? 0 : undefined
       : undefined;
     const responsePolicy = Number.isFinite(cleanTotal) ? { ...policy, cleanTotal } : policy;
     const payload = stampAggDiagnostics(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy(snapshotHit, responsePolicy), updateInfo), {
