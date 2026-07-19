@@ -802,7 +802,8 @@ function isAdultAggRecord(item) {
 export function sanitizeAggResponseForPolicy(payload, policy = {}) {
   const includeAdult = policy.includeAdult !== false;
   if (includeAdult) return { ...payload, content_policy: 'full' };
-  const list = (Array.isArray(payload?.list) ? payload.list : []).filter((item) => !isAdultAggRecord(item));
+  const inputList = Array.isArray(payload?.list) ? payload.list : [];
+  const list = inputList.filter((item) => !isAdultAggRecord(item));
   const classes = (Array.isArray(payload?.class) ? payload.class : [])
     .filter((c) => !isAdultClassRecord(c))
     .map((c) => ({ ...c, filters: sanitizeFilterGroupsForPolicy(c.filters || [], policy) }));
@@ -812,7 +813,14 @@ export function sanitizeAggResponseForPolicy(payload, policy = {}) {
     filters[key] = sanitizeFilterGroupsForPolicy(groups, policy);
   }
   const limit = Number(payload?.limit || list.length || LIMIT_DEFAULT) || LIMIT_DEFAULT;
-  const total = list.length;
+  const removedCount = inputList.length - list.length;
+  const payloadTotal = Number(payload?.total);
+  const cleanTotal = Number(policy?.cleanTotal);
+  const total = Number.isFinite(cleanTotal) && cleanTotal >= list.length
+    ? cleanTotal
+    : Number.isFinite(payloadTotal) && payloadTotal >= inputList.length
+      ? Math.max(list.length, payloadTotal - removedCount)
+      : list.length;
   return {
     ...payload,
     class: classes,
@@ -2222,7 +2230,15 @@ async function agg(request, env, policy = {}, ctx) {
   scheduleInteractionHotProbe(request, env, ctx, updateInfo, wd ? 'agg-search' : 'agg-list');
   const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params, filters);
   if (snapshotHit) {
-    const payload = stampAggDiagnostics(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy(snapshotHit, policy), updateInfo), {
+    const cleanTotal = policy.includeAdult === false
+      ? category.key === ADULT_CATEGORY_KEY
+        ? 0
+        : category.key === 'recommend' && !wd && snapshotFilterEntries(filters).length === 0
+          ? Number(manifest?.variants?.clean?.total)
+          : undefined
+      : undefined;
+    const responsePolicy = Number.isFinite(cleanTotal) ? { ...policy, cleanTotal } : policy;
+    const payload = stampAggDiagnostics(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy(snapshotHit, responsePolicy), updateInfo), {
       manifest,
       category,
       updateInfo,

@@ -84,9 +84,11 @@ for (const path of [`/agg-clean?limit=${LIMIT}`, `/agg-clean?ac=videolist&t=10&p
   assert(!payloadHasAdultExposure(got.data), `${path} exposes adult content`, failures);
 }
 
+const fullCategoryTotals = new Map();
 for (const t of FULL_CATEGORY_IDS) {
   const got = await fetchJson(`/agg?ac=videolist&t=${t}&pg=1&limit=${LIMIT}`);
   const filters = got.data?.filters?.[t] || got.data?.filters?.[String(t)] || [];
+  fullCategoryTotals.set(String(t), Number(got.data?.total || 0));
   report.categories.push({ t, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, filterGroups: filters.length, hot_overlay_applied: got.data?.hot_overlay_applied || false, hot_rows_used: got.data?.hot_rows_used || 0, hot_duplicate_removed: got.data?.hot_duplicate_removed || 0 });
   assert(got.status === 200, `category ${t} status ${got.status}`, failures);
   assert((got.data?.list?.length || 0) > 0, `category ${t} empty`, failures);
@@ -96,11 +98,15 @@ for (const t of FULL_CATEGORY_IDS) {
 for (const t of CLEAN_CATEGORY_IDS) {
   const got = await fetchJson(`/agg-clean?ac=videolist&t=${t}&pg=1&limit=${LIMIT}`);
   const filters = got.data?.filters?.[t] || got.data?.filters?.[String(t)] || [];
-  report.categories.push({ t: `clean-${t}`, status: got.status, count: got.data?.list?.length || 0, total: got.data?.total || 0, filterGroups: filters.length, content_policy: got.data?.content_policy, hot_overlay_applied: got.data?.hot_overlay_applied || false, hot_rows_used: got.data?.hot_rows_used || 0, hot_duplicate_removed: got.data?.hot_duplicate_removed || 0 });
+  const fullTotal = fullCategoryTotals.get(String(t)) || 0;
+  const expectedTotal = String(t) === '0' ? Math.max(0, fullTotal - (fullCategoryTotals.get('9') || 0)) : fullTotal;
+  const cleanTotal = Number(got.data?.total || 0);
+  report.categories.push({ t: `clean-${t}`, status: got.status, count: got.data?.list?.length || 0, total: cleanTotal, expectedTotal, filterGroups: filters.length, content_policy: got.data?.content_policy, hot_overlay_applied: got.data?.hot_overlay_applied || false, hot_rows_used: got.data?.hot_rows_used || 0, hot_duplicate_removed: got.data?.hot_duplicate_removed || 0 });
   assert(got.status === 200, `clean category ${t} status ${got.status}`, failures);
   assert((got.data?.list?.length || 0) > 0, `clean category ${t} empty`, failures);
   assert(filters.length >= 2, `clean category ${t} filters < 2`, failures);
   assert(!payloadHasAdultExposure(got.data), `clean category ${t} exposes adult content`, failures);
+  assert(cleanTotal === expectedTotal, `clean category ${t} total ${cleanTotal} != expected ${expectedTotal}`, failures);
 }
 
 const fullRevisionProbe = await fetchJson('/agg?limit=1');

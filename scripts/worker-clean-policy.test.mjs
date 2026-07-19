@@ -143,3 +143,50 @@ test('clean aggregate policy removes adult category, filters and rows while full
   assert.equal(full.list.length, 2);
   assert.equal(full.content_policy, 'full');
 });
+
+test('clean aggregate preserves the full pagination total when the current page has no adult rows', () => {
+  const payload = {
+    code: 1,
+    msg: 'ok',
+    page: 1,
+    pagecount: 82,
+    limit: 8,
+    total: 649,
+    class: [{ type_id: '10', type_name: '\u9662\u7ebf\u7535\u5f71', filters: [] }],
+    filters: {},
+    list: [
+      { vod_id: 'movie-1', type_id: '10', type_name: '\u9662\u7ebf\u7535\u5f71', vod_name: '\u7535\u5f71\u4e00' },
+      { vod_id: 'movie-2', type_id: '10', type_name: '\u9662\u7ebf\u7535\u5f71', vod_name: '\u7535\u5f71\u4e8c' },
+    ],
+  };
+
+  const clean = sanitizeAggResponseForPolicy(payload, { includeAdult: false });
+
+  assert.equal(clean.list.length, 2);
+  assert.equal(clean.total, 649);
+  assert.equal(clean.pagecount, 82);
+});
+
+test('clean aggregate uses the clean snapshot total when it is explicitly available', () => {
+  const payload = {
+    code: 1,
+    msg: 'ok',
+    page: 1,
+    pagecount: 1494,
+    limit: 8,
+    total: 11946,
+    class: [{ type_id: '0', type_name: '\u63a8\u8350', filters: [] }],
+    filters: {},
+    list: Array.from({ length: 8 }, (_, index) => ({
+      vod_id: `movie-${index + 1}`,
+      type_id: '10',
+      type_name: '\u9662\u7ebf\u7535\u5f71',
+      vod_name: `\u7535\u5f71${index + 1}`,
+    })),
+  };
+
+  const clean = sanitizeAggResponseForPolicy(payload, { includeAdult: false, cleanTotal: 11855 });
+
+  assert.equal(clean.total, 11855);
+  assert.equal(clean.pagecount, 1482);
+});
