@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-09T23:37:25.051Z",
+  "generatedAt": "2026-07-19T07:11:22.441Z",
   "candidateCount": 29,
-  "active": 17,
-  "watch": 8,
-  "rejected": 2,
-  "blocked": 2,
+  "active": 11,
+  "watch": 13,
+  "rejected": 1,
+  "blocked": 4,
   "activeSlugs": [
     "baidu",
     "bfzy",
@@ -15,14 +15,8 @@
     "guangsu",
     "modu",
     "xinlang",
-    "seed_3",
-    "seed_4",
-    "seed_6",
-    "seed_9",
-    "seed_12",
-    "seed_16",
-    "seed_17",
-    "ik"
+    "lzi_direct",
+    "ffzy_direct"
   ],
   "rows": [
     {
@@ -33,7 +27,7 @@
       "api": "https://suoniapi.com/api.php/provide/vod/",
       "tier": "main",
       "origin": "current",
-      "status": "WATCH",
+      "status": "BLOCKED",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
@@ -54,7 +48,21 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON"
+      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON",
+      "physicalSourceKey": "suoniapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "REGISTERED_BLOCKED",
+        "observedStatus": "WATCH",
+        "registeredStatus": "BLOCKED",
+        "physicalSourceKey": "suoniapi.com"
+      }
     },
     {
       "slug": "lzi",
@@ -85,7 +93,21 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<html>\r\n<h\"... is not valid JSON"
+      "error": "Unexpected token '<', \"<html>\r\n<h\"... is not valid JSON",
+      "physicalSourceKey": "lzizy1.com",
+      "rollingHealth": {
+        "status": "BLOCKED",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "REGISTERED_BLOCKED",
+        "observedStatus": "BLOCKED",
+        "registeredStatus": "BLOCKED",
+        "physicalSourceKey": "lzizy1.com"
+      }
     },
     {
       "slug": "baidu",
@@ -118,7 +140,21 @@
         "detailUrl": "https://api.apibdzy.com/api.php/provide/vod/?ac=videolist&ids=19941",
         "playableUrl": "https://b2.bdzybf22.com/videos/202504/25/68015b1b33c14013d3eaed3b/cca18d/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "api.apibdzy.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "api.apibdzy.com"
+      }
     },
     {
       "slug": "sdzy",
@@ -149,7 +185,21 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON"
+      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON",
+      "physicalSourceKey": "sdzyapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "REGISTERED_WATCH",
+        "observedStatus": "WATCH",
+        "registeredStatus": "WATCH",
+        "physicalSourceKey": "sdzyapi.com"
+      }
     },
     {
       "slug": "bfzy",
@@ -189,7 +239,21 @@
         "detailUrl": "https://bfzyapi.com/api.php/provide/vod/?ac=videolist&ids=33549",
         "playableUrl": "https://c1.rrcdnbf2.com/video/tiandao/第01集/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "bfzyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "bfzyapi.com"
+      }
     },
     {
       "slug": "taopian",
@@ -227,7 +291,21 @@
         "detailUrl": "https://taopianapi.com/cjapi/mc/vod/json.html?ac=videolist&ids=1537009",
         "playableUrl": "https://sd8.taopianplay1.com:43333/c56b1bc09da3/HD/2026-01-07/30/9288b25cadc2/5473ba2f403f/playlist.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "taopianapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "taopianapi.com"
+      }
     },
     {
       "slug": "huya",
@@ -267,7 +345,21 @@
         "detailUrl": "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/?ac=videolist&ids=111867",
         "playableUrl": "https://1080p.huyall.com/play/dBBr5LYd/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "huyaapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "huyaapi.com"
+      }
     },
     {
       "slug": "hhzy",
@@ -307,7 +399,21 @@
         "detailUrl": "https://hhzyapi.com/api.php/provide/vod/?ac=videolist&ids=136528",
         "playableUrl": "https://play.hhuus.com/play/bDkq59Ka/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "hhzyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "hhzyapi.com"
+      }
     },
     {
       "slug": "hongniu",
@@ -347,7 +453,21 @@
         "detailUrl": "https://www.hongniuzy2.com/api.php/provide/vod/?ac=videolist&ids=150065",
         "playableUrl": "https://hn.bfvvs.com/play/dyPwErnb/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "hongniuzy2.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "hongniuzy2.com"
+      }
     },
     {
       "slug": "guangsu",
@@ -387,7 +507,21 @@
         "detailUrl": "https://api.guangsuapi.com/api.php/provide/vod/?ac=videolist&ids=168771",
         "playableUrl": "https://v.gsuus.com/play/azp6GKyd/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "api.guangsuapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "api.guangsuapi.com"
+      }
     },
     {
       "slug": "ffzy",
@@ -418,7 +552,21 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "physicalSourceKey": "api.ffzyapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "REGISTERED_WATCH",
+        "observedStatus": "WATCH",
+        "registeredStatus": "WATCH",
+        "physicalSourceKey": "api.ffzyapi.com"
+      }
     },
     {
       "slug": "wujin",
@@ -449,7 +597,21 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "api.wujinapi.me",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "REGISTERED_WATCH",
+        "observedStatus": "WATCH",
+        "registeredStatus": "WATCH",
+        "physicalSourceKey": "api.wujinapi.me"
+      }
     },
     {
       "slug": "modu",
@@ -489,7 +651,21 @@
         "detailUrl": "https://caiji.moduapi.cc/api.php/provide/vod/?ac=videolist&ids=85288",
         "playableUrl": "https://play.modujx11.com/20260628/G3wCzJat/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "caiji.moduapi.cc",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "caiji.moduapi.cc"
+      }
     },
     {
       "slug": "yhzy",
@@ -520,7 +696,21 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<html>\r\n<h\"... is not valid JSON"
+      "error": "Unexpected token '<', \"<html>\r\n<h\"... is not valid JSON",
+      "physicalSourceKey": "m3u8.apiyhzy.com",
+      "rollingHealth": {
+        "status": "BLOCKED",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "REGISTERED_BLOCKED",
+        "observedStatus": "BLOCKED",
+        "registeredStatus": "BLOCKED",
+        "physicalSourceKey": "m3u8.apiyhzy.com"
+      }
     },
     {
       "slug": "xinlang",
@@ -560,7 +750,21 @@
         "detailUrl": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/?ac=videolist&ids=166386",
         "playableUrl": "https://play.xluuss.com/play/aAD65Ple/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "api.xinlangapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "api.xinlangapi.com"
+      }
     },
     {
       "slug": "dytt",
@@ -591,7 +795,152 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "physicalSourceKey": "caiji.dyttzyapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "WATCH",
+        "physicalSourceKey": "caiji.dyttzyapi.com"
+      }
+    },
+    {
+      "slug": "lzi_direct",
+      "key": "cms_lzi_direct",
+      "short": "量子直连",
+      "name": "量子直连资源",
+      "tier": "main",
+      "status": "ACTIVE",
+      "origin": "discovered",
+      "api": "https://cj.lziapi.com/api.php/provide/vod/",
+      "canonicalApiUrl": "https://cj.lziapi.com/api.php/provide/vod/",
+      "physicalSourceKey": "cj.lziapi.com",
+      "healthWindow": {
+        "windowDays": 7,
+        "probeIntervalMinutes": 5,
+        "minimumSamples": 24,
+        "activeSuccessRateMin": 0.8,
+        "watchSuccessRateMin": 0.6,
+        "maxConsecutiveFailures": 3,
+        "staleAfterMinutes": 15
+      },
+      "participatesInHotRefresh": true,
+      "participatesInFullSnapshot": true,
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 44,
+        "searchCount": 20,
+        "sampleNames": [
+          "天道",
+          "天道王",
+          "天道2008[电影解说]",
+          "天道王志文版",
+          "天道幼崽闹京城",
+          "天道幼崽被弃三界大佬抢着当爹",
+          "天道在手诈骗无路走",
+          "天道被退婚，我分走她一半修为"
+        ]
+      },
+      "evidence": {
+        "listUrl": "https://cj.lziapi.com/api.php/provide/vod/?ac=list",
+        "searchUrl": "https://cj.lziapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "https://cj.lziapi.com/api.php/provide/vod/?ac=videolist&ids=100048",
+        "playableUrl": "https://v.lzcdn26.com/20250104/4142_81547c23/index.m3u8"
+      },
+      "error": "",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "cj.lziapi.com"
+      }
+    },
+    {
+      "slug": "ffzy_direct",
+      "key": "cms_ffzy_direct",
+      "short": "非凡直连",
+      "name": "非凡直连资源",
+      "tier": "main",
+      "status": "ACTIVE",
+      "origin": "discovered",
+      "api": "http://ffzy.tv/api.php/provide/vod/",
+      "canonicalApiUrl": "http://ffzy.tv/api.php/provide/vod/",
+      "physicalSourceKey": "ffzy.tv",
+      "healthWindow": {
+        "windowDays": 7,
+        "probeIntervalMinutes": 5,
+        "minimumSamples": 24,
+        "activeSuccessRateMin": 0.8,
+        "watchSuccessRateMin": 0.6,
+        "maxConsecutiveFailures": 3,
+        "staleAfterMinutes": 15
+      },
+      "participatesInHotRefresh": true,
+      "participatesInFullSnapshot": true,
+      "checks": {
+        "httpStatus": 200,
+        "timeout": false,
+        "blocked": false,
+        "classOk": true,
+        "searchOk": true,
+        "detailOk": true,
+        "playOk": true
+      },
+      "metrics": {
+        "classCount": 31,
+        "searchCount": 10,
+        "sampleNames": [
+          "天道在手诈骗无路走",
+          "天道闺女不爱了",
+          "天道轮回疯人院",
+          "天道2023",
+          "天道亲儿子",
+          "天道好轮回",
+          "天道金榜公布我威震九州",
+          "天道2017"
+        ]
+      },
+      "evidence": {
+        "listUrl": "http://ffzy.tv/api.php/provide/vod/?ac=list",
+        "searchUrl": "http://ffzy.tv/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
+        "detailUrl": "http://ffzy.tv/api.php/provide/vod/?ac=videolist&ids=93269",
+        "playableUrl": "https://vod.feifei-online.com/20260301/368268_0e17465c/index.m3u8"
+      },
+      "error": "",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "REGISTERED_ACTIVE",
+        "observedStatus": "ACTIVE",
+        "registeredStatus": "ACTIVE",
+        "physicalSourceKey": "ffzy.tv"
+      }
     },
     {
       "slug": "seed_1",
@@ -622,7 +971,20 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "physicalSourceKey": "caiji.dyttzyapi.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "WATCH",
+        "physicalSourceKey": "caiji.dyttzyapi.com"
+      }
     },
     {
       "slug": "seed_2",
@@ -653,97 +1015,30 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON"
+      "error": "Unexpected token '暂', \"暂不支持搜索\" is not valid JSON",
+      "physicalSourceKey": "tyyszy.com",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "WATCH",
+        "physicalSourceKey": "tyyszy.com"
+      }
     },
     {
-      "slug": "seed_3",
-      "key": "量子",
-      "short": "影视量子直连",
-      "name": "影视 | 量子[直连]",
-      "api": "https://cj.lziapi.com/api.php/provide/vod/",
-      "tier": "watch",
-      "origin": "https://szyyds.cn/tv/x.json",
-      "status": "ACTIVE",
-      "checks": {
-        "httpStatus": 200,
-        "timeout": false,
-        "blocked": false,
-        "classOk": true,
-        "searchOk": true,
-        "detailOk": true,
-        "playOk": true
-      },
-      "metrics": {
-        "classCount": 44,
-        "searchCount": 20,
-        "sampleNames": [
-          "天道",
-          "天道王",
-          "天道2008[电影解说]",
-          "天道王志文版",
-          "天道幼崽闹京城",
-          "天道幼崽被弃三界大佬抢着当爹",
-          "天道在手诈骗无路走",
-          "天道被退婚，我分走她一半修为"
-        ]
-      },
-      "evidence": {
-        "listUrl": "https://cj.lziapi.com/api.php/provide/vod/?ac=list",
-        "searchUrl": "https://cj.lziapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "https://cj.lziapi.com/api.php/provide/vod/?ac=videolist&ids=100048",
-        "playableUrl": "https://v.lzcdn26.com/20250104/4142_81547c23/index.m3u8"
-      },
-      "error": ""
-    },
-    {
-      "slug": "seed_4",
-      "key": "非凡",
-      "short": "影视非凡直连",
-      "name": "影视 | 非凡[直连]",
-      "api": "http://ffzy.tv/api.php/provide/vod/",
-      "tier": "watch",
-      "origin": "https://szyyds.cn/tv/x.json",
-      "status": "ACTIVE",
-      "checks": {
-        "httpStatus": 200,
-        "timeout": false,
-        "blocked": false,
-        "classOk": true,
-        "searchOk": true,
-        "detailOk": true,
-        "playOk": true
-      },
-      "metrics": {
-        "classCount": 31,
-        "searchCount": 10,
-        "sampleNames": [
-          "天道在手诈骗无路走",
-          "天道闺女不爱了",
-          "天道轮回疯人院",
-          "天道2023",
-          "天道亲儿子",
-          "天道好轮回",
-          "天道金榜公布我威震九州",
-          "天道2017"
-        ]
-      },
-      "evidence": {
-        "listUrl": "http://ffzy.tv/api.php/provide/vod/?ac=list",
-        "searchUrl": "http://ffzy.tv/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "http://ffzy.tv/api.php/provide/vod/?ac=videolist&ids=93269",
-        "playableUrl": "https://vod.feifei-online.com/20260301/368268_0e17465c/index.m3u8"
-      },
-      "error": ""
-    },
-    {
-      "slug": "seed_5",
-      "key": "索尼",
-      "short": "影视索尼直连",
-      "name": "影视 | 索尼[直连]",
-      "api": "https://suoniapi.com/api.php/provide/vod/at/xml/",
-      "tier": "watch",
-      "origin": "https://szyyds.cn/tv/x.json",
-      "status": "REJECTED",
+      "slug": "sony",
+      "key": "cms_sony",
+      "short": "索尼",
+      "name": "索尼资源",
+      "api": "https://suoniapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "BLOCKED",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
@@ -764,7 +1059,21 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<?xml vers\"... is not valid JSON"
+      "error": "Unexpected token '<', \"<?xml vers\"... is not valid JSON",
+      "physicalSourceKey": "suoniapi.com",
+      "rollingHealth": {
+        "status": "REJECTED",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "REGISTERED_BLOCKED",
+        "observedStatus": "REJECTED",
+        "registeredStatus": "BLOCKED",
+        "physicalSourceKey": "suoniapi.com"
+      }
     },
     {
       "slug": "seed_6",
@@ -774,7 +1083,7 @@
       "api": "https://jszyapi.com/api.php/provide/vod/",
       "tier": "watch",
       "origin": "https://szyyds.cn/tv/x.json",
-      "status": "ACTIVE",
+      "status": "WATCH",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
@@ -786,25 +1095,38 @@
       },
       "metrics": {
         "classCount": 39,
-        "searchCount": 20,
+        "searchCount": 14,
         "sampleNames": [
-          "开直播判生死，她是天道你记住",
-          "惹她干嘛！她可是天道亲闺女！",
           "天道被退婚，我分走她一半修为",
-          "惹她干嘛，真千金有天道宠着",
-          "开局迎财神天道赐我钞能力",
-          "我当天道CEO，神仙为我996",
-          "玄幻：我以凡躯撼天道",
-          "乱马1/2：天道家混乱的圣诞节天道家"
+          "天道幼崽闹京城",
+          "天道萌宝之天劫篇",
+          "天道长生",
+          "天道图书馆",
+          "天道轮回疯人院",
+          "天道好轮回",
+          "天道亲儿子"
         ]
       },
       "evidence": {
         "listUrl": "https://jszyapi.com/api.php/provide/vod/?ac=list",
         "searchUrl": "https://jszyapi.com/api.php/provide/vod/?wd=%E5%A4%A9%E9%81%93",
-        "detailUrl": "https://jszyapi.com/api.php/provide/vod/?ac=videolist&ids=110415",
-        "playableUrl": "https://vv.jisuzyv.com/play/eERq59ga/index.m3u8"
+        "detailUrl": "https://jszyapi.com/api.php/provide/vod/?ac=videolist&ids=106458",
+        "playableUrl": "https://vv.jisuzyv.com/play/ejRZkPWe/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "jszyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "ACTIVE",
+        "physicalSourceKey": "jszyapi.com"
+      }
     },
     {
       "slug": "seed_7",
@@ -830,12 +1152,12 @@
         "sampleNames": [
           "开心锤锤",
           "第三调解室",
+          "搜神记",
           "盘龙",
-          "假如生活欺骗了你",
-          "档案北京卫视",
-          "潮童天下",
-          "欢乐集结号",
-          "男生女生向前冲第十四季"
+          "梅绽芳华中国戏剧梅花奖艺术家口述史",
+          "姐姐当家第二季",
+          "说唱巅峰对决2026",
+          "穿越MC我的世界：从零开始当大佬"
         ]
       },
       "evidence": {
@@ -844,17 +1166,30 @@
         "detailUrl": "http://154.219.117.232:9981/jacloudapi.php/provide/vod?ac=videolist&ids=141",
         "playableUrl": ""
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "154.219.117.232",
+      "rollingHealth": {
+        "status": "WATCH",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "WATCH",
+        "physicalSourceKey": "154.219.117.232"
+      }
     },
     {
-      "slug": "seed_9",
-      "key": "百度",
+      "slug": "baidu",
+      "key": "cms_baidu",
       "short": "百度",
-      "name": "百度",
-      "api": "https://api.apibdzy.com/api.php/provide/vod",
-      "tier": "watch",
-      "origin": "https://szyyds.cn/tv/x.json",
-      "status": "ACTIVE",
+      "name": "百度资源",
+      "api": "https://api.apibdzy.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "WATCH",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
@@ -877,17 +1212,30 @@
         "detailUrl": "https://api.apibdzy.com/api.php/provide/vod?ac=videolist&ids=19941",
         "playableUrl": "https://b2.bdzybf22.com/videos/202504/25/68015b1b33c14013d3eaed3b/cca18d/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "api.apibdzy.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "DUPLICATE_PHYSICAL_SOURCE",
+        "selectedSlug": "baidu",
+        "physicalSourceKey": "api.apibdzy.com"
+      }
     },
     {
-      "slug": "seed_12",
-      "key": "量子资源",
-      "short": "量子资源切",
-      "name": "量子资源(切)",
-      "api": "http://cj.lziapi.com/api.php/provide/vod/",
-      "tier": "watch",
-      "origin": "https://szyyds.cn/tv/x.json",
-      "status": "ACTIVE",
+      "slug": "lzi_direct",
+      "key": "cms_lzi_direct",
+      "short": "量子直连",
+      "name": "量子直连资源",
+      "api": "https://cj.lziapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "discovered",
+      "status": "WATCH",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
@@ -917,17 +1265,30 @@
         "detailUrl": "http://cj.lziapi.com/api.php/provide/vod/?ac=videolist&ids=100048",
         "playableUrl": "https://v.lzcdn26.com/20250104/4142_81547c23/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "cj.lziapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "DUPLICATE_PHYSICAL_SOURCE",
+        "selectedSlug": "lzi_direct",
+        "physicalSourceKey": "cj.lziapi.com"
+      }
     },
     {
-      "slug": "seed_16",
-      "key": "新浪资源",
-      "short": "新浪资源切",
-      "name": "新浪资源(切)",
-      "api": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/",
-      "tier": "watch",
-      "origin": "https://szyyds.cn/tv/x.json",
-      "status": "ACTIVE",
+      "slug": "xinlang",
+      "key": "cms_xinlang",
+      "short": "新浪",
+      "name": "新浪资源",
+      "api": "https://api.xinlangapi.com/xinlangapi.php/provide/vod/",
+      "tier": "aux",
+      "origin": "discovered",
+      "status": "WATCH",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
@@ -957,17 +1318,30 @@
         "detailUrl": "http://api.xinlangapi.com/xinlangapi.php/provide/vod/?ac=videolist&ids=166386",
         "playableUrl": "https://play.xluuss.com/play/aAD65Ple/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "api.xinlangapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "DUPLICATE_PHYSICAL_SOURCE",
+        "selectedSlug": "xinlang",
+        "physicalSourceKey": "api.xinlangapi.com"
+      }
     },
     {
-      "slug": "seed_17",
-      "key": "暴风",
+      "slug": "bfzy",
+      "key": "cms_bfzy",
       "short": "暴风",
-      "name": "暴风",
-      "api": "https://bfzyapi.com/api.php/provide/vod",
-      "tier": "watch",
-      "origin": "https://dxawi.github.io/0/0.json",
-      "status": "ACTIVE",
+      "name": "暴风资源",
+      "api": "https://bfzyapi.com/api.php/provide/vod/",
+      "tier": "main",
+      "origin": "current",
+      "status": "WATCH",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
@@ -997,7 +1371,20 @@
         "detailUrl": "https://bfzyapi.com/api.php/provide/vod?ac=videolist&ids=33549",
         "playableUrl": "https://c1.rrcdnbf2.com/video/tiandao/第01集/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "bfzyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "DUPLICATE_PHYSICAL_SOURCE",
+        "selectedSlug": "bfzy",
+        "physicalSourceKey": "bfzyapi.com"
+      }
     },
     {
       "slug": "ik",
@@ -1007,7 +1394,7 @@
       "api": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/",
       "tier": "watch",
       "origin": "https://dxawi.github.io/0/0.json",
-      "status": "ACTIVE",
+      "status": "WATCH",
       "checks": {
         "httpStatus": 200,
         "timeout": false,
@@ -1035,7 +1422,20 @@
         "detailUrl": "https://ikunzyapi.com/api.php/provide/vod/from/ikm3u8/?ac=videolist&ids=66849",
         "playableUrl": "https://bfikuncdn.com/20260104/TVqlcUZb/index.m3u8"
       },
-      "error": ""
+      "error": "",
+      "physicalSourceKey": "ikunzyapi.com",
+      "rollingHealth": {
+        "status": "ACTIVE",
+        "sampleCount": 1,
+        "succeeded": 1,
+        "successRate": 1,
+        "consecutiveFailures": 0
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "ACTIVE",
+        "physicalSourceKey": "ikunzyapi.com"
+      }
     },
     {
       "slug": "haiwaikan",
@@ -1047,7 +1447,7 @@
       "origin": "https://dxawi.github.io/0/0.json",
       "status": "REJECTED",
       "checks": {
-        "httpStatus": 200,
+        "httpStatus": 0,
         "timeout": false,
         "blocked": false,
         "classOk": false,
@@ -1066,7 +1466,20 @@
         "detailUrl": "",
         "playableUrl": ""
       },
-      "error": "Unexpected token '<', \"<html lang\"... is not valid JSON"
+      "error": "fetch failed",
+      "physicalSourceKey": "haiwaikan.com",
+      "rollingHealth": {
+        "status": "REJECTED",
+        "sampleCount": 1,
+        "succeeded": 0,
+        "successRate": 0,
+        "consecutiveFailures": 1
+      },
+      "admission": {
+        "code": "UNREGISTERED_CANDIDATE",
+        "observedStatus": "REJECTED",
+        "physicalSourceKey": "haiwaikan.com"
+      }
     }
   ]
 }
