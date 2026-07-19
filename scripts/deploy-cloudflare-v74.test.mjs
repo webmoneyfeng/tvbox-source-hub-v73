@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import {
   APPROVAL_TOKEN,
+  PAGES_PRODUCTION_BRANCH,
   assertExecutionApproval,
   buildCommandPlan,
   parseArgs,
@@ -43,5 +44,9 @@ test('buildCommandPlan execute deploys Worker then Pages then post-validates bot
   assert.ok(pagesIndex > workerIndex);
   assert.ok(primaryValidateIndex > pagesIndex);
   assert.equal(riskyCommandCount(plan), 2);
+  const pagesStep = plan.find((step) => step.name === 'pages_deploy');
+  assert.equal(PAGES_PRODUCTION_BRANCH, 'snapshot');
+  assert.deepEqual(pagesStep.args.slice(-2), ['--branch', 'snapshot']);
+  assert.equal(pagesStep.args.includes('main'), false);
   assert.deepEqual(plan.find((step) => step.name === 'validate_secondary').env, { TVBOX_BASE: 'https://tv.webclound.eu.org' });
 });

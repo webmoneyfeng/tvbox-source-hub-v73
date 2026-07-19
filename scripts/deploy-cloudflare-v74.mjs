@@ -7,6 +7,7 @@ const ROOT = path.resolve(path.dirname(__filename), '..');
 const APPROVAL_TOKEN = 'WORKER_PAGES_PRODUCTION_APPROVED';
 const PRIMARY_BASE = 'https://tv.webhome.eu.org';
 const SECONDARY_BASE = 'https://tv.webclound.eu.org';
+const PAGES_PRODUCTION_BRANCH = 'snapshot';
 
 function parseArgs(argv = process.argv.slice(2)) {
   const execute = argv.includes('--execute');
@@ -54,7 +55,16 @@ function buildCommandPlan({ execute = false, primaryBase = PRIMARY_BASE, seconda
   if (!execute) return plan;
 
   const [wranglerDeploy, wranglerDeployArgs] = npxCmd(['wrangler', 'deploy']);
-  const [pagesDeploy, pagesDeployArgs] = npxCmd(['wrangler', 'pages', 'deploy', 'dist', '--project-name', 'tvbox-source-hub-v73', '--branch', 'main']);
+  const [pagesDeploy, pagesDeployArgs] = npxCmd([
+    'wrangler',
+    'pages',
+    'deploy',
+    'dist',
+    '--project-name',
+    'tvbox-source-hub-v73',
+    '--branch',
+    PAGES_PRODUCTION_BRANCH,
+  ]);
   const [npmValidate, validateArgs] = npmCmd('validate:online');
   const [npmVisible, visibleArgs] = npmCmd('audit:visible-freshness');
   const [npmCache, cacheArgs] = npmCmd('audit:tv-cache-update');
@@ -122,6 +132,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
 
 export {
   APPROVAL_TOKEN,
+  PAGES_PRODUCTION_BRANCH,
   assertExecutionApproval,
   buildCommandPlan,
   parseArgs,
