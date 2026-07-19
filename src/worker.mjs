@@ -1,4 +1,9 @@
-const VERSION = '2026-07-04-aggregate-v7.3-domestic-free';
+import { buildHotPackage, filterHotRows, mergeHotRows, rowsIdentityCompatible, canonicalKey as hotCanonicalKey, shouldPublishHotPackage } from './hot-catalog.mjs';
+import { normalizeContentItem } from './content-model.mjs';
+import { HOT_REFRESH_SOURCES } from './source-registry.mjs';
+import { latestPlausibleSourceTimestamp } from './source-time.mjs';
+
+const VERSION = '2026-07-18-commercial-zero-bill';
 const LIVE_GROUP_ORDER = ['电影频道', '经典电影', '纪录片', '动画少儿', '家庭频道', '喜剧频道', '英文影视', '美国频道', '其他频道'];
 const VOD_CATEGORIES = [
   { id: '1', key: 'classic', name: '经典电影', aliases: ['classic', '经典电影'] },
@@ -13,48 +18,56 @@ const V73_PRIMARY_ORIGIN = 'https://' + V73_PRIMARY_HOST;
 const V73_SECONDARY_ORIGIN = 'https://' + V73_SECONDARY_HOST;
 const V73_PROJECT = 'tvbox-source-hub-v73';
 const DEFAULT_SNAPSHOT_BASES = [
-  'https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/main/dist/snapshot/latest',
   'https://tvbox-source-hub-v73.pages.dev/snapshot/latest',
-  'https://tv.webhome.eu.org/static/snapshot/latest',
-  'https://tv.webclound.eu.org/static/snapshot/latest',
+  'https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/snapshot/dist/snapshot/latest',
 ];
 const SNAPSHOT_CACHE_TTL_MS = 5 * 60 * 1000;
 const SNAPSHOT_FETCH_TIMEOUT_MS = 6000;
 const SNAPSHOT_VISIBLE_FRESH_MS = 6 * 60 * 60 * 1000;
 const SNAPSHOT_LAST_GOOD_KV_KEY = 'snapshot:last-good-manifest';
 const HOT_UPDATE_KV_KEY = 'hot:last-success';
-const HOT_UPDATE_TARGET_MINUTES = 2;
-const HOT_UPDATE_FRESH_GUARD_MINUTES = 6;
-const HOT_UPDATE_FRESH_MS = HOT_UPDATE_FRESH_GUARD_MINUTES * 60 * 1000;
+const HOT_UPDATE_TARGET_MINUTES = 5;
+const HOT_UPDATE_FRESH_GUARD_MINUTES = 10;
+const HOT_HEALTH_HEARTBEAT_MINUTES = 30;
+const HOT_HEALTH_HEARTBEAT_MS = HOT_HEALTH_HEARTBEAT_MINUTES * 60 * 1000;
+const HOT_PROBE_STATE_MAX_AGE_MS = (HOT_HEALTH_HEARTBEAT_MINUTES + HOT_UPDATE_TARGET_MINUTES) * 60 * 1000;
 const HOT_UPDATE_MEMORY_TTL_MS = 15 * 1000;
-const HOT_INTERACTION_PROBE_MIN_INTERVAL_MS = 15 * 60 * 1000;
+const HOT_INTERACTION_PROBE_MIN_INTERVAL_MS = 5 * 60 * 1000;
 const HOT_INTERACTION_PROBE_MAX_DAILY_WRITES = Math.ceil(24 * 60 * 60 * 1000 / HOT_INTERACTION_PROBE_MIN_INTERVAL_MS);
 const HOT_SNAPSHOT_FRESH_MS = 18 * 60 * 60 * 1000;
-const HOT_OVERLAY_CATEGORY_KEYS = new Set(['recommend', 'movie', 'tv', 'short', 'explainer', 'knowledge']);
+const HOT_OVERLAY_CATEGORY_KEYS = new Set([
+  'recommend',
+  'theatrical_movie',
+  'web_movie',
+  'other_movie',
+  'tv_series',
+  'web_series',
+  'web_short',
+  'variety',
+  'anime',
+  'documentary',
+  'explainer',
+  'knowledge',
+  'adult',
+  'movie',
+  'tv',
+  'short',
+]);
+const HOT_ACTIVE_KV_KEY = 'catalog:active';
+const HOT_PACKAGE_PREFIX = 'catalog:hot:';
+const HOT_PACKAGE_TTL_SECONDS = 24 * 60 * 60;
+const HOT_ROW_RETENTION_MS = 24 * 60 * 60 * 1000;
+const HOT_LAST_SUCCESS_TTL_SECONDS = 2 * 60 * 60;
+const HOT_PUBLISH_SLOT_MS = HOT_UPDATE_TARGET_MINUTES * 60 * 1000;
 const SNAPSHOT_PACK_LIMIT = 24;
 const snapshotMemoryCache = new Map();
-const hotUpdateMemoryCache = { t: 0, v: null };
+const hotUpdateMemoryCache = { t: 0, v: null, owner: null };
 const hotInteractionProbeMemory = { t: 0, p: null };
+const hotProbeRuntime = { promise: null };
 const LIMIT_DEFAULT = 24;
 const LIMIT_MAX = 48;
 const CMS_TIMEOUT_MS = 9000;
-const CMS_SOURCES = [
-  { slug: "sony", key: "cms_sony", short: "\u7d22\u5c3c", name: "\u7d22\u5c3c\u8d44\u6e90", api: "https://suoniapi.com/api.php/provide/vod/", tier: "main" },
-  { slug: "lzi", key: "cms_lzi", short: "\u91cf\u5b50", name: "\u91cf\u5b50\u8d44\u6e90", api: "https://lzizy1.com/api.php/provide/vod/", tier: "main" },
-  { slug: "baidu", key: "cms_baidu", short: "\u767e\u5ea6", name: "\u767e\u5ea6\u8d44\u6e90", api: "https://api.apibdzy.com/api.php/provide/vod/", tier: "main" },
-  { slug: "sdzy", key: "cms_sdzy", short: "\u95ea\u7535", name: "\u95ea\u7535\u8d44\u6e90", api: "http://sdzyapi.com/api.php/provide/vod/", tier: "main" },
-  { slug: "bfzy", key: "cms_bfzy", short: "\u66b4\u98ce", name: "\u66b4\u98ce\u8d44\u6e90", api: "https://bfzyapi.com/api.php/provide/vod/", tier: "main" },
-  { slug: "taopian", key: "cms_taopian", short: "\u6dd8\u7247", name: "\u6dd8\u7247\u8d44\u6e90", api: "https://taopianapi.com/cjapi/mc/vod/json.html", tier: "aux" },
-  { slug: "huya", key: "cms_huya", short: "\u864e\u7259", name: "\u864e\u7259\u8d44\u6e90", api: "https://www.huyaapi.com/api.php/provide/vod/from/hym3u8/", tier: "aux" },
-  { slug: "hhzy", key: "cms_hhzy", short: "\u706b\u72d0", name: "\u706b\u72d0\u8d44\u6e90", api: "https://hhzyapi.com/api.php/provide/vod/", tier: "aux" },
-  { slug: "hongniu", key: "cms_hongniu", short: "\u7ea2\u725b", name: "\u7ea2\u725b\u8d44\u6e90", api: "https://www.hongniuzy2.com/api.php/provide/vod/", tier: "aux" },
-  { slug: "guangsu", key: "cms_guangsu", short: "\u5149\u901f", name: "\u5149\u901f\u8d44\u6e90", api: "https://api.guangsuapi.com/api.php/provide/vod/", tier: "aux" },
-  { slug: "ffzy", key: "cms_ffzy", short: "\u975e\u51e1", name: "\u975e\u51e1\u8d44\u6e90", api: "https://api.ffzyapi.com/api.php/provide/vod/", tier: "main" },
-  { slug: "wujin", key: "cms_wujin", short: "\u65e0\u5c3d", name: "\u65e0\u5c3d\u8d44\u6e90", api: "https://api.wujinapi.me/api.php/provide/vod/", tier: "main" },
-  { slug: "modu", key: "cms_modu", short: "\u9b54\u90fd", name: "\u9b54\u90fd\u8d44\u6e90", api: "https://caiji.moduapi.cc/api.php/provide/vod/", tier: "aux" },
-  { slug: "yhzy", key: "cms_yhzy", short: "\u6a31\u82b1", name: "\u6a31\u82b1\u8d44\u6e90", api: "https://m3u8.apiyhzy.com/api.php/provide/vod/", tier: "aux" },
-  { slug: "xinlang", key: "cms_xinlang", short: "\u65b0\u6d6a", name: "\u65b0\u6d6a\u8d44\u6e90", api: "https://api.xinlangapi.com/xinlangapi.php/provide/vod/", tier: "aux" },
-];
+const CMS_SOURCES = HOT_REFRESH_SOURCES;
 
 const TAG_RULES = [
   ['科幻', /science\s*fiction|sci[-\s]?fi|last man|space|rocket|科幻/i],
@@ -81,7 +94,7 @@ const TAG_RULES = [
 ];
 const TAG_ORDER = TAG_RULES.map(([tag]) => tag);
 
-function text(data, type = 'text/plain; charset=utf-8', maxAge = 300, status = 200) {
+function text(data, type = 'text/plain; charset=utf-8', maxAge = 300, status = 200, extraHeaders = {}) {
   const noStore = Number(maxAge) <= 0;
   const headers = {
     'content-type': type,
@@ -94,13 +107,24 @@ function text(data, type = 'text/plain; charset=utf-8', maxAge = 300, status = 2
     headers.pragma = 'no-cache';
     headers.expires = '0';
   }
+  for (const [key, value] of Object.entries(extraHeaders || {})) {
+    if (value !== undefined && value !== null && value !== '') headers[String(key).toLowerCase()] = String(value);
+  }
   return new Response(data, {
     status,
     headers,
   });
 }
-function json(data, maxAge = 300, status = 200) {
-  return text(JSON.stringify(data, null, 2), 'application/json; charset=utf-8', maxAge, status);
+function json(data, maxAge = 300, status = 200, extraHeaders = {}) {
+  return text(JSON.stringify(data, null, 2), 'application/json; charset=utf-8', maxAge, status, extraHeaders);
+}
+function weakEtag(value) {
+  const normalized = String(value || '').replace(/[^a-z0-9._:-]+/gi, '-');
+  return `W/"${normalized || 'empty'}"`;
+}
+function revalidatedEdgeHeaders(seconds) {
+  const ttl = Math.max(0, Number(seconds) || 0);
+  return { 'cache-control': `public, max-age=0, s-maxage=${ttl}, must-revalidate, stale-while-revalidate=${Math.min(ttl, 30)}` };
 }
 function cleanLineName(s) {
   return String(s || '')
@@ -472,6 +496,12 @@ function cleanCmsVodItem(item, detail = false) {
     vod_actor: cleanCmsText(item.vod_actor ?? '', 120),
     vod_director: cleanCmsText(item.vod_director ?? '', 80),
     vod_play_from: cleanCmsText(item.vod_play_from ?? '', 80),
+    vod_time: cleanCmsText(item.vod_time ?? '', 40),
+    vod_time_add: cleanCmsText(item.vod_time_add ?? '', 40),
+    vod_pubdate: cleanCmsText(item.vod_pubdate ?? '', 40),
+    vod_total: cleanCmsText(item.vod_total ?? '', 20),
+    vod_serial: cleanCmsText(item.vod_serial ?? '', 40),
+    vod_duration: cleanCmsText(item.vod_duration ?? '', 40),
   };
   if (detail) {
     out.vod_content = cleanCmsText(item.vod_content ?? item.vod_blurb ?? '', 800);
@@ -589,15 +619,23 @@ async function cms(request, env, slug) {
 
 const AGG_CATEGORIES = [
   { id: '0', key: 'recommend', name: '\u63a8\u8350' },
-  { id: '1', key: 'movie', name: '\u7535\u5f71' },
-  { id: '2', key: 'tv', name: '\u5267\u96c6' },
+  { id: '10', key: 'theatrical_movie', name: '\u9662\u7ebf\u7535\u5f71' },
+  { id: '11', key: 'web_movie', name: '\u7f51\u7edc\u7535\u5f71' },
+  { id: '12', key: 'other_movie', name: '\u5176\u4ed6\u7535\u5f71' },
+  { id: '20', key: 'tv_series', name: '\u7535\u89c6\u5267' },
+  { id: '21', key: 'web_series', name: '\u7f51\u7edc\u5267' },
+  { id: '6', key: 'web_short', name: '\u7f51\u7edc\u77ed\u5267' },
   { id: '3', key: 'variety', name: '\u7efc\u827a' },
   { id: '4', key: 'anime', name: '\u52a8\u6f2b' },
   { id: '5', key: 'documentary', name: '\u7eaa\u5f55\u7247' },
-  { id: '6', key: 'short', name: '\u77ed\u5267' },
   { id: '7', key: 'explainer', name: '\u89e3\u8bf4' },
   { id: '8', key: 'knowledge', name: '\u6587\u5a31\u77e5\u8bc6' },
   { id: '9', key: 'adult', name: '\u6210\u4eba\u4f26\u7406' },
+];
+const LEGACY_AGG_CATEGORIES = [
+  { id: '1', key: 'movie', name: '\u7535\u5f71', canonicalKeys: ['theatrical_movie', 'web_movie', 'other_movie'] },
+  { id: '2', key: 'tv', name: '\u5267\u96c6', canonicalKeys: ['tv_series', 'web_series'] },
+  { id: '6', key: 'short', name: '\u77ed\u5267', canonicalKeys: ['web_short'] },
 ];
 const ADULT_CATEGORY_ID = '9';
 const ADULT_CATEGORY_KEY = 'adult';
@@ -615,10 +653,40 @@ const LIVE_FORM_RE = /(\u6f14\u5531\u4f1a|\u97f3\u4e50\u4f1a|\u5de1\u6f14|\bLIVE
 const COLLECTION_RE = /(\u5408\u96c6|\u5927\u5168|\u5168\u96c6|\u7cfb\u5217|\u4e13\u9898|\u76d8\u70b9|\u96c6\u9526)/;
 
 function aggCategoryByAny(value) {
-  const raw = normalizeText(value).replace(/\s*[·・]\s*\d{12}\s*$/, '');
+  const raw = normalizeText(value).replace(/\s*\d{12}\s*$/, '');
   if (!raw) return AGG_CATEGORIES[0];
   const lower = raw.toLowerCase();
-  return AGG_CATEGORIES.find((c) => c.id === raw || c.key === lower || c.name === raw) || AGG_CATEGORIES[0];
+  const canonical = AGG_CATEGORIES.find((c) => c.id === raw || c.key === lower || c.name === raw);
+  if (canonical) return canonical;
+  return LEGACY_AGG_CATEGORIES.find((c) => c.id === raw || c.key === lower || c.name === raw) || AGG_CATEGORIES[0];
+}
+function aggCategoryByKey(key) {
+  const lower = String(key || '').trim().toLowerCase();
+  return AGG_CATEGORIES.find((c) => c.key === lower)
+    || LEGACY_AGG_CATEGORIES.find((c) => c.key === lower)
+    || AGG_CATEGORIES[0];
+}
+function canonicalKeysForCategory(categoryOrKey) {
+  const category = typeof categoryOrKey === 'string' ? aggCategoryByKey(categoryOrKey) : (categoryOrKey || AGG_CATEGORIES[0]);
+  return Array.isArray(category.canonicalKeys) && category.canonicalKeys.length ? [...category.canonicalKeys] : [category.key];
+}
+function categoryMatchesPrimary(categoryOrKey, primaryCategory) {
+  const primary = String(primaryCategory || '').trim();
+  return Boolean(primary && canonicalKeysForCategory(categoryOrKey).includes(primary));
+}
+function filterSchemaCategoryKey(categoryKey) {
+  const key = String(categoryKey || '').trim();
+  if (['theatrical_movie', 'web_movie', 'other_movie'].includes(key)) return 'movie';
+  if (['tv_series', 'web_series'].includes(key)) return 'tv';
+  if (key === 'web_short') return 'short';
+  return key;
+}
+function fallbackPrimaryForCategory(categoryOrKey) {
+  const category = typeof categoryOrKey === 'string' ? aggCategoryByKey(categoryOrKey) : (categoryOrKey || AGG_CATEGORIES[0]);
+  if (category.key === 'movie') return 'other_movie';
+  if (category.key === 'tv') return 'tv_series';
+  if (category.key === 'short') return 'web_short';
+  return category.key;
 }
 function cleanAggName(value, max = 80) {
   return cleanCmsText(value, max).replace(/^(\u66f4\u65b0\u81f3|\u66f4\u65b0|\u9ad8\u6e05|\u6b63\u7247|\u5b8c\u7ed3)\s*/g, '').trim() || cleanCmsText(value, max);
@@ -630,31 +698,54 @@ function macroForTypeName(value) {
   const n = String(value || '').replace(/\s+/g, '');
   if (!n) return '';
   if (/(\u4f26\u7406|\u4f26\u7406\u7247|\u7406\u8bba|\u798f\u5229|\u6210\u4eba|\u60c5\u8272|\u5348\u591c|\u5199\u771f|\u4e09\u7ea7|\u91cc\u756a|\u756a\u53f7|AV)/i.test(n)) return 'adult';
-  if (/(\u77ed\u5267|\u5fae\u77ed\u5267|\u723d\u6587|\u7ad6\u5c4f)/.test(n)) return 'short';
+  if (EXPLAINER_RE.test(n)) return 'explainer';
+  if (/(\u77ed\u5267|\u5fae\u77ed\u5267|\u7f51\u7edc\u77ed\u5267|\u723d\u6587|\u7ad6\u5c4f)/.test(n)) return 'web_short';
   if (/(\u7eaa\u5f55|\u8bb0\u5f55|\u7eaa\u5b9e)/.test(n)) return 'documentary';
   if (/(\u52a8\u6f2b|\u52a8\u753b|\u5361\u901a|\u756a\u5267|\u4e2d\u56fd\u52a8\u6f2b|\u56fd\u4ea7\u52a8\u6f2b|\u65e5\u672c\u52a8\u6f2b|\u65e5\u97e9\u52a8\u6f2b|\u6b27\u7f8e\u52a8\u6f2b|\u6d77\u5916\u52a8\u6f2b|\u6e2f\u53f0\u52a8\u6f2b|\u52a8\u6f2b\u7535\u5f71|\u5c11\u513f\u52a8\u753b)/.test(n)) return 'anime';
   if (/(\u7efc\u827a|\u771f\u4eba\u79c0|\u8131\u53e3\u79c0|\u5927\u9646\u7efc\u827a|\u65e5\u97e9\u7efc\u827a|\u6e2f\u53f0\u7efc\u827a|\u6b27\u7f8e\u7efc\u827a|\u6d77\u5916\u7efc\u827a)/.test(n)) return 'variety';
-  if (/(\u7535\u89c6\u5267|\u8fde\u7eed\u5267|\u56fd\u4ea7\u5267|\u5927\u9646\u5267|\u5185\u5730\u5267|\u6b27\u7f8e\u5267|\u7f8e\u5267|\u82f1\u5267|\u6e2f\u5267|\u6e2f\u6fb3\u5267|\u9999\u6e2f\u5267|\u53f0\u5267|\u53f0\u6e7e\u5267|\u97e9\u5267|\u97e9\u56fd\u5267|\u65e5\u5267|\u65e5\u672c\u5267|\u6cf0\u5267|\u9a6c\u6cf0\u5267|\u6d77\u5916\u5267|\u5176\u4ed6\u5267|\u5267\u96c6)/.test(n)) return 'tv';
-  if (/(\u7535\u5f71|\u52a8\u4f5c|\u559c\u5267|\u7231\u60c5|\u79d1\u5e7b|\u6050\u6016|\u60ca\u609a|\u60ac\u7591|\u5267\u60c5|\u6218\u4e89|\u72af\u7f6a|\u5192\u9669|\u5947\u5e7b|\u707e\u96be|\u52a8\u753b\u7247|\u7eaa\u5f55\u7247|\u8bb0\u5f55\u7247|\u9662\u7ebf)/.test(n)) return 'movie';
+  if (/(\u6f14\u5531\u4f1a|\u97f3\u4e50\u4f1a|\u97f3\u4e50\u8282|\u5de1\u6f14|LIVE|MV|\u516c\u5f00\u8bfe|\u8bfe\u7a0b|\u6559\u7a0b|\u8bb2\u5ea7|\u79d1\u666e|\u77e5\u8bc6)/i.test(n)) return 'knowledge';
+  if (/(\u7f51\u7edc\u5267|\u7f51\u5267|\u7f51\u7edc\u7535\u89c6\u5267|\u5e73\u53f0\u72ec\u64ad)/.test(n)) return 'web_series';
+  if (/(\u7535\u89c6\u5267|\u8fde\u7eed\u5267|\u56fd\u4ea7\u5267|\u5927\u9646\u5267|\u5185\u5730\u5267|\u6b27\u7f8e\u5267|\u7f8e\u5267|\u82f1\u5267|\u6e2f\u5267|\u6e2f\u6fb3\u5267|\u9999\u6e2f\u5267|\u53f0\u5267|\u53f0\u6e7e\u5267|\u97e9\u5267|\u97e9\u56fd\u5267|\u65e5\u5267|\u65e5\u672c\u5267|\u6cf0\u5267|\u9a6c\u6cf0\u5267|\u6d77\u5916\u5267|\u5176\u4ed6\u5267|\u5267\u96c6)/.test(n)) return 'tv_series';
+  if (/(\u9662\u7ebf\u7535\u5f71|\u9662\u7ebf\u7247|\u5f71\u9662\u4e0a\u6620|\u9662\u7ebf\u4e0a\u6620)/.test(n)) return 'theatrical_movie';
+  if (/(\u7f51\u7edc\u7535\u5f71|\u7f51\u5927|\u7f51\u7edc\u9996\u53d1)/.test(n)) return 'web_movie';
+  if (/(\u7535\u5f71|\u52a8\u4f5c|\u559c\u5267|\u7231\u60c5|\u79d1\u5e7b|\u6050\u6016|\u60ca\u609a|\u60ac\u7591|\u5267\u60c5|\u6218\u4e89|\u72af\u7f6a|\u5192\u9669|\u5947\u5e7b|\u707e\u96be|\u52a8\u753b\u7247|\u9662\u7ebf)/.test(n)) return 'other_movie';
   return '';
 }
-function macroForItem(item, className = '') {
-  const text = aggText(item, className);
-  if (/(\u4f26\u7406|\u7406\u8bba|\u6210\u4eba|\u60c5\u8272|\u4e09\u7ea7|AV)/i.test(text)) return 'adult';
-  if (EXPLAINER_RE.test(text)) return 'explainer';
-  if (/(\u7eaa\u5f55\u7247|\u8bb0\u5f55\u7247|\u7eaa\u5f55|\u8bb0\u5f55|\u7eaa\u5b9e|\u81ea\u7136\u7eaa\u5f55|\u5386\u53f2\u7eaa\u5f55|\u4eba\u6587\u7eaa\u5f55|\u79d1\u6280\u7eaa\u5f55|\u793e\u4f1a\u7eaa\u5b9e|\u4eba\u7269\u7eaa\u5f55|\u5e55\u540e\u7eaa\u5f55)/.test(text)) return 'documentary';
-  if (/\u52a8\u6001\u6f2b\u753b/.test(text)) return 'anime';
-  if (/(\u77ed\u5267|\u5fae\u77ed\u5267|\u7ad6\u5c4f|\u5168\d{1,3}\u96c6)/.test(text)) return 'short';
-  const byClass = macroForTypeName(className || item?.type_name) || '';
-  const explicitKnowledge = /(\u6f14\u5531\u4f1a|\u97f3\u4e50\u4f1a|\u97f3\u4e50\u8282|\u5de1\u6f14|\bLIVE\b|\u97f3\u4e50\u73b0\u573a|\bMV\b|\u516c\u5f00\u8bfe|\u8bfe\u7a0b|\u6559\u7a0b|\u6559\u5b66|\u8bb2\u5ea7|\u79d1\u666e|vlog|VLOG|\u7f8e\u98df|\u5065\u8eab|\u6d4b\u8bc4|\u8bbf\u8c08|\u8d5b\u4e8b|\u6bd4\u8d5b|\u96c6\u9526|\u56de\u653e|\u513f\u6b4c|\u65e9\u6559|\u620f\u66f2|\u76f8\u58f0|\u5c0f\u54c1|\u66f2\u827a|\u8bdd\u5267|\u6b4c\u5267|\u821e\u53f0\u5267|\u8d22\u7ecf|\u5546\u4e1a|\u6295\u8d44|\u521b\u4e1a)/i.test(text);
-  if (explicitKnowledge) return 'knowledge';
-  if (byClass) return byClass;
-  if (STRONG_KNOWLEDGE_RE.test(text)) return 'knowledge';
-  return '';
+function sourceCategoryMapFromClasses(classes = []) {
+  const map = {};
+  for (const record of classes) {
+    const id = String(record?.type_id ?? record?.id ?? '').trim();
+    const name = cleanCmsText(record?.type_name ?? record?.name ?? '', 40);
+    const category = macroForTypeName(name);
+    if (id && category) map[id] = category;
+  }
+  return map;
+}
+function normalizeAggContentItem(item, className = '', sourceCategoryMap = {}) {
+  const resolvedClassName = cleanCmsText(className || item?.type_name || item?.source_category_name || '', 40);
+  const prepared = {
+    ...(item || {}),
+    type_name: resolvedClassName || item?.type_name || '',
+    source_category_id: String(item?.source_category_id || item?.type_id || '').trim(),
+    source_category_name: resolvedClassName,
+  };
+  const modeled = normalizeContentItem(prepared, { sourceCategoryMap });
+  let primary = String(modeled.primary_category || '').trim();
+  if (!primary || primary === 'recommend') {
+    const text = aggText(prepared, resolvedClassName);
+    primary = macroForTypeName(resolvedClassName)
+      || (EXPLAINER_RE.test(text) ? 'explainer' : '')
+      || (STRONG_KNOWLEDGE_RE.test(text) ? 'knowledge' : '')
+      || 'other_movie';
+  }
+  return { ...modeled, primary_category: primary, _macro: primary, _className: resolvedClassName };
+}
+function macroForItem(item, className = '', sourceCategoryMap = {}) {
+  return normalizeAggContentItem(item, className, sourceCategoryMap).primary_category;
 }
 function classWantedForMacro(typeName, macroKey) {
   if (!macroKey || macroKey === 'recommend') return true;
-  return macroForTypeName(typeName) === macroKey;
+  return categoryMatchesPrimary(macroKey, macroForTypeName(typeName));
 }
 function isBroadParentClass(name) {
   const n = String(name || '').replace(/\s+/g, '');
@@ -673,7 +764,6 @@ function hasAggCategoryParam(params) {
     return v !== null && v !== '';
   });
 }
-function aggCategoryByKey(key) { return AGG_CATEGORIES.find((c) => c.key === key) || AGG_CATEGORIES[0]; }
 function visibleAggCategoriesForPolicy(policy = {}) {
   return policy.includeAdult === false ? AGG_CATEGORIES.filter((c) => c.key !== ADULT_CATEGORY_KEY) : AGG_CATEGORIES;
 }
@@ -704,6 +794,7 @@ function sanitizeFilterGroupsForPolicy(groups, policy = {}) {
 function isAdultAggRecord(item) {
   if (!item) return false;
   if (String(item._macro || '').toLowerCase() === ADULT_CATEGORY_KEY) return true;
+  if (String(item.primary_category || '').toLowerCase() === ADULT_CATEGORY_KEY) return true;
   if (String(item.category || '').toLowerCase() === ADULT_CATEGORY_KEY) return true;
   if (String(item.type_id || '') === ADULT_CATEGORY_ID) return true;
   return ADULT_TEXT_RE.test([item.type_name, item.vod_name, item.vod_sub, item.vod_remarks, item.vod_class, item.vod_state, item.vod_area, item.vod_lang, item.vod_actor, item.vod_director, item.vod_content, item.vod_play_from, item.semantic_tags, item.snapshot_filter_evidence].join(' '));
@@ -757,6 +848,7 @@ function parseAggFilters(params) {
 function aggFilterOption(n, v) { return { n, v }; }
 function valueOptions(items) { return items.map(([n, v]) => aggFilterOption(n, v)); }
 function aggClassOptions(categoryKey) {
+  const schemaKey = filterSchemaCategoryKey(categoryKey);
   const byCat = {
     recommend: [['\u7cbe\u9009', ''], ['\u7535\u5f71', '\u7535\u5f71'], ['\u5267\u96c6', '\u5267\u96c6'], ['\u89e3\u8bf4', '\u89e3\u8bf4'], ['\u6587\u5a31\u77e5\u8bc6', '\u6587\u5a31\u77e5\u8bc6']],
     movie: [['\u52a8\u4f5c', '\u52a8\u4f5c'], ['\u559c\u5267', '\u559c\u5267'], ['\u7231\u60c5', '\u7231\u60c5'], ['\u60ac\u7591\u72af\u7f6a', '\u60ac\u7591\u72af\u7f6a'], ['\u79d1\u5e7b\u5947\u5e7b', '\u79d1\u5e7b\u5947\u5e7b'], ['\u6050\u6016\u60ca\u609a', '\u6050\u6016\u60ca\u609a'], ['\u5267\u60c5', '\u5267\u60c5'], ['\u6218\u4e89\u5386\u53f2', '\u6218\u4e89\u5386\u53f2']],
@@ -769,7 +861,7 @@ function aggClassOptions(categoryKey) {
     knowledge: [['\u6f14\u5531\u4f1a', '\u6f14\u5531\u4f1a'], ['\u97f3\u4e50\u73b0\u573a', '\u97f3\u4e50\u73b0\u573a'], ['MV', 'MV'], ['\u665a\u4f1a', '\u665a\u4f1a'], ['\u516c\u5f00\u8bfe', '\u516c\u5f00\u8bfe'], ['\u6559\u7a0b', '\u6559\u7a0b'], ['\u8bb2\u5ea7', '\u8bb2\u5ea7'], ['\u79d1\u666e', '\u79d1\u666e'], ['\u751f\u6d3b\u65c5\u884c', '\u751f\u6d3b\u65c5\u884c'], ['\u7f8e\u98df\u5065\u8eab', '\u7f8e\u98df\u5065\u8eab'], ['\u6e38\u620f\u79d1\u6280', '\u6e38\u620f\u79d1\u6280'], ['\u4f53\u80b2\u8d5b\u4e8b', '\u4f53\u80b2\u8d5b\u4e8b'], ['\u5c11\u513f\u4eb2\u5b50', '\u5c11\u513f\u4eb2\u5b50']],
     adult: [['\u4f26\u7406', '\u4f26\u7406'], ['\u7406\u8bba', '\u7406\u8bba'], ['\u6210\u4eba', '\u6210\u4eba'], ['\u5267\u60c5', '\u5267\u60c5']],
   };
-  return (byCat[categoryKey] || byCat.movie).filter((x) => x[1] !== '').map(([n, v]) => aggFilterOption(n, v));
+  return (byCat[schemaKey] || byCat.movie).filter((x) => x[1] !== '').map(([n, v]) => aggFilterOption(n, v));
 }
 function buildAggFilters() {
   const years = ['2026', '2025', '2024', '2023', '2020-2022', '2010s', 'older'];
@@ -793,14 +885,21 @@ function buildAggFilters() {
   ];
   const map = {};
   for (const c of AGG_CATEGORIES) {
+    const schemaKey = filterSchemaCategoryKey(c.key);
     let filters = base(c);
-    if (c.key === 'tv' || c.key === 'anime' || c.key === 'variety') filters = [filters[0], filters[1], filters[2], filters[3], { key: 'state', name: '\u72b6\u6001', init: '', value: stateValues }, filters[5]];
-    if (c.key === 'short') filters = [filters[0], filters[1], filters[3], { key: 'episodes', name: '\u96c6\u6570', init: '', value: episodeValues }, { key: 'state', name: '\u72b6\u6001', init: '', value: stateValues }, filters[5]];
+    if (schemaKey === 'tv' || c.key === 'anime' || c.key === 'variety') filters = [filters[0], filters[1], filters[2], filters[3], { key: 'state', name: '\u72b6\u6001', init: '', value: stateValues }, filters[5]];
+    if (schemaKey === 'short') filters = [filters[0], filters[1], filters[3], { key: 'episodes', name: '\u96c6\u6570', init: '', value: episodeValues }, { key: 'state', name: '\u72b6\u6001', init: '', value: stateValues }, filters[5]];
     if (c.key === 'explainer') filters = [filters[0], filters[1], filters[3], { key: 'duration', name: '\u65f6\u957f', init: '', value: durationValues }, { key: 'topic', name: '\u9898\u6750', init: '', value: topicValues }, filters[5]];
     if (c.key === 'knowledge') filters = [filters[0], filters[1], filters[3], filters[4], { key: 'topic', name: '\u4e3b\u9898', init: '', value: knowledgeTopicValues }, filters[5]];
     if (c.key === 'adult') filters = [filters[0], filters[1], filters[2], filters[3], filters[5]];
     map[c.id] = filters;
     map[c.key] = filters;
+  }
+  for (const legacy of LEGACY_AGG_CATEGORIES) {
+    const exemplar = AGG_CATEGORIES.find((c) => filterSchemaCategoryKey(c.key) === legacy.key);
+    const filters = exemplar ? map[exemplar.id] : [];
+    map[legacy.id] = filters;
+    map[legacy.key] = filters;
   }
   return map;
 }
@@ -830,8 +929,8 @@ function aggFilterOptionMatches(item, categoryKey, key, value) {
   return true;
 }
 function dynamicAggFiltersFor(categoryKey, mergedRows) {
-  const cat = AGG_CATEGORIES.find((c) => c.key === categoryKey) || AGG_CATEGORIES[0];
-  const base = AGG_FILTER_MAP[cat.id] || [];
+  const cat = aggCategoryByKey(categoryKey);
+  const base = AGG_FILTER_MAP[cat.id] || AGG_FILTER_MAP[filterSchemaCategoryKey(cat.key)] || [];
   const items = (mergedRows || []).map((x) => x && (x.best || x)).filter(Boolean);
   if (!items.length) return base;
   const out = [];
@@ -855,11 +954,17 @@ function dynamicAggFiltersFor(categoryKey, mergedRows) {
 function aggFiltersForResponse(activeCategoryKey = '', mergedRows = []) {
   const map = { ...AGG_FILTER_MAP };
   if (activeCategoryKey) {
-    const cat = AGG_CATEGORIES.find((c) => c.key === activeCategoryKey);
+    const cat = aggCategoryByKey(activeCategoryKey);
     if (cat) {
       const filters = dynamicAggFiltersFor(cat.key, mergedRows);
       map[cat.id] = filters;
       map[cat.key] = filters;
+      for (const canonicalKey of canonicalKeysForCategory(cat)) {
+        const canonical = AGG_CATEGORIES.find((c) => c.key === canonicalKey);
+        if (!canonical) continue;
+        map[canonical.id] = filters;
+        map[canonical.key] = filters;
+      }
     }
   }
   return map;
@@ -892,11 +997,12 @@ async function getSourceClassInfo(source) {
     const got = await fetchCmsJsonByParams(source, {}, 6500);
     const classes = Array.isArray(got.data?.class) ? got.data.class.filter((x) => !isInvalidCmsClass(x)).map(cleanCmsClass) : [];
     const byId = Object.fromEntries(classes.map((c) => [String(c.type_id), c.type_name]));
-    const data = { classes, byId };
+    const categoryMap = sourceCategoryMapFromClasses(classes);
+    const data = { classes, byId, categoryMap };
     classCache.set(source.slug, { ts: now, data });
     return data;
   } catch {
-    const data = { classes: [], byId: {} };
+    const data = { classes: [], byId: {}, categoryMap: {} };
     classCache.set(source.slug, { ts: now, data });
     return data;
   }
@@ -1044,8 +1150,9 @@ function durationMatches(item, wanted) {
   if (v === '\u957f\u89c6\u9891') return form !== '\u77ed\u89c6\u9891';
   return true;
 }
-function aggItemMatches(item, categoryKey, filters) {
-  if (categoryKey !== 'recommend' && item._macro !== categoryKey) return false;
+function aggItemMatches(item, categoryOrKey, filters) {
+  const category = typeof categoryOrKey === 'string' ? aggCategoryByKey(categoryOrKey) : (categoryOrKey || AGG_CATEGORIES[0]);
+  if (category.key !== 'recommend' && !categoryMatchesPrimary(category, item.primary_category || item._macro)) return false;
   if (!aggYearMatches(item, filters.year)) return false;
   if (!areaMatches(item, filters.area)) return false;
   if (!classGroupMatchesText(filters.lang, [item.vod_lang, item.vod_name, item.vod_remarks].join(' '))) return false;
@@ -1067,13 +1174,43 @@ function aggItemMatches(item, categoryKey, filters) {
   return true;
 }
 function aggDedupKey(item) {
+  if (String(item?.canonical_id || '').trim()) return String(item.canonical_id).trim();
   const title = normalizeVodTitle(item.vod_name) || String(item.vod_name || '').trim().toLowerCase() || String(item.vod_id || '');
-  return [title, dedupYearForVod(item), item._macro || ''].join('|');
+  const creator = normalizeVodTitle([item?.vod_actor, item?.vod_director].filter(Boolean).join('/'));
+  return [title, dedupYearForVod(item), creator].join('|');
+}
+function episodeNumberFromText(value) {
+  const text = String(value || '');
+  const matches = [...text.matchAll(/(?:\u66f4\u65b0\u81f3|\u66f4\u65b0|\u5168|\u7b2c)?\s*(\d{1,4})\s*\u96c6/g)];
+  return matches.reduce((max, match) => Math.max(max, Number(match[1]) || 0), 0);
+}
+function episodeInfoForVod(item) {
+  const episodeCount = Number(String(item?.vod_total || '').match(/\d{1,4}/)?.[0] || 0) || episodeNumberFromText(item?.vod_remarks);
+  const latestEpisode = Math.max(
+    episodeNumberFromText(item?.vod_serial),
+    episodeNumberFromText(item?.vod_remarks),
+    episodeNumberFromText(item?.vod_name),
+    episodeCount,
+  );
+  return { episodeCount, latestEpisode, episodeDuration: String(item?.vod_duration || '').trim() };
+}
+function sourceCandidateForVod(item) {
+  return { source: item?._sourceSlug || '', id: String(item?.vod_id || '').trim(), updated_at: item?.vod_time || item?.vod_time_add || item?.vod_pubdate || '' };
+}
+function playLinesForVod(item) {
+  const from = String(item?.vod_play_from || '').split('$$$');
+  const urls = String(item?.vod_play_url || '').split('$$$');
+  const out = [];
+  for (let i = 0; i < urls.length; i++) {
+    for (const ep of splitCmsEpisodes(urls[i])) out.push({ source: item?._sourceSlug || '', name: from[i] || ep.name || '\u9ad8\u6e05', url: ep.url });
+  }
+  return out;
 }
 function aggListItemFromMerged(m) {
   const best = m.best;
   const cat = AGG_CATEGORIES.find((c) => c.key === best._macro) || AGG_CATEGORIES[0];
   const form = contentFormForItem(best);
+  const episodeInfo = episodeInfoForVod(best);
   const lineText = m.candidates.length > 1 ? `${best.vod_remarks || ''} \u00b7 ${m.candidates.length}\u7ebf` : (best.vod_remarks || '');
   const semanticTags = [...new Set([
     ...(String(best.semantic_tags || '').split(/[,\s|/]+/).filter(Boolean)),
@@ -1089,6 +1226,8 @@ function aggListItemFromMerged(m) {
   ].filter(Boolean).map((x) => cleanCmsText(x, 40)).filter(Boolean))].join(' ');
   return {
     vod_id: 'agg_' + b64urlEncode(JSON.stringify(m.candidates.slice(0, AGG_DETAIL_LIMIT).map((c) => ({ s: c._sourceSlug, id: c.vod_id })))),
+    canonical_id: best.canonical_id || aggDedupKey(best),
+    primary_category: best.primary_category || best._macro || '',
     vod_name: best.vod_name,
     vod_pic: best.vod_pic || '',
     type_id: cat.id,
@@ -1101,12 +1240,28 @@ function aggListItemFromMerged(m) {
     vod_lang: cleanCmsText(best.vod_lang || '', 40),
     vod_actor: cleanCmsText(best.vod_actor || '', 120),
     vod_director: cleanCmsText(best.vod_director || '', 80),
+    vod_time: best.vod_time || '',
+    vod_time_add: best.vod_time_add || '',
+    vod_pubdate: best.vod_pubdate || '',
+    vod_total: best.vod_total || '',
+    vod_serial: best.vod_serial || '',
+    vod_duration: best.vod_duration || '',
+    episode_count: episodeInfo.episodeCount,
+    latest_episode: episodeInfo.latestEpisode,
+    episode_duration: episodeInfo.episodeDuration,
+    source_updated_at: best.vod_time || best.vod_time_add || best.vod_pubdate || '',
+    source_candidates: m.candidates.map(sourceCandidateForVod).filter((x) => x.source && x.id),
+    play_lines: m.candidates.flatMap(playLinesForVod),
+    classification_confidence: Number(best.classification_confidence || 0),
+    classification_evidence: best.classification_evidence || [],
     semantic_tags: semanticTags,
     snapshot_filter_evidence: best.snapshot_filter_evidence || '',
   };
 }
 
 function betterAggItem(a, b) {
+  const ca = Number(a.classification_confidence || 0), cb = Number(b.classification_confidence || 0);
+  if (ca !== cb) return ca > cb ? a : b;
   const qa = aggQualityRank(a), qb = aggQualityRank(b);
   if (qa !== qb) return qa > qb ? a : b;
   const sa = SOURCE_RANK[a._sourceSlug] || 0, sb = SOURCE_RANK[b._sourceSlug] || 0;
@@ -1116,12 +1271,18 @@ function betterAggItem(a, b) {
 function mergeAggItems(items) {
   const map = new Map();
   for (const item of items) {
-    const key = aggDedupKey(item);
-    const old = map.get(key);
-    if (!old) map.set(key, { best: item, candidates: [item] });
-    else { if (!old.candidates.some((c) => c._sourceSlug === item._sourceSlug && String(c.vod_id) === String(item.vod_id))) old.candidates.push(item); old.best = betterAggItem(old.best, item); }
+    const key = hotCanonicalKey(item) || aggDedupKey(item);
+    const bucket = map.get(key) || [];
+    const old = bucket.find((entry) => rowsIdentityCompatible(entry.best, item));
+    if (!old) {
+      bucket.push({ best: item, candidates: [item] });
+      map.set(key, bucket);
+    } else {
+      if (!old.candidates.some((c) => c._sourceSlug === item._sourceSlug && String(c.vod_id) === String(item.vod_id))) old.candidates.push(item);
+      old.best = betterAggItem(old.best, item);
+    }
   }
-  return [...map.values()];
+  return [...map.values()].flat();
 }
 const SEARCH_KNOWLEDGE = [
   { title: '\u5929\u9053', aliases: ['\u9065\u8fdc\u7684\u6551\u4e16\u4e3b'], actors: ['\u738b\u5fd7\u6587', '\u5de6\u5c0f\u9752'], year: '2008', category: 'tv' },
@@ -1208,7 +1369,9 @@ function searchTermsForCategory(categoryKey, filters) {
   }
   return [];
 }
-async function collectAggListFromSource(source, categoryKey, filters, page, wd) {
+async function collectAggListFromSource(source, categoryOrKey, filters, page, wd, options = {}) {
+  const category = typeof categoryOrKey === 'string' ? aggCategoryByKey(categoryOrKey) : (categoryOrKey || AGG_CATEGORIES[0]);
+  const categoryKey = category.key;
   const sourceInfo = await getSourceClassInfo(source);
   const baseParams = { ac: 'videolist', pg: page };
   if (wd) baseParams.wd = wd;
@@ -1228,23 +1391,31 @@ async function collectAggListFromSource(source, categoryKey, filters, page, wd) 
   const jobs = uniqReqs.map((params) => fetchCmsJsonByParams(source, params, 7500).then((value) => ({ params, value })));
   const got = await Promise.allSettled(jobs);
   const rows = [];
+  let sourceOk = false;
   for (const r of got) {
     if (r.status !== 'fulfilled' || !r.value.value.ok) continue;
+    sourceOk = true;
     const requestTypeId = String(r.value.params.t || '');
     const requestClassName = requestTypeId ? cleanCmsText(sourceInfo.byId[requestTypeId] || '', 40) : '';
     const cleaned = cleanCmsResult(r.value.value.data, false);
     for (const raw of cleaned.list || []) {
       const typeId = String(raw.type_id || raw.type || '');
       const className = cleanCmsText(raw.type_name || sourceInfo.byId[typeId] || requestClassName || '', 40);
-      let macro = macroForItem(raw, className);
-      if (!macro && requestTypeId && categoryKey !== 'recommend') macro = categoryKey;
-      if (!macro && categoryKey === 'recommend') macro = macroForItem(raw, className) || 'movie';
-      if (!macro) continue;
-      const item = { ...raw, type_name: className || raw.type_name || '', _className: className, _macro: macro, _sourceSlug: source.slug, _sourceShort: source.short };
-      if (aggItemMatches(item, categoryKey, filters)) rows.push(item);
+      let item = normalizeAggContentItem({
+        ...raw,
+        type_id: typeId || requestTypeId,
+        source_category_id: typeId || requestTypeId,
+        source_category_name: className,
+      }, className, sourceInfo.categoryMap || {});
+      if (item.primary_category === 'recommend' && requestTypeId && categoryKey !== 'recommend') {
+        const primary = fallbackPrimaryForCategory(category);
+        item = { ...item, primary_category: primary, _macro: primary };
+      }
+      item = { ...item, type_name: className || raw.type_name || '', _className: className, _sourceSlug: source.slug, _sourceShort: source.short };
+      if (aggItemMatches(item, category, filters)) rows.push(item);
     }
   }
-  return rows;
+  return options.withStatus ? { source, sourceOk, rows } : rows;
 }
 function decodeAggCandidates(id) {
   const raw = String(id || '').trim();
@@ -1387,8 +1558,10 @@ function snapshotListItemMatches(item, key, value) {
   return true;
 }
 function snapshotDedupKey(item) {
+  if (String(item?.canonical_id || '').trim()) return String(item.canonical_id).trim();
   const title = normalizeVodTitle(item?.vod_name) || String(item?.vod_name || '').trim().toLowerCase() || String(item?.vod_id || '');
-  return [title, dedupYearForVod(item), item?.type_name || ''].join('|');
+  const creator = normalizeVodTitle([item?.vod_actor, item?.vod_director].filter(Boolean).join('/'));
+  return [title, dedupYearForVod(item), creator].join('|');
 }
 function betterSnapshotItem(a, b) {
   const qa = aggQualityRank(a), qb = aggQualityRank(b);
@@ -1451,7 +1624,32 @@ function snapshotGeneratedTime(manifest) {
   return 0;
 }
 function isValidSnapshotPayload(value) {
-  return Boolean(value && (value.code === 1 || value.ok !== false || value.version || value.generatedAt));
+  return Boolean(value && typeof value === 'object' && (
+    value.code === 1
+    || value.ok === true
+    || String(value.version || '').trim()
+    || String(value.generatedAt || '').trim()
+  ));
+}
+export function isValidSnapshotManifest(manifest) {
+  if (!manifest || typeof manifest !== 'object' || manifest.ok !== true) return false;
+  const revision = String(manifest.content_revision || manifest.revision || '').trim();
+  if (!revision || !snapshotGeneratedTime(manifest)) return false;
+  const categories = Array.isArray(manifest.categories) ? manifest.categories : [];
+  const expectedNames = new Set(AGG_CATEGORIES.map((category) => category.name));
+  if (categories.length !== expectedNames.size) return false;
+  const seenNames = new Set();
+  for (const category of categories) {
+    const name = String(category?.type_name || category?.name || '').trim();
+    if (!expectedNames.has(name) || seenNames.has(name)) return false;
+    seenNames.add(name);
+    const total = Number(category?.total ?? category?.count ?? 0);
+    if (category?.visible === false || total < 1) return false;
+  }
+  if (seenNames.size !== AGG_CATEGORIES.length) return false;
+  const fullRevision = String(manifest.variants?.full?.revision || revision).trim();
+  const cleanRevision = String(manifest.variants?.clean?.revision || revision).trim();
+  return fullRevision === revision && cleanRevision === revision;
 }
 function isFreshSnapshotManifest(manifest, now = Date.now()) {
   const t = snapshotGeneratedTime(manifest);
@@ -1461,6 +1659,15 @@ async function fetchSnapshotCandidate(base, relPath) {
   const url = snapshotUrl(base, relPath);
   const got = await fetchJsonWithTimeout(url, SNAPSHOT_FETCH_TIMEOUT_MS);
   return isValidSnapshotPayload(got) ? { data: got, base, url } : null;
+}
+function previousSnapshotBase(base) {
+  const value = String(base || '').replace(/\/+$/, '');
+  if (!value) return '';
+  if (/\/snapshot\/latest$/i.test(value)) return value.replace(/\/snapshot\/latest$/i, '/snapshot/previous');
+  return '';
+}
+function previousSnapshotBases(env) {
+  return [...new Set(snapshotBases(env).map(previousSnapshotBase).filter(Boolean))];
 }
 function kvBinding(env) {
   return env?.TVBOX_KV || env?.KV || null;
@@ -1485,11 +1692,62 @@ async function writeJsonKv(env, key, value, ttlSeconds = 604800) {
     return false;
   }
 }
+async function readHotCatalogPackage(env) {
+  const pointer = await readJsonKv(env, HOT_ACTIVE_KV_KEY);
+  const packageKeys = [pointer?.package_key, ...(pointer?.previous_keys || [])].filter(Boolean);
+  for (const key of packageKeys) {
+    const packageData = await readJsonKv(env, key);
+    if (packageData && Array.isArray(packageData.rows)) return { ...packageData, pointer };
+  }
+  return null;
+}
+function hotRowCategoryMatches(row, category) {
+  if (!category) return true;
+  if (category.key === 'recommend') return true;
+  const wanted = category.canonicalKeys || [category.key];
+  const actual = String(row?.primary_category || row?._macro || row?.type_name || '').trim();
+  if (wanted.includes(actual)) return true;
+  if (actual === 'theatrical_movie' || actual === 'web_movie' || actual === 'other_movie') return wanted.includes('movie');
+  if (actual === 'tv_series' || actual === 'web_series') return wanted.includes('tv');
+  if (actual === 'web_short') return wanted.includes('short');
+  return false;
+}
+function hotRowsForRequest(packageData, category, wd, filters) {
+  const rows = Array.isArray(packageData?.rows) ? packageData.rows.filter((row) => hotRowCategoryMatches(row, category)) : [];
+  const variants = wd ? searchVariantsFor(wd) : [];
+  let filtered = variants.length ? variants.flatMap((query) => filterHotRows(rows, { query })) : rows;
+  const seen = new Set();
+  filtered = filtered.filter((row) => {
+    const key = String(row?.canonical_id || row?.vod_id || row?.vod_name || '');
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  for (const [key, value] of snapshotFilterEntries(filters)) filtered = filtered.filter((row) => snapshotListItemMatches(row, key, value));
+  return filtered;
+}
+async function hotKvOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload) {
+  const packageData = await readHotCatalogPackage(env);
+  if (!packageData?.rows?.length) return null;
+  const rows = hotRowsForRequest(packageData, category, wd, filters);
+  if (!rows.length) return null;
+  const base = snapshotPayload || { code: 1, msg: 'ok', page: 1, pagecount: 1, limit: SNAPSHOT_PACK_LIMIT, class: aggClasses(category.key, rows, {}) };
+  const baseList = Array.isArray(base.list) ? base.list : [];
+  const merged = mergeHotAndSnapshotLists(rows, baseList, filters, wd ? buildSearchContext(wd) : null);
+  return snapshotApplyListPaging(base, merged.list, page, limit, 'kv-hot-overlay', {
+    hot_kv_available: true,
+    hot_kv_revision: packageData.revision || packageData.pointer?.revision || '',
+    hot_kv_content_changed_at: packageData.content_changed_at || packageData.pointer?.content_changed_at || '',
+    hot_rows_used: rows.length,
+    hot_overlay_applied: true,
+    hot_duplicate_removed: merged.duplicateRemoved,
+  });
+}
 async function readLastGoodSnapshotManifest(env) {
   const saved = await readJsonKv(env, SNAPSHOT_LAST_GOOD_KV_KEY);
   if (!saved) return null;
   const manifest = saved.manifest || saved;
-  return isValidSnapshotPayload(manifest) ? { data: manifest, base: saved.base || manifest.__snapshotBase || '', url: saved.url || '' } : null;
+  return isValidSnapshotManifest(manifest) ? { data: manifest, base: saved.base || manifest.__snapshotBase || '', url: saved.url || '' } : null;
 }
 async function writeLastGoodSnapshotManifest(env, candidate) {
   if (!candidate?.data) return false;
@@ -1505,7 +1763,7 @@ async function fetchLatestSnapshotManifest(env) {
   const candidates = [];
   for (const base of snapshotBases(env)) {
     const candidate = await fetchSnapshotCandidate(base, 'manifest.json');
-    if (candidate?.data) candidates.push(candidate);
+    if (candidate?.data && isValidSnapshotManifest(candidate.data)) candidates.push(candidate);
   }
   candidates.sort((a, b) => snapshotGeneratedTime(b.data) - snapshotGeneratedTime(a.data));
   const fresh = candidates.find((c) => isFreshSnapshotManifest(c.data, now));
@@ -1516,6 +1774,26 @@ async function fetchLatestSnapshotManifest(env) {
     return value;
   }
 
+  if (candidates[0]?.data) {
+    const newest = candidates[0];
+    const value = { ...newest.data, __snapshotBase: newest.base, __snapshotUrl: newest.url, __snapshotFresh: false, __snapshotStale: true };
+    snapshotMemoryCache.set(cacheKey, { t: now, v: value, source: newest.url });
+    return value;
+  }
+
+  const previousCandidates = [];
+  for (const base of previousSnapshotBases(env)) {
+    const candidate = await fetchSnapshotCandidate(base, 'manifest.json');
+    if (candidate?.data && isValidSnapshotManifest(candidate.data)) previousCandidates.push(candidate);
+  }
+  previousCandidates.sort((a, b) => snapshotGeneratedTime(b.data) - snapshotGeneratedTime(a.data));
+  if (previousCandidates[0]?.data) {
+    const previous = previousCandidates[0];
+    const value = { ...previous.data, __snapshotBase: previous.base, __snapshotUrl: previous.url, __snapshotFresh: false, __snapshotFromPrevious: true };
+    snapshotMemoryCache.set(cacheKey, { t: now, v: value, source: previous.url });
+    return value;
+  }
+
   const lastGood = await readLastGoodSnapshotManifest(env);
   if (lastGood?.data) {
     const value = { ...lastGood.data, __snapshotBase: lastGood.base || lastGood.data.__snapshotBase || '', __snapshotUrl: lastGood.url || lastGood.data.__snapshotUrl || '', __snapshotFresh: isFreshSnapshotManifest(lastGood.data, now), __snapshotFromLastGood: true };
@@ -1523,12 +1801,6 @@ async function fetchLatestSnapshotManifest(env) {
     return value;
   }
 
-  const newest = candidates[0];
-  if (newest?.data) {
-    const value = { ...newest.data, __snapshotBase: newest.base, __snapshotUrl: newest.url, __snapshotFresh: false, __snapshotStaleRejected: true };
-    snapshotMemoryCache.set(cacheKey, { t: now, v: null, source: newest.url });
-    return null;
-  }
   snapshotMemoryCache.set(cacheKey, { t: now, v: null, source: '' });
   return null;
 }
@@ -1586,16 +1858,16 @@ function mergeHotAndSnapshotLists(hotList, snapshotList, filters, searchContext 
   const hot = Array.isArray(hotList) ? hotList : [];
   const snapshot = Array.isArray(snapshotList) ? snapshotList : [];
   const combined = [...hot, ...snapshot];
-  const map = new Map();
-  for (const item of combined) {
-    const key = snapshotDedupKey(item);
-    if (!map.has(key)) map.set(key, item);
-  }
-  const list = [...map.values()];
-  if (searchContext) list.sort((a, b) => searchScoreItem(b, searchContext) - searchScoreItem(a, searchContext) || Number(hot.includes(b)) - Number(hot.includes(a)) || compareDisplayName(a.vod_name, b.vod_name));
+  const list = mergeHotRows(combined).rows;
+  const hotKeys = new Set(hot.map((item) => hotCanonicalKey(item)).filter(Boolean));
+  const isHot = (item) => hotKeys.has(hotCanonicalKey(item));
+  if (searchContext) list.sort((a, b) => searchScoreItem(b, searchContext) - searchScoreItem(a, searchContext) || Number(isHot(b)) - Number(isHot(a)) || compareDisplayName(a.vod_name, b.vod_name));
+  else list.sort((a, b) => Number(isHot(b)) - Number(isHot(a)) || compareDisplayName(a.vod_name, b.vod_name));
   return { list, duplicateRemoved: combined.length - list.length, hotRowsUsed: hot.length };
 }
 async function hotOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload) {
+  const kvOverlay = await hotKvOverlayForSnapshot(env, category, page, limit, wd, filters, snapshotPayload);
+  if (kvOverlay) return kvOverlay;
   const manifest = await fetchHotJson(env, 'manifest.json');
   if (!manifest?.__hotFresh) return snapshotPayload;
   let hotPayload = null;
@@ -1658,6 +1930,28 @@ async function fetchSnapshotJson(env, relPath) {
   }
   return null;
 }
+function normalizeRuntimeSources(payload) {
+  const rows = Array.isArray(payload?.rows) ? payload.rows : [];
+  const allowedByPhysicalKey = new Map(HOT_REFRESH_SOURCES.map((source) => [source.physicalSourceKey, source]));
+  const selected = new Map();
+  for (const row of rows) {
+    if (String(row?.status || '').toUpperCase() !== 'ACTIVE') continue;
+    const slug = String(row?.slug || '').trim().toLowerCase();
+    const api = String(row?.api || '').trim();
+    if (!slug || !/^https?:\/\//i.test(api)) continue;
+    let physicalKey = '';
+    try { physicalKey = new URL(api).hostname.toLowerCase().replace(/^www\./, ''); } catch { continue; }
+    const allowed = allowedByPhysicalKey.get(physicalKey);
+    if (!allowed || allowed.slug !== slug || selected.has(physicalKey)) continue;
+    selected.set(physicalKey, allowed);
+  }
+  return [...selected.values()];
+}
+async function runtimeCmsSources(env) {
+  const payload = await fetchSnapshotJson(env, 'sources.json');
+  const sources = normalizeRuntimeSources(payload);
+  return sources.length === HOT_REFRESH_SOURCES.length ? sources : HOT_REFRESH_SOURCES;
+}
 async function fetchSnapshotPacks(env, pathForPage, page, limit) {
   const meta = snapshotPackPagesForRequest(page, limit);
   const packs = [];
@@ -1702,9 +1996,11 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
     if (packs && packs[0]?.list?.length) {
       if (hasExplicitSnapshotSort(filters)) {
         const sorted = sortSnapshotList(packs.flatMap((p) => Array.isArray(p.list) ? p.list : []), filters);
-        return snapshotApplyListPaging(packs[0], sorted, page, limit, 'filter-pack-sort', { snapshot_filter: { key, value } });
+        const filteredPayload = snapshotApplyListPaging(packs[0], sorted, page, limit, 'filter-pack-sort', { snapshot_filter: { key, value } });
+        return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload);
       }
-      return snapshotApplyPaging(packs[0], packs, page, limit, 'filter-pack', { snapshot_filter: { key, value } });
+      const filteredPayload = snapshotApplyPaging(packs[0], packs, page, limit, 'filter-pack', { snapshot_filter: { key, value } });
+      return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload);
     }
   }
 
@@ -1738,7 +2034,8 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
   filtered = sortSnapshotList(filtered, filters);
   if (!filtered.length) return null;
   const first = { ...basePacks[0], total: filtered.length, list: filtered };
-  return snapshotApplyListPaging(first, filtered, page, limit, 'catalog-local-filter', { snapshot_filter: Object.fromEntries(entries), root_cause: 'SNAPSHOT_MISS' });
+  const filteredPayload = snapshotApplyListPaging(first, filtered, page, limit, 'catalog-local-filter', { snapshot_filter: Object.fromEntries(entries), root_cause: 'SNAPSHOT_MISS' });
+  return hotOverlayForSnapshot(env, category, page, limit, wd, filters, filteredPayload);
 }
 function v73Mirrors(origin) {
   return [
@@ -1777,17 +2074,18 @@ async function statusV73(request, env, ctx) {
     visibleUpdateSource: updateInfo.source,
     visibleUpdateAt: updateInfo.at,
     hotUpdate: hotUpdate ? { ok: true, generatedAt: hotUpdate.at, visibleUpdateText: hotUpdate.visibleUpdateText, source: hotUpdate.source, probe: hotUpdate.probe } : { ok: false },
-    interactionRefresh: { enabled: true, trigger: 'config/list/search/detail/status when hot probe is stale or missing', minIntervalMinutes: Math.round(HOT_INTERACTION_PROBE_MIN_INTERVAL_MS / 60000), maxFallbackWritesPerDay: HOT_INTERACTION_PROBE_MAX_DAILY_WRITES, scheduled: interactionHotProbeScheduled },
+    interactionRefresh: { enabled: true, trigger: 'config/list/search/detail/status when hot probe is stale or missing', minIntervalMinutes: Math.round(HOT_INTERACTION_PROBE_MIN_INTERVAL_MS / 60000), maxFallbackWritesPerDay: HOT_INTERACTION_PROBE_MAX_DAILY_WRITES, scheduled: interactionHotProbeScheduled, persistenceSlotMinutes: HOT_UPDATE_TARGET_MINUTES },
     coverageSummary: manifest?.coverageSummary || null,
     sourceSummary: manifest?.sourceSummary || null,
     snapshot: { available: Boolean(manifest), manifest: manifest || null, bases: snapshotBases(env) },
     hotOverlay: { available: Boolean(await fetchHotJson(env, 'manifest.json')), bases: hotBases(env), freshnessMs: HOT_SNAPSHOT_FRESH_MS },
     liveDelivery: liveDeliveryPolicy(origin),
-    fallbackOrder: ['worker-memory-cache', 'cloudflare-pages-snapshot', 'github-pages-snapshot', 'last-known-good-snapshot', 'dynamic-cms-aggregate', 'maintenance-status'],
+    fallbackOrder: ['worker-memory-cache', 'kv-hot-package', 'cloudflare-pages-snapshot', 'github-snapshot-branch', 'last-known-good-snapshot', 'bounded-dynamic-cms-aggregate', 'maintenance-status'],
     updateCadence: {
-      target: 'hot probe <= 2 minutes by Cloudflare Cron, interaction fallback <= 15 minutes when app traffic exists, hot visible guard <= 6 minutes, visible label memory <= 15 seconds, static snapshots <= 6 hours by GitHub Actions, config/agg entry no-store, worker snapshot memory cache <= 5 minutes',
+      target: 'content refresh target <= 5 minutes by Cloudflare Cron, interaction fallback when hot state is stale, P95 visible guard <= 10 minutes, visible label memory <= 15 seconds, static snapshots <= 6 hours by GitHub Actions, config no-cache with ETag, aggregate edge cache 60 seconds, worker snapshot memory cache <= 5 minutes',
       hotProbeTargetMinutes: HOT_UPDATE_TARGET_MINUTES,
       hotProbeFreshGuardMinutes: HOT_UPDATE_FRESH_GUARD_MINUTES,
+      hotHealthHeartbeatMinutes: HOT_HEALTH_HEARTBEAT_MINUTES,
       currentVisibleText: updateInfo.visibleUpdateText,
       freshDiagnostic: origin + '/status.json?fresh=1',
     },
@@ -1804,9 +2102,10 @@ async function snapshotV73(request, env) {
   return json({ ok: Boolean(manifest), version: VERSION, manifest: manifest || null, categories: categories || null, bases: snapshotBases(env) }, manifest ? 120 : 30, 200);
 }
 
-async function resolveAggDetailCandidates(candidates) {
+async function resolveAggDetailCandidates(candidates, sources = CMS_SOURCES) {
+  const sourceMap = new Map([...CMS_SOURCES, ...(sources || [])].map((source) => [source.slug, source]));
   const tasks = candidates.slice(0, AGG_DETAIL_LIMIT).map(async (c) => {
-    const source = cmsSourceBySlug(c.s);
+    const source = sourceMap.get(c.s) || cmsSourceBySlug(c.s);
     if (!source) return null;
     try {
       const attempts = [
@@ -1828,7 +2127,7 @@ async function resolveAggDetailCandidates(candidates) {
     .filter(Boolean)
     .sort((a, b) => detailSourceScore(b) - detailSourceScore(a) || (SOURCE_RANK[b.source.slug] || 0) - (SOURCE_RANK[a.source.slug] || 0));
 }
-async function expandAggDetailCandidatesByTitle(resolved, candidates) {
+async function expandAggDetailCandidatesByTitle(resolved, candidates, sources = CMS_SOURCES) {
   if (!resolved.length || candidates.length >= 3) return candidates;
   const bestScore = Math.max(...resolved.map((row) => detailSourceScore(row)));
   const firstPlayable = firstPlayableUrlFromVod(resolved[0]?.vod);
@@ -1841,7 +2140,7 @@ async function expandAggDetailCandidatesByTitle(resolved, candidates) {
   if (cached) return cached;
   const seen = new Set(candidates.map((c) => c.s + ':' + c.id));
   const rows = [];
-  const tasks = CMS_SOURCES.map((source) => collectAggListFromSource(source, 'recommend', {}, 1, firstTitle).catch(() => []));
+  const tasks = sources.map((source) => collectAggListFromSource(source, 'recommend', {}, 1, firstTitle).catch(() => []));
   for (const r of await Promise.allSettled(tasks)) if (r.status === 'fulfilled') rows.push(...r.value);
   const extra = [];
   for (const row of rows) {
@@ -1857,18 +2156,27 @@ async function expandAggDetailCandidatesByTitle(resolved, candidates) {
   detailExpansionCache.set(normalized, expanded);
   return expanded;
 }
-async function aggDetail(request, env, ids, policy = {}) {
+async function aggDetail(request, env, ids, policy = {}, diagnostics = {}) {
   const idList = String(ids || '').split(',').map((x) => x.trim()).filter(Boolean);
   const candidates = [];
   for (const id of idList) candidates.push(...decodeAggCandidates(id));
   const unique = [];
   const seen = new Set();
   for (const c of candidates) { const key = c.s + ':' + c.id; if (!seen.has(key)) { seen.add(key); unique.push(c); } }
-  let resolved = await resolveAggDetailCandidates(unique);
-  const expandedUnique = await expandAggDetailCandidatesByTitle(resolved, unique);
-  if (expandedUnique.length > unique.length) resolved = await resolveAggDetailCandidates(expandedUnique);
+  const detailSources = await runtimeCmsSources(env);
+  let resolved = await resolveAggDetailCandidates(unique, detailSources);
+  const expandedUnique = await expandAggDetailCandidatesByTitle(resolved, unique, detailSources);
+  if (expandedUnique.length > unique.length) resolved = await resolveAggDetailCandidates(expandedUnique, detailSources);
   if (policy.includeAdult === false) resolved = resolved.filter(({ vod }) => !isAdultAggRecord({ ...vod, _macro: macroForTypeName(vod?.type_name || '') }));
-  if (!resolved.length) return json({ code: 1, msg: 'no valid direct play url', list: [] }, 60);
+  if (!resolved.length) {
+    const empty = stampAggDiagnostics({ code: 1, msg: 'no valid direct play url', list: [] }, {
+      ...diagnostics,
+      sourceQuorum: { required: Math.ceil(Math.max(1, candidates.length) * 0.6), succeeded: 0, total: candidates.length, ratio: 0, basis: 'detail-candidates' },
+      degraded: true,
+      fallbackLevel: 'bounded-dynamic-detail',
+    });
+    return json(sanitizeAggResponseForPolicy(empty, policy), 0, 200, revalidatedEdgeHeaders(300));
+  }
   const first = resolved[0].vod;
   const playFrom = [], playUrl = [], urlSeen = new Set();
   for (const { source, vod } of resolved) {
@@ -1882,10 +2190,16 @@ async function aggDetail(request, env, ids, policy = {}) {
     }
   }
   const typeName = cleanCmsText(first.type_name || '', 30);
-  const macro = macroForTypeName(typeName);
-  const cat = AGG_CATEGORIES.find((c) => c.key === macro) || AGG_CATEGORIES[0];
-  const payload = { code: 1, msg: 'ok', list: [{ ...first, type_id: cat.id, type_name: cat.name, vod_name: cleanAggName(first.vod_name, 120), vod_year: first.vod_year || extractYearFromVod(first), vod_remarks: cleanAggName(first.vod_remarks || `${playFrom.length}\u7ebf`, 80), vod_content: cleanCmsText(first.vod_content || '\u5df2\u805a\u5408\u591a\u8def\u53ef\u64ad\u653e\u76f4\u8fde\uff0c\u81ea\u52a8\u8fc7\u6ee4\u5e7f\u544a\u3001\u89e3\u6790\u9875\u548c\u65e0\u6548\u64ad\u653e\u5730\u5740\u3002', 800), vod_play_from: playFrom.join('$$$'), vod_play_url: playUrl.join('$$$') }] };
-  return json(sanitizeAggResponseForPolicy(payload, policy), 120);
+  const modeled = normalizeAggContentItem(first, typeName, {});
+  const cat = AGG_CATEGORIES.find((c) => c.key === modeled.primary_category) || AGG_CATEGORIES[0];
+  const payload = stampAggDiagnostics({ code: 1, msg: 'ok', list: [{ ...first, canonical_id: modeled.canonical_id, primary_category: modeled.primary_category, classification_confidence: modeled.classification_confidence, classification_evidence: modeled.classification_evidence, type_id: cat.id, type_name: cat.name, vod_name: cleanAggName(first.vod_name, 120), vod_year: first.vod_year || extractYearFromVod(first), vod_remarks: cleanAggName(first.vod_remarks || `${playFrom.length}\u7ebf`, 80), vod_content: cleanCmsText(first.vod_content || '\u5df2\u805a\u5408\u591a\u8def\u53ef\u64ad\u653e\u76f4\u8fde\uff0c\u81ea\u52a8\u8fc7\u6ee4\u5e7f\u544a\u3001\u89e3\u6790\u9875\u548c\u65e0\u6548\u64ad\u653e\u5730\u5740\u3002', 800), vod_play_from: playFrom.join('$$$'), vod_play_url: playUrl.join('$$$') }] }, {
+    ...diagnostics,
+    category: cat,
+    sourceQuorum: { required: Math.ceil(Math.max(1, candidates.length) * 0.6), succeeded: resolved.length, total: candidates.length, ratio: candidates.length ? Number((resolved.length / candidates.length).toFixed(4)) : 1, basis: 'detail-candidates' },
+    degraded: resolved.length < candidates.length,
+    fallbackLevel: 'bounded-dynamic-detail',
+  });
+  return json(sanitizeAggResponseForPolicy(payload, policy), 0, 200, revalidatedEdgeHeaders(300));
 }
 async function agg(request, env, policy = {}, ctx) {
   const url = new URL(request.url);
@@ -1897,7 +2211,7 @@ async function agg(request, env, policy = {}, ctx) {
   const ids = (params.get('ids') || params.get('id') || '').trim();
   if (ids) {
     scheduleInteractionHotProbe(request, env, ctx, updateInfo, 'agg-detail');
-    return aggDetail(request, env, ids, policy);
+    return aggDetail(request, env, ids, policy, { manifest, updateInfo });
   }
   const filters = parseAggFilters(params);
   let category = getAggCategoryParam(params);
@@ -1907,20 +2221,49 @@ async function agg(request, env, policy = {}, ctx) {
   const wd = (params.get('wd') || params.get('search') || params.get('q') || '').trim();
   scheduleInteractionHotProbe(request, env, ctx, updateInfo, wd ? 'agg-search' : 'agg-list');
   const snapshotHit = await snapshotAggResponse(request, env, category, page, limit, wd, params, filters);
-  if (snapshotHit) return json(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy(snapshotHit, policy), updateInfo), 0);
+  if (snapshotHit) {
+    const payload = stampAggDiagnostics(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy(snapshotHit, policy), updateInfo), {
+      manifest,
+      category,
+      updateInfo,
+      fallbackLevel: snapshotFallbackLevel(manifest, snapshotHit),
+    });
+    return json(payload, 0, 200, forceFresh ? {} : revalidatedEdgeHeaders(60));
+  }
   const sources = selectedSources(filters);
   const pagesToPull = [Math.max(1, page)];
   if (page === 1 && !wd) pagesToPull.push(2);
   const searchTerms = wd ? searchVariantsFor(wd) : [''];
   const tasks = [];
-  for (const source of sources) for (const pg of pagesToPull) for (const term of searchTerms) tasks.push(collectAggListFromSource(source, category.key, filters, pg, term));
+  for (const source of sources) for (const pg of pagesToPull) for (const term of searchTerms) tasks.push(collectAggListFromSource(source, category, filters, pg, term, { withStatus: true }));
   const settled = await Promise.allSettled(tasks);
   const rawItems = [];
-  for (const r of settled) if (r.status === 'fulfilled') rawItems.push(...r.value);
+  const successfulSources = new Set();
+  for (const r of settled) {
+    if (r.status !== 'fulfilled') continue;
+    if (r.value.sourceOk) successfulSources.add(r.value.source.slug);
+    rawItems.push(...r.value.rows);
+  }
   const merged = sortAggMerged(mergeAggItems(rawItems), filters, wd ? buildSearchContext(wd) : null);
   const p = pageList(merged.map(aggListItemFromMerged), page, limit);
   const responseFilters = aggFiltersForResponse(category.key, merged);
-  return json(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy({ code: 1, msg: 'ok', class: aggClasses(category.key, merged, policy), filters: responseFilters, page, pagecount: Math.max(page + (p.list.length >= limit ? 1 : 0), 1), limit, total: merged.length, list: p.list }, policy), updateInfo), 0);
+  const sourceQuorum = {
+    required: Math.ceil(sources.length * 0.6),
+    succeeded: successfulSources.size,
+    total: sources.length,
+    ratio: sources.length ? Number((successfulSources.size / sources.length).toFixed(4)) : 0,
+    basis: 'bounded-dynamic-aggregate',
+  };
+  const rootCause = merged.length ? 'OK' : (successfulSources.size < sourceQuorum.required ? 'API_ERROR' : 'SOURCE_COVERAGE_GAP');
+  const payload = stampAggDiagnostics(stampAggResponseWithUpdate(sanitizeAggResponseForPolicy({ code: 1, msg: merged.length ? 'ok' : 'maintenance fallback has no matching content', class: aggClasses(category.key, merged, policy), filters: responseFilters, page, pagecount: Math.max(page + (p.list.length >= limit ? 1 : 0), 1), limit, total: merged.length, list: p.list, root_cause: rootCause }, policy), updateInfo), {
+    manifest,
+    category,
+    updateInfo,
+    sourceQuorum,
+    degraded: successfulSources.size < sourceQuorum.required,
+    fallbackLevel: 'bounded-dynamic-aggregate',
+  });
+  return json(payload, 0, 200, forceFresh ? {} : revalidatedEdgeHeaders(60));
 }
 
 function formatChinaReverseUpdateCode(iso) {
@@ -1956,21 +2299,42 @@ function forceFreshFromRequest(request) {
     return false;
   }
 }
+function clockNowMs(env) {
+  const injected = typeof env?.__clock === 'function' ? Number(env.__clock()) : NaN;
+  return Number.isFinite(injected) ? injected : Date.now();
+}
 async function readHotUpdateInfo(env, options = {}) {
-  const now = Date.now();
-  if (!options.forceFresh && hotUpdateMemoryCache.v && now - hotUpdateMemoryCache.t < HOT_UPDATE_MEMORY_TTL_MS) return hotUpdateMemoryCache.v;
-  const raw = await readJsonKv(env, HOT_UPDATE_KV_KEY);
+  const now = clockNowMs(env);
+  const owner = kvBinding(env);
+  if (!options.forceFresh && hotUpdateMemoryCache.owner === owner && hotUpdateMemoryCache.v && now - hotUpdateMemoryCache.t < HOT_UPDATE_MEMORY_TTL_MS) return hotUpdateMemoryCache.v;
+  const [raw, pointer] = await Promise.all([
+    readJsonKv(env, HOT_UPDATE_KV_KEY),
+    readJsonKv(env, HOT_ACTIVE_KV_KEY),
+  ]);
   let value = null;
-  if (raw?.ok && raw.generatedAt) {
-    const info = updateInfoFromIso(raw.generatedAt, 'hot-probe');
-    if (info && now - info.time <= HOT_UPDATE_FRESH_MS) value = { ...info, probe: raw };
+  const candidates = [
+    raw?.ok ? { checkedAt: raw.checkedAt || raw.generatedAt, contentChangedAt: raw.contentChangedAt || raw.generatedAt, probe: raw } : null,
+    pointer?.ok ? { checkedAt: pointer.checked_at, contentChangedAt: pointer.content_changed_at, probe: pointer } : null,
+  ].filter(Boolean).map((candidate) => ({
+    ...candidate,
+    probeTime: Date.parse(candidate.checkedAt || ''),
+    visibleTime: Date.parse(candidate.contentChangedAt || ''),
+  })).filter((candidate) => Number.isFinite(candidate.probeTime))
+    .sort((left, right) => right.probeTime - left.probeTime);
+  const latest = candidates[0];
+  if (latest && now - latest.probeTime <= HOT_PROBE_STATE_MAX_AGE_MS) {
+    const visibleIso = Number.isFinite(latest.visibleTime) ? new Date(latest.visibleTime).toISOString() : '';
+    const info = visibleIso ? updateInfoFromIso(visibleIso, 'hot-probe') : null;
+    if (info) value = { ...info, probeTime: latest.probeTime, checkedAt: new Date(latest.probeTime).toISOString(), probe: latest.probe };
   }
   hotUpdateMemoryCache.t = now;
   hotUpdateMemoryCache.v = value;
+  hotUpdateMemoryCache.owner = owner;
   return value;
 }
 function hotProbeFreshEnough(info, now = Date.now()) {
-  return Boolean(info?.source === 'hot-probe' && Number.isFinite(info.time) && now - info.time <= HOT_UPDATE_FRESH_MS);
+  const probeTime = Number.isFinite(info?.probeTime) ? info.probeTime : info?.time;
+  return Boolean(info?.source === 'hot-probe' && Number.isFinite(probeTime) && now - probeTime <= HOT_PROBE_STATE_MAX_AGE_MS);
 }
 function interactionHotProbeReason(request, route = 'content') {
   try {
@@ -1989,9 +2353,9 @@ function interactionHotProbeReason(request, route = 'content') {
 }
 function scheduleInteractionHotProbe(request, env, ctx, updateInfo, route = 'content') {
   if (!ctx || typeof ctx.waitUntil !== 'function') return false;
-  const now = Date.now();
+  const now = clockNowMs(env);
   if (hotProbeFreshEnough(updateInfo, now)) return false;
-  if (hotInteractionProbeMemory.p && now - hotInteractionProbeMemory.t < HOT_INTERACTION_PROBE_MIN_INTERVAL_MS) return false;
+  if (!forceFreshFromRequest(request) && hotInteractionProbeMemory.p && now - hotInteractionProbeMemory.t < HOT_INTERACTION_PROBE_MIN_INTERVAL_MS) return false;
   const promise = runHotSourceProbe(env, interactionHotProbeReason(request, route)).catch((err) => ({ ok: false, reason: 'interaction-probe-error', generatedAt: new Date().toISOString(), error: String(err && err.message || err) }));
   hotInteractionProbeMemory.t = now;
   hotInteractionProbeMemory.p = promise;
@@ -2019,6 +2383,56 @@ function stampAggResponseWithUpdate(payload, info) {
   }
   return out;
 }
+function snapshotFallbackLevel(manifest, payload = {}) {
+  if (payload.hot_kv_available || payload.snapshot_mode === 'kv-hot-overlay') return 'kv-hot-package';
+  if (payload.hot_manifest_available || String(payload.snapshot_mode || '').startsWith('hot-')) return 'pages-hot-overlay';
+  if (manifest?.__snapshotFromPrevious) return 'previous-valid-snapshot';
+  if (manifest?.__snapshotStale) return 'stale-valid-snapshot';
+  if (manifest?.__snapshotFromLastGood) return 'last-valid-snapshot';
+  const base = String(manifest?.__snapshotBase || '');
+  if (base.includes('pages.dev')) return 'pages-snapshot';
+  if (base.includes('raw.githubusercontent.com')) return 'github-snapshot';
+  return 'snapshot';
+}
+function manifestCategoryUpdatedAt(manifest, category) {
+  const row = Array.isArray(manifest?.categories)
+    ? manifest.categories.find((item) => String(item?.type_id ?? item?.id) === String(category?.id) || String(item?.type_key ?? item?.key) === String(category?.key))
+    : null;
+  return row?.updatedAt || row?.updated_at || manifest?.sourceUpdatedAt || manifest?.content_changed_at || manifest?.generatedAt || '';
+}
+function snapshotSourceQuorum(manifest) {
+  const total = Number(manifest?.sourceSummary?.active || manifest?.sourceSummary?.candidateCount || 0);
+  return {
+    required: total ? Math.ceil(total * 0.6) : 0,
+    succeeded: total,
+    total,
+    ratio: total ? 1 : 0,
+    basis: 'validated-snapshot-release',
+  };
+}
+function stampAggDiagnostics(payload, options = {}) {
+  const manifest = options.manifest || null;
+  const category = options.category || null;
+  const updateInfo = options.updateInfo || null;
+  const contentRevision = payload?.content_revision
+    || payload?.hot_kv_revision
+    || manifest?.content_revision
+    || manifest?.revision
+    || '';
+  const contentChangedAt = payload?.hot_kv_content_changed_at
+    || manifest?.content_changed_at
+    || updateInfo?.at
+    || '';
+  return {
+    ...(payload || {}),
+    content_revision: contentRevision,
+    content_changed_at: contentChangedAt,
+    category_updated_at: options.categoryUpdatedAt || manifestCategoryUpdatedAt(manifest, category),
+    source_quorum: options.sourceQuorum || snapshotSourceQuorum(manifest),
+    degraded: Boolean(options.degraded ?? payload?.degraded ?? manifest?.degraded ?? false),
+    fallback_level: options.fallbackLevel || snapshotFallbackLevel(manifest, payload),
+  };
+}
 async function config(request, env, policy = {}, ctx) {
   const origin = new URL(request.url).origin;
   const forceFresh = forceFreshFromRequest(request);
@@ -2028,13 +2442,16 @@ async function config(request, env, policy = {}, ctx) {
   const updateText = updateInfo.visibleUpdateText;
   const clean = policy.includeAdult === false;
   const baseName = clean ? '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' : '\u5f71\u89c6\u70b9\u64ad';
-  const siteName = baseName;
+  const siteName = updateText ? `${baseName} · ${updateText}` : baseName;
   const apiBasePath = clean ? '/agg-clean' : '/agg';
   const apiPath = updateText ? `${apiBasePath}/u${updateText}` : apiBasePath;
   const sites = [
     { key: clean ? 'vod_unified_clean' : 'vod_unified', name: siteName, type: 1, api: origin + apiPath, searchable: 1, quickSearch: 1, filterable: 1, changeable: 1 },
   ];
-  return json({ spider: '', sites, lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: origin + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' }, 0);
+  const etag = weakEtag(`${VERSION}:${clean ? 'clean' : 'full'}:${updateText || 'none'}`);
+  const cacheHeaders = { 'cache-control': 'no-cache, max-age=0, must-revalidate', etag };
+  if (request.headers.get('if-none-match') === etag) return new Response(null, { status: 304, headers: cacheHeaders });
+  return json({ spider: '', sites, lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', type: 0, url: origin + '/live.txt', playerType: 1 }], parses: [], flags: [], wallpaper: '' }, 0, 200, cacheHeaders);
 }
 
 function isHttpUrl(value) {
@@ -2216,13 +2633,14 @@ async function health(request, env) {
 async function sources(request, env) {
   const channels = await getChannels(env);
   const vodItems = await getVodItems(env);
+  const runtimeSources = await runtimeCmsSources(env);
   return json({
     ok: true,
     version: VERSION,
     policy: '\u5f71\u89c6\u70b9\u64ad\u4f7f\u7528\u591a CMS \u76f4\u8fde\u805a\u5408\uff1b\u4fdd\u7559\u6210\u4eba\u5185\u5bb9\u4e0e\u89e3\u8bf4\u3001\u6f14\u5531\u4f1a\u3001\u516c\u5f00\u8bfe\u3001\u6559\u7a0b\u3001\u79d1\u666e\u7b49\u6709\u6548\u5185\u5bb9\uff1b\u8fc7\u6ee4\u5e7f\u544a\u3001\u89e3\u6790\u9875\u3001iframe \u548c\u65e0\u6548\u64ad\u653e\u5730\u5740\uff1b\u7535\u89c6\u7aef\u53ea\u663e\u793a\u4e00\u4e2a\u70b9\u64ad\u5165\u53e3\u3002',
     live: { total: channels.length, counts: countBy(channels.map((c) => ({ ...c, group: c.group === ('\u5907' + '\u7528' + '\u9891\u9053') ? '\u5176\u4ed6\u9891\u9053' : c.group })), 'group'), groups: LIVE_GROUP_ORDER, delivery: liveDeliveryPolicy(new URL(request.url).origin), channels: channels.map((c) => ({ group: c.group === ('\u5907' + '\u7528' + '\u9891\u9053') ? '\u5176\u4ed6\u9891\u9053' : c.group, name: c.name })) },
     vod: { total: vodItems.length, counts: countBy(vodItems, 'type_name'), categories: VOD_CATEGORIES.map((c) => ({ type_id: c.id, type_name: c.name, legacy_id: c.key })), filterKeys: ['\u5e74\u4ee3', '\u5e74\u4efd', '\u9898\u6750', '\u5927\u5c0f', '\u6392\u5e8f'], items: vodItems.map(vodListItem) },
-    aggregate: { entry: '\u5f71\u89c6\u70b9\u64ad', categories: AGG_CATEGORIES.map((c) => ({ type_id: c.id, type_name: c.name, key: c.key })), internalSourceCount: CMS_SOURCES.length, filterKeys: ['\u6392\u5e8f', '\u5e74\u4efd', '\u5730\u533a', '\u7c7b\u578b', '\u5185\u5bb9\u5f62\u6001', '\u6e05\u6670\u5ea6'] },
+    aggregate: { entry: '\u5f71\u89c6\u70b9\u64ad', categories: AGG_CATEGORIES.map((c) => ({ type_id: c.id, type_name: c.name, key: c.key })), internalSourceCount: runtimeSources.length, sourceRegistry: { mode: 'validated-snapshot', active: runtimeSources.length, physicalUnique: true }, filterKeys: ['\u6392\u5e8f', '\u5e74\u4efd', '\u5730\u533a', '\u7c7b\u578b', '\u5185\u5bb9\u5f62\u6001', '\u6e05\u6670\u5ea6'] },
   }, 300);
 }
 
@@ -2237,28 +2655,171 @@ function home(request) {
   ].join('\n') + '\n', 'text/plain; charset=utf-8', 300);
 }
 
-async function runHotSourceProbe(env, reason = 'cron') {
-  const generatedAt = new Date().toISOString();
-  const probeSources = CMS_SOURCES.filter((s) => s.tier === 'main').slice(0, 6);
-  const jobs = probeSources.map(async (source) => {
-    const got = await fetchCmsJsonByParams(source, { ac: 'videolist', pg: 1 }, 6000);
-    if (!got.ok) return { slug: source.slug, ok: false, count: 0 };
-    const cleaned = cleanCmsResult(got.data, false);
-    const rows = Array.isArray(cleaned.list) ? cleaned.list.filter((item) => item?.vod_id || item?.vod_name) : [];
-    return { slug: source.slug, ok: rows.length > 0, count: rows.length, sample: rows.slice(0, 3).map((item) => cleanAggName(item.vod_name || '', 80)).filter(Boolean) };
-  });
-  const settled = await Promise.allSettled(jobs);
-  const sources = settled.map((r, i) => r.status === 'fulfilled' ? r.value : { slug: probeSources[i]?.slug || '', ok: false, count: 0, error: String(r.reason?.message || r.reason || '') });
-  const okSources = sources.filter((s) => s.ok).length;
-  const totalItems = sources.reduce((sum, s) => sum + (Number(s.count) || 0), 0);
-  const ok = okSources >= 2 && totalItems > 0;
-  const payload = { ok, reason, generatedAt, visibleUpdateText: formatChinaReverseUpdateCode(generatedAt), okSources, checkedSources: sources.length, totalItems, sources };
-  if (ok) {
-    await writeJsonKv(env, HOT_UPDATE_KV_KEY, payload, 2 * 60 * 60);
-    hotUpdateMemoryCache.t = Date.now();
-    hotUpdateMemoryCache.v = { at: generatedAt, time: Date.parse(generatedAt), visibleUpdateText: payload.visibleUpdateText, source: 'hot-probe', probe: payload };
+async function collectHotRowsFromSource(source, params) {
+  const got = await fetchCmsJsonByParams(source, params, 6500);
+  if (!got.ok) return { ok: false, status: got.status || 0, rows: [], count: 0, classes: [], categoryMap: {} };
+  const cleaned = cleanCmsResult(got.data, false);
+  const classes = Array.isArray(cleaned.class) ? cleaned.class : [];
+  const byId = Object.fromEntries(classes.map((record) => [String(record.type_id || ''), record.type_name || '']));
+  const categoryMap = sourceCategoryMapFromClasses(classes);
+  const rows = [];
+  for (const raw of Array.isArray(cleaned.list) ? cleaned.list.slice(0, 120) : []) {
+    const typeId = String(raw.type_id || raw.type || '').trim();
+    const className = cleanCmsText(raw.type_name || byId[typeId] || '', 40);
+    const normalized = normalizeAggContentItem({ ...raw, source_category_id: typeId, source_category_name: className }, className, categoryMap);
+    rows.push({ ...normalized, type_name: className, _className: className, _sourceSlug: source.slug, _sourceShort: source.short });
   }
-  return payload;
+  return { ok: rows.length > 0, status: got.status, rows, count: rows.length, classes, categoryMap };
+}
+async function runHotSourceProbeImpl(env, reason = 'cron') {
+  const checkedAt = new Date(clockNowMs(env)).toISOString();
+  const probeSources = await runtimeCmsSources(env);
+  const deepCategories = AGG_CATEGORIES.filter((category) => category.key !== 'recommend');
+  const rotation = Math.floor(clockNowMs(env) / (5 * 60 * 1000)) % Math.max(1, deepCategories.length);
+  const deepCategory = deepCategories[rotation];
+  const firstSettled = await Promise.allSettled(
+    probeSources.map((source, index) => collectHotRowsFromSource(source, { ac: 'videolist', pg: 1 })
+      .then((result) => ({ source, result, page: 1, deep: false, index, categoryId: '' }))),
+  );
+  const deepJobs = [];
+  for (const settledRow of firstSettled) {
+    if (settledRow.status !== 'fulfilled' || !deepCategory) continue;
+    const { source, result, index } = settledRow.value;
+    const sourceClass = (result.classes || []).find((record) => {
+      const id = String(record?.type_id ?? record?.id ?? '').trim();
+      const primary = result.categoryMap?.[id] || macroForTypeName(record?.type_name ?? record?.name ?? '');
+      return categoryMatchesPrimary(deepCategory, primary);
+    });
+    const categoryId = String(sourceClass?.type_id ?? sourceClass?.id ?? '').trim();
+    if (!categoryId) continue;
+    deepJobs.push(collectHotRowsFromSource(source, { ac: 'videolist', t: categoryId, pg: 1 })
+      .then((deepResult) => ({ source, result: deepResult, page: 1, deep: true, index, categoryId })));
+  }
+  const deepSettled = await Promise.allSettled(deepJobs);
+  const settled = [...firstSettled, ...deepSettled];
+  const sourceMap = new Map();
+  const rawRows = [];
+  for (const settledRow of settled) {
+    if (settledRow.status !== 'fulfilled') continue;
+    const { source, result, page, deep, categoryId } = settledRow.value;
+    const current = sourceMap.get(source.slug) || { slug: source.slug, ok: false, count: 0, pages: [], category_ids: [], samples: [], updated_at: '', _updated_at_ms: 0, future_timestamp_count: 0, clock_skew_timestamp_count: 0 };
+    current.ok = current.ok || result.ok;
+    current.count += result.count;
+    current.pages.push(page);
+    if (deep && categoryId) current.category_ids.push(categoryId);
+    current.samples.push(...result.rows.slice(0, 3).map((item) => cleanAggName(item.vod_name || '', 80)).filter(Boolean));
+    const timestampEvidence = latestPlausibleSourceTimestamp(result.rows, {
+      nowMs: clockNowMs(env),
+      fields: ['vod_time', 'vod_time_add', 'vod_pubdate', 'source_updated_at'],
+    });
+    if (timestampEvidence.ms > current._updated_at_ms) {
+      current._updated_at_ms = timestampEvidence.ms;
+      current.updated_at = timestampEvidence.raw;
+    }
+    current.future_timestamp_count += timestampEvidence.futureRejectedCount;
+    current.clock_skew_timestamp_count += timestampEvidence.clockSkewCappedCount;
+    sourceMap.set(source.slug, current);
+    rawRows.push(...result.rows);
+  }
+  const sources = [...sourceMap.values()].map(({ _updated_at_ms, ...item }) => ({
+    ...item,
+    pages: [...new Set(item.pages)],
+    category_ids: [...new Set(item.category_ids)],
+    samples: [...new Set(item.samples)].slice(0, 3),
+  }));
+  const okSources = sources.filter((s) => s.ok).length;
+  const totalItems = rawRows.length;
+  const ok = okSources >= Math.ceil(probeSources.length * 0.6) && totalItems > 0;
+  const [previous, previousHealth] = await Promise.all([
+    readHotCatalogPackage(env),
+    readJsonKv(env, HOT_UPDATE_KV_KEY),
+  ]);
+  let nextPackage = null;
+  let changed = false;
+  let persisted = false;
+  if (ok) {
+    const merged = mergeAggItems(rawRows);
+    const currentRows = merged.map(aggListItemFromMerged).map((row) => ({ ...row, hot_seen_at: checkedAt }));
+    const retentionCutoff = clockNowMs(env) - HOT_ROW_RETENTION_MS;
+    const retainedRows = (Array.isArray(previous?.rows) ? previous.rows : []).filter((row) => {
+      const seenAt = Date.parse(row?.hot_seen_at || previous?.checked_at || previous?.pointer?.checked_at || '');
+      return Number.isFinite(seenAt) && seenAt >= retentionCutoff;
+    });
+    const list = mergeHotRows([...retainedRows, ...currentRows]).rows;
+    const preliminary = buildHotPackage(list, { checkedAt, contentChangedAt: previous?.content_changed_at || checkedAt });
+    changed = shouldPublishHotPackage(previous, preliminary);
+    const contentChangedAt = changed ? checkedAt : (previous?.content_changed_at || checkedAt);
+    nextPackage = buildHotPackage(list, { checkedAt, contentChangedAt, revision: changed ? `hot-${preliminary.content_hash}` : (previous?.revision || `hot-${preliminary.content_hash}`) });
+    const previousPublishTime = Date.parse(previous?.pointer?.checked_at || '');
+    const currentPublishSlot = Math.floor(clockNowMs(env) / HOT_PUBLISH_SLOT_MS);
+    const previousPublishSlot = Number.isFinite(previousPublishTime) ? Math.floor(previousPublishTime / HOT_PUBLISH_SLOT_MS) : -1;
+    const publishSlotAvailable = currentPublishSlot !== previousPublishSlot;
+    if (changed && nextPackage && publishSlotAvailable) {
+      const packageKey = HOT_PACKAGE_PREFIX + nextPackage.revision;
+      const previousKeys = [previous?.pointer?.package_key, ...(previous?.pointer?.previous_keys || [])].filter((key) => key && key !== packageKey).slice(0, 2);
+      const packageWritten = await writeJsonKv(env, packageKey, nextPackage, HOT_PACKAGE_TTL_SECONDS);
+      const pointerWritten = packageWritten && await writeJsonKv(env, HOT_ACTIVE_KV_KEY, {
+        ok: true,
+        package_key: packageKey,
+        previous_keys: previousKeys,
+        revision: nextPackage.revision,
+        content_hash: nextPackage.content_hash,
+        checked_at: checkedAt,
+        content_changed_at: contentChangedAt,
+      }, HOT_PACKAGE_TTL_SECONDS);
+      persisted = Boolean(pointerWritten);
+    }
+    const effectiveContentChangedAt = changed && !persisted
+      ? (previous?.content_changed_at || previous?.pointer?.content_changed_at || '')
+      : nextPackage.content_changed_at;
+    const sourceQuorum = {
+      required: Math.ceil(probeSources.length * 0.6),
+      succeeded: okSources,
+      total: probeSources.length,
+      ratio: probeSources.length ? Number((okSources / probeSources.length).toFixed(4)) : 0,
+    };
+    const payload = {
+      ok: true,
+      reason,
+      generatedAt: checkedAt,
+      checkedAt,
+      contentChangedAt: effectiveContentChangedAt,
+      contentChanged: changed,
+      visibleUpdateText: formatChinaReverseUpdateCode(effectiveContentChangedAt),
+      contentHash: nextPackage.content_hash,
+      revision: nextPackage.revision,
+      published: changed && persisted,
+      persisted,
+      publicationDeferred: changed && !publishSlotAvailable,
+      publicationSlot: currentPublishSlot,
+      sourceQuorum,
+      degraded: okSources < probeSources.length,
+      fallbackLevel: persisted || !changed ? 'kv-hot-package' : 'previous-valid-package',
+      okSources,
+      checkedSources: sources.length,
+      totalItems,
+      deepCategory: deepCategory ? { id: deepCategory.id, key: deepCategory.key, name: deepCategory.name } : null,
+      externalRequests: settled.length,
+      sources,
+    };
+    const previousHealthTime = Date.parse(previousHealth?.checkedAt || previousHealth?.generatedAt || '');
+    const healthDue = !Number.isFinite(previousHealthTime) || clockNowMs(env) - previousHealthTime >= HOT_HEALTH_HEARTBEAT_MS;
+    const healthWritten = healthDue
+      ? await writeJsonKv(env, HOT_UPDATE_KV_KEY, payload, HOT_LAST_SUCCESS_TTL_SECONDS)
+      : false;
+    hotUpdateMemoryCache.t = clockNowMs(env);
+    hotUpdateMemoryCache.owner = kvBinding(env);
+    const visibleInfo = effectiveContentChangedAt ? updateInfoFromIso(effectiveContentChangedAt, 'hot-probe') : null;
+    hotUpdateMemoryCache.v = visibleInfo ? { ...visibleInfo, probeTime: Date.parse(checkedAt), checkedAt, probe: payload } : null;
+    return { ...payload, healthWritten, healthDue, healthHeartbeatMinutes: HOT_HEALTH_HEARTBEAT_MINUTES };
+  }
+  return { ok: false, reason, generatedAt: checkedAt, checkedAt, contentChanged: false, visibleUpdateText: previous?.content_changed_at ? formatChinaReverseUpdateCode(previous.content_changed_at) : '', okSources, checkedSources: sources.length, totalItems, deepCategory: deepCategory ? { id: deepCategory.id, key: deepCategory.key, name: deepCategory.name } : null, externalRequests: settled.length, sources };
+}
+function runHotSourceProbe(env, reason = 'cron') {
+  if (hotProbeRuntime.promise) return hotProbeRuntime.promise;
+  const promise = runHotSourceProbeImpl(env, reason).finally(() => { hotProbeRuntime.promise = null; });
+  hotProbeRuntime.promise = promise;
+  return promise;
 }
 
 export default {

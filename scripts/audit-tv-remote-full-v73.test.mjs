@@ -3,20 +3,29 @@ import test from 'node:test';
 
 import {
   auditFetchPath,
+  CLEAN_CATEGORY_IDS,
   classifyRecord,
   comboSemanticStats,
   compareDisplayName,
+  configUpdateCode,
   duplicateRate,
+  FULL_CATEGORY_IDS,
   sortScore,
   parseLiveText,
+  payloadHasAdultExposure,
   searchTermMatches,
   validateConfigPayload,
 } from './audit-tv-remote-full-v73.mjs';
 import { normalizeVodTitle } from '../src/worker.mjs';
 
+test('remote audit covers the 13-class full contract and 12-class clean contract', () => {
+  assert.deepEqual(FULL_CATEGORY_IDS, ['0', '10', '11', '12', '20', '21', '6', '3', '4', '5', '7', '8', '9']);
+  assert.deepEqual(CLEAN_CATEGORY_IDS, ['0', '10', '11', '12', '20', '21', '6', '3', '4', '5', '7', '8']);
+});
+
 test('config validation accepts the visible update-code site and rejects forbidden wording', () => {
   const ok = validateConfigPayload({
-    sites: [{ key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad \u00b7 854150706202', api: 'https://tv.webhome.eu.org/agg' }],
+    sites: [{ key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad \u00b7 854150706202', api: 'https://tv.webhome.eu.org/agg/u854150706202' }],
     lives: [{ name: '\u7cbe\u9009\u76f4\u64ad', url: 'https://tv.webhome.eu.org/live.txt' }],
   });
   assert.equal(ok.schema_ok, true);
@@ -25,12 +34,17 @@ test('config validation accepts the visible update-code site and rejects forbidd
   const legacy = validateConfigPayload({
     sites: [{ key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad', api: 'https://tv.webhome.eu.org/agg' }],
   });
-  assert.equal(legacy.content_shape_ok, true);
+  assert.equal(legacy.content_shape_ok, false);
 
   const oldVisible = validateConfigPayload({
     sites: [{ key: 'vod_unified', name: '\u5f71\u89c6\u70b9\u64ad \u00b7 \u6e90\u66f4\u65b0 07-05 01:57', api: 'https://tv.webhome.eu.org/agg' }],
   });
-  assert.equal(oldVisible.content_shape_ok, true);
+  assert.equal(oldVisible.content_shape_ok, false);
+
+  const clean = validateConfigPayload({
+    sites: [{ key: 'vod_unified_clean', name: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0 · 854150706202', api: 'https://tv.webhome.eu.org/agg-clean/u854150706202' }],
+  }, { clean: true });
+  assert.equal(clean.content_shape_ok, true);
 
   const bad = validateConfigPayload({
     sites: [{ key: 'vod_unified', name: '\u5907\u7528\u5f71\u89c6\u70b9\u64ad', api: 'https://tv.webhome.eu.org/agg' }],
@@ -38,6 +52,28 @@ test('config validation accepts the visible update-code site and rejects forbidd
   assert.equal(bad.schema_ok, true);
   assert.equal(bad.content_shape_ok, false);
   assert.match(bad.fix_suggestion, /\u7981\u6b62\u6587\u6848/);
+});
+
+test('config update code requires the visible name and versioned API to carry the same code', () => {
+  assert.equal(configUpdateCode({
+    sites: [{ name: '影视点播 · 854150706202', api: 'https://tv.webhome.eu.org/agg/u854150706202' }],
+  }), '854150706202');
+  assert.equal(configUpdateCode({
+    sites: [{ name: '影视点播洁净 · 854150706202', api: 'https://tv.webhome.eu.org/agg-clean/u854150706202' }],
+  }, { clean: true }), '854150706202');
+  assert.equal(configUpdateCode({
+    sites: [{ name: '影视点播 · 111111111111', api: 'https://tv.webhome.eu.org/agg/u222222222222' }],
+  }), '');
+});
+
+test('clean policy exposure detector covers adult category ids, filter options and list rows without flagging policy metadata', () => {
+  assert.equal(payloadHasAdultExposure({ content_policy: 'clean-no-adult', class: [{ type_id: '10', type_name: '院线电影' }], filters: {}, list: [] }), false);
+  assert.equal(payloadHasAdultExposure({ class: [{ type_id: '9', type_name: '内容分区' }] }), true);
+  assert.equal(payloadHasAdultExposure({ filters: { 10: [{ key: 'class', value: [{ n: '成人', v: '成人' }] }] } }), true);
+  assert.equal(payloadHasAdultExposure({ list: [{ type_id: '10', type_name: '院线电影', vod_name: '午夜成人影片' }] }), true);
+  assert.equal(payloadHasAdultExposure({ list: [{ type_id: '10', type_name: '院线电影', vod_name: '午夜巴黎' }] }), false);
+  assert.equal(payloadHasAdultExposure({ list: [{ type_id: '9', primary_category: 'variety', type_name: '综艺', vod_name: '正常脱口秀' }] }), false);
+  assert.equal(payloadHasAdultExposure({ list: [{ type_id: '4', primary_category: 'anime', type_name: '动漫', vod_name: '尼古喵喵', vod_content: '缺乏伦理与卫生观念' }] }), false);
 });
 
 test('audit fetch cache-busts agg requests without changing non-agg endpoints', () => {

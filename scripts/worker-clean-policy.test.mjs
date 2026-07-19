@@ -19,7 +19,8 @@ function noSnapshotEnv() {
 test('clean config exposes a separate no-adult TVBox entry without changing live delivery', async () => {
   const res = await worker.fetch(new Request('https://tv.webhome.eu.org/config-clean.json'), noSnapshotEnv());
   assert.equal(res.status, 200);
-  assert.match(res.headers.get('cache-control') || '', /no-store/);
+  assert.match(res.headers.get('cache-control') || '', /no-cache/);
+  assert.match(res.headers.get('etag') || '', /^W\//);
   const data = await res.json();
   assert.equal(data.sites.length, 1);
   assert.equal(data.sites[0].key, 'vod_unified_clean');
@@ -29,7 +30,7 @@ test('clean config exposes a separate no-adult TVBox entry without changing live
   assert.doesNotMatch(JSON.stringify(data), /成人|伦理/);
 });
 
-test('config keeps stable clean site name while versioned api carries hot-probe update code', async () => {
+test('config shows the same hot-probe update code in the clean site name and versioned api', async () => {
   const env = noSnapshotEnv();
   const generatedAt = new Date().toISOString();
   env.TVBOX_KV.get = async (key) => {
@@ -40,16 +41,24 @@ test('config keeps stable clean site name while versioned api carries hot-probe 
   };
   const res = await worker.fetch(new Request('https://tv.webhome.eu.org/config-clean.json'), env);
   assert.equal(res.status, 200);
-  assert.match(res.headers.get('cache-control') || '', /no-store/);
+  assert.match(res.headers.get('cache-control') || '', /no-cache/);
+  assert.match(res.headers.get('etag') || '', /^W\//);
   const data = await res.json();
   assert.equal(data.sites[0].key, 'vod_unified_clean');
-  assert.equal(data.sites[0].name, '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0');
+  assert.match(data.sites[0].name, /^\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0 · \d{12}$/u);
   assert.match(data.sites[0].api, /^https:\/\/tv\.webhome\.eu\.org\/agg-clean\/u\d{12}$/);
+  assert.equal(data.sites[0].name.match(/\d{12}/u)?.[0], data.sites[0].api.match(/\d{12}/u)?.[0]);
   assert.doesNotMatch(JSON.stringify(data), /成人|伦理/);
+
+  const conditional = await worker.fetch(new Request('https://tv.webhome.eu.org/config-clean.json', {
+    headers: { 'if-none-match': res.headers.get('etag') },
+  }), env);
+  assert.equal(conditional.status, 304);
+  assert.equal(conditional.headers.get('etag'), res.headers.get('etag'));
 });
 
 
-test('versioned aggregate path from config remains routable and no-store for fresh visible labels', async () => {
+test('versioned aggregate path from config remains routable for fresh visible labels', async () => {
   const env = noSnapshotEnv();
   const generatedAt = new Date().toISOString();
   env.TVBOX_KV.get = async (key) => {
@@ -60,9 +69,9 @@ test('versioned aggregate path from config remains routable and no-store for fre
   };
   const configRes = await worker.fetch(new Request('https://tv.webhome.eu.org/config.json?fresh=1'), env);
   assert.equal(configRes.status, 200);
-  assert.match(configRes.headers.get('cache-control') || '', /no-store/);
+  assert.match(configRes.headers.get('cache-control') || '', /no-cache/);
   const config = await configRes.json();
-  assert.equal(config.sites[0].name, '\u5f71\u89c6\u70b9\u64ad');
+  assert.match(config.sites[0].name, /^\u5f71\u89c6\u70b9\u64ad · \d{12}$/u);
   assert.match(config.sites[0].api, /^https:\/\/tv\.webhome\.eu\.org\/agg\/u\d{12}$/);
   const aggRes = await worker.fetch(new Request(config.sites[0].api + '?fresh=1'), env);
   assert.equal(aggRes.status, 200);
@@ -76,6 +85,7 @@ test('cached old aggregate path still stamps the latest hot-probe code in catego
   const env = noSnapshotEnv();
   const generatedAt = '2026-07-10T02:46:00.000Z';
   const expectedCode = '640101706202';
+  env.__clock = () => Date.parse('2026-07-10T02:50:00.000Z');
   env.TVBOX_KV.get = async (key) => {
     if (key === 'hot:last-success') return JSON.stringify({ ok: true, generatedAt, okSources: 2, checkedSources: 6, totalItems: 48 });
     if (key === 'channels') return '[]';

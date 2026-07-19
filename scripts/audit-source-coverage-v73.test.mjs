@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { classifyCoverage, isPlayableUrl, mapLimit, normalizeTitle, queryTermsForItem, titleMatches } from './audit-source-coverage-v73.mjs';
+import { applyProductionRegistryPolicy, classifyCoverage, dedupePhysicalActiveSources, isPlayableUrl, mapLimit, normalizeTitle, queryTermsForItem, rollingSourceStatus, titleMatches } from './audit-source-coverage-v73.mjs';
+import { SOURCE_REGISTRY } from '../src/source-registry.mjs';
 import { countProxyPlaylistChildren, monthlyCronRuns, parseLiveText, summarizeLiveProxyFromChannels } from './audit-free-tier-v73.mjs';
 
 
@@ -20,6 +21,50 @@ test('mapLimit preserves input order while bounding concurrent source audits', a
   assert.deepEqual(rows, [10, 20, 30, 40, 50]);
   assert.equal(maxActive, 2);
   assert.deepEqual(seen.slice(0, 2).sort(), [1, 2]);
+});
+
+test('source admission counts one ACTIVE source per physical host', () => {
+  const rows = dedupePhysicalActiveSources([
+    { slug: 'primary', api: 'https://www.example.com/api.php/provide/vod/', tier: 'main', origin: 'current', status: 'ACTIVE', metrics: { searchCount: 3 } },
+    { slug: 'mirror', api: 'http://example.com/api.php/provide/vod', tier: 'watch', origin: 'seed', status: 'ACTIVE', metrics: { searchCount: 20 } },
+    { slug: 'other', api: 'https://other.example/api.php/provide/vod/', tier: 'aux', origin: 'discovered', status: 'ACTIVE', metrics: { searchCount: 5 } },
+  ]);
+  assert.deepEqual(rows.filter((row) => row.status === 'ACTIVE').map((row) => row.slug), ['primary', 'other']);
+  assert.equal(rows.find((row) => row.slug === 'mirror').admission.code, 'DUPLICATE_PHYSICAL_SOURCE');
+  assert.equal(rows.find((row) => row.slug === 'mirror').admission.selectedSlug, 'primary');
+});
+
+test('production admission canonicalizes registered sources and quarantines unregistered discoveries', () => {
+  const rows = applyProductionRegistryPolicy([
+    { slug: 'seed_direct', api: 'https://cj.lziapi.com/api.php/provide/vod/', tier: 'watch', origin: 'seed', status: 'ACTIVE' },
+    { slug: 'seed_unregistered', api: 'https://jszyapi.com/api.php/provide/vod/', tier: 'watch', origin: 'seed', status: 'ACTIVE' },
+    { slug: 'sony_probe', api: 'https://suoniapi.com/api.php/provide/vod/', tier: 'main', origin: 'seed', status: 'ACTIVE' },
+  ], SOURCE_REGISTRY);
+
+  assert.equal(rows[0].slug, 'lzi_direct');
+  assert.equal(rows[0].status, 'ACTIVE');
+  assert.equal(rows[0].admission.code, 'REGISTERED_ACTIVE');
+  assert.equal(rows[1].slug, 'seed_unregistered');
+  assert.equal(rows[1].status, 'WATCH');
+  assert.equal(rows[1].admission.code, 'UNREGISTERED_CANDIDATE');
+  assert.equal(rows[1].admission.observedStatus, 'ACTIVE');
+  assert.equal(rows[2].slug, 'sony');
+  assert.equal(rows[2].status, 'BLOCKED');
+  assert.equal(rows[2].admission.code, 'REGISTERED_BLOCKED');
+});
+
+test('rolling source health avoids one-sample flapping and blocks sustained failures', () => {
+  const mostlyHealthy = [
+    ...Array.from({ length: 22 }, (_, index) => ({ at: String(index), ok: true })),
+    { at: '22', ok: false },
+    { at: '23', ok: false },
+  ];
+  assert.deepEqual(rollingSourceStatus(mostlyHealthy, 'BLOCKED'), {
+    status: 'ACTIVE', sampleCount: 24, succeeded: 22, successRate: 22 / 24, consecutiveFailures: 2,
+  });
+  const sustainedFailure = Array.from({ length: 24 }, (_, index) => ({ at: String(index), ok: index < 10 }));
+  assert.equal(rollingSourceStatus(sustainedFailure, 'ACTIVE').status, 'BLOCKED');
+  assert.equal(rollingSourceStatus([{ at: '0', ok: false }], 'WATCH').status, 'WATCH');
 });
 
 test('normalizes classic titles and aliases for coverage checks', () => {
@@ -68,6 +113,22 @@ test('coverage classification trusts stable user-visible search over dynamic dia
     { mode: 'dynamic', term: '天道', fuzzyIndex: 0, exactIndex: 0 },
   ];
   assert.deepEqual(classifyCoverage(item, sourceHits, aggRuns, true, true), { result: 'PASS', root_cause: 'OK', note: '' });
+});
+
+test('coverage classification separates deployed API errors from parser gaps when dynamic recall is proven', () => {
+  const item = { title: '流浪地球', actors: ['吴京'], year: '2019', priority: 'classic' };
+  const sourceHits = [{ slug: 'baidu', hits: [{ vod_name: '流浪地球' }] }];
+  const aggRuns = [
+    { mode: 'user', term: '流浪地球', status: 503, fuzzyIndex: -1, exactIndex: -1 },
+    { mode: 'dynamic', term: '流浪地球', status: 200, fuzzyIndex: 0, exactIndex: 0 },
+    { mode: 'user', term: '吴京', status: 503, fuzzyIndex: -1, exactIndex: -1 },
+    { mode: 'dynamic', term: '吴京', status: 200, fuzzyIndex: 0, exactIndex: -1 },
+  ];
+  assert.deepEqual(classifyCoverage(item, sourceHits, aggRuns, true, true), {
+    result: 'WARN',
+    root_cause: 'API_ERROR',
+    note: '当前稳定入口返回服务错误；动态召回、详情和播放已证明，需随本次发布修复。',
+  });
 });
 
 test('category coverage canary passes when first-page fuzzy semantic result exists without exact title', () => {

@@ -1,0 +1,47 @@
+{
+  "captured_at": "2026-07-18T08:55:07+08:00",
+  "repository": {
+    "remote": "https://github.com/webmoneyfeng/tvbox-source-hub-v73",
+    "main_sha": "fc560b20c90de05416e38584c3ff97140b0b556b",
+    "implementation_branch": "codex/v73-commercial-zero-bill"
+  },
+  "tvbox_worker": {
+    "script": "tvbox-source-hub-v73",
+    "production_version_number": 39,
+    "cron": "*/2 * * * *",
+    "kv_binding_present": true
+  },
+  "pages": {
+    "project": "tvbox-source-hub-v73",
+    "production_branch": "main",
+    "canonical_deployment_at": "2026-07-10T00:20:10.029427Z",
+    "latest_git_deployment_skipped": true,
+    "latest_git_deployment_skip_reason": "path_config"
+  },
+  "cloud_mail": {
+    "script": "cloud-mail",
+    "r2_bucket": "mail",
+    "kv_storage": 0,
+    "active_email_count": 37,
+    "attachment_metadata_count": 18,
+    "attachment_metadata_bytes": 20187,
+    "d1_export": {
+      "tracked": false,
+      "relative_directory": "ops/baseline/private",
+      "bytes": 298229,
+      "sha256": "35336AFA773830EF34C49C08CDFD541A8F5DEBBC3B2E31613589D7B814F833CE"
+    }
+  },
+  "billing": {
+    "r2_rate_plan": "r2_paid",
+    "r2_intent": "PAYGO",
+    "r2_listed_price": 0,
+    "workers_paid_present": false,
+    "paygo_present": true
+  },
+  "gates": {
+    "do_not_cancel_r2_before_kv_migration_and_24h_observation": true,
+    "do_not_switch_tvbox_production_before_canary_passes": true,
+    "do_not_disable_legacy_workflows_before_new_release_success": true
+  }
+}

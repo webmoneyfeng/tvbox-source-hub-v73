@@ -2,11 +2,16 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { SOURCE_REGISTRY as VALIDATED_SOURCE_REGISTRY } from '../src/source-registry.mjs';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const AUDIT_DIR = path.join(ROOT, 'audit');
-const SOURCE_REGISTRY = path.join(ROOT, 'data', 'source-candidates-v73.json');
+const SOURCE_CANDIDATES_FILE = path.join(ROOT, 'data', 'source-candidates-v73.json');
 const COVERAGE_CANARY = path.join(ROOT, 'data', 'coverage-canary-v73.json');
+const SOURCE_HEALTH_HISTORY = path.join(AUDIT_DIR, 'source-health-history.json');
+const SOURCE_HEALTH_WINDOW_DAYS = 7;
+const SOURCE_HEALTH_MINIMUM_SAMPLES = 24;
 
 const UA = 'Mozilla/5.0 TVBoxSourceHubCoverageAudit/7.3';
 const TVBOX_BASE = (process.env.TVBOX_BASE || process.env.PUBLIC_BASE || 'https://tv.webhome.eu.org').replace(/\/+$/, '');
@@ -169,6 +174,134 @@ function sourceStatus(checks) {
   return 'WATCH';
 }
 
+export function physicalSourceKey(api) {
+  try {
+    return new URL(normalizeApi(api)).hostname.toLowerCase().replace(/^www\./u, '');
+  } catch {
+    return '';
+  }
+}
+
+export function applyProductionRegistryPolicy(rows, registry = VALIDATED_SOURCE_REGISTRY) {
+  const registeredByPhysicalKey = new Map((registry || []).map((source) => [physicalSourceKey(source.api), source]));
+  return (rows || []).map((row) => {
+    const physicalKey = physicalSourceKey(row.api);
+    const registered = registeredByPhysicalKey.get(physicalKey);
+    const observedStatus = String(row.status || 'WATCH').toUpperCase();
+    if (!registered) {
+      return {
+        ...row,
+        physicalSourceKey: physicalKey,
+        status: observedStatus === 'ACTIVE' ? 'WATCH' : observedStatus,
+        admission: {
+          ...(row.admission || {}),
+          code: 'UNREGISTERED_CANDIDATE',
+          observedStatus,
+          physicalSourceKey: physicalKey,
+        },
+      };
+    }
+    const registeredStatus = String(registered.status || 'WATCH').toUpperCase();
+    const status = registeredStatus === 'ACTIVE' ? observedStatus : registeredStatus;
+    return {
+      ...row,
+      slug: registered.slug,
+      key: registered.key,
+      short: registered.short,
+      name: registered.name,
+      api: registered.api,
+      tier: registered.tier,
+      origin: registered.origin,
+      physicalSourceKey: registered.physicalSourceKey,
+      status,
+      admission: {
+        ...(row.admission || {}),
+        code: `REGISTERED_${registeredStatus}`,
+        observedStatus,
+        registeredStatus,
+        physicalSourceKey: registered.physicalSourceKey,
+      },
+    };
+  });
+}
+
+function admissionScore(row) {
+  const origin = row?.origin === 'current' ? 100 : row?.origin === 'discovered' ? 50 : 0;
+  const tier = row?.tier === 'main' ? 10 : 0;
+  const search = Math.min(9, Number(row?.metrics?.searchCount || 0));
+  return origin + tier + search;
+}
+
+export function dedupePhysicalActiveSources(rows) {
+  const output = (rows || []).map((row) => ({ ...row, physicalSourceKey: physicalSourceKey(row.api) }));
+  const selected = new Map();
+  for (let index = 0; index < output.length; index += 1) {
+    const row = output[index];
+    if (row.status !== 'ACTIVE' || !row.physicalSourceKey) continue;
+    const previousIndex = selected.get(row.physicalSourceKey);
+    if (previousIndex === undefined) {
+      selected.set(row.physicalSourceKey, index);
+      continue;
+    }
+    const previous = output[previousIndex];
+    const keepCurrent = admissionScore(row) > admissionScore(previous);
+    const selectedRow = keepCurrent ? row : previous;
+    const duplicateRow = keepCurrent ? previous : row;
+    duplicateRow.status = 'WATCH';
+    duplicateRow.admission = {
+      code: 'DUPLICATE_PHYSICAL_SOURCE',
+      selectedSlug: selectedRow.slug,
+      physicalSourceKey: row.physicalSourceKey,
+    };
+    if (keepCurrent) selected.set(row.physicalSourceKey, index);
+  }
+  return output;
+}
+
+export function rollingSourceStatus(samples, currentStatus, options = {}) {
+  const minimumSamples = Math.max(1, Number(options.minimumSamples || SOURCE_HEALTH_MINIMUM_SAMPLES));
+  const activeSuccessRateMin = Number(options.activeSuccessRateMin ?? 0.8);
+  const watchSuccessRateMin = Number(options.watchSuccessRateMin ?? 0.6);
+  const maxConsecutiveFailures = Math.max(1, Number(options.maxConsecutiveFailures || 3));
+  const rows = Array.isArray(samples) ? samples.filter((sample) => typeof sample?.ok === 'boolean') : [];
+  const succeeded = rows.filter((sample) => sample.ok).length;
+  const successRate = rows.length ? succeeded / rows.length : 0;
+  let consecutiveFailures = 0;
+  for (let index = rows.length - 1; index >= 0 && !rows[index].ok; index -= 1) consecutiveFailures += 1;
+  let status = String(currentStatus || 'WATCH').toUpperCase();
+  if (rows.length >= minimumSamples) {
+    if (successRate >= activeSuccessRateMin && consecutiveFailures < maxConsecutiveFailures) status = 'ACTIVE';
+    else if (successRate >= watchSuccessRateMin) status = 'WATCH';
+    else status = 'BLOCKED';
+  }
+  return { status, sampleCount: rows.length, succeeded, successRate, consecutiveFailures };
+}
+
+function applyRollingSourceHealth(rows, previous, generatedAt) {
+  const cutoff = Date.parse(generatedAt) - SOURCE_HEALTH_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+  const grouped = new Map();
+  for (const row of rows || []) {
+    const key = physicalSourceKey(row.api);
+    if (!key) continue;
+    const healthy = row.status === 'ACTIVE';
+    grouped.set(key, Boolean(grouped.get(key)) || healthy);
+  }
+  const sources = {};
+  for (const [key, healthy] of grouped) {
+    const oldSamples = Array.isArray(previous?.sources?.[key]?.samples) ? previous.sources[key].samples : [];
+    const samples = [...oldSamples, { at: generatedAt, ok: healthy }]
+      .filter((sample) => Date.parse(sample?.at || '') >= cutoff)
+      .slice(-SOURCE_HEALTH_WINDOW_DAYS * 24 * 12);
+    sources[key] = { samples };
+  }
+  const updatedRows = (rows || []).map((row) => {
+    const key = physicalSourceKey(row.api);
+    const health = rollingSourceStatus(sources[key]?.samples || [], row.status);
+    return { ...row, physicalSourceKey: key, status: health.status, rollingHealth: health };
+  });
+  return { rows: updatedRows, history: { generatedAt, windowDays: SOURCE_HEALTH_WINDOW_DAYS, minimumSamples: SOURCE_HEALTH_MINIMUM_SAMPLES, sources } };
+}
+
 function firstPlayableUrl(vod) {
   const groups = String(vod?.vod_play_url || '').split('$$$');
   for (const group of groups) {
@@ -295,6 +428,7 @@ async function searchAggregate(item, repeat = REPEAT_COUNT) {
 function classifyCoverage(item, sourceHits, aggRuns, detailOk, playOk) {
   const sourceHitCount = sourceHits.reduce((n, x) => n + x.hits.length, 0);
   const userRuns = aggRuns.filter((r) => !r.mode || r.mode === 'user');
+  const dynamicRuns = aggRuns.filter((r) => r.mode === 'dynamic');
   const visibleRuns = userRuns.length ? userRuns : aggRuns;
   const anyAggHit = visibleRuns.some((r) => r.fuzzyIndex >= 0);
   const anyFirstPageFuzzy = visibleRuns.some((r) => r.fuzzyIndex >= 0 && r.fuzzyIndex < 24);
@@ -316,6 +450,14 @@ function classifyCoverage(item, sourceHits, aggRuns, detailOk, playOk) {
   const unstable = [...byTerm.values()].some((runs) => runs.length > 1 && runs.some((r) => r.fuzzyIndex >= 0) && runs.some((r) => r.fuzzyIndex < 0));
   const toleratedTransientJitter = unstable && transientOnly && provenUserHits >= 2 && provenFirstPageHit && detailOk && playOk;
   if (!sourceHitCount) return { result: item.priority === 'critical' ? 'FAIL' : 'WARN', root_cause: 'SOURCE_UNIVERSE_GAP', note: '候选源集合未发现该节目。' };
+  const stableEndpointUnavailable = userRuns.length > 0 && userRuns.every((run) => [0, 502, 503, 504].includes(Number(run.status || 0)));
+  const dynamicRecallProven = dynamicRuns.some((run) => run.fuzzyIndex >= 0 && run.fuzzyIndex < 24 && Number(run.status) >= 200 && Number(run.status) < 300);
+  if (!anyAggHit && stableEndpointUnavailable) {
+    if (dynamicRecallProven && detailOk && playOk) {
+      return { result: 'WARN', root_cause: 'API_ERROR', note: '当前稳定入口返回服务错误；动态召回、详情和播放已证明，需随本次发布修复。' };
+    }
+    return { result: 'FAIL', root_cause: 'API_ERROR', note: '当前稳定入口持续返回服务错误，且没有足够的动态召回证据。' };
+  }
   if (!anyAggHit) return { result: 'FAIL', root_cause: 'PARSER_GAP', note: '源侧有候选，但聚合搜索未召回。' };
   if (unstable && !toleratedTransientJitter) return { result: 'WARN', root_cause: 'SOURCE_PHYSICAL_LIMIT', note: '重复搜索结果不稳定，可能由源超时或反爬导致。' };
   if (item.priority === 'category') {
@@ -339,12 +481,19 @@ async function detailForAggregate(id) {
 
 async function auditSourcesAndCoverage() {
   const generatedAt = new Date().toISOString();
-  const registry = await readJson(SOURCE_REGISTRY);
+  const registry = await readJson(SOURCE_CANDIDATES_FILE);
   const canary = await readJson(COVERAGE_CANARY);
   const discovered = await discoverFromSeedConfigs(registry);
-  const candidates = mergeCandidates(registry, discovered);
+  const candidates = mergeCandidates({
+    ...registry,
+    candidates: [...(registry.candidates || []), ...VALIDATED_SOURCE_REGISTRY],
+  }, discovered);
 
-  const sourceRows = await mapLimit(candidates, SOURCE_AUDIT_CONCURRENCY, auditCandidate);
+  const auditedRows = await mapLimit(candidates, SOURCE_AUDIT_CONCURRENCY, auditCandidate);
+  let previousHealth = null;
+  try { previousHealth = await readJson(SOURCE_HEALTH_HISTORY); } catch {}
+  const healthApplied = applyRollingSourceHealth(auditedRows, previousHealth, generatedAt);
+  const sourceRows = dedupePhysicalActiveSources(applyProductionRegistryPolicy(healthApplied.rows));
   const activeRows = sourceRows.filter((x) => x.status === 'ACTIVE');
 
   const coverageRows = [];
@@ -391,6 +540,7 @@ async function auditSourcesAndCoverage() {
   };
 
   await writeJson('audit/source-discovery-latest.json', { ...sourceSummary, rows: sourceRows });
+  await writeJson('audit/source-health-history.json', healthApplied.history);
   await writeJson('audit/coverage-latest.json', { ...coverageSummary, rows: coverageRows });
   await writeText('audit/source-discovery-summary.md', renderSourceSummary(sourceSummary, sourceRows));
   await writeText('audit/coverage-summary.md', renderCoverageSummary(coverageSummary, coverageRows));
@@ -410,7 +560,7 @@ function renderSourceSummary(summary, rows) {
     ...rows.filter((x) => x.status === 'ACTIVE').map((x) => `- ${x.slug}｜${x.name}｜分类 ${x.metrics.classCount}｜搜索样本 ${x.metrics.searchCount}`),
     '',
     '## 非 ACTIVE 源',
-    ...rows.filter((x) => x.status !== 'ACTIVE').map((x) => `- ${x.status}｜${x.slug}｜${x.name}｜${x.error || x.evidence.listUrl}`),
+    ...rows.filter((x) => x.status !== 'ACTIVE').map((x) => `- ${x.status}｜${x.slug}｜${x.name}｜${x.admission?.code || x.error || x.evidence.listUrl}`),
     ''
   ];
   return lines.join('\n');

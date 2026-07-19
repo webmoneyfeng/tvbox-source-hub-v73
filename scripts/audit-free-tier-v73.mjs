@@ -8,8 +8,11 @@ const PAGES_DEPLOY_MONTHLY_WARN_LIMIT = 500;
 const PAGES_FILE_WARN_LIMIT = 20000;
 const PAGES_SIZE_WARN_LIMIT_BYTES = 500 * 1024 * 1024;
 const KV_WRITE_FREE_DAILY_LIMIT = 1000;
-const KV_WRITE_DAILY_WARN_RATIO = 0.9;
-const INTERACTION_HOT_PROBE_MIN_INTERVAL_MINUTES = 15;
+const KV_WRITE_DAILY_RELEASE_GATE = 650;
+const HOT_CONTENT_WRITES_PER_SLOT = 2;
+const HOT_HEALTH_HEARTBEAT_MINUTES = 30;
+const INTERACTION_HOT_PROBE_MIN_INTERVAL_MINUTES = 5;
+const WORKER_DAILY_REQUEST_GATE = 80_000;
 const PUBLIC_BASE = (process.env.PUBLIC_BASE || 'https://tv.webhome.eu.org').replace(/\/+$/, '');
 
 async function walk(dir) {
@@ -39,6 +42,21 @@ function dailyCronRuns(expr) {
 
 function interactionFallbackDailyRuns(minIntervalMinutes = INTERACTION_HOT_PROBE_MIN_INTERVAL_MINUTES) {
   return Math.ceil((24 * 60) / Math.max(1, Number(minIntervalMinutes) || INTERACTION_HOT_PROBE_MIN_INTERVAL_MINUTES));
+}
+
+function estimateHotKvWrites(dailyCronRuns, options = {}) {
+  const slots = Math.max(0, Math.ceil(Number(dailyCronRuns) || 0));
+  const writesPerSlot = Math.max(0, Number(options.contentWritesPerSlot ?? HOT_CONTENT_WRITES_PER_SLOT));
+  const heartbeatMinutes = Math.max(1, Number(options.heartbeatMinutes ?? HOT_HEALTH_HEARTBEAT_MINUTES));
+  const contentWrites = slots * writesPerSlot;
+  const healthWrites = Math.ceil((24 * 60) / heartbeatMinutes);
+  return {
+    cronSlots: slots,
+    contentWrites,
+    healthWrites,
+    interactionWrites: 0,
+    totalWrites: contentWrites + healthWrites,
+  };
 }
 
 async function workflowCronSummary() {
@@ -210,9 +228,11 @@ async function auditFreeTier() {
   const repo = await githubRepoVisibility();
   const liveProxy = await analyzeLiveProxy(PUBLIC_BASE);
   const monthlyRuns = workflows.reduce((n, x) => n + x.monthlyRuns, 0);
-  const estimatedScheduledKvWrites = workerCrons.dailyRuns;
-  const estimatedInteractionProbeDailyWrites = interactionFallbackDailyRuns();
-  const estimatedDailyKvWrites = estimatedScheduledKvWrites + estimatedInteractionProbeDailyWrites;
+  const kvEstimate = estimateHotKvWrites(workerCrons.dailyRuns);
+  const estimatedScheduledKvWrites = kvEstimate.contentWrites + kvEstimate.healthWrites;
+  const estimatedInteractionProbeDailyWrites = kvEstimate.interactionWrites;
+  const estimatedDailyKvWrites = kvEstimate.totalWrites;
+  const estimatedDailyWorkerRequests = Math.max(0, Number(process.env.ESTIMATED_DAILY_WORKER_REQUESTS || WORKER_DAILY_REQUEST_GATE));
   const workerRequestMetric = liveProxy.ok
     ? `${liveProxy.proxiedChannels}/${liveProxy.totalChannels} proxied`
     : 'live-audit-unavailable';
@@ -233,14 +253,20 @@ async function auditFreeTier() {
     { area: 'cloudflare_worker_requests', result: liveProxy.ok && liveProxy.proxiedChannels === 0 ? 'PASS' : 'WARN', metric: workerRequestMetric, note: workerRequestNote },
     {
       area: 'cloudflare_kv_hot_probe_writes',
-      result: estimatedDailyKvWrites <= KV_WRITE_FREE_DAILY_LIMIT * KV_WRITE_DAILY_WARN_RATIO ? 'PASS' : 'WARN',
+      result: estimatedDailyKvWrites <= KV_WRITE_DAILY_RELEASE_GATE ? 'PASS' : 'FAIL',
       metric: `${Math.round(estimatedDailyKvWrites)}/${KV_WRITE_FREE_DAILY_LIMIT} writes/day`,
-      note: estimatedDailyKvWrites <= KV_WRITE_FREE_DAILY_LIMIT * KV_WRITE_DAILY_WARN_RATIO
-        ? `\u70ed\u63a2\u9488\u5199\u5165\u5355\u4e2a hot:last-success KV key\uff1b\u5b9a\u65f6\u7ea6 ${Math.round(estimatedScheduledKvWrites)}/day\uff0c\u4ea4\u4e92\u515c\u5e95\u6700\u591a ${estimatedInteractionProbeDailyWrites}/day\uff0c\u5408\u8ba1\u4f4e\u4e8e Workers KV \u514d\u8d39\u5c42 1000 writes/day\u3002`
-        : '\u70ed\u63a2\u9488\u5199\u5165\u9891\u7387\u63a5\u8fd1\u6216\u8d85\u8fc7 Workers KV \u514d\u8d39\u5c42 1000 writes/day\uff0c\u9700\u8981\u964d\u9891\u6216\u6539\u4e3a\u65e0\u5199\u5165\u63a2\u9488\u3002',
+      note: estimatedDailyKvWrites <= KV_WRITE_DAILY_RELEASE_GATE
+        ? `\u6bcf5\u5206\u949f\u6700\u591a\u4e00\u6b21\u539f\u5b50\u5185\u5bb9\u53d1\u5e03\uff1a${kvEstimate.contentWrites}/day\uff1b30\u5206\u949f\u5065\u5eb7\u5fc3\u8df3\uff1a${kvEstimate.healthWrites}/day\uff1b\u4ea4\u4e92\u89e6\u53d1\u590d\u7528\u540c\u4e00\u53d1\u5e03\u65f6\u9699\uff0c\u4e0d\u53e0\u52a0\u9884\u7b97\u3002`
+        : `KV \u5199\u5165\u4f30\u7b97\u8d85\u8fc7\u53d1\u5e03\u786c\u95f8\u95e8 ${KV_WRITE_DAILY_RELEASE_GATE}/day\u3002`,
+    },
+    {
+      area: 'cloudflare_worker_request_budget',
+      result: estimatedDailyWorkerRequests <= WORKER_DAILY_REQUEST_GATE ? 'PASS' : 'FAIL',
+      metric: `${estimatedDailyWorkerRequests}/${WORKER_DAILY_REQUEST_GATE} requests/day`,
+      note: '\u4e0d\u4ee3\u7406\u89c6\u9891\u5206\u7247\uff1b\u7528KV\u70ed\u5305\u3001Pages\u5feb\u7167\u548c\u8fb9\u7f18\u7f13\u5b58\u5c06\u65e5\u8bf7\u6c42\u9884\u7b97\u538b\u572880000\u4ee5\u5185\u3002',
     },
   ];
-  const summary = { generatedAt, repo, publicBase: PUBLIC_BASE, monthlyScheduledRuns: monthlyRuns, workerCrons, estimatedScheduledKvWrites, estimatedInteractionProbeDailyWrites, estimatedDailyKvWrites, distFileCount: distFiles.length, distBytes, workflows, liveProxy, rows, pass: rows.filter((x) => x.result === 'PASS').length, warn: rows.filter((x) => x.result === 'WARN').length, fail: rows.filter((x) => x.result === 'FAIL').length };
+  const summary = { generatedAt, repo, publicBase: PUBLIC_BASE, monthlyScheduledRuns: monthlyRuns, workerCrons, kvEstimate, estimatedScheduledKvWrites, estimatedInteractionProbeDailyWrites, estimatedDailyKvWrites, estimatedDailyWorkerRequests, distFileCount: distFiles.length, distBytes, workflows, liveProxy, rows, pass: rows.filter((x) => x.result === 'PASS').length, warn: rows.filter((x) => x.result === 'WARN').length, fail: rows.filter((x) => x.result === 'FAIL').length };
   await fs.mkdir(path.join(ROOT, 'audit'), { recursive: true });
   await fs.writeFile(path.join(ROOT, 'audit', 'free-tier-latest.json'), JSON.stringify(summary, null, 2) + '\n', 'utf8');
   await fs.writeFile(path.join(ROOT, 'audit', 'free-tier-summary.md'), renderSummary(summary), 'utf8');
@@ -273,4 +299,4 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   console.log(JSON.stringify(await auditFreeTier(), null, 2));
 }
 
-export { auditFreeTier, countProxyPlaylistChildren, interactionFallbackDailyRuns, monthlyCronRuns, parseLiveText, summarizeLiveProxyFromChannels };
+export { auditFreeTier, countProxyPlaylistChildren, estimateHotKvWrites, interactionFallbackDailyRuns, monthlyCronRuns, parseLiveText, summarizeLiveProxyFromChannels };

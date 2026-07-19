@@ -85,16 +85,33 @@ function classifyConfigSurface({ source, expectedName, expectedApiPrefix, payloa
   const nameCode = extractCodeFromName(siteName);
   const apiCode = extractCodeFromApi(api);
   const apiOk = expectedApiPrefix ? api.startsWith(expectedApiPrefix) : /^https?:\/\//.test(api);
+  if (nameCode && siteName.replace(/\s*[·・]\s*\d{12}\s*$/, '') === expectedName && apiOk) {
+    if (!apiCode) {
+      return { source, result: 'FAIL', root_cause: 'API_VERSION_MISSING', message: 'visible update code exists but API path has no matching version code', siteName, api, visibleUpdateText: nameCode, decoded: decodeReverseUpdateCode(nameCode) };
+    }
+    if (nameCode !== apiCode) {
+      return { source, result: 'FAIL', root_cause: 'UPDATE_CODE_MISMATCH', message: 'site name and API path expose different update codes', siteName, api, nameCode, apiCode, visibleUpdateText: nameCode, decoded: decodeReverseUpdateCode(nameCode) };
+    }
+    return { source, result: 'PASS', root_cause: 'OK', message: 'visible update code matches the versioned API path', siteName, api, visibleUpdateText: nameCode, decoded: decodeReverseUpdateCode(nameCode) };
+  }
   if (siteName === expectedName && apiOk && apiCode) {
-    return { source, result: 'PASS', root_cause: 'OK', message: 'stable site name with versioned API', siteName, api, visibleUpdateText: apiCode, decoded: decodeReverseUpdateCode(apiCode) };
+    return { source, result: 'WARN', root_cause: 'VISIBLE_UPDATE_MISSING', message: 'API is versioned but the TV-visible entry name does not show the update code', siteName, api, visibleUpdateText: apiCode, decoded: decodeReverseUpdateCode(apiCode) };
   }
   if (siteName === expectedName && apiOk && !apiCode) {
-    return { source, result: 'WARN', root_cause: 'API_VERSION_MISSING', message: 'site name is stable but API path has no update code', siteName, api, visibleUpdateText: '' };
-  }
-  if (nameCode && siteName.replace(/\s*[·・]\s*\d{12}\s*$/, '') === expectedName && apiOk) {
-    return { source, result: 'WARN', root_cause: 'NEEDS_WORKER_DEPLOY', message: 'visible update code still lives in site name, TV apps can cache it and show stale time', siteName, api, visibleUpdateText: apiCode || nameCode, decoded: decodeReverseUpdateCode(apiCode || nameCode) };
+    return { source, result: 'FAIL', root_cause: 'API_VERSION_MISSING', message: 'site name and API path both omit the required update code', siteName, api, visibleUpdateText: '' };
   }
   return { source, result: 'FAIL', root_cause: 'CONFIG_MISMATCH', message: 'config does not match expected TVBox entry contract', siteName, api, expectedName, expectedApiPrefix };
+}
+
+function classifyWorkerSurface({ onlineRow, localRow }) {
+  if (onlineRow?.result === 'PASS' || localRow?.result !== 'PASS') return onlineRow;
+  return {
+    ...onlineRow,
+    result: 'WARN',
+    root_cause: 'NEEDS_WORKER_DEPLOY',
+    online_root_cause: onlineRow?.root_cause || 'UNKNOWN',
+    message: `local artifact is ready but the online Worker is still on the previous contract: ${onlineRow?.message || 'deployment required'}`,
+  };
 }
 
 function classifyPagesStaticSurface({ pagesConfig, pagesCleanConfig, pagesManifest, currentWorkerCode, expectedStaticCode, expectedFullName, expectedCleanName, publicBase }) {
@@ -177,7 +194,7 @@ function markdownReport(report) {
   lines.push('');
   lines.push('## 发布闸门');
   lines.push('- 本审计不会自动部署。生产 Worker/Pages 发布仍需要用户明确批准。');
-  lines.push('- 若出现 NEEDS_WORKER_DEPLOY：说明线上 Worker 仍暴露旧站点名时间码方案，电视端缓存后容易显示旧时间。');
+  lines.push('- 若出现 NEEDS_WORKER_DEPLOY：说明线上 Worker 的可见时间码、版本化 API 或本地构建契约仍未同步。');
   lines.push('- 若出现 NEEDS_PAGES_DEPLOY：说明 Pages 静态兜底仍旧，可能导致备用链路或静态镜像显示旧时间。');
   lines.push('');
   return lines.join('\n');
@@ -208,10 +225,14 @@ async function auditReleaseReadiness(options = {}) {
 
   const rows = [];
   rows.push(statusFreshnessRow(status.data, maxAgeMinutes));
-  rows.push(classifyConfigSurface({ source: 'online-worker-full-config', expectedName: '影视点播', expectedApiPrefix: `${tvboxBase}/agg/u`, payload: onlineConfig.data }));
-  rows.push(classifyConfigSurface({ source: 'online-worker-clean-config', expectedName: '影视点播洁净', expectedApiPrefix: `${tvboxBase}/agg-clean/u`, payload: onlineCleanConfig.data }));
-  rows.push(classifyConfigSurface({ source: 'local-dist-full-config', expectedName: '影视点播', expectedApiPrefix: `${tvboxBase}/agg/u`, payload: localConfig.data }));
-  rows.push(classifyConfigSurface({ source: 'local-dist-clean-config', expectedName: '影视点播洁净', expectedApiPrefix: `${tvboxBase}/agg-clean/u`, payload: localCleanConfig.data }));
+  const localFullRow = classifyConfigSurface({ source: 'local-dist-full-config', expectedName: '影视点播', expectedApiPrefix: `${tvboxBase}/agg/u`, payload: localConfig.data });
+  const localCleanRow = classifyConfigSurface({ source: 'local-dist-clean-config', expectedName: '影视点播洁净', expectedApiPrefix: `${tvboxBase}/agg-clean/u`, payload: localCleanConfig.data });
+  const onlineFullRow = classifyConfigSurface({ source: 'online-worker-full-config', expectedName: '影视点播', expectedApiPrefix: `${tvboxBase}/agg/u`, payload: onlineConfig.data });
+  const onlineCleanRow = classifyConfigSurface({ source: 'online-worker-clean-config', expectedName: '影视点播洁净', expectedApiPrefix: `${tvboxBase}/agg-clean/u`, payload: onlineCleanConfig.data });
+  rows.push(classifyWorkerSurface({ onlineRow: onlineFullRow, localRow: localFullRow }));
+  rows.push(classifyWorkerSurface({ onlineRow: onlineCleanRow, localRow: localCleanRow }));
+  rows.push(localFullRow);
+  rows.push(localCleanRow);
   rows.push(...classifyPagesStaticSurface({
     pagesConfig,
     pagesCleanConfig,
@@ -250,6 +271,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
 export {
   auditReleaseReadiness,
   classifyConfigSurface,
+  classifyWorkerSurface,
   classifyPagesStaticSurface,
   decodeReverseUpdateCode,
   summarizeReleaseGate,
