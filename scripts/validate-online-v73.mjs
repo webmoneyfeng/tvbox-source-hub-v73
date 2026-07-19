@@ -59,6 +59,7 @@ assert(Boolean(fullUpdateCode), 'full config update code mismatch', failures);
 
 const snapshotProbe = await fetchJson('/snapshot.json');
 const cleanSnapshotTotal = Number(snapshotProbe.data?.manifest?.variants?.clean?.total);
+const cleanSnapshotCategories = snapshotProbe.data?.manifest?.variants?.clean?.categories || {};
 
 const cleanConfig = await fetchJson('/config-clean.json');
 report.cleanConfig = { status: cleanConfig.status, sites: cleanConfig.data?.sites?.length, siteName: cleanConfig.data?.sites?.[0]?.name, api: cleanConfig.data?.sites?.[0]?.api };
@@ -102,9 +103,12 @@ for (const t of CLEAN_CATEGORY_IDS) {
   const got = await fetchJson(`/agg-clean?ac=videolist&t=${t}&pg=1&limit=${LIMIT}`);
   const filters = got.data?.filters?.[t] || got.data?.filters?.[String(t)] || [];
   const fullTotal = fullCategoryTotals.get(String(t)) || 0;
-  const expectedTotal = String(t) === '0' && Number.isFinite(cleanSnapshotTotal) && cleanSnapshotTotal > 0
-    ? cleanSnapshotTotal
-    : fullTotal;
+  const categoryCleanTotal = Number(cleanSnapshotCategories?.[String(t)]?.total);
+  const expectedTotal = Number.isFinite(categoryCleanTotal) && categoryCleanTotal >= 0
+    ? categoryCleanTotal
+    : String(t) === '0' && Number.isFinite(cleanSnapshotTotal) && cleanSnapshotTotal > 0
+      ? cleanSnapshotTotal
+      : fullTotal;
   const cleanTotal = Number(got.data?.total || 0);
   report.categories.push({ t: `clean-${t}`, status: got.status, count: got.data?.list?.length || 0, total: cleanTotal, expectedTotal, filterGroups: filters.length, content_policy: got.data?.content_policy, hot_overlay_applied: got.data?.hot_overlay_applied || false, hot_rows_used: got.data?.hot_rows_used || 0, hot_duplicate_removed: got.data?.hot_duplicate_removed || 0 });
   assert(got.status === 200, `clean category ${t} status ${got.status}`, failures);

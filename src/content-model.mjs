@@ -134,7 +134,7 @@ const GENERIC_SERIES_RULES = [
 const THEATRICAL_CHANNEL_PATTERN = /\u9662\u7ebf|\u5f71\u9662|\btheatrical\b|\bcinema/iu;
 const WEB_MOVIE_CHANNEL_PATTERN = /\u7f51\u7edc(?:\u5927)?\u7535\u5f71|\u7f51\u5927|\bonline[\s-]*movie\b|\bweb[\s-]*movie\b|\bstreaming[\s-]*film\b/iu;
 
-const ADULT_POLICY_RE = /(\u4f26\u7406|\u4f26\u7406\u7247|\u7406\u8bba|\u798f\u5229|\u6210\u4eba|\u60c5\u8da3|\u5348\u591c|\u5199\u771f|\u4e09\u7ea7|\u91cc\u756a|\u756a\u53f7|\bAV\b)/iu;
+const ADULT_POLICY_RE = /(\u4f26\u7406|\u4f26\u7406\u7247|\u7406\u8bba|\u798f\u5229|\u6210\u4eba|\u60c5\u8da3|\u5348\u591c|\u5199\u771f|\u4e09\u7ea7|\u91cc\u756a|\u756a\u53f7|\u8272\u60c5|\u8272\u60c5\u7247|\bAV\b|\bxxx\b|\bporn(?:ography)?\b|\bhentai\b)/iu;
 const ADULT_POLICY_FIELDS = [
   '_macro', 'category', 'primary_category', 'type_id', 'type_name', 'vod_name', 'vod_sub',
   'vod_remarks', 'vod_class', 'vod_state', 'vod_area', 'vod_lang', 'vod_actor', 'vod_director',
