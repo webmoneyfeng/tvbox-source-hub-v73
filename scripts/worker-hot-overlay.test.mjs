@@ -42,7 +42,7 @@ function installHotOverlayFetchMock() {
   };
   const hotManifest = { ok: true, version: 'test', generatedAt: now, finishedAt: now, errors: [], warnings: [], files: { catalog: 'catalog-hot.json', search: 'search-hot.json' } };
   const categories = [{ type_id: '1', type_name: '电影', filters: [] }];
-  const snapshotMoviePack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 2, list: [makeVod('快照旧电影', 'snap-old'), makeVod('同名影片', 'snap-dup', { vod_year: '2025' })] };
+  const snapshotMoviePack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 5, limit: 24, total: 100, list: [makeVod('快照旧电影', 'snap-old'), makeVod('同名影片', 'snap-dup', { vod_year: '2025' })] };
   const hotMoviePack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 2, list: [makeVod('热点新电影', 'hot-new'), makeVod('同名影片', 'hot-dup', { vod_year: '2025', vod_remarks: '4K · 3线' })], hot_category: { t: '1', name: '电影' } };
   const snapshotSearchPack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('天道快照旧结果', 'snap-search', { type_id: '2', type_name: '剧集', semantic_tags: '剧集 正片' })] };
   const hotSearchPack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('天道', 'hot-tiandao', { type_id: '2', type_name: '剧集', vod_year: '2008', semantic_tags: '剧集 正片 王志文' })], hot_search: { wd: '天道' } };
@@ -78,6 +78,7 @@ test('aggregate category overlays hot rows before snapshot rows and reports hot 
     assert.equal(data.hot_overlay_applied, true);
     assert.equal(data.hot_rows_used, 2);
     assert.equal(data.hot_duplicate_removed, 1);
+    assert.equal(data.total, 100);
     assert.equal(data.list[0].vod_name, '热点新电影');
     assert.deepEqual(data.list.map((x) => x.vod_name).filter((x) => x === '同名影片'), ['同名影片']);
   } finally {
