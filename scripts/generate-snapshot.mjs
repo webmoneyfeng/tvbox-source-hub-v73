@@ -45,6 +45,7 @@ const DOUBAN_METADATA_MIN_INTERVAL_MS = Math.max(100, Number(process.env.DOUBAN_
 const DOUBAN_METADATA_URL_TEMPLATE = String(process.env.DOUBAN_METADATA_URL_TEMPLATE || 'https://m.douban.com/rexxar/api/v2/subject/{id}?for_mobile=1');
 const FILTER_PACK_PAGE_COUNT = Number(process.env.FILTER_PACK_PAGE_COUNT || 0);
 const FILTER_PACK_KEYS = new Set(['year', 'area', 'class', 'form', 'quality', 'state', 'episodes', 'duration', 'topic']);
+const PREVIOUS_EPHEMERAL_DIRS = Object.freeze(['filter-packs', 'filter-index']);
 const STATIC_SNAPSHOT_BASES = (process.env.STATIC_SNAPSHOT_BASES || [
   'https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/snapshot/dist/snapshot/latest',
   'https://tvbox-source-hub-v73.pages.dev/snapshot/latest',
@@ -280,6 +281,31 @@ function filterToken(value) {
 function filterPackRel(t, key, value, pg, policy = 'full') {
   const prefix = policy === 'clean' ? 'filter-packs/clean' : 'filter-packs';
   return `snapshot/latest/${prefix}/t${t}/${key}-${filterToken(value)}-p${pg}-limit${LIMIT}.json`;
+}
+function cleanFilterIndexRel(t, key, value) {
+  return `snapshot/latest/filter-index/clean/t${t}/${key}-${filterToken(value)}-limit${LIMIT}.json`;
+}
+function cleanFilterIndexFromRows(rows, job, revision, sourcePageCount) {
+  const sourceRows = Array.isArray(rows) ? rows.slice(0, sourcePageCount * LIMIT) : [];
+  const cleanCounts = [];
+  for (let pg = 0; pg < sourcePageCount; pg += 1) {
+    const pageRows = sourceRows.slice(pg * LIMIT, (pg + 1) * LIMIT);
+    cleanCounts.push(pageRows.filter((row) => !isAdultPolicyContent(row)).length);
+  }
+  const total = cleanCounts.reduce((sum, count) => sum + count, 0);
+  return {
+    code: 1,
+    msg: 'ok',
+    content_revision: revision,
+    policy: 'clean-no-adult',
+    snapshot_mode: 'clean-filter-index',
+    snapshot_filter: { key: job.key, value: job.value },
+    source_pack_limit: LIMIT,
+    source_pagecount: sourcePageCount,
+    source_total: sourceRows.length,
+    total,
+    clean_counts: cleanCounts,
+  };
 }
 function visibleFilterOptions(data, t) {
   const groups = data?.filters?.[String(t)] || data?.class?.find((c) => String(c.type_id) === String(t))?.filters || [];
@@ -1457,11 +1483,10 @@ async function main() {
   const viableFilterOptions = new Set();
   const cleanViableFilterOptions = new Set();
   let filterPackFileCount = 0;
+  let cleanFilterIndexFileCount = 0;
   for (const job of filterJobs) {
     const packs = catalogPacksByCategory.get(job.t) || [];
-    const cleanPacks = cleanCatalogPacksByCategory.get(job.t) || [];
     const basePack = packs[0]?.data || { code: 1, msg: 'ok', class: categoryClassList(visibleCategories), filters: {}, list: [] };
-    const cleanBasePack = cleanPacks[0]?.data || basePack;
     const catalogRows = views.canonical[job.categoryKey] || [];
     let filterRows = await buildFilterRows(job, catalogRows, searchBackfillCache);
     if (!filterRows.length) filterRows = await backfillRowsByDynamicFilter(job, dynamicFilterBackfillCache);
@@ -1492,18 +1517,11 @@ async function main() {
         ok: (data.list?.length || 0) > 0,
       });
     }
-    const cleanFilterRows = mergeSnapshotRows(filterRows.filter((row) => !isAdultPolicyContent(row))).rows;
-    if (cleanFilterRows.length) {
+    const cleanIndex = cleanFilterIndexFromRows(filterRows, job, revision, pageCount);
+    if (cleanIndex.total > 0) {
       cleanViableFilterOptions.add(`${job.t}\u0000${job.key}\u0000${job.value}`);
-      const cleanAvailablePages = Math.max(1, Math.ceil(cleanFilterRows.length / LIMIT));
-      const cleanPageCount = FILTER_PACK_PAGE_COUNT > 0 ? Math.min(FILTER_PACK_PAGE_COUNT, cleanAvailablePages) : cleanAvailablePages;
-      for (let pg = 1; pg <= cleanPageCount; pg += 1) {
-        const data = filterPackFromRows(cleanBasePack, cleanFilterRows, job, pg);
-        data.content_revision = revision;
-        data.policy = 'clean-no-adult';
-        await writeJson(filterPackRel(job.t, job.key, job.value, pg, 'clean'), data);
-        filterPackFileCount += 1;
-      }
+      await writeJson(cleanFilterIndexRel(job.t, job.key, job.value), cleanIndex);
+      cleanFilterIndexFileCount += 1;
     }
   }
 
@@ -1639,7 +1657,9 @@ async function main() {
     legacyPacks,
     indexes: indexRefs,
     filterPackCount: filterPackFileCount,
+    cleanFilterIndexCount: cleanFilterIndexFileCount,
     visibleFilterOptions: viableFilterOptions.size,
+    cleanVisibleFilterOptions: cleanViableFilterOptions.size,
     fileBudget: { written: writtenSnapshotFiles.size, maximum: MAX_SNAPSHOT_FILES, maximumBytesPerFile: MAX_FILE_BYTES },
     files: { categories: 'categories.json', sources: 'sources.json', validation: 'validation.json', watermarks: 'state/watermarks.json' },
   };
@@ -1655,9 +1675,18 @@ async function main() {
   });
   await writeJson('snapshot/latest/validation.json', validation);
   const actualSnapshotFileCount = await countSnapshotFiles(building);
-  const retainedPreviousFileCount = existsSync(LATEST) ? await countSnapshotFiles(LATEST) : 0;
+  const retainedPreviousFullFileCount = existsSync(LATEST) ? await countSnapshotFiles(LATEST) : 0;
+  let prunedPreviousFileCount = 0;
+  if (existsSync(LATEST)) {
+    for (const directory of PREVIOUS_EPHEMERAL_DIRS) {
+      prunedPreviousFileCount += await countSnapshotFiles(path.join(LATEST, directory));
+    }
+  }
+  const retainedPreviousFileCount = Math.max(0, retainedPreviousFullFileCount - prunedPreviousFileCount);
   const projectedSnapshotFileCount = actualSnapshotFileCount + retainedPreviousFileCount;
   manifest.fileBudget.actual = actualSnapshotFileCount;
+  manifest.fileBudget.retainedPreviousFull = retainedPreviousFullFileCount;
+  manifest.fileBudget.prunedFromPrevious = prunedPreviousFileCount;
   manifest.fileBudget.retainedPrevious = retainedPreviousFileCount;
   manifest.fileBudget.projectedWithPrevious = projectedSnapshotFileCount;
   if (projectedSnapshotFileCount >= 20_000 || projectedSnapshotFileCount > MAX_SNAPSHOT_FILES) {
@@ -1684,6 +1713,11 @@ async function main() {
       latestMoved = true;
     }
     await rename(building, LATEST);
+    if (latestMoved) {
+      for (const directory of PREVIOUS_EPHEMERAL_DIRS) {
+        await rm(path.join(previous, directory), { recursive: true, force: true });
+      }
+    }
   } catch (error) {
     if (!existsSync(LATEST) && latestMoved && existsSync(previous)) await rename(previous, LATEST);
     throw error;

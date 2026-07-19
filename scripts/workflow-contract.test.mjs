@@ -91,6 +91,8 @@ test('direct-source crawl checkpoints bypass published artifact limits without w
   assert.match(generator, /buildSnapshotIndexes\(views\.rows, \{ revision, shardSize: SHARD_SIZE, maxShardBytes: MAX_FILE_BYTES \}\)/u);
   assert.match(generator, /child === '\.crawl' \|\| child\.startsWith\(`\.crawl\$\{path\.sep\}`\) \|\| child === 'build-state\.json'/u);
   assert.match(generator, /await rm\(path\.join\(building, '\.crawl'\), \{ recursive: true, force: true \}\);[\s\S]*await rename\(building, LATEST\);/u);
+  assert.match(generator, /PREVIOUS_EPHEMERAL_DIRS = Object\.freeze\(\['filter-packs', 'filter-index'\]\)/u);
+  assert.match(generator, /prunedFromPrevious/u);
 });
 
 test('release metadata uses the public subject payload instead of the rate-limited movie payload', async () => {

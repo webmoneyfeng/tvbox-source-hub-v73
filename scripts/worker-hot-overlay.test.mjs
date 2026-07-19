@@ -44,7 +44,22 @@ function installHotOverlayFetchMock() {
   const categories = [{ type_id: '1', type_name: '电影', filters: [] }];
   const snapshotMoviePack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 5, limit: 24, total: 100, list: [makeVod('快照旧电影', 'snap-old'), makeVod('同名影片', 'snap-dup', { vod_year: '2025' })] };
   const cleanMoviePack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('洁净专属电影', 'clean-only')] };
-  const cleanFilterPack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('洁净筛选电影', 'clean-filter-only')] };
+  const cleanFilterIndex = { code: 1, msg: 'ok', content_revision: revision, policy: 'clean-no-adult', source_pack_limit: 24, source_pagecount: 2, source_total: 9, total: 8, clean_counts: [7, 1] };
+  const fullFilterPack1 = {
+    code: 1,
+    msg: 'ok',
+    content_revision: revision,
+    class: categories,
+    page: 1,
+    pagecount: 2,
+    limit: 24,
+    total: 9,
+    list: [
+      ...Array.from({ length: 7 }, (_, index) => makeVod(`洁净筛选电影${index + 1}`, `clean-filter-${index + 1}`)),
+      makeVod('成人筛选电影', 'adult-filter', { type_id: '9', type_name: '成人伦理' }),
+    ],
+  };
+  const fullFilterPack2 = { ...fullFilterPack1, page: 2, list: [makeVod('洁净补位电影', 'clean-refill')] };
   const hotMoviePack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 2, list: [makeVod('热点新电影', 'hot-new'), makeVod('同名影片', 'hot-dup', { vod_year: '2025', vod_remarks: '4K · 3线' })], hot_category: { t: '1', name: '电影' } };
   const snapshotSearchPack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('天道快照旧结果', 'snap-search', { type_id: '2', type_name: '剧集', semantic_tags: '剧集 正片' })] };
   const cleanSearchPack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 1, list: [makeVod('洁净天道结果', 'clean-search', { type_id: '2', type_name: '剧集', semantic_tags: '剧集 正片' })] };
@@ -55,7 +70,9 @@ function installHotOverlayFetchMock() {
     if (url.endsWith('/snapshot/latest/manifest.json')) return jsonResponse(snapshotManifest);
     if (url.endsWith('/snapshot/latest/catalog-packs/clean/t1-p1-limit24.json')) return jsonResponse(cleanMoviePack);
     if (url.endsWith('/snapshot/latest/catalog-packs/t1-p1-limit24.json')) return jsonResponse(snapshotMoviePack);
-    if (url.endsWith(`/snapshot/latest/filter-packs/clean/t1/class-${Buffer.from('动作').toString('base64url')}-p1-limit24.json`)) return jsonResponse(cleanFilterPack);
+    if (url.endsWith(`/snapshot/latest/filter-index/clean/t1/class-${Buffer.from('动作').toString('base64url')}-limit24.json`)) return jsonResponse(cleanFilterIndex);
+    if (url.endsWith(`/snapshot/latest/filter-packs/t1/class-${Buffer.from('动作').toString('base64url')}-p1-limit24.json`)) return jsonResponse(fullFilterPack1);
+    if (url.endsWith(`/snapshot/latest/filter-packs/t1/class-${Buffer.from('动作').toString('base64url')}-p2-limit24.json`)) return jsonResponse(fullFilterPack2);
     const decodedPath = (() => { try { return decodeURIComponent(new URL(url).pathname); } catch { return url; } })();
     const decodedTwicePath = (() => { try { return decodeURIComponent(decodedPath); } catch { return decodedPath; } })();
     if (decodedPath.endsWith('/snapshot/latest/search-packs/%E5%A4%A9%E9%81%93-p1-limit24.json') || decodedTwicePath.endsWith('/snapshot/latest/search-packs/??-p1-limit24.json') || url.endsWith('/snapshot/latest/search-packs/%E5%A4%A9%E9%81%93-p1-limit24.json')) return jsonResponse(snapshotSearchPack);
@@ -134,7 +151,7 @@ test('clean aggregate reads the clean category pack before applying the clean po
   }
 });
 
-test('clean aggregate reads the clean filter pack instead of filtering a full page in place', async () => {
+test('clean aggregate uses the clean filter index to refill a page from full filter packs', async () => {
   const restore = installHotOverlayFetchMock();
   try {
     const filter = encodeURIComponent(JSON.stringify({ class: '动作' }));
@@ -142,7 +159,11 @@ test('clean aggregate reads the clean filter pack instead of filtering a full pa
     assert.equal(res.status, 200);
     const data = await res.json();
     assert.equal(data.content_policy, 'clean-no-adult');
-    assert.equal(data.list.some((item) => item.vod_name === '洁净筛选电影'), true);
+    assert.equal(data.snapshot_mode, 'clean-filter-index');
+    assert.equal(data.total, 8);
+    assert.equal(data.list.length, 8);
+    assert.equal(data.list.some((item) => item.vod_name === '洁净补位电影'), true);
+    assert.equal(data.list.some((item) => /成人|伦理/.test(item.vod_name || '')), false);
   } finally {
     restore();
   }

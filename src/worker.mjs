@@ -1500,6 +1500,9 @@ function snapshotFilterPath(category, key, value, packPage = 1, clean = false) {
   const prefix = clean ? 'filter-packs/clean/' : 'filter-packs/';
   return prefix + 't' + category.id + '/' + key + '-' + snapshotFilterToken(value) + '-p' + packPage + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
 }
+function snapshotCleanFilterIndexPath(category, key, value) {
+  return 'filter-index/clean/t' + category.id + '/' + key + '-' + snapshotFilterToken(value) + '-limit' + SNAPSHOT_PACK_LIMIT + '.json';
+}
 function snapshotFilterEntries(filters) {
   const keys = ['year', 'area', 'class', 'form', 'quality', 'state', 'episodes', 'duration', 'topic'];
   const out = [];
@@ -1975,6 +1978,82 @@ async function fetchSnapshotPacks(env, pathForPage, page, limit) {
   }
   return packs;
 }
+function cleanFilterWindowFromIndex(index, page, limit) {
+  const sourcePackLimit = Number(index?.source_pack_limit);
+  const counts = Array.isArray(index?.clean_counts)
+    ? index.clean_counts.map((value) => Math.max(0, Number(value) || 0))
+    : [];
+  if (sourcePackLimit !== SNAPSHOT_PACK_LIMIT || !counts.length) return null;
+  const safePage = Math.max(1, Number(page) || 1);
+  const safeLimit = Math.max(1, Math.min(LIMIT_MAX, Number(limit) || LIMIT_DEFAULT));
+  const total = Math.max(0, Number(index?.total) || 0);
+  const start = (safePage - 1) * safeLimit;
+  const end = Math.min(total, start + safeLimit);
+  if (start >= total) return { pages: [], safePage, safeLimit, total, relativeStart: 0, expectedCleanCount: 0 };
+
+  let prefix = 0;
+  let first = -1;
+  let last = -1;
+  let prefixBeforeFirst = 0;
+  for (let i = 0; i < counts.length; i += 1) {
+    const next = prefix + counts[i];
+    if (first < 0 && next > start) {
+      first = i;
+      prefixBeforeFirst = prefix;
+    }
+    if (first >= 0 && next >= end) {
+      last = i;
+      break;
+    }
+    prefix = next;
+  }
+  if (first < 0 || last < first) return null;
+  const pages = [];
+  let expectedCleanCount = 0;
+  for (let i = first; i <= last; i += 1) {
+    pages.push(i + 1);
+    expectedCleanCount += counts[i];
+  }
+  return {
+    pages,
+    safePage,
+    safeLimit,
+    total,
+    relativeStart: start - prefixBeforeFirst,
+    expectedCleanCount,
+  };
+}
+async function cleanFilterPayloadFromIndex(env, category, key, value, page, limit, index) {
+  const window = cleanFilterWindowFromIndex(index, page, limit);
+  if (!window) return null;
+  const sourcePages = window.pages.length ? window.pages : [1];
+  const packs = [];
+  for (const packPage of sourcePages) {
+    const pack = await fetchSnapshotJson(env, snapshotFilterPath(category, key, value, packPage, false));
+    if (!pack || !Array.isArray(pack.list)) return null;
+    const indexRevision = String(index?.content_revision || '').trim();
+    const packRevision = String(pack?.content_revision || '').trim();
+    if (indexRevision && packRevision && indexRevision !== packRevision) return null;
+    packs.push(pack);
+  }
+  const cleanRows = packs.flatMap((pack) => pack.list.filter((item) => !isAdultAggRecord(item)));
+  if (window.pages.length && cleanRows.length !== window.expectedCleanCount) return null;
+  const list = window.pages.length
+    ? cleanRows.slice(window.relativeStart, window.relativeStart + window.safeLimit)
+    : [];
+  return {
+    ...packs[0],
+    page: window.safePage,
+    pagecount: Math.max(1, Math.ceil(window.total / window.safeLimit)),
+    limit: window.safeLimit,
+    total: window.total,
+    list,
+    policy: 'clean-no-adult',
+    snapshot_mode: 'clean-filter-index',
+    snapshot_filter: { key, value },
+    snapshot_clean_index: { source_pages: sourcePages, source_pack_limit: SNAPSHOT_PACK_LIMIT },
+  };
+}
 async function snapshotAggResponse(request, env, category, page, limit, wd, params, filters, policy = {}) {
   if (isSnapshotBypass(params)) return null;
   const clean = policy.includeAdult === false;
@@ -2006,6 +2085,13 @@ async function snapshotAggResponse(request, env, category, page, limit, wd, para
   const entries = snapshotFilterEntries(filters);
   if (entries.length === 1) {
     const [key, value] = entries[0];
+    if (clean) {
+      const index = await fetchSnapshotJson(env, snapshotCleanFilterIndexPath(category, key, value));
+      const indexedPayload = index
+        ? await cleanFilterPayloadFromIndex(env, category, key, value, page, limit, index)
+        : null;
+      if (indexedPayload) return hotOverlayForSnapshot(env, category, page, limit, wd, filters, indexedPayload, policy);
+    }
     const packs = await fetchSnapshotPacks(env, (packPage) => snapshotFilterPath(category, key, value, packPage, clean), page, limit);
     if (packs && packs[0]?.list?.length) {
       if (hasExplicitSnapshotSort(filters)) {

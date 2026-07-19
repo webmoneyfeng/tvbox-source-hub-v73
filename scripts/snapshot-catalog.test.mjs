@@ -302,6 +302,7 @@ test('generator publishes an atomic 13-class snapshot with legacy packs and one 
     vod_director: `导演${index}`,
     vod_year: '2026',
     vod_time: '2026-07-18 10:00:00',
+    vod_class: '\u52a8\u4f5c',
     type_id: category.id,
     type_name: category.name,
     vod_remarks: '高清',
@@ -334,7 +335,7 @@ test('generator publishes an atomic 13-class snapshot with legacy packs and one 
       limit: 24,
       total: 1,
       class: SNAPSHOT_CATEGORIES.map((category) => ({ type_id: category.id, type_name: category.name })),
-      filters: { [categoryId]: [] },
+      filters: { [categoryId]: [{ key: 'class', name: '\u7c7b\u578b', value: [{ n: '\u52a8\u4f5c', v: '\u52a8\u4f5c' }] }] },
       list: samples[categoryId] || [],
     }));
   });
@@ -379,6 +380,7 @@ test('generator publishes an atomic 13-class snapshot with legacy packs and one 
     const tianDaoSearch = JSON.parse(await readFile(path.join(latest, 'search-packs', `${encodeURIComponent('天道')}-p1-limit24.json`), 'utf8'));
     const aliasSearch = JSON.parse(await readFile(path.join(latest, 'search-packs', `${encodeURIComponent('遥远的救世主')}-p1-limit24.json`), 'utf8'));
     const actorSearch = JSON.parse(await readFile(path.join(latest, 'search-packs', `${encodeURIComponent('王志文')}-p1-limit24.json`), 'utf8'));
+    const cleanFilterIndex = JSON.parse(await readFile(path.join(latest, 'filter-index', 'clean', 't10', `class-${Buffer.from('\u52a8\u4f5c').toString('base64url')}-limit24.json`), 'utf8'));
     assert.equal(manifest.categories.length, 13);
     assert.equal(manifest.categories.find((category) => category.type_id === '0')?.total, 12);
     assert.equal(manifest.categories.filter((category) => category.type_id !== '0').every((category) => category.total === 1), true);
@@ -386,6 +388,9 @@ test('generator publishes an atomic 13-class snapshot with legacy packs and one 
     assert.equal(manifest.variants.full.total, 12);
     assert.equal(manifest.variants.clean.total, 11);
     assert.equal(manifest.variants.clean.categories['20'].total, 1);
+    assert.equal(manifest.cleanFilterIndexCount > 0, true);
+    assert.equal(cleanFilterIndex.total, 1);
+    assert.deepEqual(cleanFilterIndex.clean_counts, [1]);
     assert.equal(manifest.shardSize, 500);
     assert.equal(manifest.indexes.full.catalogShards[0].count, 12);
     assert.equal(manifest.indexes.clean.catalogShards[0].count, 11);
@@ -415,8 +420,11 @@ test('generator publishes an atomic 13-class snapshot with legacy packs and one 
     assert.equal(secondManifest.revision, manifest.revision);
     assert.equal(secondManifest.content_changed_at, firstChangedAt);
     assert.equal(secondManifest.variants.full.revision, secondManifest.variants.clean.revision);
+    assert.equal(secondManifest.fileBudget.prunedFromPrevious > 0, true);
     assert.equal(previousAfterUnchangedBuild.revision, manifest.revision);
     await readFile(path.join(previous, 'catalog-packs', 't20-p1-limit24.json'), 'utf8');
+    await assert.rejects(readFile(path.join(previous, 'filter-packs', 't10', `class-${Buffer.from('\u52a8\u4f5c').toString('base64url')}-p1-limit24.json`), 'utf8'), /ENOENT/u);
+    await assert.rejects(readFile(path.join(previous, 'filter-index', 'clean', 't10', `class-${Buffer.from('\u52a8\u4f5c').toString('base64url')}-limit24.json`), 'utf8'), /ENOENT/u);
 
     samples['20'][0].vod_serial = '12';
     samples['20'][0].vod_remarks = '更新至12集';
