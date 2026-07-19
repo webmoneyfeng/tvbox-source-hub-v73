@@ -25,9 +25,30 @@ test('catalog release restores dist correctly and only publishes the snapshot br
   assert.match(workflow, /SNAPSHOT_BRANCH:\s*snapshot/u);
   assert.match(workflow, /SNAPSHOT_CRAWL_MODE:\s*direct-sources/u);
   assert.match(workflow, /git archive "FETCH_HEAD:dist" \| tar -x -C dist/u);
+  assert.match(workflow, /git add -f --all dist audit/u);
   assert.match(workflow, /HEAD:refs\/heads\/\$\{SNAPSHOT_BRANCH\}/u);
   assert.equal((workflow.match(/npm run check/gu) || []).length, 1);
   assert.doesNotMatch(workflow, /git push origin HEAD:main/u);
+});
+
+test('legacy refresh workflows are manual diagnostics and cannot write generated data to main', async () => {
+  for (const name of ['hot-refresh.yml', 'full-refresh.yml', 'deep-verify.yml', 'source-health.yml']) {
+    const workflow = await read(`.github/workflows/${name}`);
+    assert.match(workflow, /workflow_dispatch:/u);
+    assert.doesNotMatch(workflow, /schedule:/u);
+    assert.doesNotMatch(workflow, /contents:\s*write/u);
+    assert.doesNotMatch(workflow, /git push/u);
+  }
+  await assert.rejects(read('.github/workflows/manual-release.yml'), /ENOENT/u);
+});
+
+test('main ignores generated artifacts while catalog release owns the snapshot branch', async () => {
+  const ignore = await read('.gitignore');
+  assert.match(ignore, /^dist\/$/mu);
+  assert.match(ignore, /^audit\/$/mu);
+  const updateSla = await read('scripts/audit-update-sla-v74.mjs');
+  assert.match(updateSla, /catalog-release\.yml/u);
+  assert.doesNotMatch(updateSla, /HOT_WORKFLOW_PATH|hot-refresh\.yml/u);
 });
 
 test('catalog release requires all 13 categories to be visible and non-empty', async () => {
@@ -57,9 +78,9 @@ test('snapshot generator defaults to the current primary service rather than the
   assert.doesNotMatch(generator, /EVIDENCE_GATED_CATEGORY_KEYS/u);
 });
 
-test('interrupted snapshot build directory is ignored as a disposable process fragment', async () => {
+test('interrupted snapshot build directory is covered by the generated artifact ignore', async () => {
   const ignore = await read('.gitignore');
-  assert.match(ignore, /^dist\/snapshot\/\.building\/$/mu);
+  assert.match(ignore, /^dist\/$/mu);
 });
 
 test('direct-source crawl checkpoints bypass published artifact limits without weakening Pages limits', async () => {

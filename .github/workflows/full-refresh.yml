@@ -2,11 +2,9 @@ name: full-refresh
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '17 */6 * * *'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   refresh:
@@ -24,10 +22,3 @@ jobs:
         env:
           SNAPSHOT_SOURCE_BASE: https://tv.webhome.eu.org
           PUBLIC_BASE: https://tv.webhome.eu.org
-      - name: Commit snapshot
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dist audit
-          git diff --cached --quiet && echo "No snapshot changes" || git commit -m "chore(snapshot): refresh v7.3 snapshot"
-          git push
