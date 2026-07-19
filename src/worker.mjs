@@ -1541,7 +1541,8 @@ function snapshotApplyPaging(firstPack, packs, page, limit, mode, extra = {}) {
 function snapshotApplyListPaging(firstPack, listAll, page, limit, mode, extra = {}) {
   const meta = snapshotPackPagesForRequest(page, limit);
   const all = Array.isArray(listAll) ? listAll : [];
-  const total = all.length;
+  const baseTotal = Number(firstPack?.total);
+  const total = Number.isFinite(baseTotal) ? Math.max(baseTotal, all.length) : all.length;
   return {
     ...firstPack,
     ...extra,
