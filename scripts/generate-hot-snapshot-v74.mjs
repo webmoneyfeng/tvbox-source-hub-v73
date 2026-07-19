@@ -2,6 +2,7 @@
 import { mkdir, rm, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SNAPSHOT_CATEGORIES, mergeSnapshotRows } from '../src/snapshot-catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -16,13 +17,10 @@ const MAX_DURATION_MS = Number(process.env.HOT_MAX_DURATION_MS || 180000);
 const VERSION = '2026-07-04-aggregate-v7.3-domestic-free';
 
 const HOT_CATEGORIES = [
-  { t: '0', name: '\u63a8\u8350' },
-  { t: '1', name: '\u7535\u5f71' },
-  { t: '2', name: '\u5267\u96c6' },
-  { t: '6', name: '\u77ed\u5267' },
-  { t: '7', name: '\u89e3\u8bf4' },
-  { t: '8', name: '\u6587\u5a31\u77e5\u8bc6' },
-].map((x) => ({ ...x, name: JSON.parse(`"${x.name}"`) }));
+  ...SNAPSHOT_CATEGORIES.map((category) => ({ t: category.id, key: category.key, name: category.name, canonical: true })),
+  { t: '1', key: 'movie', name: '电影', canonical: false },
+  { t: '2', key: 'tv', name: '剧集', canonical: false },
+];
 const HOT_SEARCH_TERMS = ['\u5929\u9053', '\u9065\u8fdc\u7684\u6551\u4e16\u4e3b', '\u738b\u5fd7\u6587', '2026', '\u7535\u5f71', '\u89e3\u8bf4', '\u6f14\u5531\u4f1a', '\u516c\u5f00\u8bfe'].map((x) => JSON.parse(`"${x}"`));
 
 function formatChinaReverseUpdateCode(iso) {
@@ -53,58 +51,8 @@ async function fetchJson(url, timeoutMs = FETCH_TIMEOUT_MS) {
   try { data = JSON.parse(got.text); } catch { data = { raw: got.text.slice(0, 500) }; }
   return { ...got, data };
 }
-function normalizeTitle(value) {
-  return String(value || '')
-    .normalize('NFKC')
-    .replace(/[\s\u3000\u00b7\u30fb,??.!???:?;?\-?_()[\]????<>??]/g, '')
-    .replace(/\u7b2c[\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e03\u516b\u4e5d\u5341\u767e\u5343\u4e07\d]+\u5b63/g, '')
-    .toLowerCase();
-}
-function rowYear(item) {
-  const values = [item?.vod_year, item?.vod_name, item?.vod_remarks, item?.type_name, item?.semantic_tags];
-  for (const value of values) {
-    const m = String(value || '').match(/(?:19|20)\d{2}/);
-    if (m) return m[0];
-  }
-  return '';
-}
-function lineCount(item) {
-  const from = String(item?.vod_play_from || '');
-  if (from) return from.split('$$$').filter(Boolean).length;
-  const remark = String(item?.vod_remarks || '');
-  const m = remark.match(/(\d+)\s*\u7ebf/);
-  return m ? Number(m[1]) : 0;
-}
-function qualityRank(item) {
-  const t = JSON.stringify([item?.vod_name, item?.vod_remarks, item?.semantic_tags, item?.vod_content]).toUpperCase();
-  if (/4K|2160/.test(t)) return 5;
-  if (/1080|FHD/.test(t)) return 4;
-  if (/HD|\u9ad8\u6e05|\u84dd\u5149/.test(t)) return 3;
-  if (/TC|TS|CAM|\u62a2\u5148/.test(t)) return 1;
-  return 2;
-}
-function dedupKey(item) {
-  const title = normalizeTitle(item?.vod_name) || String(item?.vod_id || '').trim().toLowerCase();
-  const year = rowYear(item);
-  const macro = String(item?.type_id || item?.type_name || '').trim();
-  return `${title}|${year}|${macro}`;
-}
-function betterRow(a, b) {
-  const al = lineCount(a), bl = lineCount(b);
-  if (al !== bl) return al > bl ? a : b;
-  const aq = qualityRank(a), bq = qualityRank(b);
-  if (aq !== bq) return aq > bq ? a : b;
-  return String(a?.vod_name || '').length <= String(b?.vod_name || '').length ? a : b;
-}
 function uniqueRows(rows) {
-  const map = new Map();
-  for (const row of rows || []) {
-    if (!row?.vod_id && !row?.vod_name) continue;
-    const key = dedupKey(row);
-    const old = map.get(key);
-    map.set(key, old ? betterRow(old, row) : row);
-  }
-  return [...map.values()];
+  return mergeSnapshotRows(rows || []).rows;
 }
 function packFromResponse(data, extra = {}) {
   const list = uniqueRows(Array.isArray(data?.list) ? data.list : []);
@@ -167,10 +115,10 @@ async function main() {
     }
     const { cat, status, pack } = result.value;
     const ok = status === 200 && pack.list.length > 0;
-    validation.categories.push({ t: cat.t, name: cat.name, status, count: pack.list.length, total: pack.total, ok });
+    validation.categories.push({ t: cat.t, key: cat.key, name: cat.name, canonical: cat.canonical !== false, status, count: pack.list.length, total: pack.total, ok });
     if (!ok) validation.errors.push(`hot category ${cat.t}/${cat.name} empty or status ${status}`);
     await writeJson(`catalog/${cat.t}.json`, pack);
-    catalog.push({ t: cat.t, name: cat.name, count: pack.list.length, total: pack.total, list: pack.list });
+    catalog.push({ t: cat.t, key: cat.key, name: cat.name, canonical: cat.canonical !== false, count: pack.list.length, total: pack.total, list: pack.list });
   }
 
   const searchResults = await Promise.allSettled(HOT_SEARCH_TERMS.map(async (wd) => {
@@ -228,6 +176,8 @@ async function main() {
     maxDurationMs: MAX_DURATION_MS,
     limit: LIMIT,
     categoryCount: validation.categories.length,
+    canonicalCategoryCount: validation.categories.filter((row) => row.canonical !== false).length,
+    compatibilityCategoryCount: validation.categories.filter((row) => row.canonical === false).length,
     searchCount: validation.search.length,
     liveChannelCount: validation.live?.count || 0,
     itemCount: catalogRows.length + searchRows.length,

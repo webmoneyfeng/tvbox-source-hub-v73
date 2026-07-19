@@ -4,6 +4,7 @@ import test from 'node:test';
 import {
   classifyConfigSurface,
   classifyPagesStaticSurface,
+  classifyWorkerSurface,
   decodeReverseUpdateCode,
   summarizeReleaseGate,
 } from './audit-release-readiness-v74.mjs';
@@ -15,24 +16,46 @@ test('decodeReverseUpdateCode decodes reversed Beijing timestamp codes', () => {
   assert.equal(decoded.iso, '2026-07-10T05:18:00+08:00');
 });
 
-test('classifyConfigSurface distinguishes stable local names from deploy-pending dynamic names', () => {
-  const stable = classifyConfigSurface({
+test('classifyConfigSurface requires a matching visible timestamp and versioned API code', () => {
+  const visible = classifyConfigSurface({
     source: 'local-dist-full',
-    expectedName: '影视点播',
-    expectedApiPrefix: 'https://tv.webhome.eu.org/agg/u',
-    payload: { sites: [{ name: '影视点播', api: 'https://tv.webhome.eu.org/agg/u815001706202' }] },
-  });
-  assert.equal(stable.result, 'PASS');
-  assert.equal(stable.root_cause, 'OK');
-
-  const dynamic = classifyConfigSurface({
-    source: 'online-worker-full',
     expectedName: '影视点播',
     expectedApiPrefix: 'https://tv.webhome.eu.org/agg/u',
     payload: { sites: [{ name: '影视点播 · 815001706202', api: 'https://tv.webhome.eu.org/agg/u815001706202' }] },
   });
-  assert.equal(dynamic.result, 'WARN');
-  assert.equal(dynamic.root_cause, 'NEEDS_WORKER_DEPLOY');
+  assert.equal(visible.result, 'PASS');
+  assert.equal(visible.root_cause, 'OK');
+
+  const stableWithoutVisibleTime = classifyConfigSurface({
+    source: 'online-worker-full',
+    expectedName: '影视点播',
+    expectedApiPrefix: 'https://tv.webhome.eu.org/agg/u',
+    payload: { sites: [{ name: '影视点播', api: 'https://tv.webhome.eu.org/agg/u815001706202' }] },
+  });
+  assert.equal(stableWithoutVisibleTime.result, 'WARN');
+  assert.equal(stableWithoutVisibleTime.root_cause, 'VISIBLE_UPDATE_MISSING');
+
+  const mismatch = classifyConfigSurface({
+    source: 'online-worker-full',
+    expectedName: '影视点播',
+    expectedApiPrefix: 'https://tv.webhome.eu.org/agg/u',
+    payload: { sites: [{ name: '影视点播 · 815001706202', api: 'https://tv.webhome.eu.org/agg/u904001706202' }] },
+  });
+  assert.equal(mismatch.result, 'FAIL');
+  assert.equal(mismatch.root_cause, 'UPDATE_CODE_MISMATCH');
+});
+
+test('worker surface classifies online drift as deploy-required only when the local artifact already satisfies the contract', () => {
+  const online = { source: 'online-worker-full-config', result: 'WARN', root_cause: 'VISIBLE_UPDATE_MISSING', message: 'old worker' };
+  const localPass = { source: 'local-dist-full-config', result: 'PASS', root_cause: 'OK' };
+  const deploy = classifyWorkerSurface({ onlineRow: online, localRow: localPass });
+  assert.equal(deploy.result, 'WARN');
+  assert.equal(deploy.root_cause, 'NEEDS_WORKER_DEPLOY');
+  assert.equal(deploy.online_root_cause, 'VISIBLE_UPDATE_MISSING');
+
+  const localFail = { source: 'local-dist-full-config', result: 'FAIL', root_cause: 'UPDATE_CODE_MISMATCH' };
+  const unresolved = classifyWorkerSurface({ onlineRow: online, localRow: localFail });
+  assert.equal(unresolved.root_cause, 'VISIBLE_UPDATE_MISSING');
 });
 
 test('classifyPagesStaticSurface flags stale Pages config and missing clean entry as deploy required', () => {
@@ -54,8 +77,8 @@ test('classifyPagesStaticSurface flags stale Pages config and missing clean entr
 
 test('classifyPagesStaticSurface accepts Pages manifest matching local static snapshot even when Worker hot code is newer', () => {
   const rows = classifyPagesStaticSurface({
-    pagesConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad', api: 'https://tv.webhome.eu.org/agg/u904001706202' }] } },
-    pagesCleanConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0', api: 'https://tv.webhome.eu.org/agg-clean/u904001706202' }] } },
+    pagesConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad · 904001706202', api: 'https://tv.webhome.eu.org/agg/u904001706202' }] } },
+    pagesCleanConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0 · 904001706202', api: 'https://tv.webhome.eu.org/agg-clean/u904001706202' }] } },
     pagesManifest: { ok: true, status: 200, data: { visibleUpdateText: '904001706202', generatedAt: '2026-07-10T10:04:00.000Z' } },
     currentWorkerCode: '835001706202',
     expectedStaticCode: '904001706202',
@@ -73,8 +96,8 @@ test('classifyPagesStaticSurface accepts Pages manifest matching local static sn
 
 test('classifyPagesStaticSurface flags Pages manifest that does not match local static snapshot', () => {
   const rows = classifyPagesStaticSurface({
-    pagesConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad', api: 'https://tv.webhome.eu.org/agg/u904001706202' }] } },
-    pagesCleanConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0', api: 'https://tv.webhome.eu.org/agg-clean/u904001706202' }] } },
+    pagesConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad · 904001706202', api: 'https://tv.webhome.eu.org/agg/u904001706202' }] } },
+    pagesCleanConfig: { ok: true, status: 200, data: { sites: [{ name: '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0 · 904001706202', api: 'https://tv.webhome.eu.org/agg-clean/u904001706202' }] } },
     pagesManifest: { ok: true, status: 200, data: { visibleUpdateText: '012270706202', generatedAt: '2026-07-07T14:10:17.496Z' } },
     currentWorkerCode: '255001706202',
     expectedStaticCode: '904001706202',

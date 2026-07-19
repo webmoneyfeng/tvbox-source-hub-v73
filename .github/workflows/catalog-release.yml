@@ -1,0 +1,312 @@
+name: catalog-release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/catalog-release.yml'
+      - 'data/**'
+      - 'scripts/**'
+      - 'src/**'
+      - 'package.json'
+      - 'wrangler.toml'
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalog-release-snapshot
+  cancel-in-progress: false
+
+env:
+  CODE_BRANCH: main
+  NODE_VERSION: '20.18.1'
+  SNAPSHOT_BRANCH: snapshot
+  SNAPSHOT_CRAWL_MODE: direct-sources
+  TVBOX_BASE: https://tv.webhome.eu.org
+  SNAPSHOT_SOURCE_BASE: https://tv.webhome.eu.org
+  PUBLIC_BASE: https://tv.webhome.eu.org
+  PAGES_BASE: https://tvbox-source-hub-v73.pages.dev
+  STATIC_SNAPSHOT_BASES: https://tvbox-source-hub-v73.pages.dev/snapshot/latest|https://raw.githubusercontent.com/webmoneyfeng/tvbox-source-hub-v73/snapshot/dist/snapshot/latest
+  MAX_NETWORK_RETRIES: '2'
+
+jobs:
+  release:
+    name: Build and publish catalog snapshot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code truth
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ env.CODE_BRANCH }}
+          fetch-depth: 1
+          persist-credentials: true
+      - name: Setup Node 20
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          check-latest: false
+      - name: Run deterministic checks
+        run: npm run check
+
+      - name: Reset generated release workspace
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          rm -rf dist audit
+          mkdir -p dist audit
+          previous_sha="$(git ls-remote --heads origin "refs/heads/${SNAPSHOT_BRANCH}" | awk 'NR == 1 { print $1 }')"
+          if [[ -n "${previous_sha}" ]]; then
+            fetched=0
+            for attempt in 0 1 2; do
+              if git fetch --no-tags --depth=1 origin "refs/heads/${SNAPSHOT_BRANCH}"; then
+                fetched=1
+                break
+              fi
+              if (( attempt < 2 )); then sleep $(( (attempt + 1) * 10 )); fi
+            done
+            if (( fetched != 1 )); then
+              echo "::error title=Previous snapshot unavailable::${SNAPSHOT_BRANCH} exists but could not be fetched"
+              exit 1
+            fi
+            git archive "FETCH_HEAD:dist" | tar -x -C dist
+            if git cat-file -e "FETCH_HEAD:audit/source-health-history.json" 2>/dev/null; then
+              git show "FETCH_HEAD:audit/source-health-history.json" > audit/source-health-history.json
+              echo "Restored seven-day source health history"
+            fi
+            echo "Restored previous snapshot ${previous_sha} for incremental watermarks"
+          else
+            echo "No previous snapshot branch; starting the initial full crawl"
+          fi
+
+      - name: Generate source and coverage audits
+        run: npm run audit:sources
+
+      - name: Assert source and coverage audits
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          node --input-type=module <<'NODE'
+          import { readFile } from 'node:fs/promises';
+
+          const readJson = async (file) => JSON.parse(await readFile(file, 'utf8'));
+          const source = await readJson('audit/source-discovery-latest.json');
+          const coverage = await readJson('audit/coverage-latest.json');
+          const failures = [];
+          if (!source.generatedAt || source.candidateCount < 1 || source.active < 1) {
+            failures.push('source audit has no generated timestamp or active source');
+          }
+          if (!coverage.generatedAt || coverage.total < 1) {
+            failures.push('coverage audit has no generated timestamp or coverage rows');
+          }
+          if (coverage.fail !== 0) {
+            failures.push(`coverage audit has ${coverage.fail} FAIL rows`);
+          }
+          if (failures.length) {
+            for (const failure of failures) console.error(`::error title=Source or coverage gate failed::${failure}`);
+            process.exit(1);
+          }
+          console.log(`source=${source.active} active; coverage=${coverage.pass}/${coverage.warn}/${coverage.fail} PASS/WARN/FAIL`);
+          NODE
+
+      - name: Generate full snapshot
+        run: npm run generate:snapshot
+
+      - name: Assert full snapshot
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          node --input-type=module <<'NODE'
+          import { readFile } from 'node:fs/promises';
+
+          const readJson = async (file) => JSON.parse(await readFile(file, 'utf8'));
+          const manifest = await readJson('dist/snapshot/latest/manifest.json');
+          const validation = await readJson('dist/snapshot/latest/validation.json');
+          const fullConfig = await readJson('dist/config.json');
+          const cleanConfig = await readJson('dist/config-clean.json');
+          const expectedCategories = [
+            '推荐', '院线电影', '网络电影', '其他电影', '电视剧', '网络剧', '网络短剧',
+            '综艺', '动漫', '纪录片', '解说', '文娱知识', '成人伦理',
+          ];
+          const failures = [];
+          if (manifest.ok !== true) failures.push('snapshot manifest is not ok');
+          if (!manifest.generatedAt || !manifest.visibleUpdateText) failures.push('snapshot manifest is missing release identity');
+          if (!Array.isArray(validation.errors) || validation.errors.length !== 0) failures.push(`snapshot validation errors=${validation.errors?.length ?? 'missing'}`);
+          const categoryNames = Array.isArray(manifest.categories) ? manifest.categories.map((row) => row.type_name) : [];
+          if (categoryNames.length !== expectedCategories.length || expectedCategories.some((name) => !categoryNames.includes(name))) {
+            failures.push(`snapshot categories do not match the 13-category contract: ${categoryNames.join(',') || 'missing'}`);
+          }
+          if (Number(manifest.categorySchemaCount || 0) !== expectedCategories.length) {
+            failures.push(`categorySchemaCount=${manifest.categorySchemaCount ?? 'missing'}, expected ${expectedCategories.length}`);
+          }
+          const hiddenCategories = (manifest.categories || []).filter((row) => row.visible === false).map((row) => row.type_name || row.type_id);
+          if (hiddenCategories.length) failures.push(`all 13 categories must be visible: hidden=${hiddenCategories.join(',')}`);
+          const emptyCategories = (manifest.categories || []).filter((row) => Number(row.total ?? row.count ?? 0) < 1).map((row) => row.type_name || row.type_id);
+          if (emptyCategories.length) failures.push(`all 13 category totals must be positive: empty=${emptyCategories.join(',')}`);
+          if (Number(manifest.visibleCategoryCount || 0) !== expectedCategories.length) {
+            failures.push(`visibleCategoryCount=${manifest.visibleCategoryCount ?? 'missing'}, expected=${expectedCategories.length}`);
+          }
+          if (fullConfig.sites?.length !== 1 || !/^影视点播 · \d{12}$/u.test(fullConfig.sites?.[0]?.name || '') || !fullConfig.sites?.[0]?.api) {
+            failures.push('full config does not expose exactly one timestamped 影视点播 API entry');
+          }
+          if (cleanConfig.sites?.length !== 1 || !/^影视点播洁净 · \d{12}$/u.test(cleanConfig.sites?.[0]?.name || '') || !cleanConfig.sites?.[0]?.api) {
+            failures.push('clean config does not expose exactly one timestamped 影视点播洁净 API entry');
+          }
+          if (failures.length) {
+            for (const failure of failures) console.error(`::error title=Snapshot gate failed::${failure}`);
+            process.exit(1);
+          }
+          console.log(`snapshot=${manifest.visibleUpdateText}; files=${manifest.filterPackCount} filter packs`);
+          NODE
+
+      - name: Assert Pages artifact limits
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          node --input-type=module <<'NODE'
+          import { readdir, stat } from 'node:fs/promises';
+          import path from 'node:path';
+
+          const files = [];
+          async function walk(dir) {
+            for (const entry of await readdir(dir, { withFileTypes: true })) {
+              const file = path.join(dir, entry.name);
+              if (entry.isDirectory()) await walk(file);
+              else if (entry.isFile()) files.push(file);
+            }
+          }
+          await walk('dist');
+          const sizes = await Promise.all(files.map(async (file) => ({ file, size: (await stat(file)).size })));
+          const tooLarge = sizes.filter(({ size }) => size >= 25 * 1024 * 1024);
+          const failures = [];
+          if (files.length >= 20_000) failures.push(`dist file count=${files.length}, expected <20000`);
+          if (tooLarge.length) failures.push(`files >=25MiB: ${tooLarge.map(({ file, size }) => `${file}(${size})`).join(',')}`);
+          if (failures.length) {
+            for (const failure of failures) console.error(`::error title=Pages artifact gate failed::${failure}`);
+            process.exit(1);
+          }
+          console.log(`dist files=${files.length}; max bytes=${Math.max(0, ...sizes.map(({ size }) => size))}`);
+          NODE
+
+      - name: Generate free-tier audit
+        run: npm run audit:free-tier
+
+      - name: Assert free-tier audit
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          node --input-type=module <<'NODE'
+          import { readFile } from 'node:fs/promises';
+
+          const report = JSON.parse(await readFile('audit/free-tier-latest.json', 'utf8'));
+          const failures = [];
+          if (report.fail !== 0) failures.push(`${report.fail} FAIL rows`);
+          if (Number(report.estimatedDailyKvWrites || 0) > 650) failures.push(`estimated KV writes=${report.estimatedDailyKvWrites}/day, expected <=650`);
+          if (failures.length) {
+            for (const failure of failures) console.error(`::error title=Free-tier gate failed::${failure}`);
+            process.exit(1);
+          }
+          console.log(`free-tier=${report.pass}/${report.warn}/${report.fail} PASS/WARN/FAIL; KV writes=${report.estimatedDailyKvWrites}/day`);
+          NODE
+
+      - name: Publish dist and audit to snapshot branch
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          publish_dir="${RUNNER_TEMP}/snapshot-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          remote_state="${RUNNER_TEMP}/snapshot-remote-${GITHUB_RUN_ID}.txt"
+          cleanup() {
+            git -C "${GITHUB_WORKSPACE}" worktree remove --force "${publish_dir}" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+
+          git worktree add --detach --no-checkout "${publish_dir}" HEAD
+          cd "${publish_dir}"
+          git switch --orphan "snapshot-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          mkdir -p dist audit
+          cp -a "${GITHUB_WORKSPACE}/dist/." dist/
+          cp -a "${GITHUB_WORKSPACE}/audit/." audit/
+          git add --all dist audit
+          if git diff --cached --quiet; then
+            echo "::error title=Snapshot artifact empty::dist and audit produced no files"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(catalog): publish snapshot ${GITHUB_SHA:0:12}"
+          snapshot_commit="$(git rev-parse HEAD)"
+
+          retry_network() {
+            local retries=0
+            local rc=0
+            until "$@"; do
+              rc=$?
+              if (( retries >= MAX_NETWORK_RETRIES )); then
+                echo "::error title=Network command failed::${*} failed after ${retries} retries" >&2
+                return "${rc}"
+              fi
+              retries=$((retries + 1))
+              echo "::warning title=Transient network failure::retrying ${*} (${retries}/${MAX_NETWORK_RETRIES})" >&2
+              sleep $((retries * 10))
+            done
+          }
+
+          fetch_remote_head() {
+            git ls-remote --heads origin "refs/heads/${SNAPSHOT_BRANCH}" > "${remote_state}.tmp"
+            mv "${remote_state}.tmp" "${remote_state}"
+          }
+          retry_network fetch_remote_head
+          expected_sha="$(awk 'NR == 1 { print $1 }' "${remote_state}")"
+          push_snapshot() {
+            git push origin "HEAD:refs/heads/${SNAPSHOT_BRANCH}" "--force-with-lease=refs/heads/${SNAPSHOT_BRANCH}:${expected_sha}"
+          }
+          if ! retry_network push_snapshot; then
+            retry_network fetch_remote_head
+            current_sha="$(awk 'NR == 1 { print $1 }' "${remote_state}")"
+            if [[ "${current_sha}" != "${snapshot_commit}" ]]; then
+              echo "::error title=Snapshot publication blocked::snapshot branch changed or push failed; main was not modified"
+              exit 1
+            fi
+            echo "Snapshot commit already present after a transient push failure: ${snapshot_commit}"
+          fi
+          retry_network fetch_remote_head
+          published_sha="$(awk 'NR == 1 { print $1 }' "${remote_state}")"
+          if [[ "${published_sha}" != "${snapshot_commit}" ]]; then
+            echo "::error title=Snapshot publication verification failed::remote=${published_sha:-missing}; expected=${snapshot_commit}"
+            exit 1
+          fi
+          echo "Published ${snapshot_commit} to ${SNAPSHOT_BRANCH}; Pages Git integration can deploy from that branch."
+
+      - name: Write catalog release summary
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          {
+            echo "## Catalog release"
+            echo "- Job status: ${{ job.status }}"
+            echo "- Code truth: ${CODE_BRANCH}"
+            echo "- Snapshot branch: ${SNAPSHOT_BRANCH}"
+            echo "- Production action: none; this workflow only updates the snapshot data branch"
+            echo ""
+            echo "### Generated artifacts"
+            for report in \
+              audit/source-discovery-summary.md \
+              audit/coverage-summary.md \
+              audit/free-tier-summary.md \
+              dist/snapshot/latest/manifest.json; do
+              if [[ -f "${report}" ]]; then
+                echo "#### ${report}"
+                sed -n '1,24p' "${report}"
+                echo ""
+              else
+                echo "- Missing: ${report}"
+              fi
+            done
+          } >> "${GITHUB_STEP_SUMMARY}"

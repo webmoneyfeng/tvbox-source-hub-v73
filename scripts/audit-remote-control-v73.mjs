@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SNAPSHOT_CATEGORIES } from '../src/snapshot-catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AUDIT_DIR = path.join(ROOT, 'audit');
@@ -8,7 +9,7 @@ const BASE = (process.env.TVBOX_BASE || process.env.PUBLIC_BASE || 'https://tv.w
 const LIMIT = Number(process.env.AUDIT_LIMIT || 24);
 const DETAIL_SAMPLE = Number(process.env.AUDIT_DETAIL_SAMPLE || 1);
 const TIMEOUT = Number(process.env.AUDIT_TIMEOUT_MS || 25000);
-const CATEGORIES = Array.from({ length: 10 }, (_, i) => String(i));
+const CATEGORIES = SNAPSHOT_CATEGORIES.map((category) => category.id);
 
 const ROOT_CAUSE = {
   API_ERROR: 'API_ERROR',

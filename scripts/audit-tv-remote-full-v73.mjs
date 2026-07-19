@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SNAPSHOT_CATEGORIES } from '../src/snapshot-catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AUDIT_DIR = path.join(ROOT, 'audit');
@@ -11,10 +12,13 @@ const PLAY_SAMPLE = Number(process.env.AUDIT_PLAY_SAMPLE || 2);
 const TIMEOUT = Number(process.env.AUDIT_TIMEOUT_MS || 25000);
 const PLAY_TIMEOUT = Number(process.env.AUDIT_PLAY_TIMEOUT_MS || 10000);
 const AUDIT_RUN_ID = String(process.env.AUDIT_RUN_ID || `rc-${Date.now().toString(36)}`);
-const CATEGORIES = Array.from({ length: 10 }, (_, i) => String(i));
+export const FULL_CATEGORY_IDS = SNAPSHOT_CATEGORIES.map((category) => category.id);
+export const CLEAN_CATEGORY_IDS = SNAPSHOT_CATEGORIES.filter((category) => category.key !== 'adult').map((category) => category.id);
 const SEARCH_TERMS = ['影视', '电影', '解说', '演唱会', '公开课', '2026', '动作'];
 const REQUIRED_SEARCH_TERMS = new Set(['影视', '电影', '解说', '2026', '动作']);
+const CLEAN_POLICY_PROBE_TERMS = ['成人', '伦理'];
 const FORBIDDEN_UI_RE = /(备用)/;
+const ADULT_STRONG_TEXT_RE = /(成人(?:伦理|影片|电影|内容|专区|福利|写真)|伦理片|情色|三级|里番|番号|福利片|写真片|午夜成人|\bAV\b|\badult\b|\bxxx\b)/iu;
 const NAME_COLLATOR = new Intl.Collator('zh-Hans-CN', { numeric: true, sensitivity: 'base' });
 
 export const ROOT_CAUSE = {
@@ -52,6 +56,13 @@ function filterValue(value) {
 }
 function requestPath(t, pg = 1, filter = null, limit = LIMIT) {
   const base = `/agg?ac=videolist&t=${encodeURIComponent(t)}&pg=${pg}&limit=${limit}`;
+  return filter ? base + '&f=' + encodeURIComponent(JSON.stringify(filter)) : base;
+}
+function aggregateBase(clean = false) {
+  return clean ? '/agg-clean' : '/agg';
+}
+function policyRequestPath(t, pg = 1, filter = null, limit = LIMIT, clean = false) {
+  const base = `${aggregateBase(clean)}?ac=videolist&t=${encodeURIComponent(t)}&pg=${pg}&limit=${limit}`;
   return filter ? base + '&f=' + encodeURIComponent(JSON.stringify(filter)) : base;
 }
 async function fetchText(pathname, timeout = TIMEOUT) {
@@ -320,19 +331,71 @@ function validateAggListPayload(data) {
   const shapeOk = list.every((item) => item && item.vod_id && item.vod_name && item.type_id !== undefined && item.type_name);
   return { schema_ok: Boolean(data && Array.isArray(data.list) && Array.isArray(data.class)), content_shape_ok: shapeOk && cls.length > 0 };
 }
-export function validateConfigPayload(data) {
+function adultClassRecord(record) {
+  const id = String(record?.type_id ?? record?.id ?? '').trim();
+  const key = String(record?.key ?? '').trim().toLowerCase();
+  const name = String(record?.type_name ?? record?.name ?? '');
+  return id === '9' || key === 'adult' || ADULT_STRONG_TEXT_RE.test(name);
+}
+function adultFilterText(value) {
+  const text = String(value || '').trim();
+  return ['成人', '伦理', '理论', '福利', '写真', '午夜'].includes(text) || ADULT_STRONG_TEXT_RE.test(text);
+}
+function adultListRecord(item) {
+  const normalizedCategories = ['primary_category', 'category', '_macro'].map((key) => String(item?.[key] || '').trim().toLowerCase()).filter(Boolean);
+  if (normalizedCategories.includes('adult')) return true;
+  if (!normalizedCategories.length && String(item?.type_id ?? '') === '9') return true;
+  return ADULT_STRONG_TEXT_RE.test([
+    item?.type_name,
+    item?.vod_name,
+    item?.vod_sub,
+    item?.vod_remarks,
+    item?.vod_class,
+    item?.vod_state,
+    item?.vod_actor,
+    item?.vod_director,
+    item?.vod_content,
+    item?.semantic_tags,
+    item?.snapshot_filter_evidence,
+  ].join(' '));
+}
+export function payloadHasAdultExposure(data) {
+  if ((Array.isArray(data?.class) ? data.class : []).some(adultClassRecord)) return true;
+  for (const [categoryKey, groups] of Object.entries(data?.filters || {})) {
+    if (String(categoryKey).toLowerCase() === 'adult' || String(categoryKey) === '9') return true;
+    for (const group of Array.isArray(groups) ? groups : []) {
+      if (adultFilterText(group?.key) || adultFilterText(group?.name)) return true;
+      if ((Array.isArray(group?.value) ? group.value : []).some((option) => [option?.n, option?.v, option?.name, option?.value].some(adultFilterText))) return true;
+    }
+  }
+  if ((Array.isArray(data?.list) ? data.list : []).some(adultListRecord)) return true;
+  return (Array.isArray(data?.sites) ? data.sites : []).some((site) => ADULT_STRONG_TEXT_RE.test(String(site?.name || '')))
+    || (Array.isArray(data?.lives) ? data.lives : []).some((live) => ADULT_STRONG_TEXT_RE.test(String(live?.name || '')));
+}
+export function configUpdateCode(data, options = {}) {
+  const siteName = String(data?.sites?.[0]?.name || '');
+  const api = String(data?.sites?.[0]?.api || '');
+  const baseName = options.clean ? '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' : '\u5f71\u89c6\u70b9\u64ad';
+  const nameCode = siteName.match(new RegExp(`^${baseName} \u00b7 (\\d{12})$`))?.[1] || '';
+  const apiCode = api.match(options.clean ? /\/agg-clean\/u(\d{12})(?:$|[/?#])/u : /\/agg\/u(\d{12})(?:$|[/?#])/u)?.[1] || '';
+  return nameCode && apiCode && nameCode === apiCode ? nameCode : '';
+}
+export function validateConfigPayload(data, options = {}) {
   const schema_ok = Boolean(data && Array.isArray(data.sites));
   const text = JSON.stringify(data || {});
   const oneSite = data?.sites?.length === 1;
   const siteName = String(data?.sites?.[0]?.name || '');
-  const baseName = '\u5f71\u89c6\u70b9\u64ad';
-  const siteNameOk = siteName === baseName || new RegExp(`^${baseName} \u00b7 \\d{12}$`).test(siteName) || new RegExp(`^${baseName} \u00b7 \u6e90\u66f4\u65b0 \\d{2}-\\d{2} \\d{2}:\\d{2}$`).test(siteName);
+  const api = String(data?.sites?.[0]?.api || '');
+  const baseName = options.clean ? '\u5f71\u89c6\u70b9\u64ad\u6d01\u51c0' : '\u5f71\u89c6\u70b9\u64ad';
+  const nameCode = siteName.match(new RegExp(`^${baseName} \u00b7 (\\d{12})$`))?.[1] || '';
+  const apiCode = api.match(options.clean ? /\/agg-clean\/u(\d{12})(?:$|[/?#])/u : /\/agg\/u(\d{12})(?:$|[/?#])/u)?.[1] || '';
+  const siteNameOk = Boolean(nameCode && apiCode && nameCode === apiCode);
   const forbiddenOk = !FORBIDDEN_UI_RE.test(text);
   const content_shape_ok = Boolean(oneSite && siteNameOk && forbiddenOk);
   let fix_suggestion = '';
   if (!oneSite) fix_suggestion = '\u914d\u7f6e\u5165\u53e3\u6570\u91cf\u4e0d\u7b49\u4e8e 1\u3002';
   else if (!forbiddenOk) fix_suggestion = '\u914d\u7f6e\u5305\u542b\u7981\u6b62\u6587\u6848\u3002';
-  else if (!siteNameOk) fix_suggestion = '\u7ad9\u70b9\u540d\u4e0d\u662f\u201c\u5f71\u89c6\u70b9\u64ad\u201d\u6216\u201c\u5f71\u89c6\u70b9\u64ad \u00b7 12\u4f4d\u66f4\u65b0\u7f16\u53f7\u201d\u3002';
+  else if (!siteNameOk) fix_suggestion = '\u7ad9\u70b9\u540d\u4e0e\u7248\u672c\u5316 API \u5fc5\u987b\u663e\u793a\u540c\u4e00\u4e2a 12 \u4f4d\u5012\u5e8f\u66f4\u65b0\u7f16\u53f7\u3002';
   return { schema_ok, content_shape_ok, fix_suggestion };
 }
 export function parseLiveText(raw) {
@@ -360,6 +423,7 @@ export function classifyRecord(record) {
   const status = Number(record.http_status || 0);
   const statusOk = record.element_type === 'playback' ? status >= 200 && status < 400 : status === 200;
   if (!statusOk) return { root_cause: ROOT_CAUSE.API_ERROR, path_cause: '', result: 'FAIL', fix_suggestion: record.element_type === 'playback' ? '播放地址非 2xx/3xx 或请求超时。' : '接口非 200 或请求超时。' };
+  if (record.adult_exposure) return { root_cause: ROOT_CAUSE.SEMANTIC_MISMATCH, path_cause: '', result: 'FAIL', fix_suggestion: '洁净版暴露成人分类、筛选或内容，需在最终输出策略层过滤。' };
   if (!record.schema_ok) return { root_cause: ROOT_CAUSE.API_ERROR, path_cause: PATH_CAUSE.SCHEMA_REGRESSION, result: 'FAIL', fix_suggestion: '响应格式缺少 TVBox/FongMi 必需字段。' };
   if (!record.content_shape_ok) return { root_cause: ROOT_CAUSE.SEMANTIC_MISMATCH, path_cause: PATH_CAUSE.SCHEMA_REGRESSION, result: 'FAIL', fix_suggestion: '响应字段存在但内容结构不符合电视端预期。' };
   if (Number(record.list_count || 0) === 0 && record.expects_list !== false) {
@@ -409,13 +473,13 @@ function recordBase(level, elementType, pathId, remoteSteps, requestUrl) {
     result: 'FAIL',
   };
 }
-async function detailRates(list) {
+async function detailRates(list, clean = false) {
   const sample = list.slice(0, DETAIL_SAMPLE).filter((x) => x.vod_id);
   if (!sample.length) return { detail_ok_rate: 0, playable_rate: 0, detail_examples: [], playable_urls: [] };
   const rows = [];
   const playableUrls = [];
   for (const item of sample) {
-    const got = await fetchPlayableDetailJson(`/agg?ac=detail&ids=${encodeURIComponent(item.vod_id)}`);
+    const got = await fetchPlayableDetailJson(`${aggregateBase(clean)}?ac=detail&ids=${encodeURIComponent(item.vod_id)}`);
     const vod = got.data?.list?.[0];
     const stats = lineStats(vod);
     playableUrls.push(...stats.urls.slice(0, PLAY_SAMPLE));
@@ -449,11 +513,12 @@ async function probePlayableUrl(url) {
     clearTimeout(timer);
   }
 }
-async function auditConfig(records) {
-  const pathUrl = '/config.json';
+async function auditConfig(records, { clean = false } = {}) {
+  const pathUrl = clean ? '/config-clean.json' : '/config.json';
   const got = await fetchJson(pathUrl);
-  const validation = validateConfigPayload(got.data);
-  const rec = recordBase('L0', 'config', 'config.import', ['导入配置'], fullUrl(pathUrl));
+  const validation = validateConfigPayload(got.data, { clean });
+  const rec = recordBase('L0', 'config', clean ? 'config.clean.import' : 'config.import', [clean ? '导入影视点播洁净配置' : '导入影视点播配置'], fullUrl(pathUrl));
+  const adultExposure = clean && payloadHasAdultExposure(got.data);
   records.push(attachClassification({
     ...rec,
     http_status: got.status,
@@ -462,11 +527,44 @@ async function auditConfig(records) {
     list_count: got.data?.sites?.length || 0,
     total_count: got.data?.sites?.length || 0,
     expects_list: false,
+    scope: clean ? 'clean' : 'full',
+    adult_exposure: adultExposure,
+    update_code: configUpdateCode(got.data, { clean }),
     fix_suggestion: validation.fix_suggestion,
     sites: got.data?.sites || [],
     lives: got.data?.lives || [],
   }));
   return got.data || {};
+}
+async function auditDualVersionRevision(records, fullConfig, cleanConfig) {
+  const fullCode = configUpdateCode(fullConfig, { clean: false });
+  const cleanCode = configUpdateCode(cleanConfig, { clean: true });
+  const [fullAgg, cleanAgg] = await Promise.all([
+    fetchJson(`${aggregateBase(false)}?limit=1`),
+    fetchJson(`${aggregateBase(true)}?limit=1`),
+  ]);
+  const fullRevision = String(fullAgg.data?.content_revision || fullAgg.data?.revision || '').trim();
+  const cleanRevision = String(cleanAgg.data?.content_revision || cleanAgg.data?.revision || '').trim();
+  const codeMatch = Boolean(fullCode && cleanCode && fullCode === cleanCode);
+  const revisionMatch = Boolean(fullRevision && cleanRevision && fullRevision === cleanRevision);
+  const cleanPolicyOk = cleanAgg.data?.content_policy === 'clean-no-adult';
+  records.push(attachClassification({
+    ...recordBase('L1', 'dual_version_revision', 'dual-version.revision', ['导入全量版', '导入洁净版', '比较更新时间码与内容 revision'], `${BASE}/config.json + ${BASE}/config-clean.json`),
+    http_status: fullAgg.status === 200 && cleanAgg.status === 200 ? 200 : 0,
+    schema_ok: Boolean(fullCode && cleanCode && fullRevision && cleanRevision),
+    content_shape_ok: codeMatch && revisionMatch && cleanPolicyOk,
+    list_count: 2,
+    total_count: 2,
+    expects_list: false,
+    full_update_code: fullCode,
+    clean_update_code: cleanCode,
+    full_revision: fullRevision,
+    clean_revision: cleanRevision,
+    update_code_match: codeMatch,
+    content_revision_match: revisionMatch,
+    content_policy_ok: cleanPolicyOk,
+    adult_exposure: payloadHasAdultExposure(cleanAgg.data),
+  }));
 }
 async function auditOps(records) {
   for (const op of ['status', 'snapshot', 'mirrors', 'sources']) {
@@ -504,19 +602,21 @@ async function auditLive(records) {
 function filtersForCategory(data, t) {
   return data?.filters?.[String(t)] || data?.class?.find((c) => String(c.type_id) === String(t))?.filters || [];
 }
-async function auditListPath({ records, level, elementType, pathId, steps, pathUrl, filter = null, emptyAllowed = false, expectsDetail = true, baselineIds = null }) {
+async function auditListPath({ records, level, elementType, pathId, steps, pathUrl, filter = null, emptyAllowed = false, expectsDetail = true, baselineIds = null, clean = false }) {
   const got = await fetchJson(pathUrl);
   const list = Array.isArray(got.data?.list) ? got.data.list : [];
   const shape = validateAggListPayload(got.data);
   const sem = filter?.combo ? comboSemanticStats(filter.combo, list) : semanticStats(filter, list);
-  const detail = expectsDetail && list.length ? await detailRates(list) : { detail_ok_rate: 1, playable_rate: 1, detail_examples: [], playable_urls: [] };
+  const detail = expectsDetail && list.length ? await detailRates(list, clean) : { detail_ok_rate: 1, playable_rate: 1, detail_examples: [], playable_urls: [] };
   const ids = list.map((x) => String(x.vod_id || '')).filter(Boolean);
   const changed = baselineIds ? ids.slice(0, Math.min(ids.length, baselineIds.length)).join('|') !== baselineIds.slice(0, Math.min(ids.length, baselineIds.length)).join('|') : true;
+  const adultExposure = clean && payloadHasAdultExposure(got.data);
+  const contentPolicyOk = !clean || got.data?.content_policy === 'clean-no-adult';
   records.push(attachClassification({
     ...recordBase(level, elementType, pathId, steps, fullUrl(pathUrl)),
     http_status: got.status,
     schema_ok: shape.schema_ok,
-    content_shape_ok: shape.content_shape_ok,
+    content_shape_ok: shape.content_shape_ok && contentPolicyOk,
     list_count: list.length,
     total_count: Number(got.data?.total || 0),
     page: Number(got.data?.page || 0),
@@ -530,6 +630,11 @@ async function auditListPath({ records, level, elementType, pathId, steps, pathU
     detail_ok_rate: round(detail.detail_ok_rate),
     playable_rate: round(detail.playable_rate),
     empty_allowed: emptyAllowed,
+    scope: clean ? 'clean' : 'full',
+    content_policy: got.data?.content_policy || '',
+    content_policy_ok: contentPolicyOk,
+    content_revision: got.data?.content_revision || got.data?.revision || '',
+    adult_exposure: adultExposure,
     examples: sem.examples || [],
     detail_examples: detail.detail_examples,
   }));
@@ -562,26 +667,30 @@ function buildCombos(filters) {
   if (form && quality) out.push({ name: `内容形态+清晰度:${form.option.n}+${quality.option.n}`, filter: { [form.key]: form.option.v, [quality.key]: quality.option.v }, emptyAllowed: true });
   return out;
 }
-async function auditVod(records) {
+async function auditVod(records, { clean = false } = {}) {
   const categoryContexts = [];
-  for (const t of CATEGORIES) {
-    const basePath = requestPath(t, 1);
+  const categoryIds = clean ? CLEAN_CATEGORY_IDS : FULL_CATEGORY_IDS;
+  const pathScope = clean ? 'vod.clean' : 'vod';
+  const entryName = clean ? '影视点播洁净' : '影视点播';
+  for (const t of categoryIds) {
+    const basePath = policyRequestPath(t, 1, null, LIMIT, clean);
     const base = await auditListPath({
       records,
       level: 'L3',
       elementType: 'category',
-      pathId: `vod.category.${t}`,
-      steps: ['导入配置', '进入影视点播', `选择分类 ${t}`],
+      pathId: `${pathScope}.category.${t}`,
+      steps: ['导入配置', `进入${entryName}`, `选择分类 ${t}`],
       pathUrl: basePath,
       expectsDetail: true,
+      clean,
     });
     const classRow = base.got.data?.class?.find((c) => String(c.type_id) === String(t)) || { type_id: t, type_name: String(t) };
     const filters = filtersForCategory(base.got.data, t);
-    categoryContexts.push({ t, classRow, filters, baselineIds: base.ids, total: Number(base.got.data?.total || 0), pagecount: Number(base.got.data?.pagecount || 0) });
+    categoryContexts.push({ t, classRow, filters, baselineIds: base.ids, total: Number(base.got.data?.total || 0), pagecount: Number(base.got.data?.pagecount || 0), clean });
 
     for (const group of filters) {
       const options = visibleOptions(group);
-      const rec = recordBase('L4', 'filter_group', `vod.category.${t}.filter_group.${group.key}`, ['导入配置', '进入影视点播', `选择 ${classRow.type_name}`, `打开筛选组 ${group.name || group.key}`], fullUrl(basePath));
+      const rec = recordBase('L4', 'filter_group', `${pathScope}.category.${t}.filter_group.${group.key}`, ['导入配置', `进入${entryName}`, `选择 ${classRow.type_name}`, `打开筛选组 ${group.name || group.key}`], fullUrl(basePath));
       records.push(attachClassification({
         ...rec,
         http_status: 200,
@@ -590,19 +699,22 @@ async function auditVod(records) {
         list_count: options.length,
         total_count: options.length,
         expects_list: false,
+        scope: clean ? 'clean' : 'full',
+        adult_exposure: clean && payloadHasAdultExposure({ filters: { [t]: [group] } }),
       }));
       for (const option of options) {
         await auditListPath({
           records,
           level: 'L5',
           elementType: 'single_filter',
-          pathId: `vod.category.${t}.filter.${group.key}.${filterValue(option.v)}`,
-          steps: ['导入配置', '进入影视点播', `选择 ${classRow.type_name}`, `打开筛选组 ${group.name || group.key}`, `${option.n || option.v}`],
-          pathUrl: requestPath(t, 1, { [group.key]: option.v }),
+          pathId: `${pathScope}.category.${t}.filter.${group.key}.${filterValue(option.v)}`,
+          steps: ['导入配置', `进入${entryName}`, `选择 ${classRow.type_name}`, `打开筛选组 ${group.name || group.key}`, `${option.n || option.v}`],
+          pathUrl: policyRequestPath(t, 1, { [group.key]: option.v }, LIMIT, clean),
           filter: { key: group.key, value: option.v },
           emptyAllowed: false,
           expectsDetail: true,
           baselineIds: base.ids,
+          clean,
         });
       }
     }
@@ -612,13 +724,14 @@ async function auditVod(records) {
         records,
         level: 'L6',
         elementType: 'combo_filter',
-        pathId: `vod.category.${t}.combo.${combo.name}`,
-        steps: ['导入配置', '进入影视点播', `选择 ${classRow.type_name}`, '组合筛选', combo.name],
-        pathUrl: requestPath(t, 1, combo.filter),
+        pathId: `${pathScope}.category.${t}.combo.${combo.name}`,
+        steps: ['导入配置', `进入${entryName}`, `选择 ${classRow.type_name}`, '组合筛选', combo.name],
+        pathUrl: policyRequestPath(t, 1, combo.filter, LIMIT, clean),
         filter: { combo: combo.filter },
         emptyAllowed: combo.emptyAllowed,
         expectsDetail: true,
         baselineIds: base.ids,
+        clean,
       });
     }
 
@@ -627,12 +740,13 @@ async function auditVod(records) {
         records,
         level: 'L7',
         elementType: 'pagination',
-        pathId: `vod.category.${t}.page.2`,
-        steps: ['导入配置', '进入影视点播', `选择 ${classRow.type_name}`, '下一页'],
-        pathUrl: requestPath(t, 2),
+        pathId: `${pathScope}.category.${t}.page.2`,
+        steps: ['导入配置', `进入${entryName}`, `选择 ${classRow.type_name}`, '下一页'],
+        pathUrl: policyRequestPath(t, 2, null, LIMIT, clean),
         emptyAllowed: false,
         expectsDetail: false,
         baselineIds: base.ids,
+        clean,
       });
       const sameAsPage1 = page2.ids.join('|') === base.ids.join('|');
       if (sameAsPage1) {
@@ -645,19 +759,25 @@ async function auditVod(records) {
         records,
         level: 'L7',
         elementType: 'pagination',
-        pathId: `vod.category.${t}.page.boundary`,
-        steps: ['导入配置', '进入影视点播', `选择 ${classRow.type_name}`, '跳到末页边界'],
-        pathUrl: requestPath(t, Math.max(1, base.pagecount + 1)),
+        pathId: `${pathScope}.category.${t}.page.boundary`,
+        steps: ['导入配置', `进入${entryName}`, `选择 ${classRow.type_name}`, '跳到末页边界'],
+        pathUrl: policyRequestPath(t, Math.max(1, base.pagecount + 1), null, LIMIT, clean),
         emptyAllowed: true,
         expectsDetail: false,
+        clean,
       });
     }
   }
   return categoryContexts;
 }
-async function auditSearch(records) {
+async function auditCleanVod(records) {
+  return auditVod(records, { clean: true });
+}
+async function auditSearch(records, { clean = false } = {}) {
+  const pathScope = clean ? 'vod.clean' : 'vod';
+  const entryName = clean ? '影视点播洁净' : '影视点播';
   for (const term of SEARCH_TERMS) {
-    const pathUrl = `/agg?wd=${encodeURIComponent(term)}&limit=${LIMIT}`;
+    const pathUrl = `${aggregateBase(clean)}?wd=${encodeURIComponent(term)}&limit=${LIMIT}`;
     const got = await fetchJsonRetry(pathUrl);
     const list = Array.isArray(got.data?.list) ? got.data.list : [];
     const shape = validateAggListPayload(got.data);
@@ -668,12 +788,14 @@ async function auditSearch(records) {
       if (ok) hits++;
       else if (examples.length < 3) examples.push({ name: item.vod_name, type: item.type_name, remarks: item.vod_remarks });
     }
-    const detail = list.length ? await detailRates(list) : { detail_ok_rate: 1, playable_rate: 1, detail_examples: [] };
+    const detail = list.length ? await detailRates(list, clean) : { detail_ok_rate: 1, playable_rate: 1, detail_examples: [] };
+    const adultExposure = clean && payloadHasAdultExposure(got.data);
+    const contentPolicyOk = !clean || got.data?.content_policy === 'clean-no-adult';
     records.push(attachClassification({
-      ...recordBase('L8', 'search', `vod.search.${term}`, ['导入配置', '进入影视点播', '打开搜索', `输入 ${term}`], fullUrl(pathUrl)),
+      ...recordBase('L8', 'search', `${pathScope}.search.${term}`, ['导入配置', `进入${entryName}`, '打开搜索', `输入 ${term}`], fullUrl(pathUrl)),
       http_status: got.status,
       schema_ok: shape.schema_ok,
-      content_shape_ok: shape.content_shape_ok,
+      content_shape_ok: shape.content_shape_ok && contentPolicyOk,
       list_count: list.length,
       total_count: Number(got.data?.total || 0),
       semantic_hit_rate: list.length ? round(hits / list.length) : 0,
@@ -681,15 +803,46 @@ async function auditSearch(records) {
       detail_ok_rate: round(detail.detail_ok_rate),
       playable_rate: round(detail.playable_rate),
       empty_allowed: !REQUIRED_SEARCH_TERMS.has(term),
+      scope: clean ? 'clean' : 'full',
+      content_policy: got.data?.content_policy || '',
+      content_policy_ok: contentPolicyOk,
+      content_revision: got.data?.content_revision || got.data?.revision || '',
+      adult_exposure: adultExposure,
       examples,
       detail_examples: detail.detail_examples,
     }));
   }
 }
-async function auditDetailsAndPlayback(records, categoryContexts) {
+async function auditCleanPolicySearch(records) {
+  for (const term of CLEAN_POLICY_PROBE_TERMS) {
+    const pathUrl = `${aggregateBase(true)}?wd=${encodeURIComponent(term)}&limit=${LIMIT}`;
+    const got = await fetchJson(pathUrl);
+    const list = Array.isArray(got.data?.list) ? got.data.list : [];
+    const shape = validateAggListPayload(got.data);
+    const adultExposure = payloadHasAdultExposure(got.data);
+    const contentPolicyOk = got.data?.content_policy === 'clean-no-adult';
+    records.push(attachClassification({
+      ...recordBase('L8', 'clean_search_policy', `vod.clean.search.policy.${term}`, ['导入配置', '进入影视点播洁净', '打开搜索', `输入敏感策略探针 ${term}`], fullUrl(pathUrl)),
+      http_status: got.status,
+      schema_ok: shape.schema_ok,
+      content_shape_ok: shape.content_shape_ok && contentPolicyOk,
+      list_count: list.length,
+      total_count: Number(got.data?.total || 0),
+      expects_list: false,
+      scope: 'clean',
+      content_policy: got.data?.content_policy || '',
+      content_policy_ok: contentPolicyOk,
+      content_revision: got.data?.content_revision || got.data?.revision || '',
+      adult_exposure: adultExposure,
+      duplicate_rate: round(duplicateRate(list)),
+      clean_probe_term: term,
+    }));
+  }
+}
+async function auditDetailsAndPlayback(records, categoryContexts, { clean = false } = {}) {
   const sampleItems = [];
   for (const ctx of categoryContexts.slice(0, 10)) {
-    const got = await fetchJson(requestPath(ctx.t, 1, null, Math.min(5, LIMIT)));
+    const got = await fetchJson(policyRequestPath(ctx.t, 1, null, Math.min(5, LIMIT), clean));
     sampleItems.push(...(got.data?.list || []).slice(0, 2));
   }
   const unique = [];
@@ -701,27 +854,36 @@ async function auditDetailsAndPlayback(records, categoryContexts) {
     if (unique.length >= DETAIL_SAMPLE * 2) break;
   }
   for (const item of unique) {
-    const pathUrl = `/agg?ac=detail&ids=${encodeURIComponent(item.vod_id)}`;
+    const pathUrl = `${aggregateBase(clean)}?ac=detail&ids=${encodeURIComponent(item.vod_id)}`;
     const got = await fetchJsonRetry(pathUrl);
     const vod = got.data?.list?.[0];
     const stats = lineStats(vod);
+    const adultExposure = clean && payloadHasAdultExposure(got.data);
+    const contentPolicyOk = !clean || got.data?.content_policy === 'clean-no-adult';
+    const pathScope = clean ? 'vod.clean' : 'vod';
+    const entryName = clean ? '影视点播洁净' : '影视点播';
     const detailRecord = attachClassification({
-      ...recordBase('L9', 'detail', `vod.detail.${item.vod_id}`, ['导入配置', '进入影视点播', `打开详情 ${item.vod_name}`], fullUrl(pathUrl)),
+      ...recordBase('L9', 'detail', `${pathScope}.detail.${item.vod_id}`, ['导入配置', `进入${entryName}`, `打开详情 ${item.vod_name}`], fullUrl(pathUrl)),
       http_status: got.status,
       schema_ok: Boolean(got.data && Array.isArray(got.data.list)),
-      content_shape_ok: Boolean(vod && vod.vod_name && stats.lines > 0 && stats.pair_ok),
+      content_shape_ok: Boolean(vod && vod.vod_name && stats.lines > 0 && stats.pair_ok && contentPolicyOk),
       list_count: got.data?.list?.length || 0,
       total_count: got.data?.list?.length || 0,
       expects_list: true,
       detail_ok_rate: stats.lines > 0 && stats.pair_ok ? 1 : 0,
       playable_rate: stats.playable ? 1 : 0,
+      scope: clean ? 'clean' : 'full',
+      content_policy: got.data?.content_policy || '',
+      content_policy_ok: contentPolicyOk,
+      content_revision: got.data?.content_revision || got.data?.revision || '',
+      adult_exposure: adultExposure,
       detail_examples: [{ name: vod?.vod_name || item.vod_name, lines: stats.lines, groups: stats.groups, urls: stats.urls_count, pair_ok: stats.pair_ok }],
     });
     records.push(detailRecord);
     for (const url of stats.urls.slice(0, PLAY_SAMPLE)) {
       const probe = await probePlayableUrl(url);
       records.push(attachClassification({
-        ...recordBase('L10', 'playback', `vod.playback.${item.vod_id}.${records.length}`, ['导入配置', '进入影视点播', `打开详情 ${item.vod_name}`, '选择播放线路'], url),
+        ...recordBase('L10', 'playback', `${pathScope}.playback.${item.vod_id}.${records.length}`, ['导入配置', `进入${entryName}`, `打开详情 ${item.vod_name}`, '选择播放线路'], url),
         http_status: probe.status || (probe.ok ? 200 : 0),
         schema_ok: !/iframe|player\.html|<html|解析|广告/i.test(url),
         content_shape_ok: probe.ok,
@@ -729,26 +891,31 @@ async function auditDetailsAndPlayback(records, categoryContexts) {
         total_count: 1,
         expects_list: false,
         playable_rate: probe.ok ? 1 : 0,
+        scope: clean ? 'clean' : 'full',
         playback_probe: probe,
       }));
     }
   }
 }
-async function auditStability(records) {
+async function auditStability(records, { clean = false } = {}) {
+  const prefix = aggregateBase(clean);
+  const pathScope = clean ? 'stability.clean' : 'stability';
   const paths = [
-    ['/config.json', 'stability.config'],
-    [requestPath('1', 1), 'stability.movie.category'],
-    [requestPath('1', 1, { year: '2026' }), 'stability.movie.year.2026'],
-    [`/agg?wd=${encodeURIComponent('解说')}&limit=${LIMIT}`, 'stability.search.explainer'],
+    [clean ? '/config-clean.json' : '/config.json', `${pathScope}.config`],
+    [policyRequestPath('10', 1, null, LIMIT, clean), `${pathScope}.cinema.category`],
+    [policyRequestPath('10', 1, { year: '2026' }, LIMIT, clean), `${pathScope}.cinema.year.2026`],
+    [`${prefix}?wd=${encodeURIComponent('解说')}&limit=${LIMIT}`, `${pathScope}.search.explainer`],
   ];
   for (const [pathUrl, id] of paths) {
     const a = await fetchJson(pathUrl);
     const b = await fetchJson(pathUrl);
     const aList = Array.isArray(a.data?.list) ? a.data.list : [];
     const bList = Array.isArray(b.data?.list) ? b.data.list : [];
-    const aEmpty = pathUrl === '/config.json' ? false : aList.length === 0;
-    const bEmpty = pathUrl === '/config.json' ? false : bList.length === 0;
+    const isConfig = pathUrl === '/config.json' || pathUrl === '/config-clean.json';
+    const aEmpty = isConfig ? false : aList.length === 0;
+    const bEmpty = isConfig ? false : bList.length === 0;
     const stable = a.status === b.status && aEmpty === bEmpty;
+    const adultExposure = clean && (payloadHasAdultExposure(a.data) || payloadHasAdultExposure(b.data));
     records.push(attachClassification({
       ...recordBase('L11', 'stability', id, ['导入配置', '返回上一级', '重新进入', '重复同一路径请求'], fullUrl(pathUrl)),
       http_status: a.status === b.status ? a.status : 0,
@@ -757,6 +924,8 @@ async function auditStability(records) {
       list_count: Math.max(aList.length, bList.length, 1),
       total_count: Math.max(Number(a.data?.total || 0), Number(b.data?.total || 0), 1),
       expects_list: false,
+      scope: clean ? 'clean' : 'full',
+      adult_exposure: adultExposure,
       first_status: a.status,
       second_status: b.status,
       first_count: aList.length,
@@ -796,7 +965,12 @@ function summarize(report) {
     warn: byResult.WARN || 0,
     fail: byResult.FAIL || 0,
     category_fail: records.filter((r) => r.element_type === 'category' && r.result === 'FAIL').length,
+    full_category_fail: records.filter((r) => r.element_type === 'category' && r.scope === 'full' && r.result === 'FAIL').length,
+    clean_category_fail: records.filter((r) => r.element_type === 'category' && r.scope === 'clean' && r.result === 'FAIL').length,
     single_filter_fail: records.filter((r) => r.element_type === 'single_filter' && r.result === 'FAIL').length,
+    clean_search_fail: records.filter((r) => ['search', 'clean_search_policy'].includes(r.element_type) && r.scope === 'clean' && r.result === 'FAIL').length,
+    adult_exposure_fail: records.filter((r) => r.adult_exposure === true).length,
+    revision_mismatch: records.filter((r) => r.element_type === 'dual_version_revision' && r.result === 'FAIL').length,
     schema_regression: records.filter((r) => r.path_cause === PATH_CAUSE.SCHEMA_REGRESSION).length,
     api_error: records.filter((r) => r.root_cause === ROOT_CAUSE.API_ERROR).length,
     snapshot_miss: records.filter((r) => r.root_cause === ROOT_CAUSE.SNAPSHOT_MISS).length,
@@ -829,7 +1003,12 @@ async function writeReports(report) {
     '## 验收指标',
     '',
     `- category_fail=${report.summary.category_fail}`,
+    `- full_category_fail=${report.summary.full_category_fail}`,
+    `- clean_category_fail=${report.summary.clean_category_fail}`,
     `- single_filter_fail=${report.summary.single_filter_fail}`,
+    `- clean_search_fail=${report.summary.clean_search_fail}`,
+    `- adult_exposure_fail=${report.summary.adult_exposure_fail}`,
+    `- revision_mismatch=${report.summary.revision_mismatch}`,
     `- schema_regression=${report.summary.schema_regression}`,
     `- api_error=${report.summary.api_error}`,
     `- snapshot_miss=${report.summary.snapshot_miss}`,
@@ -852,13 +1031,20 @@ async function writeReports(report) {
 }
 export async function runFullRemoteAudit() {
   const report = { base: BASE, generatedAt: new Date().toISOString(), limit: LIMIT, detailSample: DETAIL_SAMPLE, playSample: PLAY_SAMPLE, records: [], summary: {} };
-  const config = await auditConfig(report.records);
+  const config = await auditConfig(report.records, { clean: false });
+  const cleanConfig = await auditConfig(report.records, { clean: true });
+  await auditDualVersionRevision(report.records, config, cleanConfig);
   await auditLive(report.records, config);
   await auditOps(report.records);
   const categoryContexts = await auditVod(report.records);
+  const cleanCategoryContexts = await auditCleanVod(report.records);
   await auditSearch(report.records);
+  await auditSearch(report.records, { clean: true });
+  await auditCleanPolicySearch(report.records);
   await auditDetailsAndPlayback(report.records, categoryContexts);
+  await auditDetailsAndPlayback(report.records, cleanCategoryContexts, { clean: true });
   await auditStability(report.records);
+  await auditStability(report.records, { clean: true });
   report.summary = summarize(report);
   await writeReports(report);
   return report;
@@ -867,7 +1053,7 @@ export async function runFullRemoteAudit() {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   runFullRemoteAudit().then((report) => {
     console.log(JSON.stringify(report.summary, null, 2));
-    if (report.summary.api_error || report.summary.schema_regression || report.summary.snapshot_miss || report.summary.filter_logic_bug || report.summary.category_fail || report.summary.single_filter_fail) process.exit(1);
+    if (report.summary.api_error || report.summary.schema_regression || report.summary.snapshot_miss || report.summary.filter_logic_bug || report.summary.category_fail || report.summary.single_filter_fail || report.summary.clean_search_fail || report.summary.adult_exposure_fail || report.summary.revision_mismatch) process.exit(1);
   }).catch((err) => {
     console.error(err);
     process.exit(1);

@@ -25,7 +25,21 @@ function makeVod(name, id, extra = {}) {
 function installHotOverlayFetchMock() {
   const realFetch = globalThis.fetch;
   const now = new Date().toISOString();
-  const snapshotManifest = { ok: true, version: 'test', generatedAt: now, errors: [], warnings: [] };
+  const revision = 'snapshot-hot-overlay-test';
+  const snapshotManifest = {
+    ok: true,
+    version: 'test',
+    generatedAt: now,
+    revision,
+    content_revision: revision,
+    categories: [
+      '推荐', '院线电影', '网络电影', '其他电影', '电视剧', '网络剧', '网络短剧',
+      '综艺', '动漫', '纪录片', '解说', '文娱知识', '成人伦理',
+    ].map((type_name, index) => ({ type_id: String(index), type_name, count: 1, total: 1 })),
+    variants: { full: { revision, total: 13 }, clean: { revision, total: 12 } },
+    errors: [],
+    warnings: [],
+  };
   const hotManifest = { ok: true, version: 'test', generatedAt: now, finishedAt: now, errors: [], warnings: [], files: { catalog: 'catalog-hot.json', search: 'search-hot.json' } };
   const categories = [{ type_id: '1', type_name: '电影', filters: [] }];
   const snapshotMoviePack = { code: 1, msg: 'ok', class: categories, page: 1, pagecount: 1, limit: 24, total: 2, list: [makeVod('快照旧电影', 'snap-old'), makeVod('同名影片', 'snap-dup', { vod_year: '2025' })] };
